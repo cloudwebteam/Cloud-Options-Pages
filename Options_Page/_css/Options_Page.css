@@ -1,0 +1,78 @@
+#theme-options-wrap .tabbable {
+	padding-top: 2em;
+}
+#theme-options-wrap input {
+	max-width: 98%;
+}
+.form-table {
+}
+/* scroll layout */
+#scroll-nav {
+	top: 90px;
+}
+#scroll-content {
+	margin-left: 135px;
+	padding: 0 15px;
+}
+#scroll-content .section {
+	margin-bottom: 1em;
+	padding: 2em 30px;
+	background: #fafafa;
+	border: 1px solid #ccc;
+}
+.wrap.scroll .submit {
+	margin-left: 150px;
+}
+.wrap form h1 {
+	font-size: 2em;
+}
+.wrap form h2 {
+	font-size: 1.5em;
+}
+.wrap form h3 {
+	font-size: 1.125em;
+}
+.wrap form h4 {
+	font-size: 1em;
+}
+.wrap form h5 {
+	font-size: .875em;
+}
+.wrap form h6 {
+	font-size: .75em;
+}
+.wrap input, 
+.wrap textarea {
+	width: auto;
+}
+.to_use {
+	display: inline-block;
+	padding-left: 5px;
+	position: relative;
+	font-size: .75em;
+	float: right;
+	z-index: 100;
+}
+.to_use .copy {
+	display: none;
+	position: absolute;
+	white-space: nowrap;
+	top: 0;
+	left: 0;
+}
+.to_use:hover .copy {
+	display: block;
+	top: 0;
+	left: -25px;
+	padding: 1.5em 15px;
+}
+
+/* media url field type */
+.preview-image {
+	max-width: 190px;
+	max-height: 100%;
+	width: auto;
+	height: auto;
+	margin-left: 10px;
+	
+}
