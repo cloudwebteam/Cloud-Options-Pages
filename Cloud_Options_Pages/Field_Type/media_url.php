@@ -1,29 +1,23 @@
 <?php 
 class media_url extends Field_Type {
-	private $info ;
-	private $size = 45; 
-	private $field ;
-	private $label ;
-	private $url_button ; 
-	private $attributes = array() ;
+	protected $info ;
+	protected $size = 45; 
+	protected $field ;
+	protected $label ;
+	protected $url_button ; 
+	protected $attributes = array() ;
 
 	public static function create_field( $args ){
 		$field_type = __CLASS__;
 		$field = new $field_type( $args ); 
 	}	
-	private function __construct( $args ){
-		add_action( 'admin_enqueue_scripts', array( __CLASS__, 'enqueue_stuff' ) ); 
-		$this->info = parent::get_field_info($args);
-
-		$this->size = isset( $this->info['size'] ) ? $this->info['size'] : $this->size; 
+	protected function __construct( $args ){
 		$this->field = '<input type="hidden" id="'.$this->info['prefix'] . $this->info['id'] . '" name="'.$this->info['name'] . '" size="'.$this->size.'" type="text" value="' . $this->info['value'] . '" />';
 		$this->url_button = '<input id="upload_button" class="upload_button btn btn-mini" type="button" name="upload_button" value="Find or Upload file" />';
 		$this->image = $this->get_image();
-		$this->label = parent::get_label( $this->info ); 
-		$this->description = isset( $this->info['description']) && $this->info['description'] !== '' ? '<p class="description">'.$this->info['description'] . '</p>' : '';
+		$this->size = isset( $field_info['size'] ) ? $field_info['size'] : $this->size; 
 
-		$layout = parent::get_layout( __CLASS__, $this->info );
-		$this->$layout( $args ); 
+		parent::__construct( __CLASS__, $args ); 
 	}
 
 	public function enqueue_field_scripts_and_styles(){

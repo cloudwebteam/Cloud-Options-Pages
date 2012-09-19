@@ -40,6 +40,9 @@ class Cloud_Options_Pages  {
 		add_action('admin_menu', array( $this, 'create_options_pages' ) );
 		//enqueue necessary css/js
 		add_action('admin_enqueue_scripts', array($this, 'load_styles_and_scripts') );
+		
+		//add buttons to MCE editor
+		$this->add_editor_list(); 
 
 	}
 	
@@ -472,6 +475,68 @@ class Cloud_Options_Pages  {
 		return array( $field_type, 'create_field' ) ;
 	}	
 	
+	private function add_editor_list(){
+		// Don't bother doing this stuff if the current user lacks permissions
+		if ( ! current_user_can('edit_posts') && ! current_user_can('edit_pages') ) {
+			return;
+		}
+	   // Add only in Rich Editor mode
+		if ( get_user_option('rich_editing') == 'true') {
+			add_filter("mce_external_plugins", array( $this, "add_options_list_to_mce" ) );
+			add_filter('mce_buttons', array ( $this, 'register_editor_mce_buttons' ) );
+		}	
+		add_action( 'wp_ajax_mce_get_options_list', array( $this, 'mce_get_options_list') ); 
+	
+	}
+	public function mce_get_options_list(){
+		$array = array( 'a','b','c'); 
+		if ( $array ){
+			echo json_encode($array);
+		} else { 
+			echo 0;
+		}
+	}
+	public function add_options_list_to_mce( $plugin_array ){
+		$plugin_array['options_list'] = self::get_include_path() .'/'.__CLASS__. '/_js/mce_plugins/options_list.js';
+		return $plugin_array; 
+	
+	}
+	public function register_editor_mce_buttons($buttons){
+		array_push($buttons, "separator", "options_list");
+		return $buttons;
+	}
+	public static function get_mce_options_list_info(){
+		$shortcodes = array(); 
+		foreach ( self::$options_pages as $top_level ){
+			foreach ( $top_level['subpages'] as $subpage_slug => $subpage ){
+				$shortcodes[$subpage_slug] = array();
+				$shortcodes[$subpage_slug]['title'] = $subpage['title'];
+				$shortcodes[$subpage_slug]['sections'] = array();
+				foreach ( $subpage['sections'] as $section_slug => $section ){	
+					$shortcodes[$subpage_slug]['sections'][$section_slug] = array();
+					$shortcodes[$subpage_slug]['sections'][$section_slug]['title'] = $section['title'];
+					foreach ( $section['fields'] as $field_slug => $field ){
+						if ($field['editor_list'] === true ){
+							$shortcodes[$subpage_slug]['sections'][$section_slug]['fields'][$field_slug] = array(
+								'field_title' => $field['title'],
+								'section_title' => $section['title'],
+								'subpage_title' => $subpage['title'],
+								'shortcode'		=> '[option p="'.$subpage_slug.'" s="'.$section_slug.'" f="'.$field_slug.'" ]' 
+							);
+						}
+					}
+					if (!isset( $shortcodes[$subpage_slug]['sections'][$section_slug]['fields']	)) {
+						unset( $shortcodes[$subpage_slug]['sections'][$section_slug]);
+					}
+					
+				}
+				if (!isset( $shortcodes[$subpage_slug]['sections']	)) {
+					unset( $shortcodes[$subpage_slug]);
+				}				
+			}
+		}
+		return $shortcodes;
+	}
 	public static function get_include_path(){
 		// Cloud-Theme / cloud    /    core              
 		return Cloud_Theme__DIR .'/'. basename( dirname(__FILE__) ); 	

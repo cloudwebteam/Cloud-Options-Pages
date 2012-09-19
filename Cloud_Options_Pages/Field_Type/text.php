@@ -6,7 +6,7 @@ class text extends Field_Type {
 	private $label ;
 	private $attributes = array() ;
 
-	private function __construct( $args ){
+	protected function __construct( $args ){
 		
 		$this->info = parent::get_field_info($args);
 

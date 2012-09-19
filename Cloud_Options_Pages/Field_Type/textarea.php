@@ -2,7 +2,7 @@
 class textarea extends Field_Type {
 	private $rows = 5;
 	private $cols = 70;
-	private function __construct( $args ){
+	protected function __construct( $args ){
 		
 		$this->info = parent::get_field_info($args);
 

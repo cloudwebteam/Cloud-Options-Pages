@@ -11,6 +11,17 @@ class Field_Type {
 	private $name 	= 'DEFAULT_NAME';
 	private $value 	= 'DEFAULT_HERE'; 
 	
+	protected function __construct( $class_name, $args){
+		add_action( 'admin_enqueue_scripts', array( $class_name, 'enqueue_stuff' ) );				
+ 
+ 		$this->info = self::get_field_info($args);
+		$this->label = self::get_label( $this->info ); 
+		$this->description = self::get_description( $this->info );
+		
+		
+		$layout = self::get_layout( $class_name, $this->info );
+		$this->$layout( $args ); 
+	}
 	public function standard(){
 		echo 'this field needs a display function!';
 	}
@@ -77,6 +88,10 @@ class Field_Type {
 		$to_use = "<div class='copy_to_use'><a rel='copy_to_use'>Code</a><input class='copy' type='text' value='".$field_info['to_retrieve']."' /></div>";
 		$label = "<label for='".$field_info['prefix'] . $field_info['id'] . "' >" . $field_info['title'] ."</label>".$to_use;
 		return $label;
+	}
+	protected static function get_description( $field_info ){
+		$description = isset( $field_info['description']) && $field_info['description'] !== '' ? '<span class="description">'.$field_info['description'] . '</span>' : '';
+		return $description;
 	}
 	protected static function get_layout( $class_name, $field_info ){
 	
