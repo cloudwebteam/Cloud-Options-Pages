@@ -16,7 +16,7 @@
 			
 		}	
 		private static function get_layout_info( $section ){
-			$Options_Page = Options_Page::get_instance();
+			$Options_Page = Cloud_Options_Pages::get_instance();
 		
 			$parent_page = $Options_Page->get_options_array_info( $_GET['page'] ); 
 
@@ -42,7 +42,7 @@
 		    	<h3><?php echo $section['title']; ?></h3>
 		    <?php } ?>
 			    <table class="form-table">
-				    <?php Options_Page::do_settings_fields( $info['subpage_slug'], $section ); ?>
+				    <?php Cloud_Options_Pages::do_settings_fields( $info['subpage_slug'], $section ); ?>
 				</table>
 			</div>
 			<?php 
@@ -57,7 +57,7 @@
 			    <div class="span<?php echo $section_width; ?>">
 			    	<h3>GRID SECTION (<?php echo $section_width; ?>): <?php echo $section['title']; ?></h3>
 			    
-				    <?php Options_Page::do_settings_fields( $info['subpage_slug'], $section ); ?>
+				    <?php Cloud_Options_Pages::do_settings_fields( $info['subpage_slug'], $section ); ?>
 				</div>
 			<?php		
 		}	
@@ -66,7 +66,7 @@
 			?>
 		    	<h3><?php echo $section['title']; ?></h3>
 			    <table class="form-table">
-				    <?php Options_Page::do_settings_fields( $info['subpage_slug'], $section ); ?>
+				    <?php Cloud_Options_Pages::do_settings_fields( $info['subpage_slug'], $section ); ?>
 				</table>
 			<?php		
 		}

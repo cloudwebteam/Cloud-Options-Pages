@@ -1,7 +1,6 @@
 <?php 
 //include Cloud_Theme__DIR . '/__inc/geek_caller_rejection.php';
-class Options_Page  {
-
+class Cloud_Options_Pages  {
 	public static function init( $callable = array( ) )
 	{
 		$class_instance  = self::get_instance();
@@ -21,11 +20,10 @@ class Options_Page  {
 	{	
 		$this->prefix = Cloud_PREFIX;
 		
-		
-		// load everything in /Options_Page
+		// load everything in /Cloud_Options_Pages
 		$this->load_theme_classes(); 
 
-		//load all files within specific folders within /Options_Page/
+		//load all files within specific folders within /Cloud_Options_Pages/
 		if ( class_exists('Field_Type') ){
 			$this->load_theme_classes('Field_Type');
 			$this->load_theme_classes('Layout'); 
@@ -54,7 +52,7 @@ class Options_Page  {
 		return self::$instance; 
 	}
 	
-	public static $options_name  	= '' ;
+	public static $options_name  	= '' ;	
 	
 	private $options 		= array();
 
@@ -112,21 +110,21 @@ class Options_Page  {
 			wp_register_style('Bootstrap Responsive', Cloud_Theme__DIR . '/__inc/bootstrap/css/bootstrap-responsive.min.css');
 			wp_register_style('Bootstrap', Cloud_Theme__DIR . '/__inc/bootstrap/css/bootstrap.min.css');
 	
-			wp_register_style('Options_Page', Cloud_Theme__DIR . '/'.basename(dirname(__FILE__)).'/'.__CLASS__.'/_css/Options_Page.css', array( 'thickbox' ) );
+			wp_register_style('Options_Pages', Cloud_Theme__DIR . '/'.basename(dirname(__FILE__)).'/'.__CLASS__.'/_css/Options_Pages.css', array( 'thickbox' ) );
 	
 			wp_enqueue_style('Bootstrap Responsive'); 				
 			wp_enqueue_style('Bootstrap'); 	
-			wp_enqueue_style('Options_Page');
+			wp_enqueue_style('Options_Pages');
 			
 			// SCRIPTS
 			wp_register_script('Bootstrap', Cloud_Theme__DIR . '/__inc/bootstrap/js/bootstrap.min.js'); 
 			wp_register_script('scrollTo', Cloud_Theme__DIR . '/__inc/js/jquery.scrollTo-1.4.3.1-min.js'); 
-			wp_register_script('Options_Page', Cloud_Theme__DIR . '/'.basename(dirname(__FILE__)).'/'.__CLASS__.'/_js/Options_Page.js', array( 'thickbox', 'media-upload' ) ); 
+			wp_register_script('Options_Pages', Cloud_Theme__DIR . '/'.basename(dirname(__FILE__)).'/'.__CLASS__.'/_js/Options_Pages.js', array( 'thickbox', 'media-upload' ) ); 
 	
 			wp_enqueue_script('Bootstrap');
 			wp_enqueue_script('scrollTo');		
-			wp_enqueue_script('Options_Page');
-			wp_localize_script('Options_Page', 'wp_vars', array(
+			wp_enqueue_script('Options_Pages');
+			wp_localize_script('Options_Pages', 'wp_vars', array(
 				'ajax_url' 	=> admin_url( 'admin-ajax.php' ),
 				'is_options_page' => isset( $_GET['page'] ) && $_GET['page'] 
 			));					
@@ -469,10 +467,17 @@ class Options_Page  {
 		$type 	= $info['type'];
 		$field_type = class_exists( $type ) ? $type : Field_Type::$default_type;
 		
+		// strange, I know, but this is necessary to get the scripts added early enough. At this point, we KNOW they want to field. 
+		add_action( 'admin_enqueue_scripts', array( $field_type, 'enqueue_field_scripts_and_styles' ) ); 		
 		return array( $field_type, 'create_field' ) ;
 	}	
+	
+	public static function get_include_path(){
+		// Cloud-Theme / cloud    /    core              
+		return Cloud_Theme__DIR .'/'. basename( dirname(__FILE__) ); 	
+	}
 } // End Class	
-add_action( 'init' , array( 'Options_Page' , 'get_instance' ) ) ;
+add_action( 'init' , array( 'Cloud_Options_Pages' , 'get_instance' ) ) ;
 
 
 function standard_field(){ 

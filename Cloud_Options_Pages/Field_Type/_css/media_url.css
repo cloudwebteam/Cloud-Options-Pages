@@ -1,0 +1,9 @@
+/* media url field type */
+.preview-image {
+	max-width: 190px;
+	max-height: 50px;
+	width: auto;
+	height: auto;
+	margin-left: 10px;
+	
+}

@@ -14,6 +14,10 @@ class Field_Type {
 	public function standard(){
 		echo 'this field needs a display function!';
 	}
+	public function enqueue_field_scripts_and_styles(){
+		self::register_scripts_and_styles( get_called_class() );  // would be best, but only in 5.3... should fallback and not break
+	
+	}
 	public static function get_layout_function( $layout = null , $field_type = null , $section_layout_type ){
 		self::$default_type = 'text'; // fallback field type
 		self::$default_layout = 'standard'; // fallback layout type
@@ -44,7 +48,7 @@ class Field_Type {
 		
 	}
 	public static function get_field_info( $args ){
-		$Options_Page = Options_Page::get_instance(); 
+		$Options_Page = Cloud_Options_Pages::get_instance(); 
 
 		$info = array(); 
 		
@@ -70,16 +74,19 @@ class Field_Type {
 		return $info;
 	}
 	protected static function get_label($field_info){
-		$label = "<label for='".$field_info['prefix'] . $field_info['id'] . "' >" . $field_info['title'] . "<a data-to_use='".$field_info['to_retrieve']."' class='to_use'>Code<span class='copy'>".$field_info['to_retrieve']."</span></a></label>";
+		$to_use = "<div class='copy_to_use'><a rel='copy_to_use'>Code</a><input class='copy' type='text' value='".$field_info['to_retrieve']."' /></div>";
+		$label = "<label for='".$field_info['prefix'] . $field_info['id'] . "' >" . $field_info['title'] ."</label>".$to_use;
 		return $label;
 	}
 	protected static function get_layout( $class_name, $field_info ){
 	
-		if ( isset( $field_info['layout'] ) && is_callable( $class_name, $field_info['layout'] ) ){
+		if ( isset( $field_info['layout'] ) ){
 			if ( is_array( $field_info['layout'] ) ){
 				$layout = 'custom';
-			} else {
+			} else if ( is_callable( $class_name, $field_info['layout'] ) ){
 				$layout = $field_info['layout'];
+			} else {
+				$layout = self::$default_layout; 		
 			}
 		} else {
 			$layout = self::$default_layout; 
@@ -91,4 +98,18 @@ class Field_Type {
 		
 		return $layout;
 	}
+	protected static function register_scripts_and_styles( $class_name ){
+		if ( $class_name ){			
+			if ( file_exists( dirname( __FILE__ ).'/'.basename( __FILE__, '.php' ) . '/_js/'.$class_name.'.js' ) ){
+				wp_enqueue_script( $class_name, self::get_include_path(). '/_js/'.$class_name.'.js', array( 'jquery', 'Options_Pages' ), '');
+			} 
+			if ( file_exists( dirname( __FILE__ ).'/'.basename( __FILE__, '.php' ) . '/_css/'.$class_name.'.css' ) ){
+				wp_enqueue_style( $class_name, self::get_include_path(). '/_css/'.$class_name.'.css', array( 'Options_Pages' ));
+			}
+		}
+	}
+	public static function get_include_path(){
+		// Cloud-Theme / cloud / core / 				/   Cloud_Options_Pages /   Field_Type           	
+		return Cloud_Options_Pages::get_include_path().'/'. basename(__DIR__) . '/'. basename( __FILE__, '.php') ;
+	} 	
 }

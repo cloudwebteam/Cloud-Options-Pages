@@ -1,7 +1,7 @@
 <?php 
 	class Page_Layout extends Layout {
 		private static function get_layout_info(){
-			$Options_Page = Options_Page::get_instance();
+			$Options_Page = Cloud_Options_Pages::get_instance();
 		
 			$info = array(); 
 			$info['subpage_slug'] = $_GET['page'];
@@ -19,7 +19,7 @@
 				<h3><?php echo $info['title']; ?></h3>															
 				<form action="options.php" method="post">
 				    <?php settings_fields( $info['subpage_slug'] ); ?>
-				    <?php $sections = Options_Page::get_settings_sections( $info['subpage_slug'] , $info['page_info'] ); ?>
+				    <?php $sections = Cloud_Options_Pages::get_settings_sections( $info['subpage_slug'] , $info['page_info'] ); ?>
 				    <?php foreach ( $sections as $section ) { ?>
 				    	<?php echo $section['html']; ?>
 				    <?php } ?>				    
@@ -43,7 +43,7 @@
 
 					<div class="row">
 			
-				    <?php $sections = Options_Page::get_settings_sections( $info['subpage_slug'] , $info['page_info'] ); ?>
+				    <?php $sections = Cloud_Options_Pages::get_settings_sections( $info['subpage_slug'] , $info['page_info'] ); ?>
 					    <?php foreach ( $sections as $section_html ) { ?>
 						    <?php echo $section_html; ?>
 					    <?php } ?>
@@ -66,7 +66,7 @@
 				<form action="options.php" method="post">
 				    <?php settings_fields( $info['subpage_slug'] ); ?>
 					<div id="page-tabs" class="tabbable">
-					    <?php $sections = Options_Page::get_settings_sections( $info['subpage_slug'] , $info['page_info'] ); ?>
+					    <?php $sections = Cloud_Options_Pages::get_settings_sections( $info['subpage_slug'] , $info['page_info'] ); ?>
 					    <?php if ( $sections ){ ?>
 						<ul class="nav nav-tabs">
 						    <?php foreach ( $sections as $section_id => $section ) { ?>
@@ -100,7 +100,7 @@
 				<form action="options.php" method="post">
 				    <?php settings_fields( $info['subpage_slug'] ); ?>
 					<div id="page-tabs" class="tabbable">
-					    <?php $sections = Options_Page::get_settings_sections( $info['subpage_slug'] , $info['page_info'] ); ?>
+					    <?php $sections = Cloud_Options_Pages::get_settings_sections( $info['subpage_slug'] , $info['page_info'] ); ?>
 					
 						<ul class="nav nav-tabs">
 						    <?php foreach ( $sections as $section_id => $section ) { ?>
@@ -133,7 +133,7 @@
 				<form action="options.php" method="post">
 				    <?php settings_fields( $info['subpage_slug'] ); ?>
 					<div id="page-tabs" class="tabbable tabs-left">
-					    <?php $sections = Options_Page::get_settings_sections( $info['subpage_slug'] , $info['page_info'] ); ?>
+					    <?php $sections = Cloud_Options_Pages::get_settings_sections( $info['subpage_slug'] , $info['page_info'] ); ?>
 					
 						<ul class="nav nav-tabs">
 						    <?php foreach ( $sections as $section_id => $section ) { ?>
@@ -166,7 +166,7 @@
 				<form action="options.php" method="post">
 				    <?php settings_fields( $info['subpage_slug'] ); ?>
 					<div id="page-tabs" class="tabbable tabs-right">
-					    <?php $sections = Options_Page::get_settings_sections( $info['subpage_slug'] , $info['page_info'] ); ?>
+					    <?php $sections = Cloud_Options_Pages::get_settings_sections( $info['subpage_slug'] , $info['page_info'] ); ?>
 					
 						<ul class="nav nav-tabs fade">
 						    <?php foreach ( $sections as $section_id => $section ) { ?>
@@ -201,7 +201,7 @@
 
 				<form action="options.php" method="post">
 				    <?php settings_fields( $info['subpage_slug'] ); ?>
-				    <?php $sections = Options_Page::get_settings_sections( $info['subpage_slug'] , $info['page_info'] ); ?>
+				    <?php $sections = Cloud_Options_Pages::get_settings_sections( $info['subpage_slug'] , $info['page_info'] ); ?>
 					<div id="scroll-nav" class="affix">
 						<ul class="nav nav-list ">
 					    <?php foreach ( $sections as $section_id => $section ) { ?>
@@ -233,7 +233,7 @@
 			
 				<form action="options.php" method="post">
 				    <?php settings_fields( $info['subpage_slug'] ); ?>
-				    <?php $sections = Options_Page::get_settings_sections( $info['subpage_slug'] , $info['page_info'] ); ?>
+				    <?php $sections = Cloud_Options_Pages::get_settings_sections( $info['subpage_slug'] , $info['page_info'] ); ?>
 				    
 				    <p class="submit">
 				    	<input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
@@ -252,7 +252,7 @@
 			
 				<form action="options.php" method="post">
 				    <?php settings_fields( $info['subpage_slug'] ); ?>
-				    <?php $sections = Options_Page::get_settings_sections( $info['subpage_slug'] , $info['page_info'] ); ?>
+				    <?php $sections = Cloud_Options_Pages::get_settings_sections( $info['subpage_slug'] , $info['page_info'] ); ?>
 				    
 				    <p class="submit">
 				    	<input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />

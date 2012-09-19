@@ -43,6 +43,7 @@ $options_pages_defaults = array (
 		'clone'			=> false,
 		'width'			=> 6,
 		'size'			=> 55,
-		'description'	=> null
+		'description'	=> null,
+		'editor_list'	=> false
 	)
 ); 
