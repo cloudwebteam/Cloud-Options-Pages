@@ -138,7 +138,6 @@ class Cloud_Options_Pages  {
 		self::$defaults = $options_pages_defaults;
 	}
 	public function get_option( $top_page_slug = null, $page_slug = null , $section_slug = null , $field_slug = null ){
-
 		if ( !isset( $this->options[$top_page_slug] ) || 
 			 !isset( $this->options[$top_page_slug][$page_slug] ) || 
 			 !isset( $this->options[$top_page_slug][$page_slug][$section_slug] ) ||
@@ -151,7 +150,24 @@ class Cloud_Options_Pages  {
 
 		return $option;
 	}
-
+	public function get_options( $top_page_slug = null, $page_slug = null , $section_slug = null , $field_slug = null , $group_number = null, $sub_field_slug = null ){
+		// ha ha, overkill...but it might be useful to be able to grab individual group values
+		if ( isset( $this->options[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number][$subfield_slug] ) ) {
+			return $this->options[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number][$subfield_slug];
+		} else if ( isset( $this->options[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number] ) ) {
+			return $this->options[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number] ;
+		} else if ( isset( $this->options[$top_page_slug][$page_slug][$section_slug][$field_slug] ) ) {
+			return $this->options[$top_page_slug][$page_slug][$section_slug][$field_slug] ;
+		} else if ( isset( $this->options[$top_page_slug][$page_slug][$section_slug] ) ) {
+			return $this->options[$top_page_slug][$page_slug][$section_slug] ; 
+		} else if ( isset( $this->options[$top_page_slug][$page_slug] ) ){ 
+			return $this->options[$top_page_slug][$page_slug] ; 
+		} else if ( isset( $this->options[$top_page_slug] ) ) {
+			return $this->options[$top_page_slug]; 
+		} else {
+			return false;
+		}
+	}	
 	public function get_options_array_info($subpage_slug = null, $section_slug = null, $field_slug = null ){
 		if ($subpage_slug ){
 			foreach (self::$options_pages as $slug => $top_level ){
@@ -430,7 +446,7 @@ class Cloud_Options_Pages  {
 			'section' 	=> $section_slug, 
 			'field'	  	=> $slug
 		);	
-		
+
 		add_settings_field( $id, $title, $callback, $page_slug, $section_slug, $args );
 	}
 	public static function get_settings_sections($page) {
