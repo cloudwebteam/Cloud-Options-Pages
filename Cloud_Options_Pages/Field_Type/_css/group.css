@@ -1,0 +1,54 @@
+.group {
+	position: relative;
+	float: left;
+	clear: both;
+}
+.group .add-remove {
+	position: absolute;
+	bottom: 0;
+	right: 15px;
+}
+.multiple .add,
+.multiple .remove {
+	font-size: 1.25em;
+	background: #efefef;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	width: 20px;
+	height: 1.25em;
+	line-height: 1em;
+	margin: .125em 0 ;
+	display: inline-block;
+	text-align: center;
+	cursor: pointer;
+	z-index: 20;
+}
+.group .remove.disabled {
+	color: #ccc;
+	background: #fafafa;
+	cursor: default;
+}
+.multiple .remove {
+	color: #C05F47;
+}
+.multiple .testimonial-input .remove {
+	bottom: 5px;
+	right: 15px;
+}
+.multiple.testimonials .add {
+	bottom: 6px;
+	right: 45px;
+}
+.multiple .add:hover,
+.multiple .remove:hover {
+	text-decoration: none;
+}
+.multiple .group {
+	margin: .5em 0;
+	padding: .5em 15px 3em;
+	border: 1px dashed #ccc;
+	background: #fafafa;
+}
+.multiple .group:first-child {
+}
+.group {

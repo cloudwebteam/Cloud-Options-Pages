@@ -13,13 +13,13 @@ class Field_Type {
 	
 	protected function __construct( $class_name, $args){
 		add_action( 'admin_enqueue_scripts', array( $class_name, 'enqueue_stuff' ) );				
- 
  		$this->info = self::get_field_info($args);
+
 		$this->label = self::get_label( $this->info ); 
 		$this->description = self::get_description( $this->info );
 		
-		
 		$layout = self::get_layout( $class_name, $this->info );
+
 		$this->$layout( $args ); 
 	}
 	public function standard(){
@@ -54,7 +54,6 @@ class Field_Type {
 				break;
 		
 		}
-
 		return $chosen_layout;
 		
 	}
@@ -67,14 +66,26 @@ class Field_Type {
 		$page_slug = $args['subpage'];
 		$section_slug = $args['section'];
 		$field_slug = $args['field']; 	
-		$name =  $page_slug.'['.$section_slug.']['.$field_slug.']'; 
-		
+		$subfield_slug = isset( $args['subfield'] ) ? $args['subfield'] : '' ; 
+
 		
 		$default_value =  isset( $args['info']['default'] ) ? $args['info']['default'] : ''; 
 		$value = $Options_Page->get_option( $top_level_slug, $page_slug, $section_slug, $field_slug ); 
-
+		
+		// part of a group?
+		if ( $subfield_slug ){
+			$group_number = isset( $args['group_number'] ) ? $args['group_number'] : 0 ;		
+			$value = $value[$group_number][$subfield_slug]; 
+			$name =  $page_slug.'['.$section_slug.']['.$field_slug.']['.$group_number.']['.$subfield_slug.']'; 	
+			$to_retrieve = 	'get_theme_options( "'. $page_slug.'", "'. $section_slug . '" , "'. $field_slug.'" , "' . $group_number .'" )';	
+		// most fields aren't
+		} else {
+			$name =  $page_slug.'['.$section_slug.']['.$field_slug.']'; 
+			$to_retrieve = 'get_theme_options( "'. $page_slug.'", "'. $section_slug . '" , "'. $field_slug.'" )' ;			
+		}
 		$info['title'] = $args['info']['title'];
-		$info['to_retrieve'] = 'get_theme_options( "'. $page_slug.'", "'. $section_slug . '" , "'. $field_slug.'" )';
+		$info['to_retrieve'] = 	$to_retrieve;				
+		
 		$info['name'] = $name; 
 		$info['description'] = isset( $args['info']['description'] ) ? $args['info']['description'] : null;
 		$info['id']   = $field_slug;
@@ -82,6 +93,8 @@ class Field_Type {
 		$info['parent_layout'] = $args['parent_section_layout'];
 		$info['layout'] = isset ($args['info']['layout'] ) ? $args['info']['layout'] : 'default';
 		$info['prefix'] = $Options_Page->prefix; 		
+		$info['fields'] = isset( $args['info']['fields'] ) ? $args['info']['fields'] : ''; 
+		$info['is_subfield'] = $subfield_slug !== '' ? true : false;
 		return $info;
 	}
 	protected static function get_label($field_info){
@@ -94,7 +107,7 @@ class Field_Type {
 		return $description;
 	}
 	protected static function get_layout( $class_name, $field_info ){
-	
+
 		if ( isset( $field_info['layout'] ) ){
 			if ( is_array( $field_info['layout'] ) ){
 				$layout = 'custom';
@@ -106,11 +119,13 @@ class Field_Type {
 		} else {
 			$layout = self::$default_layout; 
 		}
-		
+
 		if ( $field_info['parent_layout'] === 'standard' ) {
 			$layout = 'standard'; 
 		}
-		
+		if ( $field_info['is_subfield'] ){
+			$layout = 'custom' ;
+		}
 		return $layout;
 	}
 	protected static function register_scripts_and_styles( $class_name ){
