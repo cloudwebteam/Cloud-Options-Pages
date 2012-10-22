@@ -44,6 +44,7 @@ $options_pages_defaults = array (
 		'width'			=> 6,
 		'size'			=> 55,
 		'description'	=> null,
-		'editor_list'	=> false
+		'editor_list'	=> false,
+		'fields'		=> null
 	)
 ); 
