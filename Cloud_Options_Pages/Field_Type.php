@@ -1,6 +1,6 @@
 <?php 
 class Field_Type {
-	public static $default_type ;
+	public static $default_type = 'text' ;
 	public static $default_layout ; 
 
 	private static $default_value ;
@@ -77,7 +77,7 @@ class Field_Type {
 			$group_number = isset( $args['group_number'] ) ? $args['group_number'] : 0 ;		
 			$value = $value[$group_number][$subfield_slug]; 
 			$name =  $page_slug.'['.$section_slug.']['.$field_slug.']['.$group_number.']['.$subfield_slug.']'; 	
-			$to_retrieve = 	'get_theme_options( "'. $page_slug.'", "'. $section_slug . '" , "'. $field_slug.'" , "' . $group_number .'" )';	
+			$to_retrieve = 	'get_theme_options( "'. $page_slug.'", "'. $section_slug . '" , "'. $field_slug.'" , "' . $group_number .'" , "' .$subfield_slug .'" )';	
 		// most fields aren't
 		} else {
 			$name =  $page_slug.'['.$section_slug.']['.$field_slug.']'; 
@@ -98,8 +98,8 @@ class Field_Type {
 		return $info;
 	}
 	protected static function get_label($field_info){
-		$to_use = "<div class='copy_to_use'><a rel='copy_to_use'>Code</a><input class='copy' type='text' value='".$field_info['to_retrieve']."' /></div>";
-		$label = "<label for='".$field_info['prefix'] . $field_info['id'] . "' >" . $field_info['title'] ."</label>".$to_use;
+		$to_use = "<span class='copy_to_use'><a rel='copy_to_use'>Code</a><input class='copy' type='text' value='".$field_info['to_retrieve']."' /></span>";
+		$label = $to_use."<label for='".$field_info['prefix'] . $field_info['id'] . "' >" . $field_info['title'] ."</label>";
 		return $label;
 	}
 	protected static function get_description( $field_info ){

@@ -70,9 +70,6 @@ class group extends Field_Type {
 			$field_args['group_number'] = $group_number; 
 			$field_args['group_values'] = $group ; 			
 			$field_args['info']	= $subfield; 
-			$field_args['info']['layout'] = array(
-				'label'	=> 'top',
-			); 
 			ob_start();
 				$field_type::create_field( $field_args ); 
 			$fields .= ob_get_clean();

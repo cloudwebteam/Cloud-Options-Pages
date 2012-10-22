@@ -34,7 +34,7 @@ class text extends Field_Type {
 	}
 	public function custom( $args ){
 		$layout_details = $this->info['layout']; 
-		
+
 		switch ( $layout_details['label'] ){
 			case 'left' : ?>
 				<p><?php echo $this->label; ?><?php echo $this->field; ?></p>
@@ -57,6 +57,13 @@ class text extends Field_Type {
 
 				<?php 
 				break;	
+			default : ?>
+				<p><?php echo $this->label; ?></p>
+				<p><?php echo $this->field; ?></p>
+				<?php echo $this->description; ?>
+
+				<?php 
+				break; 
 		}
 	}
 	

@@ -150,11 +150,11 @@ class Cloud_Options_Pages  {
 
 		return $option;
 	}
-	public function get_options( $top_page_slug = null, $page_slug = null , $section_slug = null , $field_slug = null , $group_number = null, $sub_field_slug = null ){
+	public function get_options( $top_page_slug = null, $page_slug = null , $section_slug = null , $field_slug = null , $group_number = null, $subfield_slug = null ){
 		// ha ha, overkill...but it might be useful to be able to grab individual group values
 		if ( isset( $this->options[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number][$subfield_slug] ) ) {
 			return $this->options[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number][$subfield_slug];
-		} else if ( isset( $this->options[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number] ) ) {
+		} else if ( is_int( $group_number ) && isset( $this->options[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number] ) ) {
 			return $this->options[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number] ;
 		} else if ( isset( $this->options[$top_page_slug][$page_slug][$section_slug][$field_slug] ) ) {
 			return $this->options[$top_page_slug][$page_slug][$section_slug][$field_slug] ;
