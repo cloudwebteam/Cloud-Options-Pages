@@ -5,13 +5,15 @@ class media_url extends Field_Type {
 	protected $field ;
 	protected $label ;
 	protected $url_button ; 
-	protected $attributes = array() ;
+	protected $attributes = 'class="media-url"' ;
 
 	public static function create_field( $args ){
 		$field_type = __CLASS__;
 		$field = new $field_type( $args ); 
 	}	
 	protected function __construct( $args ){
+		$this->info = parent::get_field_info($args);
+	
 		$this->field = '<input type="hidden" id="'.$this->info['prefix'] . $this->info['id'] . '" name="'.$this->info['name'] . '" size="'.$this->size.'" type="text" value="' . $this->info['value'] . '" />';
 		$this->url_button = '<input id="upload_button" class="upload_button btn btn-mini" type="button" name="upload_button" value="Find or Upload file" />';
 		$this->image = $this->get_image();
@@ -56,7 +58,12 @@ class media_url extends Field_Type {
 	}
 	public function custom( $args ){
 		$layout_details = $this->info['layout']; 
-		
+		?>
+			<div <?php echo $this->attributes; ?>>
+				<?php echo $this->field; ?><?php echo $this->url_button; ?><?php echo $this->image; ?>
+				<?php echo $this->description; ?>
+			</div>		
+		<?php
 	}
 	
 }

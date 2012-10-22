@@ -1,22 +1,17 @@
 <?php 
 class text extends Field_Type {
-	private $info ;
-	private $size = 45; 
-	private $field ;
-	private $label ;
-	private $attributes = array() ;
+	protected $info ;
+	protected $size = 45; 
+	protected $field ;
+	protected $label ;
+	protected $attributes = array() ;
 
 	protected function __construct( $args ){
-		
 		$this->info = parent::get_field_info($args);
-
 		$this->size = isset( $this->info['size'] ) ? $this->info['size'] : $this->size; 
 		$this->field = '<input type="text" id="'.$this->info['prefix'] . $this->info['id'] . '" name="'.$this->info['name'] . '" size="'.$this->size.'" type="text" value="' . $this->info['value'] . '" />';
-		$this->label = parent::get_label( $this->info ); 
-		$this->description = isset( $this->info['description']) && $this->info['description'] !== '' ? '<p class="description">'.$this->info['description'] . '</p>' : '';
-
-		$layout = parent::get_layout( __CLASS__, $this->info );
-		$this->$layout( $args ); 
+		
+		parent::__construct( __CLASS__, $args ); 	
 	}
 	public static function create_field( $args ){
 		$field_type = __CLASS__;

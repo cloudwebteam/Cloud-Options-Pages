@@ -6,7 +6,7 @@ jQuery( function($){
 	         targetfield = jQuery(this).siblings('input');
 	         button = $(this);
 	         image = $(this).siblings('img'); 
-	         tb_show('', 'media-upload.php?type=image&amp;TB_iframe=true&post_id=0');
+	         tb_show('', 'media-upload.php?post_id=0&amp;TB_iframe=true&type=image');
 	         return false;
 	    });
 	    window.send_to_editor = function(html) {
