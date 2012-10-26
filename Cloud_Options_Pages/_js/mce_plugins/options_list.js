@@ -1,5 +1,5 @@
 (function() {
-		var DOM = tinymce.DOM;
+		var DOM = tinymce.DOM;	
         tinymce.create('tinymce.plugins.options_list', {
                 /**
                  * Initializes the plugin, this will be executed after the plugin has been created.
@@ -26,8 +26,7 @@
                         ed.addCommand('mceOptions_list', function() {
 							dropdown = ed.windowManager.open({
 								file : url + '/options_list_popup.php',
-								width: 300, 
-								height: 300, 
+							    width : 500,
 								inline: 1
 							}, {
 								plugin_url : url							
@@ -38,14 +37,15 @@
                         ed.addButton('options_list', {
                                 title : 'options_list.desc',
                                 cmd : 'mceOptions_list',
-                                image : url + '/img/options_list.gif'
+                                image : url + '/img/options_list.png'
                         });
+                        
 
                         // Add a node change handler, selects the button in the UI when a image is selected
                         ed.onNodeChange.add(function(ed, cm, n) {
-                                cm.setActive('options_list', n.nodeName == 'IMG');
-                        });
-                },
+                             cm.setActive('options_list', n.nodeName == 'IMG');
+                        });  
+                },             
 
                 /**
                  * Creates control instances based in the incomming name. This method is normally not
