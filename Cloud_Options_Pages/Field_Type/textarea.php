@@ -5,9 +5,9 @@ class textarea extends Field_Type {
 	protected function __construct( $args ){
 		$this->info = parent::get_field_info($args);
 		
-		$this->rows = isset( $this->info['rows'] ) ? $this->info['rows'] : $this->rows; 
-		$this->cols = isset( $this->info['cols'] ) ? $this->info['cols'] : $this->cols; 
-		
+		$this->rows = isset( $args['info']['rows'] ) ? $args['info']['rows'] : $this->rows; 
+		$this->cols = isset( $args['info']['cols'] ) ? $args['info']['cols'] : $this->cols; 
+
 		$this->field = '<textarea id="'.$this->info['prefix'] . $this->info['id'] . '" name="'.$this->info['name'] . '" rows="'.$this->rows.'" cols="'.$this->cols.'" >' . $this->info['value'] . '</textarea>';
 		parent::__construct( __CLASS__, $args ); 	
 	}

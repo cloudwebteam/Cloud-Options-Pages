@@ -1,6 +1,7 @@
 jQuery( function($){ 
+	console.log( 'called' );
 	if ( wp_vars['is_options_page'] ){
- 
+	console.log( 'is not options page' ); 
 	 	// insert upload links
 	    $('.upload_button').click(function() {
 	         targetfield = jQuery(this).siblings('input');

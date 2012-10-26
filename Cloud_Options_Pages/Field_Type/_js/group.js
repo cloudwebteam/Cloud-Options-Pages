@@ -52,7 +52,7 @@ jQuery( function($){
 		groups = container.find( '.group' );
 		var counter = 0;
 		groups.each( function(){
-			var inputs = $(this).find('input').not('[type="button"], .copy'); 
+			var inputs = $(this).find('input, textarea').not('[type="button"], .copy'); 
 			//increment the inputs' name attributes so that it is saved as a unique value
 			inputs.each( function(){
 				var prev_name = $(this).attr('name');

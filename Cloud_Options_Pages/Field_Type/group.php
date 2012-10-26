@@ -34,8 +34,9 @@ class group extends Field_Type {
 	}
 
 	public function enqueue_field_scripts_and_styles(){
+		$subfields_names = self::get_subfield_scripts_and_styles(); 
 		// if they exist, enqueues css and js files with this fields name
-		parent::register_scripts_and_styles( __CLASS__ ); 
+		parent::register_scripts_and_styles( __CLASS__, $subfields_names ); 
 	}
 	
 	private function set_fields(){
@@ -55,7 +56,39 @@ class group extends Field_Type {
 
 		return $groups;
 	
-	}	
+	}
+	private static function get_subfield_scripts_and_styles( ){
+		Cloud_Options_Pages::get_instance(); 
+		$options_pages_array = Cloud_Options_Pages::$options_pages;
+		$sub_fields = array() ; 		
+		if ( isset( $_GET['page'] ) && $_GET['page'] ){ // options page ?
+			foreach( $options_pages_array as $top_level ){
+				foreach( $top_level['subpages'] as $subpage_slug => $subpage ){
+					if ( $subpage_slug === $_GET['page'] ){
+						foreach ($subpage['sections'] as $section) {
+							foreach ($section['fields'] as $field ){
+								if ($field['type'] === 'group' ){
+									foreach( $field['fields'] as $subfield ){
+										$sub_fields[] = $subfield['type'];
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			$valid_subfields = array();
+			foreach ( $sub_fields as $subfield_type ){ 
+				$type 	= isset( $subfield_type ) ? $subfield_type : 'text' ;
+				if( class_exists( $type ) ){
+					$valid_subfields[] = $type ; 
+				}
+			}	
+			return $valid_subfields;			
+		} else {
+			return false;
+		}
+	}
 	private function make_group( $group_number, $group ){
 		$fields = '' ; 
 	

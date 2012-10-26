@@ -65,7 +65,15 @@
 }
 #theme-options-wrap p {
 	float: left;
+	clear: both;
+	margin-bottom: .5em;
+	margin-top: 0;
+	line-height: 1em;
 }
+#theme-options-wrap p label {
+	margin-bottom: 0;
+}
+
 #theme-options-wrap .group {
 	float: left;
 	clear: both;

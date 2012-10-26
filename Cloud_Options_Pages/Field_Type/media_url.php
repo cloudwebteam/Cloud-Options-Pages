@@ -15,7 +15,7 @@ class media_url extends Field_Type {
 		$this->info = parent::get_field_info($args);
 	
 		$this->field = '<input type="hidden" id="'.$this->info['prefix'] . $this->info['id'] . '" name="'.$this->info['name'] . '" size="'.$this->size.'" type="text" value="' . $this->info['value'] . '" />';
-		$this->url_button = '<input id="upload_button" class="upload_button btn btn-mini" type="button" name="upload_button" value="Find or Upload file" />';
+		$this->url_button = '<input class="upload_button btn btn-mini" type="button" name="upload_button" value="Find or Upload file" />';
 		$this->image = $this->get_image();
 		$this->size = isset( $field_info['size'] ) ? $field_info['size'] : $this->size; 
 
@@ -60,8 +60,9 @@ class media_url extends Field_Type {
 		$layout_details = $this->info['layout']; 
 		?>
 			<div <?php echo $this->attributes; ?>>
-				<?php echo $this->field; ?><?php echo $this->url_button; ?><?php echo $this->image; ?>
-				<?php echo $this->description; ?>
+				<p><?php echo $this->label; ?></p>			
+				<p><?php echo $this->field; ?><?php echo $this->url_button; ?><?php echo $this->image; ?></p>
+				<p><?php echo $this->description; ?></p>
 			</div>		
 		<?php
 	}

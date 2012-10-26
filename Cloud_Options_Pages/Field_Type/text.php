@@ -8,7 +8,7 @@ class text extends Field_Type {
 
 	protected function __construct( $args ){
 		$this->info = parent::get_field_info($args);
-		$this->size = isset( $this->info['size'] ) ? $this->info['size'] : $this->size; 
+		$this->size = isset( $args['info']['size'] ) ? $args['info']['size'] : $this->size; 
 		$this->field = '<input type="text" id="'.$this->info['prefix'] . $this->info['id'] . '" name="'.$this->info['name'] . '" size="'.$this->size.'" type="text" value="' . $this->info['value'] . '" />';
 		
 		parent::__construct( __CLASS__, $args ); 	

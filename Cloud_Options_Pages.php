@@ -61,7 +61,7 @@ class Cloud_Options_Pages  {
 
 	private $field_types 	= array();
 	
-	private static $options_pages 	= array();
+	public static $options_pages 	= array();
 	
 	//from defaults.php, set in set_defaults()
 	public static $defaults = array(); 
