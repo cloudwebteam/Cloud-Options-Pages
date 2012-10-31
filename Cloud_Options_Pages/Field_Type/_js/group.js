@@ -62,8 +62,7 @@ jQuery( function($){
 			});
 			// change the "code" link
 			var prev_copy_to_use = $(this).find('input.copy').attr('value') ;			
-			$(this).find('input.copy').attr('value', prev_copy_to_use.replace(/"\d"/g, '"'+counter+'"' ) );
-						
+			$(this).find('input.copy').val( prev_copy_to_use.replace(/ \d/g, ' ' + counter ) );
 			counter++;
 		});
 	}
