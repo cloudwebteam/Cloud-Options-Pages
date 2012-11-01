@@ -11,16 +11,19 @@ class url extends Field_Type {
 		$field_type = __CLASS__;
 		$field = new $field_type( $args ); 
 	}	
-	protected function __construct( $args ){
-		$this->info = parent::get_field_info($args);
-	
-		$this->field = '<input class="url_field" type="text" id="'.$this->info['prefix'] . $this->info['id'] . '" name="'.$this->info['name'] . '" size="'.$this->size.'" type="text" value="' . $this->info['value'] . '" />';
-		$this->url_button = '<input class="url_button upload_button btn btn-mini" type="button" name="upload_button" value="Find or Upload file" />';
-		$this->size = isset( $args['info']['size'] ) ? $args['info']['size']  : $this->size; 
 
-		parent::__construct( __CLASS__, $args ); 
+	protected function __construct( $args ){		
+		parent::__construct( __CLASS__, $args ); 	
 	}
 
+	protected function get_field_html( $args ){
+		$this->size = isset( $args['info']['size'] ) ? $args['info']['size'] : $this->size; 	
+		$field = '<input class="url_field" type="text" id="'.$this->info['prefix'] . $this->info['id'] . '" name="'.$this->info['name'] . '" size="'.$this->size.'" type="text" value="' . $this->info['value'] . '" />';
+		return $field;
+	}
+	protected function get_field_components( $args ){
+		$this->url_button = '<input class="url_button upload_button btn btn-mini" type="button" name="upload_button" value="Find or Upload file" />';
+	}
 	public function enqueue_field_scripts_and_styles(){
 		// if they exist, enqueues css and js files with this fields name
 		parent::register_scripts_and_styles( __CLASS__ ); 
@@ -30,14 +33,16 @@ class url extends Field_Type {
 		
 		wp_enqueue_style('thickbox');
 	}
-	/* LAYOUTS */
 	
+   /**
+	* LAYOUTS FOR THIS FIELD
+	*/
 	public function standard ( $args ){
 		?>
 		<tr valign="top">
 			<th scope="row"><?php echo $this->label; ?></th>
 			<td <?php echo $this->attributes; ?>>
-				<?php echo $this->field; ?><?php echo $this->url_button; ?><?php echo $this->image; ?>
+				<?php echo $this->field; ?><?php echo $this->url_button; ?>
 				<?php echo $this->description; ?>
 			</td>
 		</tr>

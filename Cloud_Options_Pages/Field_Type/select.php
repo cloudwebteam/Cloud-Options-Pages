@@ -6,8 +6,17 @@ class select extends Field_Type {
 	protected $options = 'post' ; 
 	protected $attributes = '' ;
 	protected $multiple ; 
-	protected function __construct( $args ){
-		$this->info = parent::get_field_info($args);
+
+	public static function create_field( $args ){
+		$field_type = __CLASS__;
+		$field = new $field_type( $args ); 
+	}
+
+	protected function __construct( $args ){		
+		parent::__construct( __CLASS__, $args ); 	
+	}	
+
+	protected function get_field_html( $args ){
 		$this->multiple = isset( $args['info']['multiple'] ) ? $args['info']['multiple'] : false ; 
 		$this->options_list = $this->get_options_list( $args );
 		if ( $this->multiple ){
@@ -17,19 +26,11 @@ class select extends Field_Type {
 			$multiple = '';
 		}
 		if ( $this->options_list ){
-			$this->field = '<select id="'.$this->info['prefix'] . $this->info['id'] . '" name="'.$this->info['name'] . '" '.$multiple.' value="' . $this->info['value'] . '">'. $this->options_list.'</select>';
+			$field = '<select id="'.$this->info['prefix'] . $this->info['id'] . '" name="'.$this->info['name'] . '" '.$multiple.' value="' . $this->info['value'] . '">'. $this->options_list.'</select>';
 		} else {
-			return false;
+			$field = 'No options available.';
 		}
-		
- 
-		//$this->field = '<input type="text" id="'.$this->info['prefix'] . $this->info['id'] . '" name="'.$this->info['name'] . '" size="'.$this->size.'" type="text" value="' . $this->info['value'] . '" />';
-		
-		parent::__construct( __CLASS__, $args ); 	
-	}
-	public static function create_field( $args ){
-		$field_type = __CLASS__;
-		$field = new $field_type( $args ); 
+		return $field ;
 	}
 	private function get_options_list( $args ){
 		$html = '';
@@ -89,6 +90,10 @@ class select extends Field_Type {
 		}
 		return $html;
 	}
+	
+   /**
+	* LAYOUTS FOR THIS FIELD
+	*/	
 	public function standard ( $args ){
 		?>
 		<tr valign="top">

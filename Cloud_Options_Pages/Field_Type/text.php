@@ -6,22 +6,30 @@ class text extends Field_Type {
 	protected $label ;
 	protected $attributes = array() ;
 
-	protected function __construct( $args ){
-		$this->info = parent::get_field_info($args);
-		$this->size = isset( $args['info']['size'] ) ? $args['info']['size'] : $this->size; 
-		$this->field = '<input type="text" id="'.$this->info['prefix'] . $this->info['id'] . '" name="'.$this->info['name'] . '" size="'.$this->size.'" type="text" value="' . $this->info['value'] . '" />';
-		
-		parent::__construct( __CLASS__, $args ); 	
-	}
 	public static function create_field( $args ){
 		$field_type = __CLASS__;
 		$field = new $field_type( $args ); 
 	}
+
+	protected function __construct( $args ){		
+		parent::__construct( __CLASS__, $args ); 	
+	}
+
+	protected function get_field_html( $args ){
+		$this->size = isset( $args['info']['size'] ) ? $args['info']['size'] : $this->size; 	
+		$field = '<input type="text" id="'.$this->info['prefix'] . $this->info['id'] . '" name="'.$this->info['name'] . '" size="'.$this->size.'" type="text" value="' . $this->info['value'] . '" />';	
+		return $field;
+	}
+	
+   /**
+	* LAYOUTS FOR THIS FIELD
+	*/
 	public function standard ( $args ){
+	
 		?>
 		<tr valign="top">
 			<th scope="row"><?php echo $this->label; ?></th>
-			<td <?php echo $this->attributes; ?>>
+			<td <?php echo $this->attributes; ?>>			
 				<?php echo $this->field; ?>
 				<?php echo $this->description; ?>
 			</td>

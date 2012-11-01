@@ -12,14 +12,28 @@ class Field_Type {
 	private $value 	= 'DEFAULT_HERE'; 
 	
 	protected function __construct( $class_name, $args){
+		// enqueue js and css with the field's name
 		add_action( 'admin_enqueue_scripts', array( $class_name, 'enqueue_stuff' ) );				
+		
+		// setup basic field attributes
  		$this->info = self::get_field_info($args);
-
+ 		
+ 		// create standard label to be placed
 		$this->label = self::get_label( $this->info ); 
+		
+		// create standard description to be placed
 		$this->description = self::get_description( $this->info );
 		
+		// create field ( this method should be implemented by each field subclass )
+		$this->field = $this->get_field_html( $args ); 
+		
+		// get components needed to build the field ( optionally implemented )
+		$this->get_field_components( $args );
+		
+		// figure out what layout to use
 		$layout = self::get_layout( $class_name, $this->info );
-
+		
+		// echo the field using the appropriate layout function. 
 		$this->$layout( $args ); 
 	}
 	public function standard(){
@@ -28,6 +42,65 @@ class Field_Type {
 	public function enqueue_field_scripts_and_styles(){
 		self::register_scripts_and_styles( get_called_class() );  // would be best, but only in 5.3... should fallback and not break
 	
+	}
+	/****
+		* standardizes handling of a field attributes
+	****/
+	public static function get_field_info( $args ){
+		$Options_Page = Cloud_Options_Pages::get_instance(); 
+
+		$info = array(); 
+		
+		$top_level_slug = $args['top_level'];		
+		$page_slug = $args['subpage'];
+		$section_slug = $args['section'];
+		$field_slug = $args['field']; 	
+		$subfield_slug = isset( $args['subfield'] ) ? $args['subfield'] : '' ; 
+
+		
+		$default_value =  isset( $args['info']['default'] ) ? $args['info']['default'] : ''; 
+		$value = $Options_Page->get_option( $top_level_slug, $page_slug, $section_slug, $field_slug ); 
+		
+		// part of a group?
+		if ( $subfield_slug ){
+			$group_number = isset( $args['group_number'] ) ? $args['group_number'] : 0 ;		
+			$value = isset( $value[$group_number] ) ? $value[$group_number][$subfield_slug] : ''; 
+			$name =  $page_slug.'['.$section_slug.']['.$field_slug.']['.$group_number.']['.$subfield_slug.']'; 	
+			$to_retrieve = 	'get_theme_options( "'. $page_slug.'", "'. $section_slug . '" , "'. $field_slug.'" , ' . $group_number .' , "' .$subfield_slug .'" )';	
+		// most fields aren't
+		} else {
+			$name =  $page_slug.'['.$section_slug.']['.$field_slug.']'; 
+			$to_retrieve = 'get_theme_options( "'. $page_slug.'", "'. $section_slug . '" , "'. $field_slug.'" )' ;			
+		}
+		$info['title'] = $args['info']['title'];
+		$info['to_retrieve'] = 	$to_retrieve;				
+		
+		$info['name'] = $name; 
+		$info['description'] = isset( $args['info']['description'] ) ? $args['info']['description'] : null;
+		$info['id']   = $field_slug;
+		$info['value'] = $value ? $value : $default_value;
+		$info['parent_layout'] = $args['parent_section_layout'];
+		$info['layout'] = isset ($args['info']['layout'] ) ? $args['info']['layout'] : 'default';
+		$info['prefix'] = $Options_Page->prefix; 		
+		$info['fields'] = isset( $args['info']['fields'] ) ? $args['info']['fields'] : ''; 
+		$info['is_subfield'] = $subfield_slug !== '' ? true : false;
+		return $info;
+	}
+	
+	// each field needs to know how to create itself. This is where they do it. 
+	protected function get_field_html($args){ echo 'this field needs to implement get_field_html()'; }
+	
+	// optional, allows each field to create its own necessary components
+	protected function get_field_components( $args ){}
+	
+	protected static function get_label($field_info){
+		$to_use = "<span class='copy_to_use'><a rel='copy_to_use'>Code</a><input class='copy' type='text' value='".$field_info['to_retrieve']."' /></span>";
+		$label = $to_use."<label for='".$field_info['prefix'] . $field_info['id'] . "' >" . $field_info['title'] ."</label>";
+		return $label;
+	}
+	protected static function get_description( $field_info ){
+		$description = isset( $field_info['description']) && $field_info['description'] !== '' ? '<span class="description">'.$field_info['description'] . '</span>' : '';
+		return $description;
 	}
 	public static function get_layout_function( $layout = null , $field_type = null , $section_layout_type ){
 		self::$default_type = 'text'; // fallback field type
@@ -56,56 +129,7 @@ class Field_Type {
 		}
 		return $chosen_layout;
 		
-	}
-	public static function get_field_info( $args ){
-		$Options_Page = Cloud_Options_Pages::get_instance(); 
-
-		$info = array(); 
-		
-		$top_level_slug = $args['top_level'];		
-		$page_slug = $args['subpage'];
-		$section_slug = $args['section'];
-		$field_slug = $args['field']; 	
-		$subfield_slug = isset( $args['subfield'] ) ? $args['subfield'] : '' ; 
-
-		
-		$default_value =  isset( $args['info']['default'] ) ? $args['info']['default'] : ''; 
-		$value = $Options_Page->get_option( $top_level_slug, $page_slug, $section_slug, $field_slug ); 
-		
-		// part of a group?
-		if ( $subfield_slug ){
-			$group_number = isset( $args['group_number'] ) ? $args['group_number'] : 0 ;		
-			$value = isset( $value[$group_number][$subfield_slug] ) ? $value[$group_number][$subfield_slug] : ''; 
-			$name =  $page_slug.'['.$section_slug.']['.$field_slug.']['.$group_number.']['.$subfield_slug.']'; 	
-			$to_retrieve = 	'get_theme_options( "'. $page_slug.'", "'. $section_slug . '" , "'. $field_slug.'" , ' . $group_number .' , "' .$subfield_slug .'" )';	
-		// most fields aren't
-		} else {
-			$name =  $page_slug.'['.$section_slug.']['.$field_slug.']'; 
-			$to_retrieve = 'get_theme_options( "'. $page_slug.'", "'. $section_slug . '" , "'. $field_slug.'" )' ;			
-		}
-		$info['title'] = $args['info']['title'];
-		$info['to_retrieve'] = 	$to_retrieve;				
-		
-		$info['name'] = $name; 
-		$info['description'] = isset( $args['info']['description'] ) ? $args['info']['description'] : null;
-		$info['id']   = $field_slug;
-		$info['value'] = $value ? $value : $default_value;
-		$info['parent_layout'] = $args['parent_section_layout'];
-		$info['layout'] = isset ($args['info']['layout'] ) ? $args['info']['layout'] : 'default';
-		$info['prefix'] = $Options_Page->prefix; 		
-		$info['fields'] = isset( $args['info']['fields'] ) ? $args['info']['fields'] : ''; 
-		$info['is_subfield'] = $subfield_slug !== '' ? true : false;
-		return $info;
-	}
-	protected static function get_label($field_info){
-		$to_use = "<span class='copy_to_use'><a rel='copy_to_use'>Code</a><input class='copy' type='text' value='".$field_info['to_retrieve']."' /></span>";
-		$label = $to_use."<label for='".$field_info['prefix'] . $field_info['id'] . "' >" . $field_info['title'] ."</label>";
-		return $label;
-	}
-	protected static function get_description( $field_info ){
-		$description = isset( $field_info['description']) && $field_info['description'] !== '' ? '<span class="description">'.$field_info['description'] . '</span>' : '';
-		return $description;
-	}
+	}	
 	protected static function get_layout( $class_name, $field_info ){
 
 		if ( isset( $field_info['layout'] ) ){

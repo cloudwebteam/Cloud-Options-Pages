@@ -2,21 +2,31 @@
 class textarea extends Field_Type {
 	private $rows = 5;
 	private $cols = 70;
-	protected function __construct( $args ){
-		$this->info = parent::get_field_info($args);
-		
-		$this->rows = isset( $args['info']['rows'] ) ? $args['info']['rows'] : $this->rows; 
-		$this->cols = isset( $args['info']['cols'] ) ? $args['info']['cols'] : $this->cols; 
 
-		$this->field = '<textarea id="'.$this->info['prefix'] . $this->info['id'] . '" name="'.$this->info['name'] . '" rows="'.$this->rows.'" cols="'.$this->cols.'" >' . $this->info['value'] . '</textarea>';
-		parent::__construct( __CLASS__, $args ); 	
-	}
 	public static function create_field( $args ){
 		$field_type = __CLASS__;
 		$field = new $field_type( $args ); 
 	}
-	
+
+	protected function __construct( $args ){		
+		parent::__construct( __CLASS__, $args ); 	
+	}
+
+	protected function get_field_html( $args ){
+		$this->info = parent::get_field_info($args);
 		
+		$this->rows = isset( $args['info']['rows'] ) ? $args['info']['rows'] : $this->rows; 
+		$this->cols = isset( $args['info']['cols'] ) ? $args['info']['cols'] : $this->cols; 
+		
+		$field = '<textarea id="'.$this->info['prefix'] . $this->info['id'] . '" name="'.$this->info['name'] . '" rows="'.$this->rows.'" cols="'.$this->cols.'" >' . $this->info['value'] . '</textarea>';
+		
+		return $field;
+	}
+	
+	
+   /**
+	* LAYOUTS FOR THIS FIELD
+	*/		
 	public function standard ( $args ){
 		?>
 		<tr valign="top">

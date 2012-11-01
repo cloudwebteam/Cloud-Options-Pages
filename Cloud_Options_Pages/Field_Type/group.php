@@ -7,17 +7,15 @@ class group extends Field_Type {
 	protected $saved_values ;
 
 	public static function create_field( $args ){
-
 		$field_type = __CLASS__;
 		$field = new $field_type( $args ); 
-
+	}
+	protected function __construct( $args ){		
+		parent::__construct( __CLASS__, $args ); 	
 	}	
-	protected function __construct( $args ){
+	protected function get_field_html( $args ){
 		$Options_Page = Cloud_Options_Pages::get_instance(); 	
-	
-
 		$info = array(); 
-		
 		$top_level_slug = $args['top_level'];		
 		$page_slug = $args['subpage'];
 		$section_slug = $args['section'];
@@ -27,20 +25,9 @@ class group extends Field_Type {
 		$this->saved_values = $Options_Page->get_option( $top_level_slug, $page_slug, $section_slug, $field_slug ); 
 		$this->args = $args;
 		$this->field_groups = $this->set_fields( $args );
-		$this->add_and_remove = '<div class="add-remove"><a class="add">+</a><a class="remove">-</a></div>';
-		parent::__construct( __CLASS__, $args ); 
-	
-
+		return $this->field_groups;
 	}
-
-	public function enqueue_field_scripts_and_styles(){
-		$subfields_names = self::get_subfield_scripts_and_styles(); 
-		// if they exist, enqueues css and js files with this fields name
-		parent::register_scripts_and_styles( __CLASS__, $subfields_names ); 
-	}
-	
 	private function set_fields(){
-
 		if ( isset( $this->args['info']['fields'] ) && is_array($this->args['info']['fields'] )){	
 			$groups = array();
 			
@@ -52,10 +39,37 @@ class group extends Field_Type {
 				$groups[0] = $this->make_group( 0, ''); 								
 			}
 		}
-
-
 		return $groups;
+	}	
+	private function make_group( $group_number, $group ){
+		$fields = '' ; 
 	
+		foreach ( $this->args['info']['fields'] as $subfield_id => $subfield ){ 
+			$type 	= isset( $subfield['type'] ) ? $subfield['type'] : 'standard' ;
+			$field_type = class_exists( $type ) ? $type : parent::$default_type;
+			
+			// gotta compile an array that will be able to create the field
+			$field_args = $this->args; 
+			
+			$field_args['subfield']	= $subfield_id;
+			$field_args['group_number'] = $group_number; 
+			$field_args['group_values'] = $group ; 			
+			$field_args['info']	= $subfield; 
+			ob_start();
+				$field_type::create_field( $field_args ); 
+			$fields .= ob_get_clean();
+		}	
+		return $fields;
+	}
+
+	protected function get_field_components( $args ){
+		$this->add_and_remove = '<div class="add-remove"><a class="add">+</a><a class="remove">-</a></div>';		
+	}
+	
+	public function enqueue_field_scripts_and_styles(){
+		$subfields_names = self::get_subfield_scripts_and_styles(); 
+		// if they exist, enqueues css and js files with this fields name
+		parent::register_scripts_and_styles( __CLASS__, $subfields_names ); 
 	}
 	private static function get_subfield_scripts_and_styles( ){
 		Cloud_Options_Pages::get_instance(); 
@@ -89,35 +103,12 @@ class group extends Field_Type {
 			return false;
 		}
 	}
-	private function make_group( $group_number, $group ){
-		$fields = '' ; 
 	
-		foreach ( $this->args['info']['fields'] as $subfield_id => $subfield ){ 
-			$type 	= isset( $subfield['type'] ) ? $subfield['type'] : 'standard' ;
-			$field_type = class_exists( $type ) ? $type : parent::$default_type;
-			
-			// gotta compile an array that will be able to create the field
-			$field_args = $this->args; 
-			
-			$field_args['subfield']	= $subfield_id;
-			$field_args['group_number'] = $group_number; 
-			$field_args['group_values'] = $group ; 			
-			$field_args['info']	= $subfield; 
-			ob_start();
-				$field_type::create_field( $field_args ); 
-			$fields .= ob_get_clean();
-		}	
-		return $fields;
-	}
-	private function get_image(){
-		if ( isset( $this->info['value'] ) && $this->info['value'] !== '' ){
-			return '<img class="preview-image img-polaroid" src="'.$this->info['value'].'" title="'.$this->info['value'].'" />';	
-		} else {
-			return '<img class="hidden preview-image img-polaroid" title="'.$this->info['value'].'" />';	
-		}
-	}	
-	/* LAYOUTS */
 	
+	
+   /**
+	* LAYOUTS FOR THIS FIELD
+	*/
 	public function standard ( $args ){
 		?>
 		<tr valign="top">
