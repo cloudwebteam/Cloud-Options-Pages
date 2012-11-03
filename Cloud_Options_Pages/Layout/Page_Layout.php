@@ -2,71 +2,91 @@
 	class Page_Layout extends Layout {
 		private static function get_layout_info(){
 			$Options_Page = Cloud_Options_Pages::get_instance();
+			$page_spec_array = $Options_Page->get_options_array_info( $_GET['page'] ); 
 		
-			$info = array(); 
-			$info['subpage_slug'] = $_GET['page'];
-			$info['page_info'] = $Options_Page->get_options_array_info( $_GET['page'] ); 
-
-			$info['title'] = $info['page_info']['title'];
-
-			return $info; 		
+			$page_info = array(); 
+			$page_info['subpage_slug'] = $_GET['page'];
+			$page_info['page_spec_array'] = $page_spec_array ;
+			// setup title and description
+			if ( isset( $page_spec_array['title'] ) && $page_spec_array['title'] ){
+				$page_info['title'] = '<h2 class="title">'.$page_spec_array['title'] .'</h2>';
+			} else { 
+				$page_info['title'] = '';
+			}
+			if ( isset( $page_spec_array['description'] ) && $page_spec_array['description'] ){
+				$page_info['description'] = '<span class="description">'.$page_spec_array['description'] .'</span>';
+			} else { 
+				$page_info['description'] = '';
+			}			
+			
+			//set up classes
+			$classes = array(); 
+			$classes[] = 'wrap'; // a typical WP class
+			$classes[] = 'options-page';
+			$classes[] = $page_spec_array['layout'] ; 
+			
+			$page_info['classes'] = implode ( ' ', $classes ); 		
+				
+			// set up icon html 
+			$page_info['icon'] = '<div class="options-page-icon" id="icon-options-'.$page_info['subpage_slug'] .'" ></div>';
+			
+			// set up submit button html 
+			$page_info['submit_button' ] = '<p class="submit"><input type="submit" class="button-primary" value="Save Changes" /></p>';
+			
+			// get sections' html 
+			$page_info['sections'] = Cloud_Options_Pages::get_settings_sections( $page_info['subpage_slug']  ,$page_info );
+			
+			return $page_info; 		
 		}
 		public function standard(){
-			$info = self::get_layout_info();
+			// make variables available and easy to use by extracting them
+			extract( self::get_layout_info( ), EXTR_OVERWRITE );
 			?>
-			<div id="theme-options-wrap" class="wrap standard"> 
-				<div class="icon32" id="icon-options-general"> <br /> </div>	 
-				<h3><?php echo $info['title']; ?></h3>															
+			<div id="page-<?php echo $subpage_slug; ?>" class="<?php echo $classes; ?>"> 
+				<?php echo $icon; ?> 
+				<?php echo $title; ?>
+				<?php echo $description; ?>
 				<form action="options.php" method="post">
-				    <?php settings_fields( $info['subpage_slug'] ); ?>
-				    <?php $sections = Cloud_Options_Pages::get_settings_sections( $info['subpage_slug'] , $info['page_info'] ); ?>
+				    <?php settings_fields( $subpage_slug ); ?>
 				    <?php foreach ( $sections as $section ) { ?>
 				    	<?php echo $section['html']; ?>
-				    <?php } ?>				    
-				    <p class="submit">
-				    	<input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
-				    </p>
-			
+				    <?php } ?>		    
+				    <?php echo $submit_button; ?>
 			    </form>
 			</div>
 			<?php
 		}
 		public function grid(){
-			$info = self::get_layout_info();
+			// make variables available and easy to use by extracting them
+			extract( self::get_layout_info( ) );
 			?>
-			<div id="theme-options-wrap" class="wrap grid"> 
-				<div class="icon32" id="icon-options-general"> <br /> </div>	 
-				<h3><?php echo $info['title']; ?></h3>
-			    
+			<div id="page-<?php echo $subpage_slug; ?>" class="<?php echo $classes; ?>"> 
+				<?php echo $icon; ?> 
+				<?php echo $title; ?>
+				<?php echo $description; ?>			    
 				<form action="options.php" class="container" method="post">
-				    <?php settings_fields( $info['subpage_slug'] ); ?>
-
+				    <?php settings_fields( $subpage_slug ); ?>
 					<div class="row">
-			
-				    <?php $sections = Cloud_Options_Pages::get_settings_sections( $info['subpage_slug'] , $info['page_info'] ); ?>
-					    <?php foreach ( $sections as $section_html ) { ?>
-						    <?php echo $section_html; ?>
-					    <?php } ?>
+				    <?php foreach ( $sections as $section) { ?>
+					   <?php echo $section['html']; ?>
+				    <?php } ?>
 				    </div>
-				    <p class="submit">
-				    	<input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
-				    </p>
-		
+				    <?php echo $submit_button; ?>
 			    </form>
 			</div>			
 			<?php		
 		}
 		public function tab(){
-			$info = self::get_layout_info();
+			// make variables available and easy to use by extracting them
+			extract( self::get_layout_info( ) );
 			?>
-			<div id="theme-options-wrap" class="wrap tab"> 
-				<div class="icon32" id="icon-tools"> <br /> </div>	 
-				<h3><?php echo $info['title']; ?></h3>
-			
+			<div id="page-<?php echo $subpage_slug; ?>" class="<?php echo $classes; ?>"> 
+				<?php echo $icon; ?> 
+				<?php echo $title; ?>
+				<?php echo $description; ?>	
 				<form action="options.php" method="post">
-				    <?php settings_fields( $info['subpage_slug'] ); ?>
+				    <?php settings_fields( $subpage_slug ); ?>
 					<div id="page-tabs" class="tabbable">
-					    <?php $sections = Cloud_Options_Pages::get_settings_sections( $info['subpage_slug'] , $info['page_info'] ); ?>
 					    <?php if ( $sections ){ ?>
 						<ul class="nav nav-tabs">
 						    <?php foreach ( $sections as $section_id => $section ) { ?>
@@ -82,59 +102,23 @@
 						</div>
 						<?php } ?>
 					</div>
-				    <p class="submit">
-				    	<input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
-				    </p>
-			
+				    <?php echo $submit_button; ?>
 			    </form>
 			</div>			
 			<?php
 		}
-		public function tab_top(){
-			$info = self::get_layout_info();
-			?>
-			<div id="theme-options-wrap" class="wrap tab"> 
-				<div class="icon32" id="icon-tools"> <br /> </div>	 
-				<h3><?php echo $info['title']; ?></h3>
-			
-				<form action="options.php" method="post">
-				    <?php settings_fields( $info['subpage_slug'] ); ?>
-					<div id="page-tabs" class="tabbable">
-					    <?php $sections = Cloud_Options_Pages::get_settings_sections( $info['subpage_slug'] , $info['page_info'] ); ?>
-					
-						<ul class="nav nav-tabs">
-						    <?php foreach ( $sections as $section_id => $section ) { ?>
-						    <li class=""><a href="#<?php echo $section_id; ?>" data-toggle="tab" ><?php echo  $section['info']['title']; ?></a></li>
-							<?php } ?>
-						</ul>
-						<div class="tab-content">				
-						    <?php foreach ( $sections as $section_id => $section ) { ?>
-						    	<div class="tab-pane fade" id="<?php echo $section_id; ?>">
-							    <?php echo $section['html']; ?>
-						    	</div>
-						    <?php } ?>
-						</div>
-					</div>
-				    <p class="submit">
-				    	<input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
-				    </p>
-			
-			    </form>
-			</div>			
-			<?php	
-		}
 		public function tab_left(){
-			$info = self::get_layout_info();
+			// make variables available and easy to use by extracting them
+			extract( self::get_layout_info( ) );
 			?>
-			<div id="theme-options-wrap" class="wrap tab"> 
-				<div class="icon32" id="icon-tools"> <br /> </div>	 
-				<h3><?php echo $info['title']; ?></h3>
-			
+			<div id="page-<?php echo $subpage_slug; ?>" class="<?php echo $classes; ?>"> 
+				<?php echo $icon; ?> 
+				<?php echo $title; ?>
+				<?php echo $description; ?>	
 				<form action="options.php" method="post">
-				    <?php settings_fields( $info['subpage_slug'] ); ?>
+				    <?php settings_fields( $subpage_slug ); ?>
 					<div id="page-tabs" class="tabbable tabs-left">
-					    <?php $sections = Cloud_Options_Pages::get_settings_sections( $info['subpage_slug'] , $info['page_info'] ); ?>
-					
+					    <?php if ( $sections ){ ?>
 						<ul class="nav nav-tabs">
 						    <?php foreach ( $sections as $section_id => $section ) { ?>
 						    <li class=""><a href="#<?php echo $section_id; ?>" data-toggle="tab" ><?php echo  $section['info']['title']; ?></a></li>
@@ -147,28 +131,26 @@
 						    	</div>
 						    <?php } ?>
 						</div>
+						<?php } ?>
 					</div>
-				    <p class="submit">
-				    	<input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
-				    </p>
-			
+				    <?php echo $submit_button; ?>
 			    </form>
-			</div>			
+			</div>				
 			<?php		
 		}
 		public function tab_right(){
-			$info = self::get_layout_info();
+			// make variables available and easy to use by extracting them
+			extract( self::get_layout_info( ) );
 			?>
-			<div id="theme-options-wrap" class="wrap tab"> 
-				<div class="icon32" id="icon-tools"> <br /> </div>	 
-				<h3><?php echo $info['title']; ?></h3>
-			
+			<div id="page-<?php echo $subpage_slug; ?>" class="<?php echo $classes; ?>"> 
+				<?php echo $icon; ?> 
+				<?php echo $title; ?>
+				<?php echo $description; ?>	
 				<form action="options.php" method="post">
-				    <?php settings_fields( $info['subpage_slug'] ); ?>
+				    <?php settings_fields( $subpage_slug ); ?>
 					<div id="page-tabs" class="tabbable tabs-right">
-					    <?php $sections = Cloud_Options_Pages::get_settings_sections( $info['subpage_slug'] , $info['page_info'] ); ?>
-					
-						<ul class="nav nav-tabs fade">
+					    <?php if ( $sections ){ ?>
+						<ul class="nav nav-tabs">
 						    <?php foreach ( $sections as $section_id => $section ) { ?>
 						    <li class=""><a href="#<?php echo $section_id; ?>" data-toggle="tab" ><?php echo  $section['info']['title']; ?></a></li>
 							<?php } ?>
@@ -180,28 +162,26 @@
 						    	</div>
 						    <?php } ?>
 						</div>
+						<?php } ?>
 					</div>
-				    <p class="submit">
-				    	<input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
-				    </p>
-			
+				    <?php echo $submit_button; ?>
 			    </form>
-			</div>			
+			</div>		
 			<?php		
 		}								
 		public function scroll(){
-			$info = self::get_layout_info();
+			// make variables available and easy to use by extracting them
+			extract( self::get_layout_info( ) );
 			?>
 			<script>
 			jQuery( 'body' ).attr( 'data-spy', 'scroll' ).attr( 'data-target', '#scroll-nav' );
 			</script>
-			<div id="theme-options-wrap" class="wrap scroll" > 
-				<div class="icon32" id="icon-tools"> <br /> </div>	 
-				<h3><?php echo $info['title']; ?></h3>
-
+			<div id="page-<?php echo $subpage_slug; ?>" class="<?php echo $classes; ?>"> 
+				<?php echo $icon; ?> 
+				<?php echo $title; ?>
+				<?php echo $description; ?>	
 				<form action="options.php" method="post">
-				    <?php settings_fields( $info['subpage_slug'] ); ?>
-				    <?php $sections = Cloud_Options_Pages::get_settings_sections( $info['subpage_slug'] , $info['page_info'] ); ?>
+				    <?php settings_fields( $subpage_slug ); ?>
 					<div id="scroll-nav" class="affix">
 						<ul class="nav nav-list ">
 					    <?php foreach ( $sections as $section_id => $section ) { ?>
@@ -209,7 +189,6 @@
 					    <?php } ?>					
 						</ul>
 					</div>
-
 			    	<div id="scroll-content">				
 					    <?php foreach ( $sections as $section_id => $section ) { ?>
 					    	<div id="<?php echo $section_id; ?>">
@@ -217,50 +196,10 @@
 					    	</div>
 					    <?php } ?>
 					</div>
-				    <p class="submit">
-				    	<input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
-				    </p>
+				    <?php echo $submit_button; ?>
 			   </form>
 			</div>			
 			<?php		
-		}						
-		public function scroll_top(){
-			$info = self::get_layout_info();
-			?>
-			<div id="theme-options-wrap" class="wrap"> 
-				<div class="icon32" id="icon-tools"> <br /> </div>	 
-				<h3><?php echo $info['title']; ?></h3>
-			
-				<form action="options.php" method="post">
-				    <?php settings_fields( $info['subpage_slug'] ); ?>
-				    <?php $sections = Cloud_Options_Pages::get_settings_sections( $info['subpage_slug'] , $info['page_info'] ); ?>
-				    
-				    <p class="submit">
-				    	<input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
-				    </p>
-			
-			    </form>
-			</div>			
-			<?php	
-		}						
-		public function scroll_left(){
-			$info = self::get_layout_info();
-			?>
-			<div id="theme-options-wrap" class="wrap"> 
-				<div class="icon32" id="icon-tools"> <br /> </div>	 
-				<h3><?php echo $info['title']; ?></h3>
-			
-				<form action="options.php" method="post">
-				    <?php settings_fields( $info['subpage_slug'] ); ?>
-				    <?php $sections = Cloud_Options_Pages::get_settings_sections( $info['subpage_slug'] , $info['page_info'] ); ?>
-				    
-				    <p class="submit">
-				    	<input type="submit" class="button-primary" value="<?php _e('Save Changes') ?>" />
-				    </p>
-			
-			    </form>
-			</div>			
-			<?php		
-		}												
+		}																	
 	}
 ?>

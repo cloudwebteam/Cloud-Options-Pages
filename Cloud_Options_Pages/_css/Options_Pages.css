@@ -1,7 +1,7 @@
-#theme-options-wrap .tabbable {
+.options-page .tabbable {
 	padding-top: 2em;
 }
-#theme-options-wrap input {
+.options-page input {
 	max-width: 98%;
 }
 .form-table {
@@ -51,30 +51,30 @@
 .wrap textarea {
 	width: auto;
 }
-#theme-options-wrap label {
+.options-page label {
 	float: left;
 }
-#theme-options-wrap label + input {
+.options-page label + input {
 	float: left;
 	margin-left: 10px;
 }
-#theme-options-wrap .description {
+.options-page .description {
 	clear: both;
 	display: inline-block;
 	float: left;
 }
-#theme-options-wrap p {
+.options-page p {
 	float: left;
 	clear: both;
 	margin-bottom: .5em;
 	margin-top: 0;
 	line-height: 1em;
 }
-#theme-options-wrap p label {
+.options-page p label {
 	margin-bottom: 0;
 }
 
-#theme-options-wrap .group {
+.options-page .group {
 	float: left;
 	clear: both;
 	max-width: 400px;
@@ -88,7 +88,7 @@
 	z-index: 100;
 	cursor: pointer;
 }
-#theme-options-wrap .copy_to_use .copy {
+.options-page .copy_to_use .copy {
 	display: none;
 	position: absolute; 
 	top: 100%;
@@ -102,4 +102,8 @@
 	font-family: monospace;
 	padding: 0 5px;
 }
-la
+.options-page .section > .description, .options-page > .description {
+	display: block;
+	float: none;
+}
+	
