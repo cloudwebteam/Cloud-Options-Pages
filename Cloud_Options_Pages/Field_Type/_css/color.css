@@ -1,0 +1,114 @@
+/* to display all the available fonts, we must import them */
+@import url(http://fonts.googleapis.com/css?family=Droid+Serif);
+@import url(http://fonts.googleapis.com/css?family=Droid+Sans:400,700);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700);
+
+.help {
+	font-size: .875em;
+}
+.selection-tools {
+	padding: 0 0 1em 10px;
+	float: left;
+	width: 380px;
+}
+#theme-options-wrap h3 {
+	padding: .5em 0;
+	border-bottom: 1px dashed #ccc;
+}
+.selection-tools .instruction {
+	display: inline-block;
+	padding: .5em 0;
+	font-style: italic;
+}
+.selection-tools .check-all, 
+.selection-tools .uncheck-all {
+	display: inline-block;
+	padding: .5em 10px;
+	float: right;
+	cursor: pointer;
+}
+.selection-tools .check-all {
+	border-left: 1px solid #ccc;
+}
+.default-swab{
+	margin: .5em 20px .5em 0;
+	font-size: .75em;
+	text-align: center;
+	height: 17px;
+	line-height: 17px;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	width: 17px;
+	color: #fff;
+	cursor: pointer;
+	display: inline-block;	
+	
+}
+.no-default {
+	margin: .5em 20px .5em 0;
+	font-size: .75em;
+	text-align: center;
+	height: 17px;
+	line-height: 17px;
+	width: 17px;
+	color: #D54E21;
+	border: 1px solid transparent;
+	display: inline-block;	
+	border-radius: 3px;	
+}
+#colors-set {
+	padding-top: 1em;
+}
+#colors-from-defaults {
+	display: block;
+	padding: .5em 5px;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	float: left;
+	text-decoration: none;
+	font-weight: bold;
+	margin-right: 120px;
+}
+#colors-from-defaults:hover {
+	background: #fafafa;
+	border-color: #aaa;
+}
+#colors-as-defaults {
+	margin: .5em 0 ;
+	display: inline-block;
+	font-style: italic;
+	color: #999;
+	font-size: .875em;
+	padding-right: 22px;
+	line-height: 17px;
+	height: 17px;
+	background: url(../images/admin/exclamation.png) no-repeat right top;
+	position: relative;
+}
+#colors-as-defaults:hover {
+	background: url(../images/admin/exclamation.png) no-repeat right bottom;
+}
+#colors-as-defaults .success {
+	display: none;
+	color: #21759B;
+	position: absolute; 
+	top: 0;
+	right: 105%;
+	border: 1px solid #ccc;
+	padding: .5em 5px;
+	border-radius: 3px;
+}
+#set-default-colors-popup {
+	padding: 1em 20px;
+	display: none;
+}
+.options-page .color-picker {
+	min-height: 1em;
+}
+.options-page .color-picker-input {
+	margin: 0 10px 0 0;
+	
+}
+.options-page .color-picker .default-swab {
+	margin-right: 5px;
+}
