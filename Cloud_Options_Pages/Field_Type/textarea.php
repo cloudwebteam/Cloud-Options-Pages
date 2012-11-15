@@ -13,11 +13,10 @@ class textarea extends Field_Type {
 	}
 
 	protected function get_field_html( $args ){
-		$this->info = parent::get_field_info($args);
 		
 		$this->rows = isset( $args['info']['rows'] ) ? $args['info']['rows'] : $this->rows; 
 		$this->cols = isset( $args['info']['cols'] ) ? $args['info']['cols'] : $this->cols; 
-		
+
 		$field = '<textarea id="'.$this->info['prefix'] . $this->info['id'] . '" name="'.$this->info['name'] . '" rows="'.$this->rows.'" cols="'.$this->cols.'" >' . $this->info['value'] . '</textarea>';
 		
 		return $field;
@@ -29,8 +28,8 @@ class textarea extends Field_Type {
 	*/		
 	public function standard ( $args ){
 		?>
-		<tr valign="top">
-			<th scope="row"><?php echo $this->label; ?>
+		<tr valign="top" <?php echo $this->attributes; ?>>
+			<th scope="row"><?php echo $this->label; ?></th>
 			<td>
 				<?php echo $this->field; ?>
 				<?php echo $this->description; ?>
@@ -44,8 +43,9 @@ class textarea extends Field_Type {
 			
 	}
 	public function custom( $args ){
-		$layout_details = $this->info['layout']; 
-		
+		$layout_details = $this->info['layout']; ?>
+		<div <?php echo $this->attributes; ?>>
+		<?php
 		switch ( $layout_details['label'] ){
 			case 'left' : ?>
 				<p><?php echo $this->label; ?><?php echo $this->field; ?></p>
@@ -68,7 +68,9 @@ class textarea extends Field_Type {
 
 				<?php 
 				break;	
-		}
+		} ?>
+		</div>
+		<?php
 	}
 	
 }

@@ -55,6 +55,7 @@ class group extends Field_Type {
 			$field_args['group_number'] = $group_number; 
 			$field_args['group_values'] = $group ; 			
 			$field_args['info']	= $subfield; 
+			$field_args['parent_section_layout'] = 'default';
 			ob_start();
 				$field_type::create_field( $field_args ); 
 			$fields .= ob_get_clean();
@@ -66,6 +67,16 @@ class group extends Field_Type {
 		$this->add_and_remove = '<div class="add-remove"><a class="add">+</a><a class="remove">-</a></div>';		
 	}
 	
+	protected function get_attributes( $field_info ){
+		$classes = 'field ' ;
+		$classes = 'type-'.$this->type . ' ' ;
+		if ( $field_info['parent_layout'] === 'grid' ){
+			$classes .= isset( $field_info['width'] ) ? 'span' . $field_info['width'] . ' ': 'span6 ';
+		}
+		$classes .= isset( $field_info['style'] ) ? $field_style['style'] . ' ' :  '' ;
+		$classes .= 'multiple ';
+		return 'class="'.$classes .'"'; 
+	}	
 	public function enqueue_field_scripts_and_styles(){
 		$subfields_names = self::get_subfield_scripts_and_styles(); 
 		// if they exist, enqueues css and js files with this fields name
@@ -83,7 +94,7 @@ class group extends Field_Type {
 							foreach ($section['fields'] as $field ){
 								if ($field['type'] === 'group' ){
 									foreach( $field['fields'] as $subfield ){
-										$sub_fields[] = $subfield['type'];
+										$sub_fields[] = isset( $subfield['type'] ) ? $subfield['type'] : self::$default_type ;
 									}
 								}
 							}
@@ -111,7 +122,7 @@ class group extends Field_Type {
 	*/
 	public function standard ( $args ){
 		?>
-		<tr valign="top">
+		<tr valign="top" <?php echo $this->attributes; ?>>
 			<th scope="row"><?php echo $this->label; ?></th>
 			<td class="multiple">
 				<?php foreach ( $this->field_groups as $group ){ ?>
@@ -130,15 +141,16 @@ class group extends Field_Type {
 	}
 	public function custom( $args ){
 		$layout_details = $this->info['layout']; ?>
-		<div class="multiple">
-			<?php foreach ( $this->field_groups as $group ){ ?>
-			<div class="group">
-				<?php echo $group; ?>
-				<?php echo $this->add_and_remove ; ?>
-			</div>
-			<?php } ?>
-		</div>		
-		<?php
+			<div <?php echo $this->attributes; ?>>
+				<?php foreach ( $this->field_groups as $group ){ ?>
+				<div class="group">
+					<?php echo $group; ?>
+					<?php echo $this->add_and_remove ; ?>
+				</div>
+				<?php } ?>
+			</div>		
+			
+	<?php
 	}
 	
 }

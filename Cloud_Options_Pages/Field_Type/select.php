@@ -60,7 +60,7 @@ class select extends Field_Type {
 			} else {
 				if ( post_type_exists( $options ) ){
 					$posts = get_posts( array(
-						'numberposts' => 0, 
+						'numberposts' => -1, 
 						'post_type'		=> $options
 					) );
 					if ( sizeof( $posts ) > 0 ){
@@ -96,11 +96,11 @@ class select extends Field_Type {
 	*/	
 	public function standard ( $args ){
 		?>
-		<tr valign="top">
+		<tr valign="top" <?php echo $this->attributes; ?>>
 			<th scope="row"><?php echo $this->label; ?></th>
 			<td <?php echo $this->attributes; ?>>
 				<?php echo $this->field; ?>
-				<?php echo $this->description; ?>
+				<p><?php echo $this->description; ?></p>
 			</td>
 		</tr>
 		<?php
@@ -110,19 +110,20 @@ class select extends Field_Type {
 			
 	}
 	public function custom( $args ){
-		$layout_details = $this->info['layout']; 
-
+		$layout_details = $this->info['layout']; ?>
+		<div <?php echo $this->attributes; ?>>
+		<?php
 		switch ( $layout_details['label'] ){
 			case 'left' : ?>
 				<p><?php echo $this->label; ?><?php echo $this->field; ?></p>
-				<?php echo $this->description; ?>
+				<p><?php echo $this->description; ?></p>
 				
 				<?php 
 				break;
 				
 			case 'right' : ?>
 				<p><?php echo $this->label; ?><?php echo $this->field; ?></p>
-				<?php echo $this->description; ?>
+				<p><?php echo $this->description; ?></p>
 
 				<?php 
 				break;
@@ -130,18 +131,20 @@ class select extends Field_Type {
 			case 'top' : ?>
 				<p><?php echo $this->label; ?></p>
 				<p><?php echo $this->field; ?></p>
-				<?php echo $this->description; ?>
+				<p><?php echo $this->description; ?></p>
 
 				<?php 
 				break;	
 			default : ?>
 				<p><?php echo $this->label; ?></p>
 				<p><?php echo $this->field; ?></p>
-				<?php echo $this->description; ?>
+				<p><?php echo $this->description; ?></p>
 
 				<?php 
 				break; 
-		}
+		} ?>
+		</div>
+		<?php
 	}
 	
 }

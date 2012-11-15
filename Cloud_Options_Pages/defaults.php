@@ -40,7 +40,7 @@ $options_pages_defaults = array (
 			'description'	=> 'bottom'
 		),
 		'type'			=> 'text', 
-		'clone'			=> false,
+		'cloneable'			=> false,
 		'width'			=> 6,
 		'size'			=> 55,
 		'description'	=> null,

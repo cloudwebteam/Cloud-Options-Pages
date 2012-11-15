@@ -39,7 +39,7 @@ class url extends Field_Type {
 	*/
 	public function standard ( $args ){
 		?>
-		<tr valign="top">
+		<tr valign="top" <?php echo $this->attributes; ?> >
 			<th scope="row"><?php echo $this->label; ?></th>
 			<td <?php echo $this->attributes; ?>>
 				<?php echo $this->field; ?><?php echo $this->url_button; ?>

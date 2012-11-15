@@ -15,17 +15,27 @@ class Field_Type {
 		// enqueue js and css with the field's name
 		add_action( 'admin_enqueue_scripts', array( $class_name, 'enqueue_stuff' ) );				
 		
+		// set type for reference if needed
+		$this->type = $class_name ;
+		
 		// setup basic field attributes
  		$this->info = self::get_field_info($args);
  		
  		// create standard label to be placed
-		$this->label = self::get_label( $this->info ); 
+		$this->label = $this->get_label( $this->info ); 
 		
 		// create standard description to be placed
-		$this->description = self::get_description( $this->info );
+		$this->description = $this->get_description( $this->info );
 		
-		// create field ( this method should be implemented by each field subclass )
-		$this->field = $this->get_field_html( $args ); 
+		// create attributes to be set on the field container
+		$this->attributes = $this->get_attributes( $this->info );
+		if ( $this->info['cloneable'] ){
+			// create field ( this method should be implemented by each field subclass )
+			$this->make_cloneable( $args );
+		} else {
+			// create field ( this method should be implemented by each field subclass )
+			$this->field = $this->get_field_html( $args ); 		
+		}
 		
 		// get components needed to build the field ( optionally implemented )
 		$this->get_field_components( $args );
@@ -60,6 +70,8 @@ class Field_Type {
 		
 		$default_value =  isset( $args['info']['default'] ) ? $args['info']['default'] : ''; 
 		$value = $Options_Page->get_option( $top_level_slug, $page_slug, $section_slug, $field_slug ); 
+		$cloneable =  isset( $args['info']['cloneable'] ) ? $args['info']['cloneable'] : false;
+		
 		
 		// part of a group?
 		if ( $subfield_slug ){
@@ -67,14 +79,16 @@ class Field_Type {
 			$value = isset( $value[$group_number] ) ? $value[$group_number][$subfield_slug] : ''; 
 			$name =  $page_slug.'['.$section_slug.']['.$field_slug.']['.$group_number.']['.$subfield_slug.']'; 	
 			$to_retrieve = 	'get_theme_options( "'. $page_slug.'", "'. $section_slug . '" , "'. $field_slug.'" , ' . $group_number .' , "' .$subfield_slug .'" )';	
-		// most fields aren't
+			$cloneable = false;
+			
+		// plain old field
 		} else {
 			$name =  $page_slug.'['.$section_slug.']['.$field_slug.']'; 
 			$to_retrieve = 'get_theme_options( "'. $page_slug.'", "'. $section_slug . '" , "'. $field_slug.'" )' ;			
 		}
 		$info['title'] = $args['info']['title'];
 		$info['to_retrieve'] = 	$to_retrieve;				
-		
+		$info['cloneable'] = $cloneable ; 
 		$info['name'] = $name; 
 		$info['description'] = isset( $args['info']['description'] ) ? $args['info']['description'] : null;
 		$info['id']   = $field_slug;
@@ -83,7 +97,9 @@ class Field_Type {
 		$info['layout'] = isset ($args['info']['layout'] ) ? $args['info']['layout'] : 'default';
 		$info['prefix'] = $Options_Page->prefix; 		
 		$info['fields'] = isset( $args['info']['fields'] ) ? $args['info']['fields'] : ''; 
+		$info['width'] = isset( $args['info']['width'] ) ? $args['info']['width'] : 6; 
 		$info['is_subfield'] = $subfield_slug !== '' ? true : false;
+
 		return $info;
 	}
 	
@@ -93,14 +109,76 @@ class Field_Type {
 	// optional, allows each field to create its own necessary components
 	protected function get_field_components( $args ){}
 	
-	protected static function get_label($field_info){
-		$to_use = "<span class='copy_to_use'><a rel='copy_to_use'>Code</a><input class='copy' type='text' value='".$field_info['to_retrieve']."' /></span>";
+	// wraps the field/fields in html that makes it cloneable
+	protected function make_cloneable( $args ){
+		$Options_Page = Cloud_Options_Pages::get_instance(); 		
+		$top_level_slug = $args['top_level'];		
+		$page_slug = $args['subpage'];
+		$section_slug = $args['section'];
+		$field_slug = $args['field']; 	
+		
+		$name = $this->info['name']; 
+		$value = $this->info['value'] ;
+		$parent_to_retrieve = $this->info['to_retrieve']; 
+		$this->saved_values = $Options_Page->get_option( $top_level_slug, $page_slug, $section_slug, $field_slug ); 
+		$this->args = $args;
+		
+		$clones = array(); 
+		if ( is_array( $this->saved_values ) ){
+
+			foreach ( $this->saved_values as $clone_number => $clone_value ){
+				$parent_to_retrieve = 	'get_theme_options( "'. $page_slug.'", "'. $section_slug . '" , "'. $field_slug.'" , ' . $clone_number .' )';	
+				$clones[$clone_number] = $this->make_clone( $clone_number, $clone_value, $name, $parent_to_retrieve ); 
+			} 
+		} else {
+			$clones[0] = $this->make_clone( 0, '', $name, $parent_to_retrieve); 
+		}
+		$output = '';
+		$output .= '<div class="cloneable cf">';
+		foreach( $clones as $clone_number => $clone ){
+			$output .= '<div class="clone cf">' ;
+			$output .= '<div class="number">'.($clone_number+1).'</div>';
+			$output .= $clone;
+			$output .= '<div class="add-remove"><a class="remove">-</a><a class="add">+</a></div>';
+			$output .= '</div>';
+		}
+		$output .= '</div>';
+		
+		$this->field = $output;
+		$this->info['to_retrieve'] = $parent_to_retrieve ; 
+		 
+	}
+	protected function make_clone( $clone_number, $clone_value, $name, $to_retrieve ){	
+		$this->info['name'] = $name.'['.$clone_number.']';
+		$this->info['value'] = $clone_value;	
+		$this->info['to_retrieve'] = $to_retrieve ;
+
+		$clone = $this->get_field_html( $this->args ); 
+
+		return $clone . self::get_copy_to_use( $this->info );
+	}
+	protected function get_label($field_info){
+		$to_use = self::get_copy_to_use( $field_info); 
 		$label = $to_use."<label for='".$field_info['prefix'] . $field_info['id'] . "' >" . $field_info['title'] ."</label>";
 		return $label;
 	}
-	protected static function get_description( $field_info ){
+	protected static function get_copy_to_use( $field_info ){
+		$to_use = "<span class='copy_to_use'><a rel='copy_to_use'>Code</a><input class='copy' type='text' value='".$field_info['to_retrieve']."' /></span>";
+		return $to_use;
+	}
+	protected function get_description( $field_info ){
 		$description = isset( $field_info['description']) && $field_info['description'] !== '' ? '<span class="description">'.$field_info['description'] . '</span>' : '';
 		return $description;
+	}
+	protected function get_attributes( $field_info ){
+		$classes = 'field ' ;
+		$classes = 'type-'.$this->type . ' ' ;
+		if ( $field_info['parent_layout'] === 'grid' ){
+			$classes .= isset( $field_info['width'] ) ? 'span' . $field_info['width'] : 'span6';
+		}
+		$classes .= isset( $field_info['style'] ) ? $field_style['style'] :  '' ;
+		
+		return 'class="'.$classes .'"'; 
 	}
 	public static function get_layout_function( $layout = null , $field_type = null , $section_layout_type ){
 		self::$default_type = 'text'; // fallback field type

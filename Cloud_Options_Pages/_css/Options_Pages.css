@@ -1,3 +1,6 @@
+.options-page {
+	max-width: 1170px;
+}
 .options-page .tabbable {
 	padding-top: 2em;
 }
@@ -64,7 +67,6 @@
 	float: left;
 }
 .options-page p {
-	float: left;
 	clear: both;
 	margin-bottom: .5em;
 	margin-top: 0;
@@ -77,7 +79,6 @@
 .options-page .group {
 	float: left;
 	clear: both;
-	max-width: 400px;
 }
 .copy_to_use {
 	display: inline-block;
@@ -106,4 +107,67 @@
 	display: block;
 	float: none;
 }
-	
+.options-page .text-content *:first-child {
+	padding-top: 0;
+} 
+.options-page .text-content h1, 
+.options-page .text-content h2, 
+.options-page .text-content h3, 
+.options-page .text-content h4, 
+.options-page .text-content h5, 
+.options-page .text-content h6 {
+	font-weight: bold;
+	padding: 1em 0 0 ;
+	margin: 0;
+}
+.options-page .text-content h1 {
+	font-size: 2em;
+}
+.options-page .text-content h2 {
+	font-size: 1.5em;
+}
+.options-page .text-content h3 {
+	font-size: 1.125em
+}
+.options-page .text-content h4 {
+	font-size: 1em;
+}
+.options-page .text-content h5{
+	font-size: .875em;
+}
+.options-page .text-content h6 {
+	font-size: .75em;
+}
+.options-page .text-content ul {
+	list-style: disc;
+}
+.options-page .text-content ol {
+	list-style: decimal;
+}
+.options-page .text-content p,
+.options-page .text-content ul,
+.options-page .text-content ol {
+	padding-top: 1em;
+	margin-top: 0;
+	margin-bottom: 0;
+	line-height: 1.5em;
+}
+.options-page .text-content li {
+	margin: 0;
+}
+.options-page .header {
+	width: 100%;
+	float: left;
+	padding-bottom: 1em;
+}
+.options-page .header .title {
+	line-height: 1em;
+	font-size: 1.25em;
+	text-transform: uppercase;
+	color: #666;
+}
+.options-page textarea,
+.options-page input,
+.options-page label {
+	max-width: 100%;
+}

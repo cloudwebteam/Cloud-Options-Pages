@@ -1,0 +1,66 @@
+
+.clone input {
+	margin-bottom: 0;
+}
+.clone .add-remove {
+	position: absolute;
+	bottom: 1em;
+	left: 103%;
+	white-space: nowrap;
+}
+.cloneable .add,
+.cloneable .remove {
+	background: #efefef;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	width: 20px;
+	line-height: 1em;
+	height: 1em;
+	padding-bottom: 2px;
+	font-size: 1.25em;
+	display: inline-block;
+	text-align: center;
+	cursor: pointer;
+	z-index: 20;
+}
+.clone .remove.disabled {
+	color: #ccc;
+	background: #fafafa;
+	cursor: default;
+}
+.cloneable .remove {
+	color: #C05F47;
+}
+.cloneable .add:hover,
+.cloneable .remove:hover {
+	text-decoration: none;
+}
+.cloneable .clone {
+	padding: 1em 0 1em 10px;
+	margin: 0 0 0 20px;
+	border-top: 1px dashed #ccc;
+	position: relative;
+	float: left;
+	clear: both;	
+	width: 100%;
+	min-height: 2em;
+}
+.cloneable .clone:first-child {
+}
+.clone .copy_to_use {
+	position: absolute;
+	top: -1em;
+	left: 103%;
+}
+.clone .number {
+	position: absolute;
+	top: -.25em;
+	right: 100%;
+	background: #fff;
+	border: 1px solid #ccc;
+	width: 20px;
+	height: 1.5em;
+	line-height: 1.5em;
+	text-align: center;
+	border-radius: 3px;
+}

@@ -27,7 +27,7 @@ class text extends Field_Type {
 	public function standard ( $args ){
 	
 		?>
-		<tr valign="top">
+		<tr valign="top" <?php echo $this->attributes; ?>>
 			<th scope="row"><?php echo $this->label; ?></th>
 			<td <?php echo $this->attributes; ?>>			
 				<?php echo $this->field; ?>
@@ -41,11 +41,12 @@ class text extends Field_Type {
 			
 	}
 	public function custom( $args ){
-		$layout_details = $this->info['layout']; 
-
+		$layout_details = $this->info['layout']; ?>
+		<div <?php echo $this->attributes; ?>>
+		<?php
 		switch ( $layout_details['label'] ){
 			case 'left' : ?>
-				<p><?php echo $this->label; ?><?php echo $this->field; ?></p>
+				<?php echo $this->label; ?><?php echo $this->field; ?></p>
 				<?php echo $this->description; ?>
 				
 				<?php 
@@ -72,7 +73,9 @@ class text extends Field_Type {
 
 				<?php 
 				break; 
-		}
+		} ?>
+		</div>
+		<?php
 	}
 	
 }

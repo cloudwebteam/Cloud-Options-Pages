@@ -21,6 +21,7 @@
 			
 			//set up classes
 			$classes = array(); 
+			$classes[] = 'cloud'; //necessary to keep Bootstrap from interfering
 			$classes[] = 'wrap'; // a typical WP class
 			$classes[] = 'options-page';
 			$classes[] = $page_spec_array['layout'] ; 

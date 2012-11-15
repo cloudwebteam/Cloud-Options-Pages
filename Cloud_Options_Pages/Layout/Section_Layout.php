@@ -46,6 +46,7 @@
 			$classes = array(); 
 			$classes[] = 'section';
 			$classes[] = $section_spec_array['layout'] ; 
+			
 			// if the page is a grid layout, give section a width (specified 1-12, default 12) 
 			if( $section_info['parent_layout'] === 'grid' ){
 				$classes[] =  isset( $section_spec_array['width'] ) ? 'span'.$section_spec_array['width'] : 'span12';
@@ -59,27 +60,35 @@
 			extract( self::get_layout_info( $section ) );
 			
 			ob_start();	?>
-			<div class='<?php echo $classes; ?>'>		
-		    	<?php echo $title; ?>
-		    	<?php echo $description; ?>
+			<div class='<?php echo $classes; ?>'>
+				<div class="header">			    
+			    	<?php echo $title; ?>
+			    	<?php echo $description; ?>
+				</div>
 			    <table class="form-table">
 				    <?php Cloud_Options_Pages::do_settings_fields( $subpage_slug, $section ); ?>
 				</table>
+				
 			</div>
 			<?php 
 			$output = ob_get_clean();
 			return $output;
 			
 		}
+
 		public function grid( $section ){
 			// make variables available and easy to use by extracting them
 			extract( self::get_layout_info( $section ) );
 			ob_start();
 			?>	
 			    <div class="<?php echo $classes; ?>">
-			    	<?php echo $title; ?>
-			    	<?php echo $description; ?>
+					<div class="header">			    
+				    	<?php echo $title; ?>
+				    	<?php echo $description; ?>
+					</div>
+					<div class="row">
 				    <?php Cloud_Options_Pages::do_settings_fields( $subpage_slug, $section ); ?>
+					</div>
 				</div>
 			<?php	
 			$output = ob_get_clean();
