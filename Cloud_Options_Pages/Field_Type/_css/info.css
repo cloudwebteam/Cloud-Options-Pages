@@ -1,0 +1,6 @@
+.type-info label {
+	display: block;
+	float: none;
+	border-bottom: 1px solid #ccc;
+	line-height: 2em;
+}
