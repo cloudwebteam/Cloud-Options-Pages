@@ -1,7 +1,8 @@
 <?php 
-class textarea extends Field_Type {
-	private $rows = 5;
-	private $cols = 70;
+// Prevent loading this file directly
+defined( 'ABSPATH' ) || exit;
+
+class Cloud_Field_textarea extends Field_Type {
 
 	public static function create_field( $args ){
 		$field_type = __CLASS__;

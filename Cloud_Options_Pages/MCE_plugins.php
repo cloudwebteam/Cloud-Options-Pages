@@ -55,7 +55,7 @@ class MCE_Plugins {
 					$shortcodes[$subpage_slug]['sections'][$section_slug]['title'] = $section['title'];
 					foreach ( $section['fields'] as $field_slug => $field ){
 					
-						if ( $field['type'] === 'group' && sizeof( $field['fields'] ) > 0  ){
+						if ( $field['type'] === 'group' && sizeof( $field['subfields'] ) > 0  ){
 							
 						} else if ($field['editor_list'] === true ){
 							$shortcodes[$subpage_slug]['sections'][$section_slug]['fields'][$field_slug] = array(

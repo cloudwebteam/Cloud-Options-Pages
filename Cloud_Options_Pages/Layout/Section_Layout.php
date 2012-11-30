@@ -46,7 +46,9 @@
 			$classes = array(); 
 			$classes[] = 'section';
 			$classes[] = $section_spec_array['layout'] ; 
-			
+			if ( $section_spec_array['_has_settable_defaults'] ){
+				$classes[] = 'has-settable-defaults' ;
+			}					
 			// if the page is a grid layout, give section a width (specified 1-12, default 12) 
 			if( $section_info['parent_layout'] === 'grid' ){
 				$classes[] =  isset( $section_spec_array['width'] ) ? 'span'.$section_spec_array['width'] : 'span12';
@@ -86,7 +88,7 @@
 				    	<?php echo $title; ?>
 				    	<?php echo $description; ?>
 					</div>
-					<div class="row">
+					<div class="row-fluid">
 				    <?php Cloud_Options_Pages::do_settings_fields( $subpage_slug, $section ); ?>
 					</div>
 				</div>

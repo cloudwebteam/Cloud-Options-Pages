@@ -2,6 +2,7 @@
 	position: relative;
 	float: left;
 	clear: both;
+	cursor: move;
 }
 .group .add-remove {
 	position: absolute;
@@ -48,6 +49,4 @@
 	padding: 1.5em 15px 3em;
 	border: 1px dashed #ccc;
 	background: #fafafa;
-}
-.multiple .group:first-child {
 }

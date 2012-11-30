@@ -764,7 +764,7 @@
 }
 
 @media (max-width: 767px) {
-  body {
+  .cloud body {
     padding-right: 20px;
     padding-left: 20px;
   }
@@ -890,7 +890,7 @@
 }
 
 @media (max-width: 979px) {
-  body {
+  .cloud body {
     padding-top: 0;
   }
   .cloud .navbar-fixed-top,

@@ -2,21 +2,22 @@
 class Field_Type {
 	public static $default_type = 'text' ;
 	public static $default_layout ; 
-
-	private static $default_value ;
-	private $layout = 'default'; // fallback layout type
+	public static $class_prefix = 'Cloud_Field_' ; 
+	protected static $default_value ;
+	protected $layout = 'default'; // fallback layout type
+	protected $layouts = array();
 	
-	private $layouts = array();
-	
-	private $name 	= 'DEFAULT_NAME';
-	private $value 	= 'DEFAULT_HERE'; 
+	protected $info ; 
+	protected $label ; 
+	protected $field ; 
+	protected $attributes = array();
 	
 	protected function __construct( $class_name, $args){
 		// enqueue js and css with the field's name
 		add_action( 'admin_enqueue_scripts', array( $class_name, 'enqueue_stuff' ) );				
 		
 		// set type for reference if needed
-		$this->type = $class_name ;
+		$this->type = $args['info']['type'] ;
 		
 		// setup basic field attributes
  		$this->info = self::get_field_info($args);
@@ -56,6 +57,9 @@ class Field_Type {
 	/****
 		* standardizes handling of a field attributes
 	****/
+	public static function get_class_name( $type ){
+		return self::$class_prefix . $type ;
+	}
 	public static function get_field_info( $args ){
 		$Options_Page = Cloud_Options_Pages::get_instance(); 
 
@@ -65,12 +69,15 @@ class Field_Type {
 		$page_slug = $args['subpage'];
 		$section_slug = $args['section'];
 		$field_slug = $args['field']; 	
+
 		$subfield_slug = isset( $args['subfield'] ) ? $args['subfield'] : '' ; 
 
 		
+		$enabled = $Options_Page->is_enabled( $top_level_slug, $page_slug, $section_slug, $field_slug ); 
 		$default_value =  isset( $args['info']['default'] ) ? $args['info']['default'] : ''; 
 		$value = $Options_Page->get_option( $top_level_slug, $page_slug, $section_slug, $field_slug ); 
 		$cloneable =  isset( $args['info']['cloneable'] ) ? $args['info']['cloneable'] : false;
+		$user_enabled_override_name = $page_slug.'[enabled]['.$section_slug.']['.$field_slug.']';
 		
 		
 		// part of a group?
@@ -93,12 +100,16 @@ class Field_Type {
 		$info['description'] = isset( $args['info']['description'] ) ? $args['info']['description'] : null;
 		$info['id']   = $field_slug;
 		$info['value'] = $value ? $value : $default_value;
+		$info['default'] = $default_value; 
+		$info['enabled'] = $enabled ;
+		$info['enabled_name'] = $user_enabled_override_name; 		
 		$info['parent_layout'] = $args['parent_section_layout'];
 		$info['layout'] = isset ($args['info']['layout'] ) ? $args['info']['layout'] : 'default';
 		$info['prefix'] = $Options_Page->prefix; 		
 		$info['fields'] = isset( $args['info']['fields'] ) ? $args['info']['fields'] : ''; 
 		$info['width'] = isset( $args['info']['width'] ) ? $args['info']['width'] : 6; 
 		$info['is_subfield'] = $subfield_slug !== '' ? true : false;
+
 
 		return $info;
 	}
@@ -163,7 +174,7 @@ class Field_Type {
 		return $label;
 	}
 	protected static function get_copy_to_use( $field_info ){
-		$to_use = "<span class='copy_to_use'><a rel='copy_to_use'>Code</a><input class='copy' type='text' value='".$field_info['to_retrieve']."' /></span>";
+		$to_use = "<span class='copy_to_use'><a rel='copy_to_use'>&#36;use;</a><span class='copy-container'><input class='copy' type='text' value='".$field_info['to_retrieve']."' /></span></span>";
 		return $to_use;
 	}
 	protected function get_description( $field_info ){
@@ -171,14 +182,17 @@ class Field_Type {
 		return $description;
 	}
 	protected function get_attributes( $field_info ){
-		$classes = 'field ' ;
-		$classes = 'type-'.$this->type . ' ' ;
+		$classes = array(); 
+		$classes[] = 'field' ;
+		$classes[] = 'type-'.$this->type ;
 		if ( $field_info['parent_layout'] === 'grid' ){
-			$classes .= isset( $field_info['width'] ) ? 'span' . $field_info['width'] : 'span6';
+			$classes[] = isset( $field_info['width'] ) ? 'span' . $field_info['width'] : 'span6';
 		}
-		$classes .= isset( $field_info['style'] ) ? $field_style['style'] :  '' ;
+		$classes[] = isset( $field_info['style'] ) ? $field_style['style'] :  '' ;
 		
-		return 'class="'.$classes .'"'; 
+		$classes_html = 'class="'.implode(' ', $classes) .'"';
+		
+		return $classes_html ;
 	}
 	public static function get_layout_function( $layout = null , $field_type = null , $section_layout_type ){
 		self::$default_type = 'text'; // fallback field type
@@ -231,12 +245,14 @@ class Field_Type {
 		return $layout;
 	}
 	protected static function register_scripts_and_styles( $class_name, $subfield_types = null ){
-		if ( $class_name ){			
-			if ( file_exists( dirname( __FILE__ ).'/'.basename( __FILE__, '.php' ) . '/_js/'.$class_name.'.js' ) ){
-				wp_enqueue_script( $class_name, self::get_include_path(). '/_js/'.$class_name.'.js', array( 'jquery', 'Options_Pages' ), '');
+		$field_type = substr( $class_name, strlen(Field_Type::$class_prefix) ); 
+
+		if ( $field_type ){			
+			if ( file_exists( dirname( __FILE__ ).'/'.basename( __FILE__, '.php' ) . '/_js/'.$field_type.'.js' ) ){
+				wp_enqueue_script( $field_type, self::get_include_path(). '/_js/'.$field_type.'.js', array( 'jquery', 'Options_Pages' ), '');
 			} 
-			if ( file_exists( dirname( __FILE__ ).'/'.basename( __FILE__, '.php' ) . '/_css/'.$class_name.'.css' ) ){
-				wp_enqueue_style( $class_name, self::get_include_path(). '/_css/'.$class_name.'.css', array( 'Options_Pages' ));
+			if ( file_exists( dirname( __FILE__ ).'/'.basename( __FILE__, '.php' ) . '/_css/'.$field_type.'.css' ) ){
+				wp_enqueue_style( $field_type, self::get_include_path(). '/_css/'.$field_type.'.css', array( 'Options_Pages' ));
 			}
 		}
 		if ( is_array( $subfield_types ) && sizeof( $subfield_types ) > 0 ){

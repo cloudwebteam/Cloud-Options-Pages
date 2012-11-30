@@ -18,14 +18,32 @@
 			} else { 
 				$page_info['description'] = '';
 			}			
-			
+			if ( $page_spec_array['_has_settable_defaults'] ) {
+				ob_start(); ?>
+				<div id="set-defaults">
+					<a id="values-from-defaults" href="">Reset to default colors</a>
+					<a id="values-as-defaults" href="">Set as default colors<span class="success">Defaults changed!</span></a>
+					<div id="set-default-values-popup">
+						<h3>Are you certain?</h3>
+						<p>For colors that are currently enabled, it will overwrite the default value.</p> 				
+						<p>This will <b>PERMANENTLY alter the defaults</b> of the currently enabled fields!</p>
+					</div>
+				</div>
+				<?php
+				$page_info['set_defaults'] = ob_get_clean() ;
+			} else {
+				$page_info['set_defaults'] = '';
+			}
+
 			//set up classes
 			$classes = array(); 
 			$classes[] = 'cloud'; //necessary to keep Bootstrap from interfering
 			$classes[] = 'wrap'; // a typical WP class
 			$classes[] = 'options-page';
 			$classes[] = $page_spec_array['layout'] ; 
-			
+			if ( $page_spec_array['_has_settable_defaults'] ){
+				$classes[] = 'has-settable-defaults' ;
+			}		
 			$page_info['classes'] = implode ( ' ', $classes ); 		
 				
 			// set up icon html 
@@ -43,7 +61,7 @@
 			// make variables available and easy to use by extracting them
 			extract( self::get_layout_info( ), EXTR_OVERWRITE );
 			?>
-			<div id="page-<?php echo $subpage_slug; ?>" class="<?php echo $classes; ?>"> 
+			<div id="page-<?php echo $subpage_slug; ?>" class="<?php echo $classes; ?>">
 				<?php echo $icon; ?> 
 				<?php echo $title; ?>
 				<?php echo $description; ?>
@@ -53,6 +71,7 @@
 				    	<?php echo $section['html']; ?>
 				    <?php } ?>		    
 				    <?php echo $submit_button; ?>
+				    <?php echo $set_defaults; ?>
 			    </form>
 			</div>
 			<?php
@@ -67,12 +86,13 @@
 				<?php echo $description; ?>			    
 				<form action="options.php" class="container" method="post">
 				    <?php settings_fields( $subpage_slug ); ?>
-					<div class="row">
+					<div class="row-fluid">
 				    <?php foreach ( $sections as $section) { ?>
 					   <?php echo $section['html']; ?>
 				    <?php } ?>
 				    </div>
 				    <?php echo $submit_button; ?>
+				    <?php echo $set_defaults; ?>				    
 			    </form>
 			</div>			
 			<?php		
@@ -104,6 +124,7 @@
 						<?php } ?>
 					</div>
 				    <?php echo $submit_button; ?>
+				    <?php echo $set_defaults; ?>				    
 			    </form>
 			</div>			
 			<?php
@@ -135,6 +156,7 @@
 						<?php } ?>
 					</div>
 				    <?php echo $submit_button; ?>
+				    <?php echo $set_defaults; ?>				    
 			    </form>
 			</div>				
 			<?php		
@@ -166,6 +188,7 @@
 						<?php } ?>
 					</div>
 				    <?php echo $submit_button; ?>
+				    <?php echo $set_defaults; ?>				    
 			    </form>
 			</div>		
 			<?php		
@@ -198,6 +221,7 @@
 					    <?php } ?>
 					</div>
 				    <?php echo $submit_button; ?>
+				    <?php echo $set_defaults; ?>				    
 			   </form>
 			</div>			
 			<?php		

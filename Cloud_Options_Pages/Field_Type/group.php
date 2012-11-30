@@ -1,5 +1,8 @@
 <?php 
-class group extends Field_Type {
+// Prevent loading this file directly
+defined( 'ABSPATH' ) || exit;
+
+class Cloud_Field_group extends Field_Type {
 	protected $info ;
 	protected $fields ;
 	protected $label ;
@@ -28,10 +31,10 @@ class group extends Field_Type {
 		return $this->field_groups;
 	}
 	private function set_fields(){
-		if ( isset( $this->args['info']['fields'] ) && is_array($this->args['info']['fields'] )){	
+		if ( isset( $this->args['info']['subfields'] ) && is_array($this->args['info']['subfields'] )){	
 			$groups = array();
 			
-			if ( is_array( $this->saved_values ) && is_array( $this->saved_values[0] ) ){
+			if ( is_array( $this->saved_values ) ){
 				foreach ( $this->saved_values as $group_number => $group ){
 					$groups[$group_number] = $this->make_group( $group_number, $group); 
 				} 
@@ -44,10 +47,10 @@ class group extends Field_Type {
 	private function make_group( $group_number, $group ){
 		$fields = '' ; 
 	
-		foreach ( $this->args['info']['fields'] as $subfield_id => $subfield ){ 
+		foreach ( $this->args['info']['subfields'] as $subfield_id => $subfield ){ 
 			$type 	= isset( $subfield['type'] ) ? $subfield['type'] : 'standard' ;
-			$field_type = class_exists( $type ) ? $type : parent::$default_type;
-			
+			$field_type = class_exists( Field_Type::get_class_name( $type ) ) ? $type : parent::$default_type;
+			$field_type_class_name = Field_Type::get_class_name( $field_type );
 			// gotta compile an array that will be able to create the field
 			$field_args = $this->args; 
 			
@@ -57,7 +60,7 @@ class group extends Field_Type {
 			$field_args['info']	= $subfield; 
 			$field_args['parent_section_layout'] = 'default';
 			ob_start();
-				$field_type::create_field( $field_args ); 
+				$field_type_class_name::create_field( $field_args ); 
 			$fields .= ob_get_clean();
 		}	
 		return $fields;
@@ -81,6 +84,8 @@ class group extends Field_Type {
 		$subfields_names = self::get_subfield_scripts_and_styles(); 
 		// if they exist, enqueues css and js files with this fields name
 		parent::register_scripts_and_styles( __CLASS__, $subfields_names ); 
+		wp_enqueue_script( 'jquery-ui-core' );
+		wp_enqueue_script( 'jquery-ui-sortable' ); 
 	}
 	private static function get_subfield_scripts_and_styles( ){
 		Cloud_Options_Pages::get_instance(); 
@@ -93,7 +98,7 @@ class group extends Field_Type {
 						foreach ($subpage['sections'] as $section) {
 							foreach ($section['fields'] as $field ){
 								if ($field['type'] === 'group' ){
-									foreach( $field['fields'] as $subfield ){
+									foreach( $field['subfields'] as $subfield ){
 										$sub_fields[] = isset( $subfield['type'] ) ? $subfield['type'] : self::$default_type ;
 									}
 								}
@@ -141,14 +146,14 @@ class group extends Field_Type {
 	}
 	public function custom( $args ){
 		$layout_details = $this->info['layout']; ?>
-			<div <?php echo $this->attributes; ?>>
+			<ul <?php echo $this->attributes; ?>>
 				<?php foreach ( $this->field_groups as $group ){ ?>
-				<div class="group">
+				<li class="group">
 					<?php echo $group; ?>
 					<?php echo $this->add_and_remove ; ?>
-				</div>
+				</li>
 				<?php } ?>
-			</div>		
+			</ul>		
 			
 	<?php
 	}

@@ -1,5 +1,8 @@
-<?php 
-class url extends Field_Type {
+<?php
+// Prevent loading this file directly
+defined( 'ABSPATH' ) || exit;
+ 
+class Cloud_Field_url extends Field_Type {
 	protected $info ;
 	protected $size = 53; 
 	protected $field ;

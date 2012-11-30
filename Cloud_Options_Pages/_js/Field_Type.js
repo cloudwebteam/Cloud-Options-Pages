@@ -1,4 +1,16 @@
 jQuery( function($){
+
+// handle copy_to_use code link
+   
+   // popup useful code snippets
+   $('a[rel="copy_to_use"]').click( function(e){
+   		e.preventDefault();
+   		$(this).siblings('.copy-container').show().find('input').select().blur( function(){
+   			$(this).parents('.copy-container').hide();
+   		});
+   		
+   }); 
+   
  // handle cloneable fields
 	var setup_remove_click = function( elems ){
 		elems.unbind('click');
@@ -34,11 +46,13 @@ jQuery( function($){
 			var new_input = clone.clone(true).hide();
 			//get rid of the values
 			new_input.find('input').not('[type="button"], .copy').val('');
+			
 			// specific changes for specific fields
 			new_input.find('.media-url img').addClass('hidden');
 			clone.after( new_input );
 			new_input.fadeIn(); 
 			//update all the value keys
+			
 			reset_value_keys( container );
 			
 			container.find('.remove').removeClass('disabled');
@@ -76,4 +90,9 @@ jQuery( function($){
 		}
 	});	
 	setup_add_click( $('.cloneable').find('.add') ) ;
+	
+	
+
+		
 });
+

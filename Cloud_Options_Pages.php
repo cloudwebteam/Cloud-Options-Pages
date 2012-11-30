@@ -29,13 +29,17 @@ class Cloud_Options_Pages  {
 			$this->load_theme_classes('Layout'); 
 		}
 		
+		// setup 'user_enabled_overrides' and 'user_defaults' (mostly for color pickers)
+		$this->setup_enabled_and_default_values(); 
+		
 		// get defaults array from defaults.php
 		$this->set_defaults();
+		
 		// create self::$options_page_array by merging defaults with user array
 		$this->create_options_page_array(); 		
 
 		$this->initialize_options(); 
-				
+		
 		//create options pages
 		add_action('admin_menu', array( $this, 'create_options_pages' ) );
 		//enqueue necessary css/js
@@ -59,7 +63,8 @@ class Cloud_Options_Pages  {
 	
 	
 	private $options 		= array();
-
+	protected $user_defaults 	= array();
+	protected $user_enabled_overrides = array();
 	private $field_types 	= array();
 	
 	public static $options_name  	= '' ;		
@@ -83,10 +88,10 @@ class Cloud_Options_Pages  {
 		}
 		add_action( 'admin_init', array( $this, 'register_settings' ) ); 
 	}
+
 	public function register_settings(){
 	
 		$option_names = array(); 
-	
 		foreach ( self::$options_pages as $top_level_slug => $top_level_page ){
 			foreach ( $top_level_page['subpages'] as $subpage_slug => $subpage ){
 				register_setting( $subpage_slug , $subpage_slug );
@@ -122,8 +127,18 @@ class Cloud_Options_Pages  {
 			return $this->options[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number][$subfield_slug];
 		} else if ( is_int( $group_number ) && isset( $this->options[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number] ) ) {
 			return $this->options[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number] ;
+			
 		} else if ( isset( $this->options[$top_page_slug][$page_slug][$section_slug][$field_slug] ) ) {
-			return $this->options[$top_page_slug][$page_slug][$section_slug][$field_slug] ;
+			// check if the current page has settable defaults before going to all the hassle of checking the field
+			if ( self::$options_pages[$top_page_slug]['subpages'][$page_slug]['_has_settable_defaults'] ){
+				if ( $this->is_enabled( $top_page_slug, $page_slug, $section_slug, $field_slug ) ){
+					return $this->options[$top_page_slug][$page_slug][$section_slug][$field_slug] ;
+				} else {
+					return $this->user_defaults[$top_page_slug][$page_slug][$section_slug][$field_slug] ;
+				}
+			} else {
+				return $this->options[$top_page_slug][$page_slug][$section_slug][$field_slug] ;
+			}
 		} else if ( isset( $this->options[$top_page_slug][$page_slug][$section_slug] ) ) {
 			return $this->options[$top_page_slug][$page_slug][$section_slug] ; 
 		} else if ( isset( $this->options[$top_page_slug][$page_slug] ) ){ 
@@ -138,6 +153,7 @@ class Cloud_Options_Pages  {
 	 * Methods for distilling information from the user array ( like compiling parent page, parent section, parent field, etc )
 	 */
 	public function get_options_array_info($subpage_slug = null, $section_slug = null, $field_slug = null ){
+
 		if ($subpage_slug ){
 			foreach (self::$options_pages as $slug => $top_level ){
 				if ( isset( $top_level['subpages'][$subpage_slug] ) ){
@@ -153,7 +169,7 @@ class Cloud_Options_Pages  {
 				return self::$options_pages[$top_level_slug]['subpages'][$subpage_slug];
 			}
 		} else {
-			return self:: $options_pages[$top_level_slug];
+			return self::$options_pages[$top_level_slug];
 		}
 	}
 	public function get_options_section_info(){
@@ -174,6 +190,68 @@ class Cloud_Options_Pages  {
 		$options_array = self::$options_pages;		
 		return $options_array[ $top_level ][ $subpage ][ $section ][ $field ]; 
 	}
+	private function setup_enabled_and_default_values(){
+		$this->user_defaults = get_option( $this->prefix . 'user_defaults' );
+
+		add_action('wp_ajax_set_values_as_defaults', array( __CLASS__, 'set_values_as_defaults' ) );
+		add_action('wp_ajax_set_values_from_defaults', array( __CLASS__, 'set_values_from_defaults' ) );			
+	}
+	public function get_option_default(  $top_page_slug = null, $page_slug = null , $section_slug = null , $field_slug = null , $group_number = null, $subfield_slug = null ){
+		if ( isset( $this->user_defaults[$top_page_slug][$page_slug][$section_slug][$field_slug] ) ) {
+			return $this->user_defaults[$top_page_slug][$page_slug][$section_slug][$field_slug] ; 
+		} else {
+			return false;
+		}
+	}
+	public function is_enabled( $top_page_slug = null, $page_slug = null , $section_slug = null , $field_slug = null ){
+
+		if ( isset( self::$options_pages[$top_page_slug]['subpages'][$page_slug]['sections'][$section_slug]['fields'][$field_slug]['settable_defaults'] ) && self::$options_pages[$top_page_slug]['subpages'][$page_slug]['sections'][$section_slug]['fields'][$field_slug]['settable_defaults'] ){ 
+			if( isset( $this->options[$top_page_slug][$page_slug]['enabled'][$section_slug][$field_slug] ) && $this->options[$top_page_slug][$page_slug]['enabled'][$section_slug][$field_slug] ){
+				return true;
+			} else {
+				return false;
+			}
+		} 
+		return true;
+	}
+	public function set_values_as_defaults(){
+		$Options_Pages = Cloud_Options_Pages::get_instance();
+		$success= array();
+		foreach ($_POST['inputs'] as $input){
+			$input_name_parts = preg_split( '/[\[\]]{1,2}/', $input['name'] );
+			$subpage_slug = $input_name_parts[0];
+			$section_slug = $input_name_parts[1];
+			$field_slug = $input_name_parts[2];			
+			$Options_Pages->user_defaults[$subpage_slug][$subpage_slug][$section_slug][$field_slug] = $input['value'];
+			$success[ $input['name'] ] = $input['value'];  
+
+		}
+		update_option( $Options_Pages->prefix .'user_defaults', $Options_Pages->user_defaults) ;
+		echo json_encode($success) ;
+	
+		die;
+	}
+	public function set_values_from_defaults(){
+		$Options_Pages = Cloud_Options_Pages::get_instance();
+		
+		foreach ($_POST['inputs'] as $input){
+			$input_name_parts = preg_split( '/[\[\]]{1,2}/', $input['name'] );
+			$subpage_slug = $input_name_parts[0];
+			$section_slug = $input_name_parts[1];
+			$field_slug = $input_name_parts[2];
+			$user_default_value = $Options_Pages->user_defaults[$subpage_slug][$subpage_slug][$section_slug][$field_slug] ;	
+		
+			$Options_Pages->options[$subpage_slug][$subpage_slug][$section_slug][$field_slug] = $user_default_value;
+	
+			$success[ $input['name'] ] = $user_default_value;  
+		}
+		update_option( $subpage_slug, $Options_Pages->options[$subpage_slug][$subpage_slug]) ;
+
+		echo json_encode($success) ;
+				
+		die;
+	}	
+	
 	
 	/**
 	 * Load all necessary styles and scripts, if the current page is an option page generated by this framework
@@ -192,7 +270,7 @@ class Cloud_Options_Pages  {
 		wp_enqueue_style('options_pages_global' );
 		if ( in_array( $current_subpage, $subpages ) ){ 
 			// STYLES
-			wp_register_style('Bootstrap Responsive', Cloud_Theme__DIR . '/'.basename(dirname(__FILE__)).'/'.__CLASS__.'/_css/bootstrap/css/bootstrap-responsive.min.css');
+			wp_register_style('Bootstrap Responsive', Cloud_Theme__DIR . '/'.basename(dirname(__FILE__)).'/'.__CLASS__.'/_css/bootstrap/css/bootstrap-responsive.css');
 			wp_register_style('Bootstrap',  Cloud_Theme__DIR . '/'.basename(dirname(__FILE__)).'/'.__CLASS__.'/_css/bootstrap/css/bootstrap.css');
 	
 			wp_register_style('Options_Pages', Cloud_Theme__DIR . '/'.basename(dirname(__FILE__)).'/'.__CLASS__.'/_css/Options_Pages.css', array( 'thickbox' ) );
@@ -387,8 +465,33 @@ class Cloud_Options_Pages  {
 					foreach ( $section['fields'] as $field_slug => $field ){
 						$_section['fields'][$field_slug] = array();  
 						$_field =& $_section['fields'][$field_slug]; 
-
-						foreach ( $defaults['fields'] as $key => $default_value ) {
+						
+						// establish type ( if it is specificied by user anywhere and is a valid type , else default )						
+						if ( isset( $field['type'] ) ){
+							$type = $field['type'];  							
+						} else {
+							if ( isset ( $section['defaults']['fields']['type'] ) ) {
+								$type = $section['defaults']['fields']['type'];
+							} else if ( isset ( $subpage['defaults']['fields']['type'] ) ) {
+								$type = $subpage['defaults']['fields']['type'];
+							} else if ( isset ( $top_level_page['defaults']['fields']['type'] ) ) {
+								$type = $top_level_page['defaults']['fields']['type'];
+							}
+						}
+						// valid type?						
+						if ( !isset( $type ) || !class_exists( Field_Type::get_class_name( $type ) ) ) { 						
+							$type = Field_Type::$default_type ; 
+						}
+						// set type
+						$_field['type'] = $type ;
+						
+						// go through defaults for that type
+						if ( isset(  $defaults['fields'][$type] ) ) {
+							$field_defaults =  $defaults['fields'][$type] ; 
+						} else {
+							$field_defaults = $defaults['fields']['general'] ;
+						}						
+						foreach ( $field_defaults as $key => $default_value ) {
 							if ( isset( $field[$key] ) ){
 								$set_value = $field[$key];  
 							} else {
@@ -403,6 +506,42 @@ class Cloud_Options_Pages  {
 								}
 							}
 							$_field[$key] = $set_value ;
+							// only if group 
+							if ( isset( $_field['subfields'] ) ){
+								foreach ( $field['subfields'] as $subfield_slug => $subfield ){
+									$_field['subfields'][$subfield_slug]= array();  
+									$_subfield =& $_field['subfields'][$subfield_slug]; 
+									foreach ( $defaults['subfields'] as $key => $default_value ) {
+										if ( isset( $subfield[$key] ) ){
+											$set_value = $subfield[$key];  
+										} else {
+											if ( isset ( $field['defaults']['subfields'][$key] ) ) {
+												$set_value = $field['defaults']['subfields'][$key];
+											} else if ( isset ( $section['defaults']['subfields'][$key] ) ) {
+												$set_value = $section['defaults']['subfields'][$key];
+											} else if ( isset ( $subpage['defaults']['subfields'][$key] ) ) {
+												$set_value = $subpage['defaults']['subfields'][$key];
+											} else if ( isset ( $top_level_page['defaults']['subfields'][$key] ) ) {
+												$set_value = $top_level_page['defaults']['subfields'][$key];
+											} else {
+												$set_value = $default_value; 
+											}
+										}
+										$_subfield[$key] = $set_value ;
+									}
+								}
+							}
+							// toggle section/page if a field has the property settable_defaults = true 
+							// allows for page/section reset defaults controls to be generated
+							if ( $key === 'settable_defaults' && isset( $_field[$key] ) && $_field[$key] == true ){
+								$_section['_has_settable_defaults'] = $_section['_has_settable_defaults'] ? $_section['_has_settable_defaults'] + 1 : 1 ;
+								$_subpage['_has_settable_defaults'] = $_subpage['_has_settable_defaults'] ? $_subpage['_has_settable_defaults'] + 1 : 1 ;;
+								if ( $saved_default = $this->get_option_default( $top_level_slug, $subpage_slug, $section_slug, $field_slug ) ) {
+									$_field['default'] =  $saved_default ; 
+
+								}
+							}
+							
 						}						
 					
 					}
@@ -490,7 +629,7 @@ class Cloud_Options_Pages  {
 		$sections = array(); 
 		foreach ( (array) $wp_settings_sections[$page] as $section ) {
 			$sections[ $section['id'] ]['info'] = $section;
-			$sections[ $section['id'] ]['html'] = call_user_func($section['callback'], $section);
+			$sections[ $section['id'] ]['html'] = call_user_func( $section['callback'], $section );
 		}
 		return $sections;
 	}
@@ -503,7 +642,7 @@ class Cloud_Options_Pages  {
 
 		foreach ( (array) $wp_settings_fields[$page][$section['id']] as $field ) {
 			$field['args']['parent_section_layout'] = $section['callback'][1] ;
-			call_user_func($field['callback'], $field['args'] );
+			call_user_func( $field['callback'], $field['args'] );
 		}
 	}	
 	private function get_page_layout_function( $layout = null ){
@@ -517,7 +656,7 @@ class Cloud_Options_Pages  {
 	}
 	private function get_field_layout_function( $info, $page_slug, $section_slug, $slug , $section_layout_function ) {
 		$type 	= $info['type'];
-		$field_type = class_exists( $type ) ? $type : Field_Type::$default_type;
+		$field_type = Field_Type::get_class_name( $type );
 		
 		// strange, I know, but this is necessary to get the scripts added early enough. At this point, we KNOW they want to field. 
 		add_action( 'admin_enqueue_scripts', array( $field_type, 'enqueue_field_scripts_and_styles' ) ); 		
@@ -538,6 +677,8 @@ function get_theme_options( $subpage_id = null, $section_id = null, $field_id = 
 	$Options_Pages = Cloud_Options_Pages::get_instance();
 	return $Options_Pages->get_options($subpage_id, $subpage_id, $section_id, $field_id, $group_number, $subfield_id );
 }
+
+
 
 
 

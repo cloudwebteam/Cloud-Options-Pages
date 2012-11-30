@@ -1,10 +1,9 @@
 <?php 
-class text extends Field_Type {
-	protected $info ;
-	protected $size = 45; 
-	protected $field ;
-	protected $label ;
-	protected $attributes = array() ;
+// Prevent loading this file directly
+defined( 'ABSPATH' ) || exit;
+
+class Cloud_Field_text extends Field_Type {
+	protected $size = 50; 
 
 	public static function create_field( $args ){
 		$field_type = __CLASS__;

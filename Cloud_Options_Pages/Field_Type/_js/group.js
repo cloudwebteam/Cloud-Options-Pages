@@ -23,6 +23,14 @@ jQuery( function($){
 			}
 		});
 	}
+	var setup_reordering = function( multiple ){
+		multiple.sortable({
+			update: function(){
+				reset_value_keys( multiple );
+			}
+		});
+		
+	};
 	var setup_add_click = function( elems ){
 		elems.unbind('click');
 		elems.click( function(){
@@ -57,6 +65,7 @@ jQuery( function($){
 			inputs.each( function(){
 				var prev_name = $(this).attr('name');
 				if ( prev_name !== undefined ){
+					console.log( 'replaced' );
 					$(this).attr('name', prev_name.replace(/\[\d\]/g, '['+counter+']' ) );
 				}
 			});
@@ -74,6 +83,7 @@ jQuery( function($){
 		} else {
 			setup_remove_click( $(this).find('.remove') );
 		}
+		setup_reordering( $('.multiple') );
 	});	
 	setup_add_click( $('.multiple').find('.add') ) ;
 

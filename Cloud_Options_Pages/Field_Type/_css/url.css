@@ -1,8 +1,9 @@
 /* media url field type */
-.url .url_button {
+.field.type-url .url_button {
 	margin-left: 10px;
 }
-.url .url_field {
+.field.type-url .url_field {
 	margin-top: .875em;
 	font-size: .75em;
+	
 }

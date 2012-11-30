@@ -19,6 +19,7 @@ $options_pages_defaults = array (
 		'layout'		=> 'standard',
 		'style'			=> 'standard',
 		'description' 	=> null,
+		'_has_settable_defaults' => false,
 		'sections'		=> array (
 		)	
 	), 
@@ -28,25 +29,152 @@ $options_pages_defaults = array (
 		'layout'		=> 'standard',
 		'width'			=> 6,
 		'description'	=> null,
+		'_has_settable_defaults' => false,		
 		'fields'		=> array ( 
 		)		
 	),
 	
 	'fields'	=> array (
-		'title'			=> 'Default Field Title',
-		'layout'		=> array (
+		'general' => array(
+			'title'			=> 'Default Field Title',
 			'layout'		=> 'standard',
-			'label'			=> 'left',
-			'description'	=> 'bottom'
+			'cloneable'			=> false,
+			'size'			=> null,
+			'description'	=> null,
+			'editor_list'	=> false,
+			'subfields'		=> null,
+			'settable_defaults' => false,										
+		), 
+		'color'		=> array(
+			'title'				=> 'Color',		
+			'size'				=> 5,
+			'settable_defaults' => true,
+			'layout'			=> 'standard',
+			'cloneable'			=> false,
+			'size'				=> null,
+			'description'		=> null,
+			'editor_list'		=> false,
+			'subfields'			=> null,
+			'settable_defaults' => false,										
 		),
-		'type'			=> 'text', 
-		'cloneable'			=> false,
-		'width'			=> 6,
-		'size'			=> 55,
-		'description'	=> null,
-		'editor_list'	=> false,
-		'fields'		=> null,
+		'content_url' => array(
+			'title'			=> 'Content URL',						
+			'layout'		=> 'standard',
+			'cloneable'		=> false,
+			'description'	=> null,
+			'editor_list'	=> false,
+			'size'			=> 55,
+						
+		),		
+		'date'		=> array(
+			'title'				=> 'Date',		
+			'layout'			=> 'standard',
+			'cloneable'			=> false,
+			'description'		=> null,
+			'editor_list'		=> false,
+			'subfields'			=> null,
+			'settable_defaults' => false,
+			'size'				=> 8,							
+		),		
+		'datetime'		=> array(
+			'title'				=> 'Date/Time',		
+			'layout'			=> 'standard',
+			'cloneable'			=> false,
+			'size'				=> null,
+			'description'		=> null,
+			'editor_list'		=> false,
+			'subfields'			=> null,
+			'settable_defaults' => false,
+			'size'				=> 19							
+		),
+		'group'		=> array(
+			'title'		=> 'Group',		
+			'layout'		=> 'standard',
+			'cloneable'			=> false,
+			'size'			=> null,
+			'description'	=> null,
+			'editor_list'	=> false,
+			'subfields'		=> null,
+			'settable_defaults' => false,				
+		),
+		'info'		=> array(
+			'title'			=> 'Info',
+			'layout'		=> 'standard',
+			'cloneable'		=> false,
+			'description'	=> null,
+			'editor_list'	=> false,
+		),
+		'media_url' => array(
+			'title'			=> 'URL',		
+			'layout'		=> 'standard',
+			'cloneable'		=> false,
+			'size'			=> 55,
+			'description'	=> null,
+			'editor_list'	=> false,
+		),		
+		'select'	=> array(
+			'title'			=> 'Select Menu',				
+			'multiple'		=> false,
+			'options'		=> 'page',
+			'layout'		=> 'standard',
+			'cloneable'		=> false,
+			'size'			=> 30,
+			'description'	=> null,
+			'editor_list'	=> false,
+		),
+		'text' => array(
+			'title'			=> 'Text Input',						
+			'layout'		=> 'standard',
+			'cloneable'			=> false,
+			'description'	=> null,
+			'editor_list'	=> false,
+			'size'			=> 55,			
+		),
+		'time' => array(
+			'title'			=> 'Time',						
+			'layout'		=> 'standard',
+			'cloneable'			=> false,
+			'description'	=> null,
+			'editor_list'	=> false,
+			'size'			=> 6,		
+		),		
+		'textarea' => array(
+			'title'			=> 'Textarea',
+			'layout'		=> 'standard',
+			'cloneable'		=> false,
+			'size'			=> null,
+			'description'	=> null,
+			'editor_list'	=> false,
+			'rows'			=> 3,
+			'cols'			=> 57
+		), 
+		'url' 		=> array(
+			'title'		=> 'Default URL Title',	
+			'layout'		=> 'standard',
+			'cloneable'			=> false,
+			'size'			=> 55,
+			'description'	=> null,
+			'editor_list'	=> false,
+		),	
+		'wysiwyg' => array(
+			'title'			=> 'WYSIWYG',
+			'layout'		=> 'standard',
+			'cloneable'		=> false,
+			'size'			=> null,
+			'description'	=> null,
+			'editor_list'	=> false,
+			'rows'			=> 3,
+			'cols'			=> 57
+		), 
+	),
+	'subfields' => array(
+		'title'			=> 'Default Subfield Title',
+		'type' 			=> 'text',
+		'size'			=> null,
+		'description'	=> null, 
 		'multiple'		=> false,
-		'options'		=> 'page'
+		'options'		=> 'page', 
+		'settable_defaults' => false
+	
 	)
 ); 

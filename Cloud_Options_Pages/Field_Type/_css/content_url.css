@@ -1,0 +1,46 @@
+#wp-link-dialog .query-results {
+}
+#wp-link-dialog .loading {
+	height: 0;
+	text-align: center;
+	padding-top: 1em;
+}
+#wp-link-dialog .loading  img {
+	display: none;
+}
+#wp-link-dialog .query-results .list {
+	background:#fff;
+	display: none;
+}
+#wp-link-dialog .query-results .list li {
+	border-bottom: 1px solid #efefef;
+	height: 2.5em;
+	line-height: 2.5em;
+	margin: 0;
+}
+#wp-link-dialog .query-results .list li:first-child {
+	border-top: 1px solid #efefef;
+}
+#wp-link-dialog .query-results .list li a {
+	display: block;
+	padding: 0 10px;
+}
+#wp-link-dialog .query-results .list li a:hover {
+	background: #fafafa;
+}
+#wp-link-dialog .query-results .list li a .type {
+	float: right;
+	text-decoration: none;
+	color: #999;
+	text-transform: uppercase;
+	font-size: .875em;
+}
+#wp-link-dialog .submitbox .cancel  {
+	float: left;
+	width: 50%;
+}
+#wp-link-dialog .submitbox .update  {
+	text-align: right;
+	float: right; 
+	width: 49%;
+}

@@ -349,7 +349,8 @@ article,
           box-sizing: border-box;
 }
 
-.cloud .row-fluid [class*="span"]:first-child {
+.cloud .row-fluid [class*="span"]:first-child,
+.cloud .row-fluid .span12 {
   margin-left: 0;
 }
 

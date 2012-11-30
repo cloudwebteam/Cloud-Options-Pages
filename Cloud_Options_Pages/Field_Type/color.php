@@ -1,5 +1,8 @@
 <?php 
-class color extends Field_Type {
+// Prevent loading this file directly
+defined( 'ABSPATH' ) || exit;
+
+class Cloud_Field_color extends Field_Type {
 	protected $info ;
 	protected $size = 45; 
 	protected $field ;
@@ -16,27 +19,30 @@ class color extends Field_Type {
 	}	
 
 	protected function get_field_html( $args ){	
-		$this->enabled = true;	
-		$hidden = $this->enabled ? '' : 'hidden' ; 
-		$field = '<span class="option '.$hidden.'"><input size="5" class="color-picker-input miniColors" id="'.$this->info['prefix'] . $this->info['id'] . '" name="'.$this->info['name'].'" type="text" value="'.$this->info['value'].'" /></span>';
+		$settable_defaults = true;
+		if ( $settable_defaults ){
+			$default_swab = '<div class="default-swab-container"><span class="default-swab" title="Click for default color" style="background:'.$this->info['default'] .'">df</span></div>' ;
+		} else { 
+			$default_swab = '';
+		}		
+		$hidden = $this->info['enabled'] ? '' : 'style="display: none; "' ; 			
+		$field = '<div class="option">'.$default_swab.'<div class="color-toggle" '.$hidden.' ><input size="5" class="color-picker-input miniColors" id="'.$this->info['prefix'] . $this->info['id'] . '" name="'.$this->info['name'].'" type="text" value="'.$this->info['value'].'" /></div></div>';
 		return $field;
 	}
 	protected function get_field_components( $args ){
-		$has_default = true; 
-		if ( $has_default ){
-			$this->default_swab = '<span class="default-swab" title="Click for default color" style="background:'.$this->info['value'] .'">df</span>' ;
-		} else { 
-			$this->default_swab = '<span class="no-default">no</span>';
-		}	
+
 		
-		$this->enabler = '<input type="checkbox" name="'. $this->info['name'].'" class="option_enabler color" />';
+		$checked = $this->info['enabled'] ? 'checked="checked"' : '' ;
+		$this->enabler = '<span class="enable-override"><input type="checkbox" value="true" name="'. $this->info['enabled_name'].'" id="'.$this->info['enabled_name'].'" class="option_enabler color" '.$checked. ' /><label for="'.$this->info['enabled_name'].'">Override default</span></label>';
 	}
 	public function enqueue_field_scripts_and_styles(){
 		// if they exist, enqueues css and js files with this fields name
 		parent::register_scripts_and_styles( __CLASS__ ); 
 		wp_enqueue_script( 'miniColors', parent::get_include_path(). '/_js/jquery.miniColors.min.js', array( 'jquery' ) ); 
 		wp_enqueue_style( 'miniColors', parent::get_include_path(). '/_css/jquery.miniColors.css' ); 
-		
+		wp_enqueue_script( 'jquery-ui-core' );
+		wp_enqueue_script( 'jquery-ui-dialog' ); 
+
 	}
 	
 	private function get_image(){
@@ -46,18 +52,17 @@ class color extends Field_Type {
 			return '<img class="hidden preview-image img-polaroid" title="'.$this->info['value'].'" />';	
 		}
 	}	
-  
-  
+
   
    /**
 	* LAYOUTS FOR THIS FIELD
 	*/
 	public function standard ( $args ){
 		?>
-		<tr valign="top">
+		<tr valign="top" <?php echo $this->attributes; ?>>
 			<th scope="row"><?php echo $this->label; ?></th>
-			<td <?php echo $this->attributes; ?>>
-				<?php echo $this->default_swab; ?><?php echo $this->field; ?><?php echo $this->enabler; ?>
+			<td>
+				<?php echo $this->field; ?><?php echo $this->enabler; ?>
 				<?php echo $this->description; ?>
 			</td>
 		</tr>
@@ -72,10 +77,12 @@ class color extends Field_Type {
 		?>
 			<div <?php echo $this->attributes; ?>>
 				<p><?php echo $this->label; ?></p>			
-				<p><?php echo $this->default_swab; ?><?php echo $this->field; ?><?php echo $this->enabler; ?></p>
+				<p><?php echo $this->field; ?><?php echo $this->enabler; ?></p>
 				<p><?php echo $this->description; ?></p>
 			</div>		
 		<?php
 	}
 	
+	
 }
+

@@ -1,5 +1,8 @@
 <?php 
-class select extends Field_Type {
+// Prevent loading this file directly
+defined( 'ABSPATH' ) || exit;
+
+class Cloud_Field_select extends Field_Type {
 	protected $info ;
 	protected $field ;
 	protected $label ;
