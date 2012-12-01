@@ -40,13 +40,12 @@ class Cloud_Field_content_url extends Field_Type {
 		<div id="<?php echo self::$wp_link_dialog_id; ?>" style="display: none;">
 			<form id="wp-link-dialog" tabindex="-1">
 				<?php wp_nonce_field( 'internal-linking', '_ajax_linking_nonce', false ); ?>
-				<div class="link-search-wrapper">
-					<label>
-						<span><?php _e( 'Search' ); ?></span>
-						<input type="text" id="search-field" class="link-search-field" tabindex="60" autocomplete="off" />
-					</label>
+				<div class="link-search-wrapper cf">
+					<label for='link-search-field'>Search Site</label>
+					<input type="text" id="link-search-field" class="link-search-field" tabindex="60" autocomplete="off" />
 				</div>
 				<div class="query-results">
+					<h3 class="title"><span>Results</span></h3>
 					<div class="loading">
 						<img class="waiting" src="<?php echo esc_url( admin_url( 'images/wpspin_light.gif' ) ); ?>" alt="" />
 					</div>						

@@ -74,15 +74,25 @@ jQuery( function($){
 				}
 			});
 			// change the "code" link
-			var prev_copy_to_use = $(this).find('input.copy').attr('value') ;			
-			$(this).find('input.copy').val( prev_copy_to_use.replace(/ \d/g, ' ' + counter ) );
+			if ( $(this).find('input.copy').size() > 0 ){
+				var prev_copy_to_use = $(this).find('input.copy').attr('value') ;			
+				$(this).find('input.copy').val( prev_copy_to_use.replace(/ \d/g, ' ' + counter ) );
+			}
 			counter++;
 			
 			// change the clone number
 			$(this).find('.number').text( counter ); 
 		});
 	}
+
 	$('.cloneable').each( function(){
+		if ( $(this).parents('.no-sort').size() == 0 ){	
+			$(this).sortable({
+				update: function(){
+					reset_value_keys( $(this) );
+				}	
+			}); 
+		}
 		if ( $(this).find('.clone').size() == 1 ){
 			$(this).find('.remove').addClass('disabled');
 		} else {

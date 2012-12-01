@@ -51,9 +51,11 @@ class Cloud_Field_group extends Field_Type {
 			$type 	= isset( $subfield['type'] ) ? $subfield['type'] : 'standard' ;
 			$field_type = class_exists( Field_Type::get_class_name( $type ) ) ? $type : parent::$default_type;
 			$field_type_class_name = Field_Type::get_class_name( $field_type );
+			// switch "copy_to_use" availability together
+			$subfield['code_link'] = $this->info['code_link']; 
+ 
 			// gotta compile an array that will be able to create the field
 			$field_args = $this->args; 
-			
 			$field_args['subfield']	= $subfield_id;
 			$field_args['group_number'] = $group_number; 
 			$field_args['group_values'] = $group ; 			
@@ -67,7 +69,11 @@ class Cloud_Field_group extends Field_Type {
 	}
 
 	protected function get_field_components( $args ){
-		$this->add_and_remove = '<div class="add-remove"><a class="add">+</a><a class="remove">-</a></div>';		
+		if ( $this->info['clone_controls'] ){
+			$this->add_and_remove = '<div class="add-remove"><a class="add">+</a><a class="remove">-</a></div>';		
+		} else {
+			$this->add_and_remove = '' ; 
+		}
 	}
 	
 	protected function get_attributes( $field_info ){

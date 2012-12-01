@@ -36,16 +36,22 @@ $options_pages_defaults = array (
 	
 	'fields'	=> array (
 		'general' => array(
-			'title'			=> 'Default Field Title',
-			'layout'		=> 'standard',
+			'title'				=> 'Default Field Title',
+			'layout'			=> 'standard',
 			'cloneable'			=> false,
-			'size'			=> null,
-			'description'	=> null,
-			'editor_list'	=> false,
-			'subfields'		=> null,
-			'settable_defaults' => false,										
+			'size'				=> null,
+			'description'		=> null,
+			'editor_list'		=> false,
+			'subfields'			=> null,
+			'settable_defaults' => false,
+			'code_link' 		=> true, 
+			'clone_controls'	=> true,
+			'sort'				=> true, 
+			'_lock'				=> false			
+					
 		), 
 		'color'		=> array(
+		
 			'title'				=> 'Color',		
 			'size'				=> 5,
 			'settable_defaults' => true,
@@ -55,47 +61,64 @@ $options_pages_defaults = array (
 			'description'		=> null,
 			'editor_list'		=> false,
 			'subfields'			=> null,
-			'settable_defaults' => false,										
+			'settable_defaults' => false,									
+			'code_link' 		=> true, 
+			'clone_controls'	=> true, 
+			'sort'				=> true, 
+			'_lock'				=> false				
 		),
 		'content_url' => array(
 			'title'			=> 'Content URL',						
 			'layout'		=> 'standard',
 			'cloneable'		=> false,
 			'description'	=> null,
+			'size'			=> 55,			
 			'editor_list'	=> false,
-			'size'			=> 55,
-						
+			'code_link' 	=> true, 
+			'clone_controls'=> true, 
+			'sort'			=> true,
+			'_lock'			=> false				
+								
 		),		
 		'date'		=> array(
 			'title'				=> 'Date',		
 			'layout'			=> 'standard',
 			'cloneable'			=> false,
 			'description'		=> null,
-			'editor_list'		=> false,
 			'subfields'			=> null,
-			'settable_defaults' => false,
-			'size'				=> 8,							
+			'size'				=> 8,	
+			'editor_list'		=> false,			
+			'code_link' 		=> true, 
+			'clone_controls'	=> true	, 
+			'sort'				=> true,
+			'_lock'				=> false															
 		),		
 		'datetime'		=> array(
 			'title'				=> 'Date/Time',		
 			'layout'			=> 'standard',
 			'cloneable'			=> false,
-			'size'				=> null,
 			'description'		=> null,
-			'editor_list'		=> false,
 			'subfields'			=> null,
-			'settable_defaults' => false,
-			'size'				=> 19							
+			'size'				=> 19,
+			'editor_list'		=> false,
+			'code_link' 		=> true, 
+			'clone_controls'	=> true	 , 
+			'sort'				=> true	,
+			'_lock'				=> false				
+													
 		),
 		'group'		=> array(
-			'title'		=> 'Group',		
+			'title'			=> 'Group',		
 			'layout'		=> 'standard',
-			'cloneable'			=> false,
+			'cloneable'		=> false,
 			'size'			=> null,
 			'description'	=> null,
-			'editor_list'	=> false,
 			'subfields'		=> null,
-			'settable_defaults' => false,				
+			'editor_list'	=> false,			
+			'code_link' 	=> true, 
+			'clone_controls'=> true	,
+			'sort'			=> true, 
+			'_lock'			=> false									
 		),
 		'info'		=> array(
 			'title'			=> 'Info',
@@ -103,6 +126,10 @@ $options_pages_defaults = array (
 			'cloneable'		=> false,
 			'description'	=> null,
 			'editor_list'	=> false,
+			'code_link' 	=> true, 
+			'clone_controls'=> true, 
+			'sort'			=> true, 
+			'_lock'			=> false											
 		),
 		'media_url' => array(
 			'title'			=> 'URL',		
@@ -111,6 +138,10 @@ $options_pages_defaults = array (
 			'size'			=> 55,
 			'description'	=> null,
 			'editor_list'	=> false,
+			'code_link' 	=> true, 
+			'clone_controls'=> true, 
+			'sort'			=> true,
+			'_lock'			=> false											
 		),		
 		'select'	=> array(
 			'title'			=> 'Select Menu',				
@@ -121,50 +152,75 @@ $options_pages_defaults = array (
 			'size'			=> 30,
 			'description'	=> null,
 			'editor_list'	=> false,
+			'code_link' 	=> true, 
+			'clone_controls'=> true	,
+			'sort'			=> true,
+			'_lock'			=> false											
 		),
 		'text' => array(
-			'title'			=> 'Text Input',						
-			'layout'		=> 'standard',
+			'title'				=> 'Text Input',						
+			'layout'			=> 'standard',
 			'cloneable'			=> false,
-			'description'	=> null,
-			'editor_list'	=> false,
-			'size'			=> 55,			
+			'description'		=> null,
+			'size'				=> 55,	
+			'editor_list'		=> false,				
+			'code_link' 		=> true, 
+			'clone_controls'	=> true, 
+			'sort'				=> true, 
+			'_lock'				=> false						
 		),
 		'time' => array(
 			'title'			=> 'Time',						
 			'layout'		=> 'standard',
-			'cloneable'			=> false,
+			'cloneable'		=> false,
 			'description'	=> null,
-			'editor_list'	=> false,
-			'size'			=> 6,		
+			'size'			=> 6,	
+			'editor_list'	=> false,			
+			'code_link' 	=> true, 
+			'clone_controls'=> true, 
+			'sort'			=> true,
+			'_lock'			=> false				
+					
 		),		
 		'textarea' => array(
 			'title'			=> 'Textarea',
 			'layout'		=> 'standard',
 			'cloneable'		=> false,
-			'size'			=> null,
 			'description'	=> null,
-			'editor_list'	=> false,
 			'rows'			=> 3,
-			'cols'			=> 57
+			'cols'			=> 57,
+			'editor_list'	=> false,			
+			'code_link' 	=> true, 
+			'clone_controls'=> true, 
+			'sort'			=> true,
+			'_lock'			=> false										
 		), 
 		'url' 		=> array(
-			'title'		=> 'Default URL Title',	
+			'title'			=> 'Default URL Title',	
 			'layout'		=> 'standard',
-			'cloneable'			=> false,
+			'cloneable'		=> false,
 			'size'			=> 55,
 			'description'	=> null,
 			'editor_list'	=> false,
+			'code_link' 	=> true, 
+			'clone_controls'=> true,
+			'sort'			=> true,
+			'_lock'			=> false				
+							
 		),	
 		'wysiwyg' => array(
 			'title'			=> 'WYSIWYG',
 			'layout'		=> 'standard',
 			'cloneable'		=> false,
-			'size'			=> null,
 			'description'	=> null,
-			'editor_list'	=> false,
 			'rows'			=> 3,
-			'cols'			=> 57
+			'cols'			=> 57,
+			'editor_list'	=> false,			
+			'code_link' 	=> true, 
+			'clone_controls'=> true,
+			'sort'			=> true,
+			'_lock'			=> false				
+									
 		), 
 	),
 	'subfields' => array(
@@ -174,7 +230,8 @@ $options_pages_defaults = array (
 		'description'	=> null, 
 		'multiple'		=> false,
 		'options'		=> 'page', 
-		'settable_defaults' => false
+		'settable_defaults' => false, 
+		'code_link'		=> true
 	
 	)
 ); 

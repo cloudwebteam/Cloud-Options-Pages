@@ -96,6 +96,15 @@ class Field_Type {
 		$info['title'] = $args['info']['title'];
 		$info['to_retrieve'] = 	$to_retrieve;				
 		$info['cloneable'] = $cloneable ; 
+		if ( $args['info']['_lock'] ){
+			$info['clone_controls'] = false;
+			$info['code_link'] = false;
+			$info['sort'] = false;
+		} else {
+			$info['clone_controls'] = isset( $args['info']['clone_controls'] ) ? $args['info']['clone_controls'] : true; 
+			$info['code_link'] = isset( $args['info']['code_link'] ) ? $args['info']['code_link'] : true; 
+			$info['sort'] = isset( $args['info']['sort'] ) ? $args['info']['sort'] : true; 
+		}
 		$info['name'] = $name; 
 		$info['description'] = isset( $args['info']['description'] ) ? $args['info']['description'] : null;
 		$info['id']   = $field_slug;
@@ -109,7 +118,6 @@ class Field_Type {
 		$info['fields'] = isset( $args['info']['fields'] ) ? $args['info']['fields'] : ''; 
 		$info['width'] = isset( $args['info']['width'] ) ? $args['info']['width'] : 6; 
 		$info['is_subfield'] = $subfield_slug !== '' ? true : false;
-
 
 		return $info;
 	}
@@ -145,15 +153,17 @@ class Field_Type {
 			$clones[0] = $this->make_clone( 0, '', $name, $parent_to_retrieve); 
 		}
 		$output = '';
-		$output .= '<div class="cloneable cf">';
+		$output .= '<ul class="cloneable cf">';
 		foreach( $clones as $clone_number => $clone ){
-			$output .= '<div class="clone cf">' ;
+			$output .= '<li class="clone cf">' ;
 			$output .= '<div class="number">'.($clone_number+1).'</div>';
 			$output .= $clone;
-			$output .= '<div class="add-remove"><a class="remove">-</a><a class="add">+</a></div>';
-			$output .= '</div>';
+			if ( $this->info['clone_controls'] ){
+				$output .= '<div class="add-remove"><a class="remove">-</a><a class="add">+</a></div>';
+			}
+			$output .= '</li>';
 		}
-		$output .= '</div>';
+		$output .= '</ul>';
 		
 		$this->field = $output;
 		$this->info['to_retrieve'] = $parent_to_retrieve ; 
@@ -174,7 +184,11 @@ class Field_Type {
 		return $label;
 	}
 	protected static function get_copy_to_use( $field_info ){
-		$to_use = "<span class='copy_to_use'><a rel='copy_to_use'>&#36;use;</a><span class='copy-container'><input class='copy' type='text' value='".$field_info['to_retrieve']."' /></span></span>";
+		if ($field_info['code_link'] ){
+			$to_use = "<span class='copy_to_use'><a rel='copy_to_use'>&#36;use;</a><span class='copy-container'><input class='copy' type='text' value='".$field_info['to_retrieve']."' /></span></span>";
+		} else {
+			$to_use = '';
+		}
 		return $to_use;
 	}
 	protected function get_description( $field_info ){
@@ -185,6 +199,7 @@ class Field_Type {
 		$classes = array(); 
 		$classes[] = 'field' ;
 		$classes[] = 'type-'.$this->type ;
+		$classes[] = $field_info['sort'] ? '' : 'no-sort'; 
 		if ( $field_info['parent_layout'] === 'grid' ){
 			$classes[] = isset( $field_info['width'] ) ? 'span' . $field_info['width'] : 'span6';
 		}

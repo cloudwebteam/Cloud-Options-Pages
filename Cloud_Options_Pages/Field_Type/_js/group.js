@@ -24,12 +24,13 @@ jQuery( function($){
 		});
 	}
 	var setup_reordering = function( multiple ){
-		multiple.sortable({
-			update: function(){
-				reset_value_keys( multiple );
-			}
-		});
-		
+		if ( $(this).parents('.no-sort').size() == 0 ){	
+			multiple.sortable({
+				update: function(){
+					reset_value_keys( multiple );
+				}
+			});
+		}
 	};
 	var setup_add_click = function( elems ){
 		elems.unbind('click');

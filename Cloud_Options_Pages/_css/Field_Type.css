@@ -58,6 +58,12 @@
 }
 
 /* cloneable css */
+.clone {
+	cursor: move;
+}
+.no-sort .clone {
+	cursor: default;
+}
 .clone input {
 	margin-bottom: 0;
 }

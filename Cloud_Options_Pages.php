@@ -284,12 +284,12 @@ class Cloud_Options_Pages  {
 			// SCRIPTS
 			wp_register_script('Bootstrap',  Cloud_Theme__DIR . '/'.basename(dirname(__FILE__)).'/'.__CLASS__.'/_css/bootstrap/js/bootstrap.min.js'); 
 			wp_register_script('scrollTo', Cloud_Theme__DIR . '/__inc/js/jquery.scrollTo-1.4.3.1-min.js'); 
-			wp_register_script('Options_Pages', Cloud_Theme__DIR . '/'.basename(dirname(__FILE__)).'/'.__CLASS__.'/_js/Options_Pages.js', array( 'thickbox', 'media-upload' ) ); 
+			wp_register_script('Options_Pages', Cloud_Theme__DIR . '/'.basename(dirname(__FILE__)).'/'.__CLASS__.'/_js/Options_Pages.js', array( 'thickbox', 'media-upload', 'jquery-ui-core', 'jquery-ui-sortable' ) ); 
 			wp_register_script('Field_Type', Cloud_Theme__DIR . '/'.basename(dirname(__FILE__)).'/'.__CLASS__.'/_js/Field_Type.js' ) ;
 			wp_enqueue_script('Bootstrap');
 			wp_enqueue_script('scrollTo');
 			wp_enqueue_script('Field_Type');			
-			wp_enqueue_script('Options_Pages');
+			wp_enqueue_script('Options_Pages');		
 			wp_localize_script('Options_Pages', 'wp_vars', array(
 				'ajax_url' 	=> admin_url( 'admin-ajax.php' ),
 				'is_options_page' => isset( $_GET['page'] ) && $_GET['page'] 
@@ -677,8 +677,6 @@ function get_theme_options( $subpage_id = null, $section_id = null, $field_id = 
 	$Options_Pages = Cloud_Options_Pages::get_instance();
 	return $Options_Pages->get_options($subpage_id, $subpage_id, $section_id, $field_id, $group_number, $subfield_id );
 }
-
-
 
 
 
