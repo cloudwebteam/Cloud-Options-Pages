@@ -3,7 +3,7 @@ jQuery( function($){
 	
 	var popup = $( '#' + link_popup_id + ' #wp-link-dialog' ) ; 
 	var popup_nonce = popup.find('#_ajax_linking_nonce').val() ; 
-	var popup_search = popup.find( '#search-field' );
+	var popup_search = popup.find( '.link-search-field' );
 	var content_list = {
 		list : popup.find( '.query-results ul' ), 
 		init : function( e ){
@@ -81,7 +81,10 @@ jQuery( function($){
 				popup_search.val(''); 
 				content_list.list.html( '' ); 
 				input.removeClass('target' );
-			}
+			}, 
+			height: 400, 
+			width: 300,
+			autoSize: false
 		} );
 	});
 	
