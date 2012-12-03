@@ -19,21 +19,26 @@ class Cloud_Field_color extends Field_Type {
 	}	
 
 	protected function get_field_html( $args ){	
-		$settable_defaults = true;
-		if ( $settable_defaults ){
+
+		if ( $this->info['settable_defaults'] ){
 			$default_swab = '<div class="default-swab-container"><span class="default-swab" title="Click for default color" style="background:'.$this->info['default'] .'">df</span></div>' ;
+			$checked = $this->info['enabled'] ? 'checked="checked"' : '' ;
+			$this->enabler = '<span class="enable-override"><input type="checkbox" value="true" name="'. $this->info['enabled_name'].'" id="'.$this->info['enabled_name'].'" class="option_enabler color" '.$checked. ' /><label for="'.$this->info['enabled_name'].'">Override default</span></label>';
+			$hidden = $this->info['enabled'] ? '' : 'style="display: none; "' ; 			
 		} else { 
 			$default_swab = '';
-		}		
-		$hidden = $this->info['enabled'] ? '' : 'style="display: none; "' ; 			
+			$this->enabler = '';
+			$hidden = '';
+		}				
+
 		$field = '<div class="option">'.$default_swab.'<div class="color-toggle" '.$hidden.' ><input size="5" class="color-picker-input miniColors" id="'.$this->info['prefix'] . $this->info['id'] . '" name="'.$this->info['name'].'" type="text" value="'.$this->info['value'].'" /></div></div>';
-		return $field;
+
+
+		return $field . $this->enabler;
 	}
 	protected function get_field_components( $args ){
 
 		
-		$checked = $this->info['enabled'] ? 'checked="checked"' : '' ;
-		$this->enabler = '<span class="enable-override"><input type="checkbox" value="true" name="'. $this->info['enabled_name'].'" id="'.$this->info['enabled_name'].'" class="option_enabler color" '.$checked. ' /><label for="'.$this->info['enabled_name'].'">Override default</span></label>';
 	}
 	public function enqueue_field_scripts_and_styles(){
 		// if they exist, enqueues css and js files with this fields name
@@ -62,7 +67,7 @@ class Cloud_Field_color extends Field_Type {
 		<tr valign="top" <?php echo $this->attributes; ?>>
 			<th scope="row"><?php echo $this->label; ?></th>
 			<td>
-				<?php echo $this->field; ?><?php echo $this->enabler; ?>
+				<?php echo $this->field; ?>
 				<?php echo $this->description; ?>
 			</td>
 		</tr>

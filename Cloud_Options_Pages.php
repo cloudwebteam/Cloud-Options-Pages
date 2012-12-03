@@ -123,7 +123,7 @@ class Cloud_Options_Pages  {
 	}
 	public function get_options( $top_page_slug = null, $page_slug = null , $section_slug = null , $field_slug = null , $group_number = null, $subfield_slug = null ){
 		// ha ha, overkill...but it might be useful to be able to grab individual group values
-		if ( isset( $this->options[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number][$subfield_slug] ) ) {
+		if ( is_array( $this->options[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number] ) && isset( $this->options[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number][$subfield_slug] ) ) {
 			return $this->options[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number][$subfield_slug];
 		} else if ( is_int( $group_number ) && isset( $this->options[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number] ) ) {
 			return $this->options[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number] ;
@@ -319,9 +319,7 @@ class Cloud_Options_Pages  {
 		$load_folder = $subfolder ?  $base_path . '/' . $subfolder : $base_path;
 
 		$load_list = array( ) ;
-		
 		$load_list = array_merge( $load_list , self::glob_php( $load_folder  ) );
-		
 		foreach ( $load_list as $file )
 		{
 			include $file;
@@ -505,13 +503,16 @@ class Cloud_Options_Pages  {
 									$set_value = $default_value; 
 								}
 							}
-							$_field[$key] = $set_value ;
+							// if something has already set the master value (like for the default (below!) )
+							if ( !isset( $_field[$key] ) ){							
+								$_field[$key] = $set_value ;
+							}
 							// only if group 
 							if ( isset( $_field['subfields'] ) ){
 								foreach ( $field['subfields'] as $subfield_slug => $subfield ){
 									$_field['subfields'][$subfield_slug]= array();  
 									$_subfield =& $_field['subfields'][$subfield_slug]; 
-									foreach ( $defaults['subfields'] as $key => $default_value ) {
+									foreach ( $defaults['fields'] as $key => $default_value ) {
 										if ( isset( $subfield[$key] ) ){
 											$set_value = $subfield[$key];  
 										} else {
@@ -527,13 +528,17 @@ class Cloud_Options_Pages  {
 												$set_value = $default_value; 
 											}
 										}
+										if ( $key === 'settable_defaults' && isset( $_subfield[$key] ) && $_subfield[$key] == true ){
+											$_section['_has_settable_defaults'] = $_section['_has_settable_defaults'] ? $_section['_has_settable_defaults'] + 1 : 1 ;
+											$_subpage['_has_settable_defaults'] = $_subpage['_has_settable_defaults'] ? $_subpage['_has_settable_defaults'] + 1 : 1 ;
+										}										
 										$_subfield[$key] = $set_value ;
 									}
 								}
 							}
 							// toggle section/page if a field has the property settable_defaults = true 
 							// allows for page/section reset defaults controls to be generated
-							if ( $key === 'settable_defaults' && isset( $_field[$key] ) && $_field[$key] == true ){
+							if ( $key === 'settable_defaults' && isset( $_field[$key] ) && $_field[$key] == true && !$field['cloneable'] ){
 								$_section['_has_settable_defaults'] = $_section['_has_settable_defaults'] ? $_section['_has_settable_defaults'] + 1 : 1 ;
 								$_subpage['_has_settable_defaults'] = $_subpage['_has_settable_defaults'] ? $_subpage['_has_settable_defaults'] + 1 : 1 ;;
 								if ( $saved_default = $this->get_option_default( $top_level_slug, $subpage_slug, $section_slug, $field_slug ) ) {

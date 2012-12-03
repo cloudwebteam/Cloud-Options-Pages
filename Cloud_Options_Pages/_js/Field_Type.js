@@ -41,7 +41,8 @@ jQuery( function($){
 			var container = $(this).parents('.cloneable'); 	
 			var counter = container.find('.clone').size();
 			var clone = $(this).parents('.clone');
-			
+/* 			var clone_type = new_input.data('type') ; */
+						
 			// copy an existing clone 
 			var new_input = clone.clone(true).hide();
 			//get rid of the values
@@ -51,8 +52,8 @@ jQuery( function($){
 			new_input.find('.media-url img').addClass('hidden');
 			clone.after( new_input );
 			new_input.fadeIn(); 
+
 			//update all the value keys
-			
 			reset_value_keys( container );
 			
 			container.find('.remove').removeClass('disabled');

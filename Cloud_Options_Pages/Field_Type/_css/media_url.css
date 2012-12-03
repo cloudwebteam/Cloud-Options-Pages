@@ -7,3 +7,9 @@
 	margin-left: 10px;
 	
 }
+.field.type-media_url .url_field {
+	margin: 0 0 0 10px;
+	padding: 3px 6px;
+	font-size: .875em;
+	
+}

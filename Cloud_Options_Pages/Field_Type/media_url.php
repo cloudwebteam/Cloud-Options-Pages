@@ -19,13 +19,21 @@ class Cloud_Field_media_url extends Field_Type {
 	}	
 
 	protected function get_field_html( $args ){
+		$this->url_button = '<input class="upload_button btn btn-mini" type="button" name="upload_button" value="Find or Upload file" />';
 		$this->size = isset( $args['info']['size'] ) ? $args['info']['size'] : $this->size; 	
-		$field = '<input type="hidden" id="'.$this->info['prefix'] . $this->info['id'] . '" name="'.$this->info['name'] . '" size="'.$this->size.'" type="text" value="' . $this->info['value'] . '" />';
-		return $field;
+
+		if ( $args['info']['use_image'] ){
+			$this->image = $this->get_image();	
+			$input_type = 'hidden' ;
+		} else {
+			$this->image = '';
+			$input_type = 'text' ;
+		}
+		$field = '<input class="url_field" type="'.$input_type.'" id="'.$this->info['prefix'] . $this->info['id'] . '" name="'.$this->info['name'] . '" size="'.$this->size.'" type="text" value="' . $this->info['value'] . '" />';
+		
+		return $this->url_button .$field . $this->image;
 	}
 	protected function get_field_components( $args ){
-		$this->url_button = '<input class="upload_button btn btn-mini" type="button" name="upload_button" value="Find or Upload file" />';
-		$this->image = $this->get_image();	
 	}
 	public function enqueue_field_scripts_and_styles(){
 		// if they exist, enqueues css and js files with this fields name
@@ -54,7 +62,7 @@ class Cloud_Field_media_url extends Field_Type {
 		<tr valign="top" <?php echo $this->attributes; ?>>
 			<th scope="row"><?php echo $this->label; ?></th>
 			<td <?php echo $this->attributes; ?>>
-				<p><?php echo $this->field; ?><?php echo $this->url_button; ?><?php echo $this->image; ?></p>
+				<p><?php echo $this->field; ?></p>
 				<p><?php echo $this->description; ?></p>
 			</td>
 		</tr>
@@ -69,7 +77,7 @@ class Cloud_Field_media_url extends Field_Type {
 		?>
 			<div <?php echo $this->attributes; ?>>
 				<p><?php echo $this->label; ?></p>			
-				<p><?php echo $this->field; ?><?php echo $this->url_button; ?><?php echo $this->image; ?></p>
+				<p><?php echo $this->field; ?></p>
 				<p><?php echo $this->description; ?></p>
 			</div>		
 		<?php

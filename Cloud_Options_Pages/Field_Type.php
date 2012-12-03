@@ -74,11 +74,9 @@ class Field_Type {
 
 		
 		$enabled = $Options_Page->is_enabled( $top_level_slug, $page_slug, $section_slug, $field_slug ); 
-		$default_value =  isset( $args['info']['default'] ) ? $args['info']['default'] : ''; 
 		$value = $Options_Page->get_option( $top_level_slug, $page_slug, $section_slug, $field_slug ); 
 		$cloneable =  isset( $args['info']['cloneable'] ) ? $args['info']['cloneable'] : false;
 		$user_enabled_override_name = $page_slug.'[enabled]['.$section_slug.']['.$field_slug.']';
-		
 		
 		// part of a group?
 		if ( $subfield_slug ){
@@ -87,9 +85,11 @@ class Field_Type {
 			$name =  $page_slug.'['.$section_slug.']['.$field_slug.']['.$group_number.']['.$subfield_slug.']'; 	
 			$to_retrieve = 	'get_theme_options( "'. $page_slug.'", "'. $section_slug . '" , "'. $field_slug.'" , ' . $group_number .' , "' .$subfield_slug .'" )';	
 			$cloneable = false;
-			
+			$saved_default = $Options_Page->get_option_default( $top_level_slug, $page_slug, $section_slug, $field_slug, $group_number, $subfield_slug );		
+			$default_value = $saved_default ? $saved_default : ( isset( $args['info']['default'] ) ? $args['info']['default'] : '' ); 
 		// plain old field
-		} else {
+		} else {		
+			$default_value =  isset( $args['info']['default'] ) ? $args['info']['default'] : ''; 
 			$name =  $page_slug.'['.$section_slug.']['.$field_slug.']'; 
 			$to_retrieve = 'get_theme_options( "'. $page_slug.'", "'. $section_slug . '" , "'. $field_slug.'" )' ;			
 		}
@@ -110,6 +110,8 @@ class Field_Type {
 		$info['id']   = $field_slug;
 		$info['value'] = $value ? $value : $default_value;
 		$info['default'] = $default_value; 
+		$info['settable_defaults'] = isset( $args['info']['settable_defaults'] ) ? $args['info']['settable_defaults'] : false;
+		
 		$info['enabled'] = $enabled ;
 		$info['enabled_name'] = $user_enabled_override_name; 		
 		$info['parent_layout'] = $args['parent_section_layout'];
@@ -140,8 +142,11 @@ class Field_Type {
 		$value = $this->info['value'] ;
 		$parent_to_retrieve = $this->info['to_retrieve']; 
 		$this->saved_values = $Options_Page->get_option( $top_level_slug, $page_slug, $section_slug, $field_slug ); 
-		$this->args = $args;
+		$this->args = $args;		
 		
+		$this->info['settable_defaults'] = false ;
+
+
 		$clones = array(); 
 		if ( is_array( $this->saved_values ) ){
 
@@ -169,11 +174,11 @@ class Field_Type {
 		$this->info['to_retrieve'] = $parent_to_retrieve ; 
 		 
 	}
-	protected function make_clone( $clone_number, $clone_value, $name, $to_retrieve ){	
+	protected function make_clone( $clone_number, $clone_value, $name, $to_retrieve  ){	
+	
 		$this->info['name'] = $name.'['.$clone_number.']';
 		$this->info['value'] = $clone_value;	
 		$this->info['to_retrieve'] = $to_retrieve ;
-
 		$clone = $this->get_field_html( $this->args ); 
 
 		return $clone . self::get_copy_to_use( $this->info );
@@ -261,7 +266,6 @@ class Field_Type {
 	}
 	protected static function register_scripts_and_styles( $class_name, $subfield_types = null ){
 		$field_type = substr( $class_name, strlen(Field_Type::$class_prefix) ); 
-
 		if ( $field_type ){			
 			if ( file_exists( dirname( __FILE__ ).'/'.basename( __FILE__, '.php' ) . '/_js/'.$field_type.'.js' ) ){
 				wp_enqueue_script( $field_type, self::get_include_path(). '/_js/'.$field_type.'.js', array( 'jquery', 'Options_Pages' ), '');

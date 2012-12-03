@@ -61,11 +61,12 @@ $options_pages_defaults = array (
 			'description'		=> null,
 			'editor_list'		=> false,
 			'subfields'			=> null,
-			'settable_defaults' => false,									
+			'settable_defaults' => true,
+			'default'			=> '#FFFFFF',									
 			'code_link' 		=> true, 
 			'clone_controls'	=> true, 
 			'sort'				=> true, 
-			'_lock'				=> false				
+			'_lock'				=> false, 				
 		),
 		'content_url' => array(
 			'title'			=> 'Content URL',						
@@ -141,6 +142,7 @@ $options_pages_defaults = array (
 			'code_link' 	=> true, 
 			'clone_controls'=> true, 
 			'sort'			=> true,
+			'use_image'		=> true,
 			'_lock'			=> false											
 		),		
 		'select'	=> array(
@@ -223,15 +225,5 @@ $options_pages_defaults = array (
 									
 		), 
 	),
-	'subfields' => array(
-		'title'			=> 'Default Subfield Title',
-		'type' 			=> 'text',
-		'size'			=> null,
-		'description'	=> null, 
-		'multiple'		=> false,
-		'options'		=> 'page', 
-		'settable_defaults' => false, 
-		'code_link'		=> true
-	
-	)
+
 ); 

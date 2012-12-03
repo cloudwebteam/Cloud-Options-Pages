@@ -1,14 +1,17 @@
 jQuery(document).ready(function($) {
-				
-	// miniColors
-	$(".color-picker-input").miniColors({
-		letterCase: 'uppercase',
-		change: function(hex, rgb) {
-		},
-		open: function(hex, rgb) {
-		},
-		close: function(hex, rgb) {
+/* 	cloud.add_action( 'field_clone', color_picker.init ); */
+	
+/*
+	var color_picker.init( input ){
+		if ( input.hasClass( '.color-picker-input') ){
 		}
+	}	
+*/
+	// miniColors
+	$(".color-picker-input").each( function(){
+		$(this).miniColors({
+			letterCase: 'uppercase',
+		});
 	});
 	$('.option_enabler.color').click( function(){
 		var field_container = $(this).parents('.field');
@@ -17,8 +20,10 @@ jQuery(document).ready(function($) {
 	}); 
 	
     $('.default-swab').click( function(){
-		var field_container = $(this).parents('.field');    
-    	field_container.find('.color-picker-input:visible').miniColors('value',  helpers.rgb2hex($(this).css('backgroundColor')) ); 
+		var color_container = $(this).parents('.option');    
+		if ( typeof $(this).css('backgroundColor') !== 'undefined' ){
+	    	color_container.find('.color-picker-input:visible').miniColors('value',  helpers.rgb2hex($(this).css('backgroundColor')) ); 
+	    }
     }); 
     
 	// handle fields with enable/default options
@@ -62,11 +67,11 @@ jQuery(document).ready(function($) {
 });
 helpers = {
 	rgb2hex : function(rgb) {
-	    rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+	    rgb = rgb.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/);
 	    function hex(x) {
-	        return ("0" + parseInt(x).toString(16)).slice(-2);
+	        return ("0" + parseInt(x).toString(16).toUpperCase() ).slice(-2);
 	    }
-	    return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+	    return "#" + hex( rgb[1] ) + hex( rgb[2] ) + hex(rgb[3]);
 	}
 }
 theme = {
