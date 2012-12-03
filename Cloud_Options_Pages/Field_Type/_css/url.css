@@ -1,9 +1,0 @@
-/* media url field type */
-.field.type-media_url .url_button {
-	margin-left: 10px;
-}
-.field.type-media_url .url_field {
-	margin-top: 1.125em;
-	font-size: .75em;
-	margin-left: 10px;
-}
