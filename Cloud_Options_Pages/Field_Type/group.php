@@ -75,17 +75,6 @@ class Cloud_Field_group extends Field_Type {
 			$this->add_and_remove = '' ; 
 		}
 	}
-	
-	protected function get_attributes( $field_info ){
-		$classes = 'field ' ;
-		$classes = 'type-'.$this->type . ' ' ;
-		if ( $field_info['parent_layout'] === 'grid' ){
-			$classes .= isset( $field_info['width'] ) ? 'span' . $field_info['width'] . ' ': 'span6 ';
-		}
-		$classes .= isset( $field_info['style'] ) ? $field_style['style'] . ' ' :  '' ;
-		$classes .= 'multiple ';
-		return 'class="'.$classes .'"'; 
-	}	
 	public function enqueue_field_scripts_and_styles(){
 		$subfields_names = self::get_subfield_scripts_and_styles(); 
 		// if they exist, enqueues css and js files with this fields name
@@ -142,6 +131,7 @@ class Cloud_Field_group extends Field_Type {
 					<?php echo $this->add_and_remove ; ?>
 				</div>
 				<?php } ?>
+				<?php echo $this->description; ?>
 			</td>
 		</tr>
 		<?php

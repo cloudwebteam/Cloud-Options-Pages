@@ -24,7 +24,7 @@ jQuery( function($){
 		});
 	}
 	var setup_reordering = function( multiple ){
-		if ( $(this).parents('.no-sort').size() == 0 ){	
+		if ( multiple.parents('.no-sort').size() == 0 ){	
 			multiple.sortable({
 				update: function(){
 					reset_value_keys( multiple );

@@ -29,7 +29,8 @@ class Field_Type {
 		$this->description = $this->get_description( $this->info );
 		
 		// create attributes to be set on the field container
-		$this->attributes = $this->get_attributes( $this->info );
+		$this->attributes = 'class="' . implode(' ', $this->get_attributes( $this->info ) ).'"';
+		
 		if ( $this->info['cloneable'] ){
 			// create field ( this method should be implemented by each field subclass )
 			$this->make_cloneable( $args );
@@ -81,7 +82,7 @@ class Field_Type {
 		// part of a group?
 		if ( $subfield_slug ){
 			$group_number = isset( $args['group_number'] ) ? $args['group_number'] : 0 ;		
-			$value = isset( $value[$group_number] ) ? $value[$group_number][$subfield_slug] : ''; 
+			$value = isset( $value[$group_number][$subfield_slug] ) ? $value[$group_number][$subfield_slug] : ''; 
 			$name =  $page_slug.'['.$section_slug.']['.$field_slug.']['.$group_number.']['.$subfield_slug.']'; 	
 			$to_retrieve = 	'get_theme_options( "'. $page_slug.'", "'. $section_slug . '" , "'. $field_slug.'" , ' . $group_number .' , "' .$subfield_slug .'" )';	
 			$cloneable = false;
@@ -95,7 +96,8 @@ class Field_Type {
 		}
 		$info['title'] = $args['info']['title'];
 		$info['to_retrieve'] = 	$to_retrieve;				
-		$info['cloneable'] = $cloneable ; 
+		$info['cloneable'] = $cloneable ;
+		 
 		if ( $args['info']['_lock'] ){
 			$info['clone_controls'] = false;
 			$info['code_link'] = false;
@@ -105,6 +107,7 @@ class Field_Type {
 			$info['code_link'] = isset( $args['info']['code_link'] ) ? $args['info']['code_link'] : true; 
 			$info['sort'] = isset( $args['info']['sort'] ) ? $args['info']['sort'] : true; 
 		}
+
 		$info['name'] = $name; 
 		$info['description'] = isset( $args['info']['description'] ) ? $args['info']['description'] : null;
 		$info['id']   = $field_slug;
@@ -204,15 +207,13 @@ class Field_Type {
 		$classes = array(); 
 		$classes[] = 'field' ;
 		$classes[] = 'type-'.$this->type ;
-		$classes[] = $field_info['sort'] ? '' : 'no-sort'; 
+		$classes[] = $this->info['sort'] ? '' : 'no-sort'; 
 		if ( $field_info['parent_layout'] === 'grid' ){
 			$classes[] = isset( $field_info['width'] ) ? 'span' . $field_info['width'] : 'span6';
 		}
 		$classes[] = isset( $field_info['style'] ) ? $field_style['style'] :  '' ;
 		
-		$classes_html = 'class="'.implode(' ', $classes) .'"';
-		
-		return $classes_html ;
+		return $classes ;
 	}
 	public static function get_layout_function( $layout = null , $field_type = null , $section_layout_type ){
 		self::$default_type = 'text'; // fallback field type

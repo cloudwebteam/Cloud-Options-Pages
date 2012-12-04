@@ -512,7 +512,34 @@ class Cloud_Options_Pages  {
 								foreach ( $field['subfields'] as $subfield_slug => $subfield ){
 									$_field['subfields'][$subfield_slug]= array();  
 									$_subfield =& $_field['subfields'][$subfield_slug]; 
-									foreach ( $defaults['fields'] as $key => $default_value ) {
+									
+									
+									// establish type ( if it is specificied by user anywhere and is a valid type , else default )						
+									$subfield_type ;
+									if ( isset( $subfield['type'] ) ){
+										$subfield_type = $subfield['type'];  							
+									} else {
+										if ( isset ( $section['defaults']['fields']['type'] ) ) {
+											$subfield_type = $section['defaults']['fields']['type'];
+										} else if ( isset ( $subpage['defaults']['fields']['type'] ) ) {
+											$subfield_type = $subpage['defaults']['fields']['type'];
+										} else if ( isset ( $top_level_page['defaults']['fields']['type'] ) ) {
+											$subfield_type = $top_level_page['defaults']['fields']['type'];
+										}
+									}
+									// valid type?						
+									if ( !isset( $subfield_type ) || !class_exists( Field_Type::get_class_name( $subfield_type ) ) ) { 						
+										$subfield_type = Field_Type::$default_type ; 
+									}
+									// set type
+									$_subfield['type'] = $subfield_type ;
+									// go through defaults for that type
+									if ( isset(  $defaults['fields'][$subfield_type] ) ) {
+										$subfield_defaults =  $defaults['fields'][$subfield_type] ; 
+									} else {
+										$subfield_defaults = $defaults['fields']['general'] ;
+									}									
+									foreach ( $subfield_defaults as $key => $subfield_default_value ) {
 										if ( isset( $subfield[$key] ) ){
 											$set_value = $subfield[$key];  
 										} else {
@@ -525,7 +552,7 @@ class Cloud_Options_Pages  {
 											} else if ( isset ( $top_level_page['defaults']['subfields'][$key] ) ) {
 												$set_value = $top_level_page['defaults']['subfields'][$key];
 											} else {
-												$set_value = $default_value; 
+												$set_value = $subfield_default_value; 
 											}
 										}
 										if ( $key === 'settable_defaults' && isset( $_subfield[$key] ) && $_subfield[$key] == true ){

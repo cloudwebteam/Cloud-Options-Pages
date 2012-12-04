@@ -44,11 +44,11 @@ $options_pages_defaults = array (
 			'editor_list'		=> false,
 			'subfields'			=> null,
 			'settable_defaults' => false,
+			
 			'code_link' 		=> true, 
 			'clone_controls'	=> true,
 			'sort'				=> true, 
 			'_lock'				=> false			
-					
 		), 
 		'color'		=> array(
 		
