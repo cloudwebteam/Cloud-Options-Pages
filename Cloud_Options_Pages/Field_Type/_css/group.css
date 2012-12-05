@@ -4,8 +4,9 @@
 	clear: both;
 	cursor: move;
 }
-.no-sort .group {
+.no-sort .multiple .group {
 	cursor: default;
+	border-style: solid;
 }
 .group .add-remove {
 	position: absolute;

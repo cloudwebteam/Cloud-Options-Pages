@@ -13,6 +13,7 @@ class Field_Type {
 	protected $attributes = array();
 	
 	protected function __construct( $class_name, $args){
+
 		// enqueue js and css with the field's name
 		add_action( 'admin_enqueue_scripts', array( $class_name, 'enqueue_stuff' ) );				
 		
@@ -44,8 +45,7 @@ class Field_Type {
 		
 		// figure out what layout to use
 		$layout = self::get_layout( $class_name, $this->info );
-		
-		// echo the field using the appropriate layout function. 
+ 		// echo the field using the appropriate layout function. 
 		$this->$layout( $args ); 
 	}
 	public function standard(){
@@ -267,6 +267,7 @@ class Field_Type {
 	}
 	protected static function register_scripts_and_styles( $class_name, $subfield_types = null ){
 		$field_type = substr( $class_name, strlen(Field_Type::$class_prefix) ); 
+
 		if ( $field_type ){			
 			if ( file_exists( dirname( __FILE__ ).'/'.basename( __FILE__, '.php' ) . '/_js/'.$field_type.'.js' ) ){
 				wp_enqueue_script( $field_type, self::get_include_path(). '/_js/'.$field_type.'.js', array( 'jquery', 'Options_Pages' ), '');

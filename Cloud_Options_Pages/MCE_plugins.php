@@ -62,7 +62,7 @@ class MCE_Plugins {
 								'field_title' => $field['title'],
 								'section_title' => $section['title'],
 								'subpage_title' => $subpage['title'],
-								'shortcode'		=> "[info p='".$subpage_slug."' s='".$section_slug."' f='".$field_slug."' ][/info]"
+								'shortcode'		=> "[info p='".$subpage_slug."' s='".$section_slug."' f='".$field_slug."' ]"
 							);
 						}
 						

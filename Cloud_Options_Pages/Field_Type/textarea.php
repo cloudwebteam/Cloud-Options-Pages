@@ -19,7 +19,6 @@ class Cloud_Field_textarea extends Field_Type {
 		$this->cols = isset( $args['info']['cols'] ) ? $args['info']['cols'] : $this->cols; 
 
 		$field = '<textarea id="'.$this->info['prefix'] . $this->info['id'] . '" name="'.$this->info['name'] . '" rows="'.$this->rows.'" cols="'.$this->cols.'" >' . $this->info['value'] . '</textarea>';
-		
 		return $field;
 	}
 	
@@ -69,6 +68,13 @@ class Cloud_Field_textarea extends Field_Type {
 
 				<?php 
 				break;	
+			default : ?>
+				<p><?php echo $this->label; ?></p>
+				<p><?php echo $this->field; ?></p>
+				<?php echo $this->description; ?>
+
+				<?php 
+				break;				
 		} ?>
 		</div>
 		<?php

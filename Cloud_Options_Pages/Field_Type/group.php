@@ -92,7 +92,7 @@ class Cloud_Field_group extends Field_Type {
 					if ( $subpage_slug === $_GET['page'] ){
 						foreach ($subpage['sections'] as $section) {
 							foreach ($section['fields'] as $field ){
-								if ($field['type'] === 'group' ){
+								if ($field['type'] === 'group' && isset( $field['subfields']  ) && is_array($field['subfields'] ) ){
 									foreach( $field['subfields'] as $subfield ){
 										$sub_fields[] = isset( $subfield['type'] ) ? $subfield['type'] : self::$default_type ;
 									}
@@ -102,14 +102,7 @@ class Cloud_Field_group extends Field_Type {
 					}
 				}
 			}
-			$valid_subfields = array();
-			foreach ( $sub_fields as $subfield_type ){ 
-				$type 	= isset( $subfield_type ) ? $subfield_type : 'text' ;
-				if( class_exists( $type ) ){
-					$valid_subfields[] = $type ; 
-				}
-			}	
-			return $valid_subfields;			
+			return $sub_fields;			
 		} else {
 			return false;
 		}

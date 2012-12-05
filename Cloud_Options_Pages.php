@@ -121,9 +121,18 @@ class Cloud_Options_Pages  {
 
 		return $option;
 	}
-	public function get_options( $top_page_slug = null, $page_slug = null , $section_slug = null , $field_slug = null , $group_number = null, $subfield_slug = null ){
+	public function get_options( $page_slug = null , $section_slug = null , $field_slug = null , $group_number = null, $subfield_slug = null ){		
+
+		foreach( $this->options as $top_level_slug => $options ){
+			foreach( $options as $subpage_slug => $options ){
+				if ( $subpage_slug === $page_slug ){
+					$top_page_slug = $top_level_slug ;
+					break;
+				}
+			}
+		}			
 		// ha ha, overkill...but it might be useful to be able to grab individual group values
-		if ( is_array( $this->options[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number] ) && isset( $this->options[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number][$subfield_slug] ) ) {
+		if (  isset( $this->options[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number][$subfield_slug] ) && is_array( $this->options[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number] ) ) {
 			return $this->options[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number][$subfield_slug];
 		} else if ( is_int( $group_number ) && isset( $this->options[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number] ) ) {
 			return $this->options[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number] ;
@@ -507,75 +516,74 @@ class Cloud_Options_Pages  {
 							if ( !isset( $_field[$key] ) ){							
 								$_field[$key] = $set_value ;
 							}
-							// only if group 
-							if ( isset( $_field['subfields'] ) ){
-								foreach ( $field['subfields'] as $subfield_slug => $subfield ){
-									$_field['subfields'][$subfield_slug]= array();  
-									$_subfield =& $_field['subfields'][$subfield_slug]; 
-									
-									
-									// establish type ( if it is specificied by user anywhere and is a valid type , else default )						
-									$subfield_type ;
-									if ( isset( $subfield['type'] ) ){
-										$subfield_type = $subfield['type'];  							
-									} else {
-										if ( isset ( $section['defaults']['fields']['type'] ) ) {
-											$subfield_type = $section['defaults']['fields']['type'];
-										} else if ( isset ( $subpage['defaults']['fields']['type'] ) ) {
-											$subfield_type = $subpage['defaults']['fields']['type'];
-										} else if ( isset ( $top_level_page['defaults']['fields']['type'] ) ) {
-											$subfield_type = $top_level_page['defaults']['fields']['type'];
-										}
+						}
+						// only if group 
+						if ( isset( $_field['subfields'] ) ){
+							foreach ( $field['subfields'] as $subfield_slug => $subfield ){
+								$_field['subfields'][$subfield_slug]= array();  
+								$_subfield =& $_field['subfields'][$subfield_slug]; 
+								
+								
+								// establish type ( if it is specificied by user anywhere and is a valid type , else default )						
+								$subfield_type = '' ;
+								if ( isset( $subfield['type'] ) ){
+									$subfield_type = $subfield['type'];  							
+								} else {
+									if ( isset ( $section['defaults']['fields']['type'] ) ) {
+										$subfield_type = $section['defaults']['fields']['type'];
+									} else if ( isset ( $subpage['defaults']['fields']['type'] ) ) {
+										$subfield_type = $subpage['defaults']['fields']['type'];
+									} else if ( isset ( $top_level_page['defaults']['fields']['type'] ) ) {
+										$subfield_type = $top_level_page['defaults']['fields']['type'];
 									}
-									// valid type?						
-									if ( !isset( $subfield_type ) || !class_exists( Field_Type::get_class_name( $subfield_type ) ) ) { 						
-										$subfield_type = Field_Type::$default_type ; 
-									}
-									// set type
-									$_subfield['type'] = $subfield_type ;
-									// go through defaults for that type
-									if ( isset(  $defaults['fields'][$subfield_type] ) ) {
-										$subfield_defaults =  $defaults['fields'][$subfield_type] ; 
+								}
+								// valid type?						
+								if ( !isset( $subfield_type ) || !class_exists( Field_Type::get_class_name( $subfield_type ) ) ) { 						
+									$subfield_type = Field_Type::$default_type ; 
+								}
+								
+								// set type
+								$_subfield['type'] = $subfield_type ;
+								// go through defaults for that type
+								if ( isset(  $defaults['fields'][$subfield_type] ) ) {
+									$subfield_defaults =  $defaults['fields'][$subfield_type] ; 
+								} else {
+									$subfield_defaults = $defaults['fields']['general'] ;
+								}									
+								foreach ( $subfield_defaults as $key => $subfield_default_value ) {
+									if ( isset( $subfield[$key] ) ){
+										$set_value = $subfield[$key];  
 									} else {
-										$subfield_defaults = $defaults['fields']['general'] ;
-									}									
-									foreach ( $subfield_defaults as $key => $subfield_default_value ) {
-										if ( isset( $subfield[$key] ) ){
-											$set_value = $subfield[$key];  
+										if ( isset ( $field['defaults']['subfields'][$key] ) ) {
+											$set_value = $field['defaults']['subfields'][$key];
+										} else if ( isset ( $section['defaults']['subfields'][$key] ) ) {
+											$set_value = $section['defaults']['subfields'][$key];
+										} else if ( isset ( $subpage['defaults']['subfields'][$key] ) ) {
+											$set_value = $subpage['defaults']['subfields'][$key];
+										} else if ( isset ( $top_level_page['defaults']['subfields'][$key] ) ) {
+											$set_value = $top_level_page['defaults']['subfields'][$key];
 										} else {
-											if ( isset ( $field['defaults']['subfields'][$key] ) ) {
-												$set_value = $field['defaults']['subfields'][$key];
-											} else if ( isset ( $section['defaults']['subfields'][$key] ) ) {
-												$set_value = $section['defaults']['subfields'][$key];
-											} else if ( isset ( $subpage['defaults']['subfields'][$key] ) ) {
-												$set_value = $subpage['defaults']['subfields'][$key];
-											} else if ( isset ( $top_level_page['defaults']['subfields'][$key] ) ) {
-												$set_value = $top_level_page['defaults']['subfields'][$key];
-											} else {
-												$set_value = $subfield_default_value; 
-											}
+											$set_value = $subfield_default_value; 
 										}
-										if ( $key === 'settable_defaults' && isset( $_subfield[$key] ) && $_subfield[$key] == true ){
-											$_section['_has_settable_defaults'] = $_section['_has_settable_defaults'] ? $_section['_has_settable_defaults'] + 1 : 1 ;
-											$_subpage['_has_settable_defaults'] = $_subpage['_has_settable_defaults'] ? $_subpage['_has_settable_defaults'] + 1 : 1 ;
-										}										
-										$_subfield[$key] = $set_value ;
 									}
+									if ( $key === 'settable_defaults' && isset( $_subfield[$key] ) && $_subfield[$key] == true ){
+										$_section['_has_settable_defaults'] = $_section['_has_settable_defaults'] ? $_section['_has_settable_defaults'] + 1 : 1 ;
+										$_subpage['_has_settable_defaults'] = $_subpage['_has_settable_defaults'] ? $_subpage['_has_settable_defaults'] + 1 : 1 ;
+									}										
+									$_subfield[$key] = $set_value ;
 								}
 							}
-							// toggle section/page if a field has the property settable_defaults = true 
-							// allows for page/section reset defaults controls to be generated
-							if ( $key === 'settable_defaults' && isset( $_field[$key] ) && $_field[$key] == true && !$field['cloneable'] ){
-								$_section['_has_settable_defaults'] = $_section['_has_settable_defaults'] ? $_section['_has_settable_defaults'] + 1 : 1 ;
-								$_subpage['_has_settable_defaults'] = $_subpage['_has_settable_defaults'] ? $_subpage['_has_settable_defaults'] + 1 : 1 ;;
-								if ( $saved_default = $this->get_option_default( $top_level_slug, $subpage_slug, $section_slug, $field_slug ) ) {
-									$_field['default'] =  $saved_default ; 
+						}
+						// toggle section/page if a field has the property settable_defaults = true 
+						// allows for page/section reset defaults controls to be generated
+						if ( $key === 'settable_defaults' && isset( $_field[$key] ) && $_field[$key] == true && !$field['cloneable'] ){
+							$_section['_has_settable_defaults'] = $_section['_has_settable_defaults'] ? $_section['_has_settable_defaults'] + 1 : 1 ;
+							$_subpage['_has_settable_defaults'] = $_subpage['_has_settable_defaults'] ? $_subpage['_has_settable_defaults'] + 1 : 1 ;;
+							if ( $saved_default = $this->get_option_default( $top_level_slug, $subpage_slug, $section_slug, $field_slug ) ) {
+								$_field['default'] =  $saved_default ; 
 
-								}
 							}
-							
-						}						
-					
+						}					
 					}
 				}
 			}		
@@ -707,8 +715,16 @@ add_action( 'init' , array( 'Cloud_Options_Pages' , 'get_instance' ) ) ;
  */
 function get_theme_options( $subpage_id = null, $section_id = null, $field_id = null , $group_number = null, $subfield_id = null ){
 	$Options_Pages = Cloud_Options_Pages::get_instance();
-	return $Options_Pages->get_options($subpage_id, $subpage_id, $section_id, $field_id, $group_number, $subfield_id );
+	return $Options_Pages->get_options( $subpage_id, $section_id, $field_id, $group_number, $subfield_id );
 }
+add_shortcode( 'info' , 'shortcode_theme_get_info');
+function shortcode_theme_get_info( $atts ){
 
-
-
+	extract(shortcode_atts( array(
+		'p' => '',
+		's' => '', 
+		'f' => ''
+	), $atts ));
+	return nl2br( get_theme_options( $p, $s, $f ) );
+	
+}
