@@ -409,13 +409,15 @@ class Cloud_Options_Pages  {
 	//the combined of all defaults ( including user defaults ) and user array
 	private static $options_page_array = array();
 	
-	public static function set_options_pages( $user_array ){
-		self::$user_array = $user_array;
+	public static function add_options_pages( $user_array ){
+		foreach ( $user_array as $key => $array ){
+			self::$user_array[$key] = $array;
+		}
 	}		
 	private function set_defaults(){
 		global $options_pages_defaults; 
 		self::$defaults = $options_pages_defaults;
-	}	
+	}
 	private function create_options_page_array(){
 		$defaults = self::$defaults; 
 		$user_array = self::$user_array; 
@@ -449,7 +451,7 @@ class Cloud_Options_Pages  {
 						}					
 					}
 					$_subpage[$key] = $set_value;
-				}							
+				}						
 				foreach ($subpage['sections'] as $section_slug => $section){
 					$_subpage['sections'][$section_slug] = array();  
 					$_section =& $_subpage['sections'][$section_slug];
@@ -706,6 +708,7 @@ class Cloud_Options_Pages  {
 		// Cloud-Theme / cloud    /    core              
 		return Cloud_Theme__DIR .'/'. basename( dirname(__FILE__) ); 	
 	}
+	
 } // End Class	
 add_action( 'init' , array( 'Cloud_Options_Pages' , 'get_instance' ) ) ;
 
