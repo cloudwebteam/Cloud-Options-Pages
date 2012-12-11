@@ -1,6 +1,5 @@
 jQuery( function($){
 	// "link_popup_id" from localize script
-	
 	var popup = $( '#' + link_popup_id + ' #wp-link-dialog' ) ; 
 	var popup_nonce = popup.find('#_ajax_linking_nonce').val() ; 
 	var popup_search = popup.find( '.link-search-field' );

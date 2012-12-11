@@ -267,7 +267,6 @@ class Field_Type {
 	}
 	protected static function register_scripts_and_styles( $class_name, $subfield_types = null ){
 		$field_type = substr( $class_name, strlen(Field_Type::$class_prefix) ); 
-
 		if ( $field_type ){			
 			if ( file_exists( dirname( __FILE__ ).'/'.basename( __FILE__, '.php' ) . '/_js/'.$field_type.'.js' ) ){
 				wp_enqueue_script( $field_type, self::get_include_path(). '/_js/'.$field_type.'.js', array( 'jquery', 'Options_Pages' ), '');
@@ -277,14 +276,14 @@ class Field_Type {
 			}
 		}
 		if ( is_array( $subfield_types ) && sizeof( $subfield_types ) > 0 ){
+			
+		
 			foreach ( $subfield_types as $subfield_type ){
-				if ( file_exists( dirname( __FILE__ ).'/'.basename( __FILE__, '.php' ) . '/_js/'.$subfield_type.'.js' ) ){
-					wp_enqueue_script( $subfield_type, self::get_include_path(). '/_js/'.$subfield_type.'.js', array( 'jquery', 'Options_Pages' ), '');
-				} 
-				if ( file_exists( dirname( __FILE__ ).'/'.basename( __FILE__, '.php' ) . '/_css/'.$subfield_type.'.css' ) ){
-					wp_enqueue_style( $subfield_type, self::get_include_path(). '/_css/'.$subfield_type.'.css', array( 'Options_Pages' ));
+				$subfield_class = Field_Type::get_class_name( $subfield_type ) ; 
+				if ( class_exists( $subfield_class ) ){
+					call_user_func( array( $subfield_class, 'enqueue_field_scripts_and_styles' ) ); 		
 				}
-			}
+			}			
 		}
 	}
 	public static function get_include_path(){

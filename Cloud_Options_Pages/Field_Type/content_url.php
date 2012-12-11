@@ -22,7 +22,6 @@ class Cloud_Field_content_url extends Field_Type {
 
 	public function enqueue_field_scripts_and_styles(){
 		$type = substr( __CLASS__, strlen( Field_Type::$class_prefix ) );
-	
 		// if they exist, enqueues css and js files with this fields name
 		parent::register_scripts_and_styles( __CLASS__ ); 
 		wp_localize_script( $type, 'link_popup_id' , self::$wp_link_dialog_id ); 
