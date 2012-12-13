@@ -5,7 +5,7 @@ jQuery( function($){
 		elems.click( function(){
 			if ( ! jQuery(this).hasClass('disabled') ){
 				var group = jQuery(this).parents('.group'); 
-				var container = jQuery(this).parents('.multiple');
+				var container = jQuery(this).parents('.groups');
 				var counter = container.find('.group').size();
 				
 				group.slideUp('fast', function(){ 
@@ -35,7 +35,7 @@ jQuery( function($){
 	var setup_add_click = function( elems ){
 		elems.unbind('click');
 		elems.click( function(){
-			var container = $(this).parents('.multiple'); 	
+			var container = $(this).parents('.groups'); 	
 			var counter = container.find('.group').size();
 			var group = $(this).parents('.group');
 			
@@ -78,14 +78,14 @@ jQuery( function($){
 			counter++;
 		});
 	}
-	$('.multiple').each( function(){
+	$('.groups').each( function(){
 		if ( $(this).find('.group').size() == 1 ){
 			$(this).find('.remove').addClass('disabled');
 		} else {
 			setup_remove_click( $(this).find('.remove') );
 		}
-		setup_reordering( $('.multiple') );
+		setup_reordering( $(this) );
 	});	
-	setup_add_click( $('.multiple').find('.add') ) ;
+	setup_add_click( $('.groups').find('.add') ) ;
 
 });

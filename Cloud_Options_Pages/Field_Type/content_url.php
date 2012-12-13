@@ -30,10 +30,8 @@ class Cloud_Field_content_url extends Field_Type {
 		wp_enqueue_script( 'fancybox' );
 		wp_register_style( 'fancybox' , Cloud_Theme__DIR .'/__inc/fancybox2.1.3/jquery.fancybox.css' );		
 		wp_enqueue_style( 'fancybox' );
-		// is_options_page
-		if ( isset( $_GET['page'] ) && $_GET['page'] ){
-			add_action('admin_footer', array( __CLASS__, 'options_page_link_popup' ) ); 
-		}
+
+		add_action('admin_footer', array( __CLASS__, 'options_page_link_popup' ) ); 
 	}	
 	public static function options_page_link_popup( $args ){ ?>
 		<div id="<?php echo self::$wp_link_dialog_id; ?>" style="display: none;">

@@ -19,15 +19,27 @@ class Cloud_Field_group extends Field_Type {
 	protected function get_field_html( $args ){
 		$Options_Page = Cloud_Options_Pages::get_instance(); 	
 		$info = array(); 
-		$top_level_slug = $args['top_level'];		
-		$page_slug = $args['subpage'];
-		$section_slug = $args['section'];
-		$field_slug = $args['field']; 	
-		$subfield_slug = isset( $args['subfield'] ) ? $args['subfield'] : '' ; 
-		
-		$this->saved_values = $Options_Page->get_option( $top_level_slug, $page_slug, $section_slug, $field_slug ); 
-		$this->args = $args;
+		switch ( $this->context ) {
+			case 'options-page' : 
+				$top_level_slug = $args['top_level'];		
+				$page_slug = $args['subpage'];
+				$section_slug = $args['section'];
+				$field_slug = $args['field']; 	
+				$subfield_slug = isset( $args['subfield'] ) ? $args['subfield'] : '' ; 
+				
+				$this->saved_values = $Options_Page->get_option( $top_level_slug, $page_slug, $section_slug, $field_slug ); 
+				break; 
+			case 'metabox' : 
+				global $post ;
+				$metabox_slug = $args['metabox'] ;
+				$field_slug = $args['field'] ;
+
+				$this->saved_values = $Options_Page->get_metabox_option( $post->ID, $metabox_slug, $field_slug ); 
+				break;
+		}
+		$this->args = $args;		
 		$this->field_groups = $this->set_fields( $args );
+		
 		return $this->field_groups;
 	}
 	private function set_fields(){
@@ -61,6 +73,9 @@ class Cloud_Field_group extends Field_Type {
 			$field_args['group_values'] = $group ; 			
 			$field_args['info']	= $subfield; 
 			$field_args['parent_section_layout'] = 'default';
+			if ( $this->context == 'options-page' ){
+				$field_args['info']['settable_defaults'] = false ;
+			}
 			ob_start();
 				$field_type_class_name::create_field( $field_args ); 
 			$fields .= ob_get_clean();
@@ -102,6 +117,16 @@ class Cloud_Field_group extends Field_Type {
 					}
 				}
 			}
+		} else if ( sizeof( Cloud_Options_Pages::$metaboxes ) > 0 ) {
+			foreach ( Cloud_Options_Pages::$metaboxes as $metabox ) {
+				foreach ( $metabox['fields'] as $field ){
+					if ($field['type'] === 'group' && isset( $field['subfields']  ) && is_array($field['subfields'] ) ){
+						foreach( $field['subfields'] as $subfield ){
+							$sub_fields[] = isset( $subfield['type'] ) ? $subfield['type'] : self::$default_type ;
+						}
+					}
+				}
+			}		
 			return $sub_fields;			
 		} else {
 			return false;
@@ -135,15 +160,18 @@ class Cloud_Field_group extends Field_Type {
 	}
 	public function custom( $args ){
 		$layout_details = $this->info['layout']; ?>
-			<ul <?php echo $this->attributes; ?>>
+		<div <?php echo $this->attributes ; ?>>
+			<p><?php echo $this->label; ?></p>
+			<ul class="groups">
 				<?php foreach ( $this->field_groups as $group ){ ?>
 				<li class="group">
 					<?php echo $group; ?>
 					<?php echo $this->add_and_remove ; ?>
 				</li>
 				<?php } ?>
-			</ul>		
-			
+			</ul>
+			<?php echo $this->description; ?>
+		</div>
 	<?php
 	}
 	

@@ -88,5 +88,8 @@ class Cloud_Field_date extends Field_Type {
 		</div>
 		<?php
 	}
+	public function metabox( $args ){
+		$this->custom( $args ); 
+	}	
 	
 }

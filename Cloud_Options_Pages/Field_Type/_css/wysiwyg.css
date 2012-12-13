@@ -1,3 +1,10 @@
 .field.type-wysiwyg .wp-editor-wrap {
 	float: left;
+	max-width: 100%;
+}
+.metabox.side .field.type-wysiwyg {
+	padding-left: 0 ;
+}
+.metabox.side .field.type-wysiwyg .title {
+	left: 0;
 }

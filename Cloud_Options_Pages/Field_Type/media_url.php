@@ -11,7 +11,7 @@ class Cloud_Field_media_url extends Field_Type {
 	protected $attributes = 'class="media-url"' ;
 
 	public static function create_field( $args ){
-		$field_type = __CLASS__;
+		$field_type = __CLASS__;	
 		$field = new $field_type( $args ); 
 	}
 	protected function __construct( $args ){		
@@ -81,6 +81,9 @@ class Cloud_Field_media_url extends Field_Type {
 				<p><?php echo $this->description; ?></p>
 			</div>		
 		<?php
+	}
+	public function metabox( $args ){
+		$this->custom( $args ); 
 	}
 	
 }

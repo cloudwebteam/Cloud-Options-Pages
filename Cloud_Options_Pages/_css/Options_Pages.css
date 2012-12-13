@@ -1,13 +1,13 @@
-.options-page {
+.cloud-options {
 	max-width: 1170px;
 }
-.options-page .tabbable {
+.cloud-options .tabbable {
 	padding-top: 2em;
 }
-.options-page .tab-content {
+.cloud-options .tab-content {
 	overflow: visible;
 }
-.options-page input {
+.cloud-options input {
 	max-width: 98%;
 }
 .form-table {
@@ -53,101 +53,149 @@
 .wrap form h6 {
 	font-size: .75em;
 }
-.wrap input, 
-.wrap textarea {
+.cloud-options .field input, 
+.cloud-options .field textarea {
 	width: auto;
 }
-.options-page label {
+.cloud-options label {
 	float: left;
 }
-.options-page label + input {
+.cloud-options label + input {
 	float: left;
 	margin-left: 10px;
 }
-.options-page .description {
+.cloud-options .description {
 	clear: both;
 	display: block;
 }
-.options-page p {
+.cloud-options p {
 	clear: both;
 	margin-bottom: .5em;
 	margin-top: 0;
 	line-height: 1em;
 }
-.options-page p label {
+.cloud-options p label {
 	margin-bottom: 0;
+	cursor: default; 	
 }
 
-.options-page .group {
+.cloud-options .group {
 	float: left;
 	clear: both;
 }
 
-.options-page .section > .description, .options-page > .description {
+.cloud-options .section > .description, .cloud-options > .description {
 	display: block;
 	float: none;
 }
-.options-page .text-content *:first-child {
+.cloud-options .text-content *:first-child {
 	padding-top: 0;
 } 
-.options-page .text-content h1, 
-.options-page .text-content h2, 
-.options-page .text-content h3, 
-.options-page .text-content h4, 
-.options-page .text-content h5, 
-.options-page .text-content h6 {
+.cloud-options .text-content h1, 
+.cloud-options .text-content h2, 
+.cloud-options .text-content h3, 
+.cloud-options .text-content h4, 
+.cloud-options .text-content h5, 
+.cloud-options .text-content h6 {
 	font-weight: bold;
 	padding: 1em 0 0 ;
 	margin: 0;
 }
-.options-page .text-content h1 {
+.cloud-options .text-content h1 {
 	font-size: 2em;
 }
-.options-page .text-content h2 {
+.cloud-options .text-content h2 {
 	font-size: 1.5em;
 }
-.options-page .text-content h3 {
+.cloud-options .text-content h3 {
 	font-size: 1.125em
 }
-.options-page .text-content h4 {
+.cloud-options .text-content h4 {
 	font-size: 1em;
 }
-.options-page .text-content h5{
+.cloud-options .text-content h5{
 	font-size: .875em;
 }
-.options-page .text-content h6 {
+.cloud-options .text-content h6 {
 	font-size: .75em;
 }
-.options-page .text-content ul {
+.cloud-options .text-content ul {
 	list-style: disc;
 }
-.options-page .text-content ol {
+.cloud-options .text-content ol {
 	list-style: decimal;
 }
-.options-page .text-content p,
-.options-page .text-content ul,
-.options-page .text-content ol {
+.cloud-options .text-content p,
+.cloud-options .text-content ul,
+.cloud-options .text-content ol {
 	padding-top: 1em;
 	margin-top: 0;
 	margin-bottom: 0;
 	line-height: 1.5em;
 }
-.options-page .text-content li {
+.cloud-options .text-content li {
 	margin: 0;
 }
-.options-page .header {
+.cloud-options .header {
 	width: 100%;
 	float: left;
 	padding-bottom: 1em;
 }
-.options-page .header .title {
+.cloud-options .header .title {
 	line-height: 1em;
 	font-size: 1.25em;
 	text-transform: uppercase;
 	color: #666;
 }
-.options-page textarea,
-.options-page input,
-.options-page label {
+.cloud-options textarea,
+.cloud-options input,
+.cloud-options label {
 	max-width: 100%;
+}
+.cf:before,
+.cf:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+/***====================================================================================================================================
+		OPTIONS PAGE STYLES
+	==================================================================================================================================== ***/
+/***====================================================================================================================================
+		METABOX STYLES
+	==================================================================================================================================== ***/
+.cloud-options.metabox p {
+	margin-bottom: 0;
+}
+.cloud-options.metabox .field {
+	padding: 0 0 1em 20px;
+}
+.cloud-options.metabox .field input {
+	margin-bottom: 0 ;
+}
+.cloud-options.metabox .header {
+	padding-bottom: 0;
+}
+.cloud-options.metabox .header .description {
+	display: block;
+	border-bottom: 1px solid #ccc;
+	margin-bottom: 1em;
+	padding-bottom: .5em;
+}
+.cloud-options.metabox .field .title {
+	font-weight: bold; 
+	display: block;
+	margin-bottom: .5em;
+	font-size: 1em;
+	position: relative;
+	left: -20px;
+}
+.cloud-options.metabox .field .description {
+	padding: .5em 0 .5em 0;
+}
+.cf:after {
+    clear: both;
+}
+
+.cf {
+    *zoom: 1;
 }

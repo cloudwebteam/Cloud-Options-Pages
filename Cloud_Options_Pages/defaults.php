@@ -29,6 +29,8 @@ $options_pages_defaults = array (
 		'layout'		=> 'standard',
 		'width'			=> 6,
 		'description'	=> null,
+		'metabox_context' => 'normal', 
+		'metabox_priority' => 'low' , 
 		'_has_settable_defaults' => false,		
 		'fields'		=> array ( 
 		)		

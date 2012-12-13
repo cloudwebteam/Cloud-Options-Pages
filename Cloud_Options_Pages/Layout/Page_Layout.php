@@ -39,6 +39,7 @@
 			$classes = array(); 
 			$classes[] = 'cloud'; //necessary to keep Bootstrap from interfering
 			$classes[] = 'wrap'; // a typical WP class
+			$classes[] = 'cloud-options';
 			$classes[] = 'options-page';
 			$classes[] = $page_spec_array['layout'] ; 
 			if ( $page_spec_array['_has_settable_defaults'] ){

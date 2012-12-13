@@ -22,14 +22,7 @@ class Cloud_Field_info extends Field_Type {
 		$field = '';
 		return $field;
 	}
-	protected function get_label($field_info){
-		$label = "<label for='".$field_info['prefix'] . $field_info['id'] . "' >" . $field_info['title'] ."</label>";
-		return $label;
-	}	
-	protected function get_description( $field_info ){
-		$description = isset( $field_info['description']) && $field_info['description'] !== '' ? '<div class="text-content">'.$field_info['description'] . '</div>' : '';
-		return $description;
-	}
+
    /**
 	* LAYOUTS FOR THIS FIELD
 	*/
@@ -51,38 +44,8 @@ class Cloud_Field_info extends Field_Type {
 	public function custom( $args ){
 		$layout_details = $this->info['layout']; ?>
 		<div <?php echo $this->attributes; ?>>
-		<?php
-		switch ( $layout_details['label'] ){
-			case 'left' : ?>
-				<p><?php echo $this->label; ?><?php echo $this->field; ?></p>
-				<?php echo $this->description; ?>
-				
-				<?php 
-				break;
-				
-			case 'right' : ?>
-				<p><?php echo $this->label; ?><?php echo $this->field; ?></p>
-				<?php echo $this->description; ?>
-
-				<?php 
-				break;
-
-			case 'top' : ?>
-				<p><?php echo $this->label; ?></p>
-				<p><?php echo $this->field; ?></p>
-				<?php echo $this->description; ?>
-
-				<?php 
-				break;	
-			default : ?>
-				<p><?php echo $this->label; ?></p>
-				<p><?php echo $this->field; ?></p>
-				<?php echo $this->description; ?>
-
-				<?php 
-				break; 
-		}
-		?>
+			<p><?php echo $this->label; ?></p>
+			<?php echo $this->description; ?>
 		</div>
 		<?php
 	}

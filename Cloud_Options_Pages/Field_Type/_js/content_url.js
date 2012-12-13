@@ -72,6 +72,7 @@ jQuery( function($){
 		var field = $(this).parents('.field' );
 		var input = $(this).addClass( 'target' ); 
 		var popup_content = field.find('.popup > div'); 
+
 		$.fancybox.open({ 
 			href : '#' + popup.attr('id'), 
 			title : 'Get Existing Content URL',

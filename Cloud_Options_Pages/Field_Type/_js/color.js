@@ -14,7 +14,7 @@ jQuery(document).ready(function($) {
 		});
 	});
 	$('.option_enabler.color').click( function(){
-		var field_container = $(this).parents('.field');
+		var field_container = $(this).parents('.field').first();
 
 		field_container.find('.color-toggle').toggle('fast');
 	}); 
@@ -37,7 +37,7 @@ jQuery(document).ready(function($) {
 	
 */
 	var $set_default_values_popup = $("#set-default-values-popup");
-	var options_page = $('.options-page'); 
+	var options_page = $('.cloud-options'); 
 	if ( $set_default_values_popup.size() > 0 ){
 	    $set_default_values_popup.dialog({                   
 	        'dialogClass'   : 'wp-dialog',           

@@ -13,15 +13,14 @@ class Field_Type {
 	protected $attributes = array();
 	
 	protected function __construct( $class_name, $args){
-
-		// enqueue js and css with the field's name
-		add_action( 'admin_enqueue_scripts', array( $class_name, 'enqueue_stuff' ) );				
+		// where is the field being placed? Metabox? Options page? Somewhere else?
+		$this->context = isset( $args['context'] ) ? $args['context'] : 'options-page' ; 
 		
 		// set type for reference if needed
 		$this->type = $args['info']['type'] ;
 		
 		// setup basic field attributes
- 		$this->info = self::get_field_info($args);
+ 		$this->info = $this->get_field_info($args);
  		
  		// create standard label to be placed
 		$this->label = $this->get_label( $this->info ); 
@@ -44,7 +43,7 @@ class Field_Type {
 		$this->get_field_components( $args );
 		
 		// figure out what layout to use
-		$layout = self::get_layout( $class_name, $this->info );
+		$layout = $this->get_layout( $class_name, $this->info );
  		// echo the field using the appropriate layout function. 
 		$this->$layout( $args ); 
 	}
@@ -61,43 +60,67 @@ class Field_Type {
 	public static function get_class_name( $type ){
 		return self::$class_prefix . $type ;
 	}
-	public static function get_field_info( $args ){
+	public function get_field_info( $args ){
 		$Options_Page = Cloud_Options_Pages::get_instance(); 
-
 		$info = array(); 
-		
-		$top_level_slug = $args['top_level'];		
-		$page_slug = $args['subpage'];
-		$section_slug = $args['section'];
-		$field_slug = $args['field']; 	
-
-		$subfield_slug = isset( $args['subfield'] ) ? $args['subfield'] : '' ; 
-
-		
-		$enabled = $Options_Page->is_enabled( $top_level_slug, $page_slug, $section_slug, $field_slug ); 
-		$value = $Options_Page->get_option( $top_level_slug, $page_slug, $section_slug, $field_slug ); 
+		switch ($this->context ){
+			case 'options-page' :
+				$top_level_slug = $args['top_level'];		
+				$page_slug = $args['subpage'];
+				$section_slug = $args['section'];
+				$field_slug = $args['field']; 
+				$input_id = $section_slug . '_' . $field_slug ;				
+				$enabled = $Options_Page->is_enabled( $top_level_slug, $page_slug, $section_slug, $field_slug ); 
+				$user_enabled_override_name = $page_slug.'[enabled]['.$section_slug.']['.$field_slug.']';
+				$value = $Options_Page->get_option( $top_level_slug, $page_slug, $section_slug, $field_slug ); 
+				$name =  $page_slug.'['.$section_slug.']['.$field_slug.']'; 
+				// only interior here, so it can be added to
+				$to_retrieve = '"'. $page_slug.'", "'. $section_slug . '" , "'. $field_slug.'"' ;			
+				$function_to_retrieve = 'get_theme_options' ;
+				break; 
+			case 'metabox' :
+				global $post ;
+			
+				$metabox_slug = $args['metabox'];
+				$field_slug = $args['field']; 
+				$input_id = $metabox_slug . '_'. $field_slug ;
+				$enabled = $Options_Page->is_metabox_option_enabled( $post->ID, $metabox_slug, $field_slug ); 
+				$user_enabled_override_name =  $metabox_slug.'[enabled]['.$field_slug.']';
+				$value = $Options_Page->get_metabox_option( $post->ID, $metabox_slug, $field_slug ); 
+				$name =  $metabox_slug . '['.$field_slug.']'; 
+				// only interior here, so it can be added to
+				$to_retrieve = '"'. $post->ID.'", "'. $metabox_slug . '" , "'. $field_slug.'"' ;
+				$function_to_retrieve = 'get_metabox_options' ;
+				break ;
+		}
 		$cloneable =  isset( $args['info']['cloneable'] ) ? $args['info']['cloneable'] : false;
-		$user_enabled_override_name = $page_slug.'[enabled]['.$section_slug.']['.$field_slug.']';
-		
+		$subfield_slug = isset( $args['subfield'] ) ? $args['subfield'] : '' ; 
+		$default_value =  isset( $args['info']['default'] ) ? $args['info']['default'] : ''; 
+			
 		// part of a group?
 		if ( $subfield_slug ){
 			$group_number = isset( $args['group_number'] ) ? $args['group_number'] : 0 ;		
 			$value = isset( $value[$group_number][$subfield_slug] ) ? $value[$group_number][$subfield_slug] : ''; 
-			$name =  $page_slug.'['.$section_slug.']['.$field_slug.']['.$group_number.']['.$subfield_slug.']'; 	
-			$to_retrieve = 	'get_theme_options( "'. $page_slug.'", "'. $section_slug . '" , "'. $field_slug.'" , ' . $group_number .' , "' .$subfield_slug .'" )';	
+			$name = $name . '['.$group_number.']['.$subfield_slug.']'; 	
+			$to_retrieve = 	$function_to_retrieve .'( '. $to_retrieve .', '. $group_number .' , "' .$subfield_slug .'" ) ';	
 			$cloneable = false;
-			$saved_default = $Options_Page->get_option_default( $top_level_slug, $page_slug, $section_slug, $field_slug, $group_number, $subfield_slug );		
-			$default_value = $saved_default ? $saved_default : ( isset( $args['info']['default'] ) ? $args['info']['default'] : '' ); 
+			if ( $this->context == 'options-page' ){
+				$enabled = true ; 
+			} else if ( $this->context == 'metabox' ){
+				$enabled = $Options_Page->is_metabox_option_enabled( $post->ID, $metabox_slug, $field_slug, $group_number, $subfield_slug ); 
+			}
+			$user_enabled_override_name = $user_enabled_override_name . '['.$group_number.']['.$subfield_slug.']' ;
+			$default_value = isset( $saved_default ) ? $saved_default : ( isset( $args['info']['default'] ) ? $args['info']['default'] : '' ); 
 		// plain old field
-		} else {		
-			$default_value =  isset( $args['info']['default'] ) ? $args['info']['default'] : ''; 
-			$name =  $page_slug.'['.$section_slug.']['.$field_slug.']'; 
-			$to_retrieve = 'get_theme_options( "'. $page_slug.'", "'. $section_slug . '" , "'. $field_slug.'" )' ;			
+		} else {
+			$to_retrieve = 	$function_to_retrieve .'( '. $to_retrieve .' ) ';			
 		}
+		
 		$info['title'] = $args['info']['title'];
 		$info['to_retrieve'] = 	$to_retrieve;				
 		$info['cloneable'] = $cloneable ;
-		 
+		
+		// setup lock on various things we might want to lock down. 			 
 		if ( $args['info']['_lock'] ){
 			$info['clone_controls'] = false;
 			$info['code_link'] = false;
@@ -107,17 +130,17 @@ class Field_Type {
 			$info['code_link'] = isset( $args['info']['code_link'] ) ? $args['info']['code_link'] : true; 
 			$info['sort'] = isset( $args['info']['sort'] ) ? $args['info']['sort'] : true; 
 		}
-
+	
 		$info['name'] = $name; 
 		$info['description'] = isset( $args['info']['description'] ) ? $args['info']['description'] : null;
-		$info['id']   = $field_slug;
+		$info['id']   = $input_id;
 		$info['value'] = $value ? $value : $default_value;
 		$info['default'] = $default_value; 
 		$info['settable_defaults'] = isset( $args['info']['settable_defaults'] ) ? $args['info']['settable_defaults'] : false;
 		
 		$info['enabled'] = $enabled ;
 		$info['enabled_name'] = $user_enabled_override_name; 		
-		$info['parent_layout'] = $args['parent_section_layout'];
+		$info['parent_layout'] = isset( $args['parent_section_layout'] ) ? $args['parent_section_layout'] : 'standard' ;
 		$info['layout'] = isset ($args['info']['layout'] ) ? $args['info']['layout'] : 'default';
 		$info['prefix'] = $Options_Page->prefix; 		
 		$info['fields'] = isset( $args['info']['fields'] ) ? $args['info']['fields'] : ''; 
@@ -188,7 +211,7 @@ class Field_Type {
 	}
 	protected function get_label($field_info){
 		$to_use = self::get_copy_to_use( $field_info); 
-		$label = $to_use."<label for='".$field_info['prefix'] . $field_info['id'] . "' >" . $field_info['title'] ."</label>";
+		$label = $to_use."<label class='title' for='".$field_info['prefix'] . $field_info['id'] . "' >" . $field_info['title'] ."</label>";
 		return $label;
 	}
 	protected static function get_copy_to_use( $field_info ){
@@ -206,6 +229,7 @@ class Field_Type {
 	protected function get_attributes( $field_info ){
 		$classes = array(); 
 		$classes[] = 'field' ;
+		$classes[] = 'cf' ;
 		$classes[] = 'type-'.$this->type ;
 		$classes[] = $this->info['sort'] ? '' : 'no-sort'; 
 		if ( $field_info['parent_layout'] === 'grid' ){
@@ -243,7 +267,7 @@ class Field_Type {
 		return $chosen_layout;
 		
 	}	
-	protected static function get_layout( $class_name, $field_info ){
+	protected function get_layout( $class_name, $field_info ){
 
 		if ( isset( $field_info['layout'] ) ){
 			if ( is_array( $field_info['layout'] ) ){
@@ -262,6 +286,13 @@ class Field_Type {
 		}
 		if ( $field_info['is_subfield'] ){
 			$layout = 'custom' ;
+		}
+		if ( $this->context == 'metabox' ){
+			if ( is_callable( array( $this, 'metabox' ) ) ){
+				$layout = 'metabox' ;
+			} else {
+				$layout = 'custom' ;
+			}
 		}
 		return $layout;
 	}
