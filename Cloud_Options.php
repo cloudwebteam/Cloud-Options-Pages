@@ -6,9 +6,9 @@ class Cloud_Options  {
 	// setting up singleton
 	private static $instance;	
 	// what the user passes in for pages
-	protected static $user_pages ; 
+	protected static $user_pages = array() ; 
 	// what the user passes in for metaboxes
-	protected static $user_metaboxes ;
+	protected static $user_metaboxes = array() ;
 	// allows us to premake code and optionally enable it. This stores the enabled file names to be inclued
 	protected static $modules = array() ; 
 	// the master list of defaults, from defaults.php, set in set_defaults()
@@ -220,13 +220,12 @@ class Cloud_Options  {
 	==================================================================================================================================== ***/		
 	//whatever the user passes in with add_metaboxes()
 	public static function add_metaboxes( $add_to, $user_array, $context = '' , $priority = '' ){
-		$metaboxes_to_add[] = array(
+		self::$user_metaboxes[] = array(
 			'add_to' => $add_to,
 			'user_array' => $user_array, 
 			'context' => $context,
 			'priority' => $priority
 		);
-		self::$user_metaboxes = $metaboxes_to_add; 
 	}
 
 /***====================================================================================================================================
