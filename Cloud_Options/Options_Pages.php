@@ -7,13 +7,14 @@ class Cloud_Options_Pages {
 	protected static $options_pages ;
 	protected $user_defaults 	= array();
 	// what are the values stored in the database?
-	protected $values ;
+	protected static $values ;
 	// whatever the user passes in
 	protected $user_array = array();
 	// after merging with defaults
 	public static $pages = array();
 	
 	public static function init( $user_pages ){
+
 		if ( sizeof( $user_pages ) > 0 ){
 			if ( ! self::$instance ){
 				self::$instance = new self( $user_pages ); 
@@ -39,7 +40,7 @@ class Cloud_Options_Pages {
 		
 		self::$pages = $this->merge_with_defaults(); 		
 
-		$this->values = $this->get_values(); 		
+		self::$values = self::get_values(); 		
 		add_action( 'admin_init', array( $this, 'register_settings' ) ); 		
 		add_action('admin_menu', array( $this, 'create_options_pages' ) );	
 			add_action('admin_enqueue_scripts', array( $this, 'load_styles_and_scripts' ) );
@@ -109,7 +110,7 @@ class Cloud_Options_Pages {
 	/**
 	 * Register the options so that WP knows about them and can handle saving
 	 */
-	private function get_values(){
+	private static function get_values(){
 		$values = array(); 
 		foreach ( self::$pages as $top_level_slug => $top_level_page ) {
 			foreach ($top_level_page['subpages'] as $subpage_slug => $subpage) {
@@ -240,52 +241,55 @@ class Cloud_Options_Pages {
 	 */
 	 // Retrieve one specific option value
 	public function get_option( $top_page_slug = null, $page_slug = null , $section_slug = null , $field_slug = null ){
-		if ( !isset( $this->values[$top_page_slug] ) || 
-			 !isset( $this->values[$top_page_slug][$page_slug] ) || 
-			 !isset( $this->values[$top_page_slug][$page_slug][$section_slug] ) ||
-			 !isset( $this->values[$top_page_slug][$page_slug][$section_slug][$field_slug] ) 
+		if ( !isset( self::$values[$top_page_slug] ) || 
+			 !isset( self::$values[$top_page_slug][$page_slug] ) || 
+			 !isset( self::$values[$top_page_slug][$page_slug][$section_slug] ) ||
+			 !isset( self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug] ) 
 		){	
 
 			return false;
 		}
-		$option = $this->values[$top_page_slug][ $page_slug ][ $section_slug ][ $field_slug ];	
+		$option = self::$values[$top_page_slug][ $page_slug ][ $section_slug ][ $field_slug ];	
 
 		return $option;
 	}
 	// Retrieve whatever level of specificity is desired: page, section, field, group, subfield
 	public function get_options( $page_slug = null , $section_slug = null , $field_slug = null , $group_number = null, $subfield_slug = null ){		
-
-		foreach( $this->values as $top_level_slug => $options ){
+		if ( ! self::$values ) self::$values = self::get_values() ;
+		foreach( self::$values as $page_slug => $options ){
 			foreach( $options as $subpage_slug => $options ){
 				if ( $subpage_slug === $page_slug ){
-					$top_page_slug = $top_level_slug ;
-					break;
+					$top_page_slug = $page_slug ;
+					break 2;
 				}
 			}
-		}			
+		}	
+
 		// ha ha, overkill...but it might be useful to be able to grab individual group values
-		if (  isset( $this->values[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number][$subfield_slug] ) && is_array( $this->values[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number] ) ) {
-			return $this->values[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number][$subfield_slug];
-		} else if ( is_int( $group_number ) && isset( $this->values[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number] ) ) {
-			return $this->values[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number] ;
+		if (  isset( self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number][$subfield_slug] ) && is_array( self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number] ) ) {
+			return self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number][$subfield_slug];
+		} else if ( is_int( $group_number ) && isset( self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number] ) ) {
 			
-		} else if ( isset( $this->values[$top_page_slug][$page_slug][$section_slug][$field_slug] ) ) {
+			return self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number] ;
+			
+		} else if ( isset( self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug] ) ) {
+			
 			// check if the current page has settable defaults before going to all the hassle of checking the field
 			if ( self::$pages[$top_page_slug]['subpages'][$page_slug]['_has_settable_defaults'] ){
 				if ( $this->is_option_enabled( $top_page_slug, $page_slug, $section_slug, $field_slug ) ){
-					return $this->values[$top_page_slug][$page_slug][$section_slug][$field_slug] ;
+					return self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug] ;
 				} else {
 					return $this->user_defaults[$top_page_slug][$page_slug][$section_slug][$field_slug] ;
 				}
 			} else {
-				return $this->values[$top_page_slug][$page_slug][$section_slug][$field_slug] ;
+				return self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug] ;
 			}
-		} else if ( isset( $this->values[$top_page_slug][$page_slug][$section_slug] ) ) {
-			return $this->values[$top_page_slug][$page_slug][$section_slug] ; 
-		} else if ( isset( $this->values[$top_page_slug][$page_slug] ) ){ 
-			return $this->values[$top_page_slug][$page_slug] ; 
-		} else if ( isset( $this->values[$top_page_slug] ) ) {
-			return $this->values[$top_page_slug]; 
+		} else if ( isset( self::$values[$top_page_slug][$page_slug][$section_slug] ) ) {
+			return self::$values[$top_page_slug][$page_slug][$section_slug] ; 
+		} else if ( isset( self::$values[$top_page_slug][$page_slug] ) ){ 
+			return self::$values[$top_page_slug][$page_slug] ; 
+		} else if ( isset( self::$values[$top_page_slug] ) ) {
+			return self::$values[$top_page_slug]; 
 		} else {
 			return false;
 		}
@@ -343,7 +347,7 @@ class Cloud_Options_Pages {
 	}
 	public function is_option_enabled( $top_page_slug = null, $page_slug = null , $section_slug = null , $field_slug = null ){
 		if ( isset( self::$pages[$top_page_slug]['subpages'][$page_slug]['sections'][$section_slug]['fields'][$field_slug]['settable_defaults'] ) && self::$pages[$top_page_slug]['subpages'][$page_slug]['sections'][$section_slug]['fields'][$field_slug]['settable_defaults'] ){ 
-			if( isset( $this->values[$top_page_slug][$page_slug]['enabled'][$section_slug][$field_slug] ) && $this->values[$top_page_slug][$page_slug]['enabled'][$section_slug][$field_slug] ){
+			if( isset( self::$values[$top_page_slug][$page_slug]['enabled'][$section_slug][$field_slug] ) && self::$values[$top_page_slug][$page_slug]['enabled'][$section_slug][$field_slug] ){
 				return true;
 			} else {
 				return false;

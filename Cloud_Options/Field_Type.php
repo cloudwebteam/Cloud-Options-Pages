@@ -162,19 +162,31 @@ class Field_Type {
 	
 	// wraps the field/fields in html that makes it cloneable
 	protected function make_cloneable( $args ){
-		$Options = Cloud_Options::get_instance(); 		
-		$top_level_slug = $args['top_level'];		
-		$page_slug = $args['subpage'];
-		$section_slug = $args['section'];
-		$field_slug = $args['field']; 	
-		
+		switch ($this->context ){
+			case 'options-page' :
+				$Options_Pages = Cloud_Options_Pages::get_instance();
+				
+				$top_level_slug = $args['top_level'];		
+				$page_slug = $args['subpage'];
+				$section_slug = $args['section'];
+				$field_slug = $args['field']; 	
+				$this->saved_values = $Options_Pages->get_option( $top_level_slug, $page_slug, $section_slug, $field_slug ); 
+				break; 
+			case 'metabox' :
+				global $post ;
+				$Metaboxes = Cloud_Metaboxes::get_instance();
+
+				$metabox_slug = $args['metabox'];
+				$field_slug = $args['field']; 	
+				$this->saved_values = $Metaboxes->get_option( $post->ID, $metabox_slug, $field_slug ) ;
+				break ;
+		}
+		$this->args = $args;		
 		$name = $this->info['name']; 
 		$value = $this->info['value'] ;
 		$parent_to_retrieve = $this->info['to_retrieve']; 
-		$this->saved_values = $Options->get_option( $top_level_slug, $page_slug, $section_slug, $field_slug ); 
-		$this->args = $args;		
-		
-		$this->info['settable_defaults'] = false ;
+		$this->info['settable_defaults'] = false ;		
+
 
 
 		$clones = array(); 

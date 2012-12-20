@@ -51,7 +51,7 @@ class Cloud_Field_select extends Field_Type {
 						$html .= '<option '.$selected .' value="'.$post->ID.'">'.$post->post_title.'</option>' ; 
 					}				
 				} else {
-					$html .= $this->multiple ? '' : '<option>Please select one...</option>'; 
+					$html .= $this->multiple ? '' : '<option value="">Please select one...</option>'; 
 					foreach( $options as $value => $option ){ 
 						if ( $this->info['value'] == $value ){
 							$selected = 'selected';

@@ -9,6 +9,8 @@ class Cloud_Options  {
 	protected static $user_pages ; 
 	// what the user passes in for metaboxes
 	protected static $user_metaboxes ;
+	// allows us to premake code and optionally enable it. This stores the enabled file names to be inclued
+	protected static $modules = array() ; 
 	// the master list of defaults, from defaults.php, set in set_defaults()
 	public static $defaults = array(); 
 	/**
@@ -26,6 +28,7 @@ class Cloud_Options  {
 		$this->current_page = $this->get_current_page(); 
 		// load everything in /Cloud_Options
 		$this->load_theme_classes(); 
+		$this->load_global_styles_and_scripts() ;
 
 		//load all files within specific folders within /Cloud_Options/
 		$this->load_theme_classes('Field_Type');
@@ -33,6 +36,10 @@ class Cloud_Options  {
 		
 		// get defaults array from defaults.php
 		$this->set_defaults();
+		
+		// includes chunks of code we may or may not want to execute
+		// see self::enable_module
+		$this->init_modules(); 
 		
 		//create options pages
 		$Options_Pages = Cloud_Options_Pages::init( self::$user_pages ) ; 
@@ -63,6 +70,19 @@ class Cloud_Options  {
 			); 
 		}
 		return false; 
+	}
+	public static function enable_module( $file_name = '' ){
+
+		if ( $file_name && file_exists( dirname( __FILE__ ) .  '/'. __CLASS__ .'/modules/'.$file_name .'.php' ) ){
+			self::$modules[] = dirname( __FILE__ ) .  '/'. __CLASS__ .'/modules/'.$file_name .'.php' ;
+		}
+	}
+	protected function init_modules(){
+		if ( sizeof( self::$modules ) > 0 ){
+			foreach( self::$modules as $module ){
+				include $module ; 
+			}
+		}
 	}
 	// Public method for adding options pages
 	public static function add_pages( $options_array ){
@@ -158,10 +178,11 @@ class Cloud_Options  {
 		}
 	}	
 	
-	public function load_styles_and_scripts( ){
+	public function load_global_styles_and_scripts( ){
 		wp_register_style('Options_global', self::get_folder_url().'/_css/Options_Global.css' );
 		wp_enqueue_style('Options_global' );
-		
+	}
+	public function load_styles_and_scripts(){
 		// GENERAL STYLES
 		wp_register_style('Bootstrap Responsive', self::get_folder_url().'/_css/bootstrap/css/bootstrap-responsive.css');
 		wp_register_style('Bootstrap',  self::get_folder_url().'/_css/bootstrap/css/bootstrap.css');
@@ -396,6 +417,7 @@ add_action( 'init', array( 'Cloud_Options', 'get_instance' ) ) ;
  */
 function get_theme_options( $subpage_id = null, $section_id = null, $field_id = null , $group_number = null, $subfield_id = null ){
 	$Options_Pages = Cloud_Options_Pages::get_instance();
+
 	return $Options_Pages->get_options( $subpage_id, $section_id, $field_id, $group_number, $subfield_id );
 }
 function get_metabox_options( $post_id, $metabox_id = null, $field_slug = null, $group_number = null, $subfield_slug = null ){
@@ -408,7 +430,6 @@ function get_metabox_options( $post_id, $metabox_id = null, $field_slug = null, 
 		$metabox_id = $post_id; 
 		$post_id = $post->ID; 
 	}
-	
 	return Cloud_Metaboxes::get_options( $post_id, $metabox_id, $field_slug, $group_number, $subfield_slug );
 }
 add_shortcode( 'info' , 'shortcode_theme_get_info');
