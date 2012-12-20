@@ -46,7 +46,6 @@ $options_defaults = array (
 			'editor_list'		=> false,
 			'subfields'			=> null,
 			'settable_defaults' => false,
-			
 			'code_link' 		=> true, 
 			'clone_controls'	=> true,
 			'sort'				=> true, 

@@ -8,6 +8,11 @@ function add_sidebars_management(){
 		'sidebars' => array (
 			'image' 	=> Cloud_Options::get_folder_url().'/modules/images/layout-select-sidebar.png',
 			'priority'  => 51,
+			'defaults' => array(
+				'fields' => array(
+					'editor_list' => false
+				)
+			),
 			'subpages'		=> array (
 			
 				'sidebars' => array (
@@ -37,8 +42,20 @@ function add_sidebars_management(){
 					)
 				), 
 				'widgets' => array(
+					'title' => 'Widgets', 
+					'layout' => 'standard',
 					'menu_title' => 'Widgets', 
 					'sections' => array(
+						'widgets-section' => array(
+							'title' => 'Widgets',
+							'fields'		=> array(
+								'notice' => array(
+									'type' => 'info',
+									'title' => 'You are seeing this?',
+									'description' => 'You should not be, the page should have redirected!',
+								)
+							)
+						)
 					)
 				)
 			)

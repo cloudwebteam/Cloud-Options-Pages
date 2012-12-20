@@ -35,7 +35,7 @@ class MCE_Plugins {
 		}
 	}
 	public function add_options_list_to_mce( $plugin_array ){
-		$plugin_array['options_list'] = Cloud_Options::get_include_path() . '/Cloud_Options/_js/mce_plugins/options_list.js';
+		$plugin_array['options_list'] = Cloud_Options::get_folder_url() . '/_js/mce_plugins/options_list.js';
 		return $plugin_array; 
 	
 	}
@@ -54,10 +54,11 @@ class MCE_Plugins {
 					$shortcodes[$subpage_slug]['sections'][$section_slug] = array();
 					$shortcodes[$subpage_slug]['sections'][$section_slug]['title'] = $section['title'];
 					foreach ( $section['fields'] as $field_slug => $field ){
-					
+				
 						if ( $field['type'] === 'group' && sizeof( $field['subfields'] ) > 0  ){
-							
+							// no support for groups 
 						} else if ($field['editor_list'] === true ){
+
 							$shortcodes[$subpage_slug]['sections'][$section_slug]['fields'][$field_slug] = array(
 								'field_title' => $field['title'],
 								'section_title' => $section['title'],
@@ -72,14 +73,19 @@ class MCE_Plugins {
 					}
 					
 				}
-				if (!isset( $shortcodes[$subpage_slug]['sections']	)) {
+				if ( empty( $shortcodes[$subpage_slug]['sections'] )) {
 					unset( $shortcodes[$subpage_slug]);
 				}				
 			}
-			if ( sizeof( $shortcodes[$subpage_slug]['sections']	) === 0 ) {
+			if ( empty( $shortcodes[$subpage_slug]['sections']	) ) {
 				unset( $shortcodes[$subpage_slug]);
 			}			
 		}
-		return $shortcodes;
-	}	
+
+		if ( sizeof( $shortcodes ) > 0 ) {
+			return $shortcodes;
+		} else { 
+			return false;
+		}	
+	}
 }

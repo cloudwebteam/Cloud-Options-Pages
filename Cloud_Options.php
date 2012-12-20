@@ -40,7 +40,7 @@ class Cloud_Options  {
 		// includes chunks of code we may or may not want to execute
 		// see self::enable_module
 		$this->init_modules(); 
-		
+		 
 		//create options pages
 		$Options_Pages = Cloud_Options_Pages::init( self::$user_pages ) ; 
 		$Options_Metaboxes = Cloud_Metaboxes::init( self::$user_metaboxes ) ;
@@ -232,7 +232,7 @@ class Cloud_Options  {
 		FUNCTIONS FOR BOTH THE METABOXES AND THE OPTIONS 
 	==================================================================================================================================== ***/
 
-	public static function merge_with_defaults( $type, $section = array(), $subpage = array(), $top_leve_page = array() ){
+	public static function merge_with_defaults( $type, $section = array(), $subpage = array(), $top_level_page = array() ){
 		// $type is in case we ever need multiple types of merges. Right now, the only type is section/metabox (smae thing )
 		
 		$defaults = self::$defaults; 
@@ -253,6 +253,7 @@ class Cloud_Options  {
 		}				
 	
 		foreach ( $section['fields'] as $field_slug => $field ){
+
 			$_section['fields'][$field_slug] = array();  
 			$_field =& $_section['fields'][$field_slug]; 
 			$type = '';
@@ -274,13 +275,14 @@ class Cloud_Options  {
 			}
 			// set type
 			$_field['type'] = $type ;
+ 
 			// go through defaults for that type
 			if ( isset(  $defaults['fields'][$type] ) ) {
 				$field_defaults =  $defaults['fields'][$type] ; 
 			} else {
 				$field_defaults = $defaults['fields']['general'] ;
 			}
-			foreach ( $field_defaults as $key => $default_value ) {
+			foreach ( $field_defaults as $key => $default_value ) { 
 				if ( isset( $field[$key] ) ){
 					$set_value = $field[$key];  
 				} else {
