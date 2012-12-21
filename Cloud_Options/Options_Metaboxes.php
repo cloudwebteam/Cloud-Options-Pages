@@ -54,6 +54,7 @@ class Cloud_Metaboxes {
 		}		
 	}
 	protected function valid_on_current_page( $add_to ){
+
 		if ( is_string( $add_to ) ){
 			// slug or title provided
 			if ( $post = get_page_by_title( $add_to ) ){
@@ -76,10 +77,13 @@ class Cloud_Metaboxes {
 			// check if its just a declaration of post_types
 			if ( sizeof( $add_to ) == 1 && isset( $add_to['post_type'] ) ) {
 				if ( isset( $_GET['post_type'] ) ){
-					if ( is_array( $add_to['post_type'] ) && in_array($_GET['post_type'], $add_to['post_type'] ) ){
-						return true;
-					} else if ($_GET['post_type'] === $add_to['post_type'] ){
-						return true; 	
+					//creating new post of this post type? 
+					if ( stripos( $_SERVER['REQUEST_URI'] , 'post-new' ) !== false ){
+						if ( is_array( $add_to['post_type'] ) && in_array($_GET['post_type'], $add_to['post_type'] ) ){
+							return true;
+						} else if ($_GET['post_type'] === $add_to['post_type'] ){
+							return true; 	
+						}
 					}
 				}
 			}
