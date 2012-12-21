@@ -68,25 +68,25 @@ function add_sidebars_management(){
 			foreach( $saved_sidebars as $key => $sidebar ){
 				$sidebars[ $sidebar['id'] ] = $sidebar['name'] ;
 			}
+			$metaboxes = array(
+				'sidebars'	=> array(
+					'title' 	=> 'Sidebar',
+					'fields'		=> array(
+						'sidebar' => array(
+							'title' => 'Select a Sidebar',
+							'type' => 'select', 
+							'defaults' => 'default',
+							'options' => $sidebars,
+							'description' => 'If a sidebar is selected, it will appear on this page. Otherwise, content will be full-width.'
+						)
+					)
+				)
+			);
+			Cloud_Options::add_metaboxes( array( 'post_type' => 'page' ), $metaboxes, 'side','low' );
+			
+			add_action( 'admin_menu', 'move_widgets_page' );
 		}
 	}
-	$metaboxes = array(
-		'sidebars'	=> array(
-			'title' 	=> 'Sidebar',
-			'fields'		=> array(
-				'sidebar' => array(
-					'title' => 'Select a Sidebar',
-					'type' => 'select', 
-					'defaults' => 'default',
-					'options' => $sidebars,
-					'description' => 'If a sidebar is selected, it will appear on this page. Otherwise, content will be full-width.'
-				)
-			)
-		)
-	);
-	Cloud_Options::add_metaboxes( array( 'post_type' => 'page' ), $metaboxes, 'side','low' );
-	
-	add_action( 'admin_menu', 'move_widgets_page' );
 }
 add_sidebars_management() ;
 
