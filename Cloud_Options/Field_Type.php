@@ -23,7 +23,7 @@ class Field_Type {
  		$this->info = $this->get_field_info($args);
  		
  		// create standard label to be placed
-		$this->label = $this->get_label( $this->info ); 
+		$this->label = '<div class="label">' . $this->get_label( $this->info ) . '</div>'; 
 		
 		// create standard description to be placed
 		$this->description = $this->get_description( $this->info );
@@ -36,20 +36,22 @@ class Field_Type {
 			$this->make_cloneable( $args );
 		} else {
 			// create field ( this method should be implemented by each field subclass )
-			$this->field = $this->get_field_html( $args ); 		
+			$this->field = '<div class="input">'.$this->get_field_html( $args ) .'</div>'; 
 		}
 		
-		// get components needed to build the field ( optionally implemented )
-		$this->get_field_components( $args );
+		// get extra components needed to build the field ( optionally implemented )
+		$this->get_extra_components( $args );
 		
 		// figure out what layout to use
-		$layout = $this->get_layout( $class_name, $this->info );
+		$this->layout = $this->get_layout( $class_name, $this->info );
+				
+		// arrange the title, field, description, and components
+		$this->field_components = $this->arrange_field_components( ); 
+		
  		// echo the field using the appropriate layout function. 
-		$this->$layout( $args ); 
+		$this->{ $this->layout }( $args ); 
 	}
-	public function standard(){
-		echo 'this field needs a display function!';
-	}
+
 	public function enqueue_field_scripts_and_styles(){
 		self::register_scripts_and_styles( get_called_class() );  // would be best, but only in 5.3... should fallback and not break
 	
@@ -120,6 +122,7 @@ class Field_Type {
 			$to_retrieve = 	$function_to_retrieve .'( '. $to_retrieve .' ) ';			
 		}
 		
+		
 		$info['title'] = $args['info']['title'];
 		$info['to_retrieve'] = 	$to_retrieve;				
 		$info['cloneable'] = $cloneable ;
@@ -158,8 +161,43 @@ class Field_Type {
 	protected function get_field_html($args){ echo 'this field needs to implement get_field_html()'; }
 	
 	// optional, allows each field to create its own necessary components
-	protected function get_field_components( $args ){}
+	protected function get_extra_components( $args ){}
 	
+	// arranges the parts inside the field, using the 'layout' parameter, if provided. Otherwise, it uses default
+	protected function arrange_field_components( ){
+		$layout_array = $this->info['layout'] ; 
+		$label_in_left_column = $this->layout === 'standard' ; 
+		ob_start(); 
+		if ( is_array( $layout_array ) && sizeof( $layout_array ) > 0 ){
+			// for each element of the layout array, make a row. 
+			foreach( $layout_array as $row ){ 
+
+				// if its a standard layout ( table based  ) the label is needed on the left, so don't put it here
+				if ( $label_in_left_column && $row == 'label' ){
+					// do nothing
+				} else { 
+					// if, an array, then foreach element of the array, 
+					// check if it is a valid field element, then place it in the row. 
+					if ( is_array( $row ) && sizeof( $row ) > 0 ){ ?>
+					<div class="field-row">
+					<?php foreach( $row as $row_item ){ 
+							if ( isset( $this->$row_item ) && $this->$row_item && is_string( $this->$row_item ) ){
+								echo $this->$row_item ; 
+							}
+						} ?>
+					</div> 
+					<?php	
+					// otherwise, check if the provided string is a valid field element, then place it in the row. 
+					} else {
+						if ( isset( $this->$row ) && $this->$row && is_string( $this->$row ) ){ ?>
+							<div class="field-row"><?php echo $this->$row ; ?></div>
+						<?php }
+					}
+				}
+			}
+		}
+		return ob_get_clean() ;
+	}
 	// wraps the field/fields in html that makes it cloneable
 	protected function make_cloneable( $args ){
 		switch ($this->context ){
@@ -199,7 +237,7 @@ class Field_Type {
 		} else {
 			$clones[0] = $this->make_clone( 0, '', $name, $parent_to_retrieve); 
 		}
-		$output = '';
+		$output = '<div class="input">';
 		$output .= '<ul class="cloneable cf">';
 		foreach( $clones as $clone_number => $clone ){
 			$output .= '<li class="clone cf">' ;
@@ -211,6 +249,7 @@ class Field_Type {
 			$output .= '</li>';
 		}
 		$output .= '</ul>';
+		$output .= '</div>' ;
 		
 		$this->field = $output;
 		$this->info['to_retrieve'] = $parent_to_retrieve ; 
@@ -312,6 +351,24 @@ class Field_Type {
 		}
 		return $layout;
 	}
+	
+	public function standard ( ){ ?>
+		<tr valign="top" <?php echo $this->attributes; ?>>
+			<th scope="row"><?php echo $this->label; ?></th>
+			<td>	
+				<?php echo $this->field_components ; ?>
+			</td>
+		</tr>
+		<?php
+	}	
+	public function custom( ){
+		$layout_details = $this->info['layout']; 
+		?>
+			<div <?php echo $this->attributes; ?>>
+				<?php echo $this->field_components ; ?>
+			</div>		
+		<?php
+	}	
 	protected static function register_scripts_and_styles( $class_name, $subfield_types = null ){
 		$field_type = substr( $class_name, strlen(Field_Type::$class_prefix) ); 
 		if ( $field_type ){			

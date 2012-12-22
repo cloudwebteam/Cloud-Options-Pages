@@ -44,7 +44,14 @@ class Cloud_Field_group extends Field_Type {
 		$this->args = $args;		
 		$this->field_groups = $this->set_fields( $args );
 		
-		return $this->field_groups;
+		if ( $this->info['clone_controls'] ){
+			$this->add_and_remove = '<div class="add-remove"><a class="add">+</a><a class="remove">-</a></div>';		
+		} else {
+			$this->add_and_remove = '' ; 
+		}
+				
+		$field = $this->get_groups_html(); 
+		return $field ;
 	}
 	private function set_fields( $args ){
 		$groups = array();
@@ -54,10 +61,13 @@ class Cloud_Field_group extends Field_Type {
 					$groups[$group_number] = $this->make_group( $group_number, $group); 
 				} 
 			} else {
+			
 				$groups[0] = $this->make_group( 0, ''); 								
 			}
 		}
+	
 		return $groups;
+
 	}	
 	private function make_group( $group_number, $group ){
 		$fields = '' ; 
@@ -84,14 +94,6 @@ class Cloud_Field_group extends Field_Type {
 			$fields .= ob_get_clean();
 		}	
 		return $fields;
-	}
-
-	protected function get_field_components( $args ){
-		if ( $this->info['clone_controls'] ){
-			$this->add_and_remove = '<div class="add-remove"><a class="add">+</a><a class="remove">-</a></div>';		
-		} else {
-			$this->add_and_remove = '' ; 
-		}
 	}
 	public function enqueue_field_scripts_and_styles(){
 		$subfields_names = self::get_subfield_scripts_and_styles(); 
@@ -137,47 +139,26 @@ class Cloud_Field_group extends Field_Type {
 			return false;
 		}
 	}
+	// generates all the html for the groups so it can be stored and moved as $this->field
+	protected function get_groups_html(){ 
+		ob_start(); 
+	?>
+		<ul class="groups">
+			<?php foreach ( $this->field_groups as $group ){ 
 	
-	
+			?>
+			<li class="group">
+				<?php echo $group; ?>
+				<?php echo $this->add_and_remove ; ?>
+			</li>
+			<?php } ?>
+		</ul>
+	<?php
+		return ob_get_clean(); 
+	}
 	
    /**
 	* LAYOUTS FOR THIS FIELD
 	*/
-	public function standard ( $args ){
-		?>
-		<tr valign="top" <?php echo $this->attributes; ?>>
-			<th scope="row"><?php echo $this->label; ?></th>
-			<td class="groups">
-				<?php foreach ( $this->field_groups as $group ){ ?>
-				<div class="group">
-					<?php echo $group; ?>
-					<?php echo $this->add_and_remove ; ?>
-				</div>
-				<?php } ?>
-				<?php echo $this->description; ?>
-			</td>
-		</tr>
-		<?php
-	}
-	public function expandable( $args ){
-		$field_info = parent::get_field_info($args);
-			
-	}
-	public function custom( $args ){
-		$layout_details = $this->info['layout']; ?>
-		<div <?php echo $this->attributes ; ?>>
-			<p><?php echo $this->label; ?></p>
-			<ul class="groups">
-				<?php foreach ( $this->field_groups as $group ){ ?>
-				<li class="group">
-					<?php echo $group; ?>
-					<?php echo $this->add_and_remove ; ?>
-				</li>
-				<?php } ?>
-			</ul>
-			<?php echo $this->description; ?>
-		</div>
-	<?php
-	}
 	
 }

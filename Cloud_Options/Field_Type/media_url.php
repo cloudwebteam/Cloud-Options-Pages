@@ -57,33 +57,6 @@ class Cloud_Field_media_url extends Field_Type {
    /**
 	* LAYOUTS FOR THIS FIELD
 	*/
-	public function standard ( $args ){
-		?>
-		<tr valign="top" <?php echo $this->attributes; ?>>
-			<th scope="row"><?php echo $this->label; ?></th>
-			<td <?php echo $this->attributes; ?>>
-				<p><?php echo $this->field; ?></p>
-				<p><?php echo $this->description; ?></p>
-			</td>
-		</tr>
-		<?php
-	}
-	public function expandable( $args ){
-		$field_info = parent::get_field_info($args);
-			
-	}
-	public function custom( $args ){
-		$layout_details = $this->info['layout']; 
-		?>
-			<div <?php echo $this->attributes; ?>>
-				<p><?php echo $this->label; ?></p>			
-				<p><?php echo $this->field; ?></p>
-				<p><?php echo $this->description; ?></p>
-			</div>		
-		<?php
-	}
-	public function metabox( $args ){
-		$this->custom( $args ); 
-	}
+
 	
 }

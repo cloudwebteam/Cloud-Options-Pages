@@ -26,28 +26,4 @@ class Cloud_Field_info extends Field_Type {
    /**
 	* LAYOUTS FOR THIS FIELD
 	*/
-	public function standard ( $args ){
-	
-		?>
-		<tr valign="top" <?php echo $this->attributes; ?>>
-			<th scope="row"><?php echo $this->label; ?></th>
-			<td <?php echo $this->attributes; ?>>			
-				<?php echo $this->description; ?>
-			</td>
-		</tr>
-		<?php
-	}
-	public function expandable( $args ){
-		$field_info = parent::get_field_info($args);
-			
-	}
-	public function custom( $args ){
-		$layout_details = $this->info['layout']; ?>
-		<div <?php echo $this->attributes; ?>>
-			<p><?php echo $this->label; ?></p>
-			<?php echo $this->description; ?>
-		</div>
-		<?php
-	}
-	
 }

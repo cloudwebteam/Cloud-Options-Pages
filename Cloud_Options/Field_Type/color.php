@@ -35,10 +35,6 @@ class Cloud_Field_color extends Field_Type {
 
 		return $field . $this->enabler;
 	}
-	protected function get_field_components( $args ){
-
-		
-	}
 	public function enqueue_field_scripts_and_styles(){
 		// if they exist, enqueues css and js files with this fields name
 		parent::register_scripts_and_styles( __CLASS__ ); 
@@ -56,36 +52,28 @@ class Cloud_Field_color extends Field_Type {
 			return '<img class="hidden preview-image img-polaroid" title="'.$this->info['value'].'" />';	
 		}
 	}	
-
+	private function make_layout(){
+		$layout_details = $this->info['layout']; 
+		if ( is_array( $layout_details ) && sizeof( $layout_details ) > 0 ){
+			foreach( $layout_details as $row ){ 
+				echo 'row<br />'; 
+				if ( is_array( $row ) && sizeof( $row ) > 0 ){
+					foreach( $row as $row_item ){
+						echo $row_item ; 
+					}
+				} else {
+					echo $row.'<br />';
+				}
+				echo '<br />'; 
+			}
+		}
+	}
   
    /**
 	* LAYOUTS FOR THIS FIELD
 	*/
-	public function standard ( $args ){
-		?>
-		<tr valign="top" <?php echo $this->attributes; ?>>
-			<th scope="row"><?php echo $this->label; ?></th>
-			<td>
-				<?php echo $this->field; ?>
-				<?php echo $this->description; ?>
-			</td>
-		</tr>
-		<?php
-	}
-	public function expandable( $args ){
-		$field_info = parent::get_field_info($args);
-			
-	}
-	public function custom( $args ){
-		$layout_details = $this->info['layout']; 
-		?>
-			<div <?php echo $this->attributes; ?>>
-				<p><?php echo $this->label; ?></p>			
-				<?php echo $this->field; ?>
-				<?php echo $this->description; ?>
-			</div>		
-		<?php
-	}
+
+
 	
 	
 }
