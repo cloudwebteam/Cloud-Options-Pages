@@ -132,6 +132,7 @@ $options_defaults = array (
 			'layout'		=> array('label', 'input', 'description'),
 			'cloneable'		=> false,
 			'description'	=> null,
+			'width' 		=> 6,						
 			'editor_list'	=> false,
 			'code_link' 	=> true, 
 			'clone_controls'=> true, 
@@ -180,6 +181,20 @@ $options_defaults = array (
 			'sort'				=> true, 
 			'_lock'				=> false						
 		),
+		'textarea' => array(
+			'title'			=> 'Textarea',
+			'layout'		=> array('label', 'input', 'description'),
+			'cloneable'		=> false,
+			'description'	=> null,
+			'rows'			=> 3,
+			'cols'			=> 57,
+			'width' 		=> 6,				
+			'editor_list'	=> false,			
+			'code_link' 	=> true, 
+			'clone_controls'=> true, 
+			'sort'			=> true,
+			'_lock'			=> false										
+		), 		
 		'time' => array(
 			'title'			=> 'Time',						
 			'layout'		=> array('label', 'input', 'description'),
@@ -194,19 +209,6 @@ $options_defaults = array (
 			'_lock'			=> false				
 					
 		),		
-		'textarea' => array(
-			'title'			=> 'Textarea',
-			'layout'		=> array('label', 'input', 'description'),
-			'cloneable'		=> false,
-			'description'	=> null,
-			'rows'			=> 3,
-			'cols'			=> 57,
-			'editor_list'	=> false,			
-			'code_link' 	=> true, 
-			'clone_controls'=> true, 
-			'sort'			=> true,
-			'_lock'			=> false										
-		), 
 		'url' 		=> array(
 			'title'			=> 'Default URL Title',	
 			'layout'		=> array('label', 'input', 'description'),
