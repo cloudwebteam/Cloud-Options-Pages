@@ -1,7 +1,7 @@
 <?php 
 class Field_Type {
 	public static $default_type = 'text' ;
-	public static $default_layout ; 
+	public static $default_layout = 'custom' ; 
 	public static $class_prefix = 'Cloud_Field_' ; 
 	protected static $default_value ;
 	protected $layout = 'default'; // fallback layout type
@@ -171,23 +171,27 @@ class Field_Type {
 		if ( is_array( $layout_array ) && sizeof( $layout_array ) > 0 ){
 			// for each element of the layout array, make a row. 
 			foreach( $layout_array as $row ){ 
-
-				// if its a standard layout ( table based  ) the label is needed on the left, so don't put it here
-				if ( $label_in_left_column && $row == 'label' ){
-					// do nothing
-				} else { 
-					// if, an array, then foreach element of the array, 
-					// check if it is a valid field element, then place it in the row. 
-					if ( is_array( $row ) && sizeof( $row ) > 0 ){ ?>
+		
+				// if, an array, then foreach element of the array, 
+				// check if it is a valid field element, then place it in the row. 
+				if ( is_array( $row ) && sizeof( $row ) > 0 ){ ?>
 					<div class="field-row">
 					<?php foreach( $row as $row_item ){ 
+						if ( $label_in_left_column && $row_item == 'label' ){
+						 // do nothing
+						} else { 				
 							if ( isset( $this->$row_item ) && $this->$row_item && is_string( $this->$row_item ) ){
 								echo $this->$row_item ; 
 							}
-						} ?>
+						}
+					} ?>
 					</div> 
-					<?php	
-					// otherwise, check if the provided string is a valid field element, then place it in the row. 
+				<?php
+				// otherwise, check if the provided string is a valid field element, then place it in the row. 
+				} else {
+					// if its a standard layout ( table based  ) the label is needed on the left, so don't put it here					
+					if ( $label_in_left_column && $row == 'label' ){
+						// do nothing						
 					} else {
 						if ( isset( $this->$row ) && $this->$row && is_string( $this->$row ) ){ ?>
 							<div class="field-row"><?php echo $this->$row ; ?></div>
@@ -327,7 +331,7 @@ class Field_Type {
 		if ( isset( $field_info['layout'] ) ){
 			if ( is_array( $field_info['layout'] ) ){
 				$layout = 'custom';
-			} else if ( is_callable( $class_name, $field_info['layout'] ) ){
+			} else if ( method_exists( $class_name, $field_info['layout'] ) ){
 				$layout = $field_info['layout'];
 			} else {
 				$layout = self::$default_layout; 		
