@@ -1,44 +1,8 @@
-/* to display all the available fonts, we must import them */
-@import url(http://fonts.googleapis.com/css?family=Droid+Serif);
-@import url(http://fonts.googleapis.com/css?family=Droid+Sans:400,700);
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700);
-
-.type-color label {
-	margin: .25em 0;
-}
-.help {
-	font-size: .875em;
-}
-.selection-tools {
-	padding: 0 0 1em 10px;
-	float: left;
-	width: 380px;
-}
-#theme-options-wrap h3 {
-	padding: .5em 0;
-	border-bottom: 1px dashed #ccc;
-}
-.selection-tools .instruction {
-	display: inline-block;
-	padding: .5em 0;
-	font-style: italic;
-}
-.selection-tools .check-all, 
-.selection-tools .uncheck-all {
-	display: inline-block;
-	padding: .5em 10px;
-	float: right;
-	cursor: pointer;
-}
-.selection-tools .check-all {
-	border-left: 1px solid #ccc;
-}
 .default-swab-container {
 	border-right : 1px solid #ccc;	
 	float: left;
 	margin: .25em 10px .25em 0;
 }
-	
 .default-swab{
 	margin: 1px 10px .5em 0;
 	font-size: .75em;
@@ -65,9 +29,55 @@
 	display: inline-block;	
 	border-radius: 3px;	
 }
-#values-set {
+.field.type-color .color-picker {
+	min-height: 1em;
+}
+.field.type-color .color-picker-input {
+	margin: 0 10px 0 0;	
+}
+.field.type-color  .color-picker .default-swab {
+	margin-right: 5px;
+}
+.field.type-color .option {
+	float: left;
+	line-height: 22px;
+	height: 22px;
+	padding: 3px 0 6px 0;
+	margin-bottom: .5em;
+}
+
+.field.type-color .color-toggle {
+	padding: .25em 2px .25em 5px;
+	float: left;
+	background: #999;
+	border-radius: 3px; 
+}
+.field.type-color .option_enabler {
+	float: left;
+}
+.field.type-color .enable-override {
+	margin: .25em 0 .25em 5px;
+	float: left;
+	display: block;
+	padding: 4px 6px;
+	color: #666;
+	text-transform: uppercase;
+	line-height: 1em;
+	
+}
+.field.type-color .enable-override label {
+	padding: 0 5px 0 10px;
+	font-size: .75em;
+	margin: 0;
+	white-space: nowrap ;
+	float: left; 
+}
+.field.type-color .input + .description {
 	padding-top: 1em;
 }
+/***====================================================================================================================================
+		SET DEFAULTS 
+	==================================================================================================================================== ***/
 #values-from-defaults {
 	display: block;
 	padding: .5em 5px;
@@ -106,60 +116,15 @@
 	border: 1px solid #ccc;
 	padding: .5em 5px;
 	border-radius: 3px;
-}
-.wp-dialog {
-	padding: 1em 20px;
-	display: none;
-	box-shadow: 0 0 10px #333;
-	border: 2px solid #d54e21;
-}
-.wp-dialog .ui-dialog-buttonpane {
-	text-align: right;
-	border-top: 2px solid #ccc;
-	padding: 1em 0 0 0;
-}
-.cloud-options .color-picker {
-	min-height: 1em;
-}
-.cloud.cloud-options .color-picker-input {
-	margin: 0 10px 0 0;	
-}
-.cloud-options .color-picker .default-swab {
-	margin-right: 5px;
-}
-.type-color p {
-	line-height: 3em;
-	height: 3em;
-}
+}	
 
-.type-color .option {
-	float: left;
-	line-height: 22px;
-	height: 22px;
-	padding: 3px 0 6px 0;
-	margin-bottom: .5em;
+/***====================================================================================================================================
+		confirmation dialog
+	==================================================================================================================================== ***/
+.change-defaults-confirmation {
+	font-size: 1em !important ;
 }
-.type-color .color-toggle {
-	padding: .25em 2px .25em 5px;
-	float: left;
-	background: #999;
-	border-radius: 3px; 
-}
-.type-color .option_enabler {
-	float: left;
-}
-.type-color .enable-override {
-	margin: .25em 0 .25em 5px;
-	float: left;
-	display: block;
-	padding: 4px 6px;
-	color: #666;
-	text-transform: uppercase;
-	line-height: 1em;
-	
-}
-.cloud-options .enable-override label {
-	padding: 0 5px;
-	font-size: .75em;
-	margin: 0;
+#set-default-values-popup {
+	background: #111;
+	display: none; 
 }

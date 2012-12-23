@@ -188,11 +188,9 @@ class Cloud_Options  {
 		wp_register_style('Bootstrap',  self::get_folder_url().'/_css/bootstrap/css/bootstrap.css');
 
 		wp_register_style('Options', self::get_folder_url().'/_css/Options.css', array( 'thickbox' ) );
-		wp_register_style('Field_Type', self::get_folder_url().'/_css/Field_Type.css' );
 
 		wp_enqueue_style('Bootstrap Responsive'); 				
 		wp_enqueue_style('Bootstrap'); 	
-		wp_enqueue_style('Field_Type');			
 		wp_enqueue_style('Options');
 		
 		// GENERAL SCRIPTS

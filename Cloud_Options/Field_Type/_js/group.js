@@ -28,17 +28,23 @@ jQuery( function($){
 			multiple.sortable({
 				update: function(){
 					reset_value_keys( multiple );
-				}
+				    jQuery(this).height(jQuery(this).height());
+				},
+				start: function(){
+				    jQuery(this).height(jQuery(this).height());				
+				}				
 			});
 		}
 	};
 	var setup_add_click = function( elems ){
 		elems.unbind('click');
 		elems.click( function(){
-			var container = $(this).parents('.groups'); 	
+		
+			var container = $(this).parents('.groups');	
 			var counter = container.find('.group').size();
 			var group = $(this).parents('.group');
 			
+			container.height( 'auto' );
 			// copy an existing group 
 			var new_input = group.clone(true).hide();
 			//get rid of the values

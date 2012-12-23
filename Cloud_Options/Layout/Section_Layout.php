@@ -30,7 +30,7 @@
 			$section_info['parent_layout'] = $parent_page_spec_array['callback'];
 			
 			// if available, set up title and description
-			if (  isset( $section['title'] ) ) {
+			if (  isset( $section['title'] ) && $section_info['parent_layout'] !== 'tab' ) {
 				$section_info['title'] = '<h3 class="title">'.$section['title'] .'</h3>' ;
 			} else {
 				$section_info['title'] = ''; 
@@ -60,7 +60,7 @@
 		public function standard( $section ){
 			// make variables available and easy to use by extracting them
 			extract( self::get_layout_info( $section ) );
-			
+
 			ob_start();	?>
 			<div class='<?php echo $classes; ?>'>
 				<div class="header">			    
@@ -80,14 +80,16 @@
 
 		public function grid( $section ){
 			// make variables available and easy to use by extracting them
-			extract( self::get_layout_info( $section ) );
+			extract( self::get_layout_info( $section ) );		
 			ob_start();
 			?>	
 			    <div class="<?php echo $classes; ?>">
+				<?php if ( $title || $description ){ ?>
 					<div class="header">			    
 				    	<?php echo $title; ?>
 				    	<?php echo $description; ?>
 					</div>
+				<?php } ?>
 					<div class="row-fluid">
 				    <?php Cloud_Options::do_settings_fields( $subpage_slug, $section ); ?>
 					</div>

@@ -21,7 +21,7 @@ class Field_Type {
 		
 		// setup basic field attributes
  		$this->info = $this->get_field_info($args);
- 		
+
  		// create standard label to be placed
 		$this->label = '<div class="label">' . $this->get_label( $this->info ) . '</div>'; 
 		
@@ -44,7 +44,7 @@ class Field_Type {
 		
 		// figure out what layout to use
 		$this->layout = $this->get_layout( $class_name, $this->info );
-				
+		
 		// arrange the title, field, description, and components
 		$this->field_components = $this->arrange_field_components( ); 
 		
@@ -105,9 +105,12 @@ class Field_Type {
 			
 		// part of a group?
 		if ( $subfield_slug ){
+
 			$group_number = isset( $args['group_number'] ) ? $args['group_number'] : 0 ;		
-			$value = isset( $value[$group_number][$subfield_slug] ) ? $value[$group_number][$subfield_slug] : ''; 
+			$value = $value && isset( $value[$group_number][$subfield_slug] ) ? $value[$group_number][$subfield_slug] : ''; 
 			$name = $name . '['.$group_number.']['.$subfield_slug.']'; 	
+			$input_id = $input_id . '_' . $subfield_slug . '-' .$group_number ;				
+			
 			$to_retrieve = 	$function_to_retrieve .'( '. $to_retrieve .', '. $group_number .' , "' .$subfield_slug .'" ) ';	
 			$cloneable = false;
 			if ( $this->context == 'options-page' ){
@@ -168,10 +171,11 @@ class Field_Type {
 		$layout_array = $this->info['layout'] ; 
 		$label_in_left_column = $this->layout === 'standard' ; 
 		ob_start(); 
+	
 		if ( is_array( $layout_array ) && sizeof( $layout_array ) > 0 ){
 			// for each element of the layout array, make a row. 
 			foreach( $layout_array as $row ){ 
-		
+
 				// if, an array, then foreach element of the array, 
 				// check if it is a valid field element, then place it in the row. 
 				if ( is_array( $row ) && sizeof( $row ) > 0 ){ ?>
@@ -343,15 +347,16 @@ class Field_Type {
 		if ( $field_info['parent_layout'] === 'standard' ) {
 			$layout = 'standard'; 
 		}
-		if ( $field_info['is_subfield'] ){
-			$layout = 'custom' ;
-		}
+		
 		if ( $this->context == 'metabox' ){
 			if ( is_callable( array( $this, 'metabox' ) ) ){
 				$layout = 'metabox' ;
 			} else {
 				$layout = 'custom' ;
 			}
+			if ( $this->info['is_subfield'] ){
+				$layout = 'standard' ;
+			}			
 		}
 		return $layout;
 	}

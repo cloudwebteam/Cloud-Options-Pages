@@ -51,6 +51,7 @@ class Cloud_Field_group extends Field_Type {
 		}
 				
 		$field = $this->get_groups_html(); 
+
 		return $field ;
 	}
 	private function set_fields( $args ){
@@ -65,7 +66,7 @@ class Cloud_Field_group extends Field_Type {
 				$groups[0] = $this->make_group( 0, ''); 								
 			}
 		}
-	
+
 		return $groups;
 
 	}	
@@ -85,14 +86,15 @@ class Cloud_Field_group extends Field_Type {
 			$field_args['group_number'] = $group_number; 
 			$field_args['group_values'] = $group ; 			
 			$field_args['info']	= $subfield; 
-			$field_args['parent_section_layout'] = 'default';
+			$field_args['parent_section_layout'] = 'standard';
+			$field_args['info']['layout'] = array( 'field', 'description' );
 			if ( $this->context == 'options-page' ){
 				$field_args['info']['settable_defaults'] = false ;
 			}
 			ob_start();
 				$field_type_class_name::create_field( $field_args ); 
 			$fields .= ob_get_clean();
-		}	
+		}
 		return $fields;
 	}
 	public function enqueue_field_scripts_and_styles(){
@@ -144,11 +146,11 @@ class Cloud_Field_group extends Field_Type {
 		ob_start(); 
 	?>
 		<ul class="groups">
-			<?php foreach ( $this->field_groups as $group ){ 
-	
-			?>
-			<li class="group">
-				<?php echo $group; ?>
+			<?php foreach ( $this->field_groups as $group ){ ?>
+			<li class="group cf">
+				<table>
+					<?php echo $group; ?>
+				</table>
 				<?php echo $this->add_and_remove ; ?>
 			</li>
 			<?php } ?>
@@ -160,5 +162,4 @@ class Cloud_Field_group extends Field_Type {
    /**
 	* LAYOUTS FOR THIS FIELD
 	*/
-	
 }

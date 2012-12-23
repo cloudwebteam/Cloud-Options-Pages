@@ -207,7 +207,6 @@ $options_defaults = array (
 			'clone_controls'=> true, 
 			'sort'			=> true,
 			'_lock'			=> false				
-					
 		),		
 		'url' 		=> array(
 			'title'			=> 'Default URL Title',	
@@ -230,8 +229,8 @@ $options_defaults = array (
 			'description'	=> null,
 			'rows'			=> 3,
 			'cols'			=> 57,
-			'editor_list'	=> false,	
-			'width' 		=> 6, 					
+			'width' 		=> 6, 
+			'editor_list'	=> false,			
 			'code_link' 	=> true, 
 			'clone_controls'=> true,
 			'sort'			=> true,

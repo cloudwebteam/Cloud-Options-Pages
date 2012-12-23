@@ -1,17 +1,59 @@
 .group {
 	position: relative;
-	float: left;
-	clear: both;
 	cursor: move;
+}
+.type-group .groups {
+	margin: 0;
+	max-width: 100%;	
+	width: 100%;
+}
+.type-group .group {
+	margin: .5em 0;
+	padding: 1em 0;
+	border: 1px dashed #ccc;
+	background: #fafafa;
 }
 .type-group.no-sort .group {
 	cursor: default;
 	border-style: solid;
 }
-.group .add-remove {
-	position: absolute;
-	bottom: .5em;
-	right: 15px;
+.type-group .group .field {
+	padding-bottom: 0;
+}
+.type-group .group table {
+	margin: 0 5px;
+}
+.type-group .group table td {
+	padding-bottom: .5em;
+}
+.field.type-group .group th {
+}
+.field.type-group .group .label {
+	float: none; 
+	margin-right: 10px;
+	position: relative;
+	 
+}
+.field.type-group .group .label label {
+	font-size: 1em ;
+	padding: .5em 0 0 15px;
+	margin: 0; 
+	float: right;
+}
+.type-group .group .copy_to_use {
+	position: absolute; 
+	left: -40px; 
+	top: 0;
+}
+.type-group .group .copy_to_use a {
+	float: left;
+}
+.type-group .add-remove {
+	position: absolute; 
+	bottom: 0; 
+	right: 0;
+	margin: 0 5px 5px 0;
+	width: 50px;
 }
 .type-group .add,
 .type-group .remove {
@@ -36,37 +78,9 @@
 .type-group .remove {
 	color: #C05F47;
 }
-.type-group .testimonial-input .remove {
-	bottom: 5px;
-	right: 15px;
-}
-.type-group.testimonials .add {
-	bottom: 6px;
-	right: 45px;
-}
 .type-group .add:hover,
 .type-group .remove:hover {
 	text-decoration: none;
-}
-.type-group .groups {
-	margin: 0;
-	max-width: 100%;	
-	width: 100%;
-}
-.type-group .group {
-	margin: .5em 0;
-	padding: 1.5em 0 3em;
-	border: 1px dashed #ccc;
-	background: #fafafa;
-	max-width: 100%;	
-}
-.type-group .group .field {
-	margin-left: 15px;
-	margin-right: 15px;
-}
-.field.type-group .group .copy_to_use {
-	position: absolute; 
-	right: 0;
 }
 .field.type-group:hover .group .copy_to_use {
 	display: none;

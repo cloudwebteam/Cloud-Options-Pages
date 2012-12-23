@@ -1,5 +1,5 @@
 /* media url field type */
-.preview-image {
+.field.type-media_url .preview-image {
 	max-width: 190px;
 	max-height: 50px;
 	width: auto;
@@ -7,9 +7,14 @@
 	margin-left: 10px;
 	
 }
+.field.type-media_url .field {
+	padding-top: .25em;
+}
+.field.type-media_url .field + .description {
+	padding-top: .25em;
+}
+
 .field.type-media_url .url_field {
 	margin: 0 0 0 10px;
-	padding: 3px 6px;
-	font-size: .875em;
-	
+	font-size: .875em;	
 }

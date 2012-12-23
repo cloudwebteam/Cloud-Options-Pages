@@ -40,7 +40,7 @@ jQuery(document).ready(function($) {
 	var options_page = $('.cloud-options'); 
 	if ( $set_default_values_popup.size() > 0 ){
 	    $set_default_values_popup.dialog({                   
-	        'dialogClass'   : 'wp-dialog',           
+	        'dialogClass'   : 'change-defaults-confirmation',           
 	        'modal'         : true,
 	        'autoOpen'      : false, 
 	        'closeOnEscape' : true,      

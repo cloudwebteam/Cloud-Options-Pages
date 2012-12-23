@@ -1,3 +1,27 @@
+/***====================================================================================================================================
+		TYPOGRAPHY
+	==================================================================================================================================== ***/
+.cloud-options.wrap h1 {
+	font-size: 2em;
+}
+.cloud-options.wrap h2 {
+	font-size: 1.5em;
+}
+.cloud-options.wrap h3 {
+	font-size: 1.125em;
+}
+.cloud-options.wrap h4 {
+	font-size: 1em;
+}
+.cloud-options.wrap h5 {
+	font-size: .875em;
+}
+.cloud-options.wrap h6 {
+	font-size: .75em;
+}
+/***====================================================================================================================================
+		GENERAL PAGE 
+	==================================================================================================================================== ***/
 .cloud-options {
 	max-width: 1170px;
 }
@@ -7,195 +31,273 @@
 .cloud-options .tab-content {
 	overflow: visible;
 }
-.cloud-options input {
-	max-width: 98%;
-}
-.form-table {
-}
-
-/* tabs */
-.tab-content {
-	overflow: visible; 
-}
-
-/* scroll layout */
-#scroll-nav {
+.cloud-options #scroll-nav {
 	top: 90px;
 }
-#scroll-content {
+.cloud-options #scroll-content {
 	margin-left: 135px;
 	padding: 0 15px;
 }
-#scroll-content .section {
+.cloud-options #scroll-content .section {
 	margin-bottom: 1em;
 	padding: 2em 30px;
 	background: #fafafa;
 	border: 1px solid #ccc;
 }
-.wrap.scroll .submit {
+.cloud-options .wrap.scroll .submit {
 	margin-left: 150px;
 }
-.wrap form h1 {
-	font-size: 2em;
-}
-.wrap form h2 {
-	font-size: 1.5em;
-}
-.wrap form h3 {
-	font-size: 1.125em;
-}
-.wrap form h4 {
-	font-size: 1em;
-}
-.wrap form h5 {
-	font-size: .875em;
-}
-.wrap form h6 {
-	font-size: .75em;
-}
-.cloud-options .field input, 
-.cloud-options .field textarea {
-	width: auto;
-}
-.cloud-options label {
-	float: left;
-}
-.cloud-options label + input {
-	float: left;
-	margin-left: 10px;
-}
-.cloud-options .description {
-	clear: both;
-	display: block;
-}
-.cloud-options p {
-	clear: both;
-	margin-bottom: .5em;
-	margin-top: 0;
-	line-height: 1em;
-}
-.cloud-options p label {
-	margin-bottom: 0;
-	cursor: default; 	
+/***====================================================================================================================================
+		GENERAL SECTION 
+	==================================================================================================================================== ***/
+.cloud-options .section > .header {
+	padding: 0 0 1em 15px ;
+	border-bottom: 1px dashed #efefef;
+	margin-bottom: 2em ;
 }
 
-.cloud-options .group {
-	float: left;
-	clear: both;
-}
-
-.cloud-options .section > .description, .cloud-options > .description {
-	display: block;
-	float: none;
-}
-.cloud-options .text-content *:first-child {
-	padding-top: 0;
-} 
-.cloud-options .text-content h1, 
-.cloud-options .text-content h2, 
-.cloud-options .text-content h3, 
-.cloud-options .text-content h4, 
-.cloud-options .text-content h5, 
-.cloud-options .text-content h6 {
-	font-weight: bold;
-	padding: 1em 0 0 ;
-	margin: 0;
-}
-.cloud-options .text-content h1 {
-	font-size: 2em;
-}
-.cloud-options .text-content h2 {
-	font-size: 1.5em;
-}
-.cloud-options .text-content h3 {
-	font-size: 1.125em
-}
-.cloud-options .text-content h4 {
-	font-size: 1em;
-}
-.cloud-options .text-content h5{
-	font-size: .875em;
-}
-.cloud-options .text-content h6 {
-	font-size: .75em;
-}
-.cloud-options .text-content ul {
-	list-style: disc;
-}
-.cloud-options .text-content ol {
-	list-style: decimal;
-}
-.cloud-options .text-content p,
-.cloud-options .text-content ul,
-.cloud-options .text-content ol {
-	padding-top: 1em;
-	margin-top: 0;
-	margin-bottom: 0;
-	line-height: 1.5em;
-}
-.cloud-options .text-content li {
-	margin: 0;
-}
-.cloud-options .header {
-	width: 100%;
-	float: left;
-	padding-bottom: 1em;
-}
-.cloud-options .header .title {
-	line-height: 1em;
-	font-size: 1.25em;
-	text-transform: uppercase;
-	color: #666;
-}
-.cloud-options textarea,
+/***====================================================================================================================================
+		GENERAL INPUT STYLES
+	==================================================================================================================================== ***/
 .cloud-options input,
-.cloud-options label {
-	max-width: 100%;
+.cloud-options textarea, 
+.cloud-options select {
+	max-width: 98%; 
+	padding: 0 5px; 
+	width: auto; 
 }
+.cloud-options .input ul {
+	margin: 0;
+}
+.cloud-options .input input,
+.cloud-options textarea, 
+.cloud-options select {
+	margin-bottom: 0; 
+}
+/***====================================================================================================================================
+		GENERAL FIELD STYLES
+	==================================================================================================================================== ***/
+.cloud-options .field {
+	position: relative;
+	padding: 0 0 2em; 	
+}
+.cloud-options .field-row {
+	padding: .375em 0 0;
+}
+.cloud-options .field-row:first-child {
+	padding: 0;
+}
+/* clearfix */
+.cloud-options .field-row:before,
+.cloud-options .field-row:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+.cloud-options .field-row:after {
+    clear: both;
+}
+
+.cloud-options .field-row .label,
+.cloud-options .field-row .input,
+.cloud-options .field-row .description {
+	float: left;
+}
+.cloud-options .label { 
+	/* reset...collides with a bootstrap class */
+	width: auto; 
+	height: auto; 
+	margin: 0;
+	padding: 0; 
+	position: relative; 
+	top: 0; 
+	left: 0; 
+	color: #333;
+	background: none;
+	border: none;
+	/* end reset */
+	font-weight: bold;
+	font-size: .875em;
+	padding-top: 3px ;
+}	
+.cloud-options .label label {
+	margin-bottom: 0;
+	line-height: 1em;
+}
+.cloud-options .field-row > * {
+	margin-right: 15px;
+}
+.cloud-options .input + .description {
+	padding: 2px 0 0;
+}
+.cloud-options .label + .description {
+	padding-top: 3px; 
+}
+/***====================================================================================================================================
+		COPY-TO-USE
+	==================================================================================================================================== ***/
+.copy_to_use {
+	display: inline-block;
+	padding-left: 5px;
+	float: right;	
+	position: relative;
+	font-family: monospace;	
+	display: none;
+	width: 0;
+	text-align: right;
+	height: 1em; 
+	top: -4px;
+}
+.copy_to_use > a {
+	display: block;
+	line-height: 1em;
+	background: #fafafa;
+	border: 1px #efefef solid;
+	border-radius: 3px;
+	padding: .375em 5px;
+	z-index: 100;
+	cursor: pointer;
+	float: right;
+	font-weight: normal; 
+}
+.field:hover .copy_to_use {
+	display: block;
+}
+.field:hover .clone .copy_to_use {
+	display: none;
+} 
+.field .clone:hover .copy_to_use {
+	display: block;
+	left: auto; 
+	right: 0;
+	top: -1px;
+}
+.field .clone .copy_to_use a {
+	float: left;
+}
+.cloud-options .copy_to_use .copy-container {
+	display: none;
+	position: absolute; 
+	top: 0%;
+	left: -50%;
+	z-index: 100;
+	width: 300px;
+}
+.cloud-options .copy_to_use .copy {
+	font-size: 1em;
+	padding: 0 5px;
+	border: 1px solid #08C;
+	max-width: 100%;
+	width: 300px;
+	box-shadow: 0 0 5px rgba(0,0,0, .5); 	
+	text-align: center;	
+}
+/***====================================================================================================================================
+		CLONEABLE FIELDS
+	==================================================================================================================================== ***/
+.clone {
+	cursor: move;
+}
+.no-sort .clone {
+	cursor: default;
+}
+.clone input {
+	margin-bottom: 0;
+}
+.clone .add-remove {
+	position: absolute;
+	top: 1em;
+	left: 103%;
+	white-space: nowrap;
+}
+.cloneable .add,
+.cloneable .remove {
+	background: #efefef;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	width: 20px;
+	line-height: 1em;
+	height: 1em;
+	padding-bottom: 2px;
+	font-size: 1.25em;
+	display: inline-block;
+	text-align: center;
+	cursor: pointer;
+	z-index: 20;
+}
+.clone .remove.disabled {
+	color: #ccc;
+	background: #fafafa;
+	cursor: default;
+}
+.cloneable .remove {
+	color: #C05F47;
+}
+.cloneable .add:hover,
+.cloneable .remove:hover {
+	text-decoration: none;
+}
+.cloneable .clone {
+	padding: 1em 10px 1em 10px;
+	margin: 0 0 0 20px;
+	border-top: 1px dashed #ccc;
+	position: relative;
+	clear: both;	
+	float: left;
+	min-height: 2em;
+}
+.cloneable .clone:first-child {
+}
+.clone .copy_to_use {
+	position: absolute;
+	top: -1em;
+	left: 103%;
+}
+.clone .number {
+	position: absolute;
+	top: -.25em;
+	right: 100%;
+	background: #fff;
+	border: 1px solid #ccc;
+	width: 20px;
+	height: 1.5em;
+	line-height: 1.5em;
+	text-align: center;
+	border-radius: 3px;
+}
+/***====================================================================================================================================
+		OPTIONS PAGE - SPECIFIC
+	==================================================================================================================================== ***/
+.cloud-options.options-page .field .title {
+	margin-right: 70px;
+	white-space: nowrap;
+	float: none;
+	clear: none;
+}
+/***====================================================================================================================================
+		METABOX - SPECIFIC
+	==================================================================================================================================== ***/
+.cloud-options.metabox label,
+.cloud-options.metabox .label {
+	position: static; 
+}
+.cloud-options.metabox .copy_to_use {
+	position: absolute;
+	right: 0;
+	left: auto;
+}
+
+/***====================================================================================================================================
+		MISCELLANEOUS
+	==================================================================================================================================== ***/
 .cf:before,
 .cf:after {
     content: " "; /* 1 */
     display: table; /* 2 */
 }
-/***====================================================================================================================================
-		OPTIONS PAGE STYLES
-	==================================================================================================================================== ***/
-/***====================================================================================================================================
-		METABOX STYLES
-	==================================================================================================================================== ***/
-.cloud-options.metabox p {
-	margin-bottom: 0;
-}
-.cloud-options.metabox .field {
-	padding: 0 0 1em 20px;
-}
-.cloud-options.metabox .field input {
-	margin-bottom: 0 ;
-}
-.cloud-options.metabox .header {
-	padding-bottom: 0;
-}
-.cloud-options.metabox .header .description {
-	display: block;
-	border-bottom: 1px solid #ccc;
-	margin-bottom: 1em;
-	padding-bottom: .5em;
-}
-.cloud-options.metabox .field .title {
-	font-weight: bold; 
-	display: block;
-	margin-bottom: .5em;
-	font-size: 1em;
-	position: relative;
-	left: -20px;
-}
-.cloud-options.metabox .field .description {
-	padding: .5em 0 .5em 0;
-}
+
 .cf:after {
     clear: both;
 }
-
 .cf {
     *zoom: 1;
 }
