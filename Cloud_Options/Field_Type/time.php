@@ -16,7 +16,10 @@ class Cloud_Field_time extends Field_Type {
 
 	protected function get_field_html( $args ){
 		$this->size = isset( $args['info']['size'] ) ? $args['info']['size'] : $this->size; 	
-		$field = '<input type="text" id="'.$this->info['prefix'] . $this->info['id'] . '" class="timepicker" name="'.$this->info['name'] . '" size="'.$this->size.'" type="text" value="' . $this->info['value'] . '" />';	
+		
+		$time_format = isset( $args['info']['time_format'] ) ?  $args['info']['time_format'] : 'hh:mm tt' ; 
+		
+		$field = '<input data-timeformat="'.$time_format.'" type="text" id="'.$this->info['prefix'] . $this->info['id'] . '" class="timepicker" name="'.$this->info['name'] . '" size="'.$this->size.'" type="text" value="' . $this->info['value'] . '" />';	
 		return $field;
 	}
 	

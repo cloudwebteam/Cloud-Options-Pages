@@ -14,7 +14,12 @@ class Cloud_Field_datetime extends Field_Type {
 
 	protected function get_field_html( $args ){
 		$this->size = isset( $args['info']['size'] ) ? $args['info']['size'] : ''; 	
-		$field = '<input type="text" id="'.$this->info['prefix'] . $this->info['id'] . '" class="datepicker" name="'.$this->info['name'] . '" size="'.$this->size.'" type="text" value="' . $this->info['value'] . '" />';	
+
+		$date_format = isset( $args['info']['date_format'] ) ?  $args['info']['date_format'] : 'mm/dd/yy' ; 
+		$time_format = isset( $args['info']['time_format'] ) ?  $args['info']['time_format'] : 'hh:mm tt' ; 
+
+
+		$field = '<input data-dateformat="'.$date_format.'" data-timeformat="'.$time_format.'" type="text" id="'.$this->info['prefix'] . $this->info['id'] . '" class="datepicker" name="'.$this->info['name'] . '" size="'.$this->size.'" type="text" value="' . $this->info['value'] . '" />';	
 		return $field;
 	}
 	
