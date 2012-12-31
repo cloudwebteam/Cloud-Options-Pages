@@ -266,35 +266,58 @@ class Cloud_Options_Pages {
 		}	
 
 		// ha ha, overkill...but it might be useful to be able to grab individual group values
-		if (  isset( self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number][$subfield_slug] ) && is_array( self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number] ) ) {
-			return self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number][$subfield_slug];
-		} else if ( is_int( $group_number ) && isset( self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number] ) ) {
-			
-			return self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number] ;
-			
-		} else if ( isset( self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug] ) ) {
-			
-			// check if the current page has settable defaults before going to all the hassle of checking the field
-			if ( self::$pages[$top_page_slug]['subpages'][$page_slug]['_has_settable_defaults'] ){
-				if ( $this->is_option_enabled( $top_page_slug, $page_slug, $section_slug, $field_slug ) ){
-					return self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug] ;
-				} else {
-					return $this->user_defaults[$top_page_slug][$page_slug][$section_slug][$field_slug] ;
+		if ( isset( $top_page_slug ) ){ 
+			if ( isset( $page_slug ) ){
+				if ( isset( $section_slug ) ){
+					if ( isset( $field_slug ) ){
+						if ( isset( $group_number ) ){
+							if ( isset( $subfield_slug ) ){
+								if (  isset( self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number][$subfield_slug] ) && is_array( self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number] ) ) {
+									return self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number][$subfield_slug] ;
+								} else {
+									return false;
+								}
+							}
+							if ( is_int( $group_number ) && is_array( self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug]) && isset( self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number] ) ) {
+								return self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number] ;
+							} else {
+								return false; 
+							}	 
+						}
+						if ( isset( self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug] ) ){
+							// check if the current page has settable defaults before going to all the hassle of checking the field
+							if ( self::$pages[$top_page_slug]['subpages'][$page_slug]['_has_settable_defaults'] ){
+								if ( $this->is_option_enabled( $top_page_slug, $page_slug, $section_slug, $field_slug ) ){
+									return self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug] ;
+								} else {
+									return $this->user_defaults[$top_page_slug][$page_slug][$section_slug][$field_slug] ;
+								}
+							} else {
+								return self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug] ;
+							}						
+						} else {
+							return false; 
+						}
+					}
+					if ( isset( self::$values[$top_page_slug][$page_slug][$section_slug] ) ) {
+						return self::$values[$top_page_slug][$page_slug][$section_slug] ; 
+					} else {
+						return false;
+					}
 				}
-			} else {
-				return self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug] ;
+				if ( isset( self::$values[$top_page_slug][$page_slug] ) ){ 
+					return self::$values[$top_page_slug][$page_slug] ; 
+				} else {
+					return false; 
+				}
 			}
-		} else if ( isset( self::$values[$top_page_slug][$page_slug][$section_slug] ) ) {
-			return self::$values[$top_page_slug][$page_slug][$section_slug] ; 
-		} else if ( isset( self::$values[$top_page_slug][$page_slug] ) ){ 
-			return self::$values[$top_page_slug][$page_slug] ; 
-		} else if ( isset( self::$values[$top_page_slug] ) ) {
-			return self::$values[$top_page_slug]; 
-		} else {
-			return false;
+			if ( isset( self::$values[$top_page_slug] ) ) {
+				return self::$values[$top_page_slug]; 
+			} else {
+				return false;
+			}
 		}
-	}	
-	
+	}
 	/**
 	 * Methods for distilling information from the user array ( like compiling parent page, parent section, parent field, etc )
 	 */
