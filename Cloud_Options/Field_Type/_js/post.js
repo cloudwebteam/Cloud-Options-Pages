@@ -25,7 +25,8 @@ jQuery( function($){
 					action : 'options-page-link-popup',
 					search : search,
 					'_ajax_linking_nonce' : popup_nonce,
-					to_get : post_info_to_get		
+					to_get : post_info_to_get, 
+					image_size : post_info_image_size
 				};
 				loader_icon.show();
 				$.post( wp_vars.ajax_url, data, function( response ) {
@@ -48,7 +49,9 @@ jQuery( function($){
 				action : 'options-page-link-popup',
 				search : '',
 				'_ajax_linking_nonce' : popup_nonce,
-				to_get : post_info_to_get								
+				to_get : post_info_to_get, 
+				image_size : post_info_image_size
+										
 			};
 			content_list.list.hide();
 			$.post( wp_vars.ajax_url, data, function( response ) {
@@ -73,7 +76,7 @@ jQuery( function($){
 		post_info_field = $(this).parents('.field' );
 		post_info_target = $(this).addClass( 'target' ); 
 		post_info_to_get = $(this).data('to_get'); 
-		
+		post_info_image_size = $(this).data('image_size'); 
 		var popup_content = post_info_field.find('.popup > div'); 
 		$.fancybox.open({ 
 			href : '#' + popup.attr('id'), 

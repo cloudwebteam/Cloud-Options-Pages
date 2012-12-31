@@ -19,8 +19,9 @@ class Cloud_Field_post extends Field_Type {
 	protected function get_field_html( $args ){
 		$this->size = isset( $args['info']['size'] ) ? $args['info']['size'] : ''; 	
 		$property_to_get = isset( $args['info']['get'] ) ? $this->property_to_get( $args['info']['get'] ) : 'ID' ; 
-
-		$field = '<input data-to_get="'.$property_to_get. '" type="text" id="'.$this->info['prefix'] . $this->info['id'] . '" name="'.$this->info['name'] . '" size="'.$this->size.'" type="text" value="' . $this->info['value'] . '" />';	
+		$image_size = isset( $args['info']['image_size'] ) ? $args['info']['image_size'] : false ; 
+		
+		$field = '<input data-image_size="'.$image_size.'" data-to_get="'.$property_to_get. '" type="text" id="'.$this->info['prefix'] . $this->info['id'] . '" name="'.$this->info['name'] . '" size="'.$this->size.'" type="text" value="' . $this->info['value'] . '" />';	
 
 		return $field;
 	}
@@ -45,7 +46,7 @@ class Cloud_Field_post extends Field_Type {
 			case 'thumbnail' :
 			case 'image' :
 			case 'post_thumbnail' : 
-				return 'thumbnail' ;
+				return 'post_thumbnail' ;
 				break; 
 			case 'url' : 
 			case 'permalink' :
@@ -93,9 +94,11 @@ class Cloud_Field_post extends Field_Type {
 	}
 	public function ajax_options_internal_search(){
 		check_ajax_referer( 'internal-linking', '_ajax_linking_nonce' );
-	
+
 		$args = array();
 		$property_to_retrieve = isset( $_POST['to_get'] ) ? $_POST['to_get'] : 'ID' ; 
+		$image_size = isset( $_POST['image_size'] ) ? $_POST['image_size'] : false ;
+		
 		if ( isset( $_POST['search'] ) )
 			$args['s'] = stripslashes( $_POST['search'] );
 		$args['pagenum'] = ! empty( $_POST['page'] ) ? absint( $_POST['page'] ) : 1;
@@ -113,7 +116,12 @@ class Cloud_Field_post extends Field_Type {
 						$to_insert = $post->$property_to_retrieve ; 
 						break; 
 					case 'post_thumbnail' : 
-						$to_insert = get_post_thumbnail_id( $result['ID'] ) ;
+						if ( $image_size ){
+							$image_array = wp_get_attachment_image_src( get_post_thumbnail_id( $result['ID'] ), $image_size ) ;	
+							$to_insert = $image_array[0] ; 										
+						} else {
+							$to_insert = get_post_thumbnail_id( $result['ID'] ) ;						
+						}
 						break; 
 					case 'url' : 
 						$to_insert = get_permalink( $result['ID'] ) ; 
