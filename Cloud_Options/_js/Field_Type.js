@@ -5,7 +5,6 @@ jQuery( function($){
    // popup useful code snippets
    $('a[rel="copy_to_use"]').click( function(e){
    		e.preventDefault();
-   		console.log( 'clicked' );
    		$(this).siblings('.copy-container').show().find('input').select().blur( function(){
    			$(this).parents('.copy-container').hide();
    		});

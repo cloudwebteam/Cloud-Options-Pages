@@ -69,21 +69,7 @@ $options_defaults = array (
 			'clone_controls'	=> true, 
 			'sort'				=> true, 
 			'_lock'				=> false, 				
-		),
-		'content_url' => array(
-			'title'			=> 'Content URL',						
-			'layout'		=> array('label', 'input', 'description'),
-			'cloneable'		=> false,
-			'description'	=> null,
-			'size'			=> 55,	
-			'width' 		=> 6,					
-			'editor_list'	=> false,
-			'code_link' 	=> true, 
-			'clone_controls'=> true, 
-			'sort'			=> true,
-			'_lock'			=> false				
-								
-		),		
+		),	
 		'date'		=> array(
 			'title'				=> 'Date',		
 			'layout'			=> array('label', 'input', 'description'),
@@ -92,6 +78,7 @@ $options_defaults = array (
 			'subfields'			=> null,
 			'size'				=> 8,	
 			'width' 			=> 6,
+			'store_as_ID' 		=> false, 
 			'date_format'		=> 'mm/dd/yy', // see http://docs.jquery.com/UI/Datepicker/formatDate for options		
 			'editor_list'		=> false,			
 			'code_link' 		=> true, 
@@ -155,7 +142,21 @@ $options_defaults = array (
 			'sort'			=> true,
 			'use_image'		=> true,
 			'_lock'			=> false											
-		),		
+		),	
+		'post' => array(
+			'title'			=> 'Post Info',						
+			'layout'		=> array('label', 'input', 'description'),
+			'cloneable'		=> false,
+			'description'	=> null,
+			'size'			=> 55,	
+			'get' 			=> 'ID',
+			'width' 		=> 6,					
+			'editor_list'	=> false,
+			'code_link' 	=> true, 
+			'clone_controls'=> true, 
+			'sort'			=> true,
+			'_lock'			=> false				
+		),			
 		'select'	=> array(
 			'title'			=> 'Select Menu',				
 			'multiple'		=> false,

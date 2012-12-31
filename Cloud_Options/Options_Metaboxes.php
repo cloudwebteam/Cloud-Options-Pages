@@ -208,23 +208,25 @@ class Cloud_Metaboxes {
 		}
 	}
 	public static function get_options( $post_id, $metabox_slug, $field_slug = null , $group_number = null, $subfield_slug = null ){
-		if ( $metabox_slug ){
-	
-			$metabox_values =  get_post_meta( $post_id, $metabox_slug, true ) ;
-			if ( isset( $field_slug ) && isset( $group_number ) && isset( $subfield_slug )  ){
-				if ( isset( $metabox_values[ $field_slug ][ $group_number ][ $subfield_slug ] ) ){
-					return $metabox_values[ $field_slug ][ $group_number ][ $subfield_slug ] ;
+		if ( isset( $metabox_slug ) && $metabox_slug ){
+			$metabox_values =  get_post_meta( $post_id , $metabox_slug, true) ; 
+			if ( $metabox_values ) {
+			
+				if ( isset( $field_slug ) && isset( $group_number ) && isset( $subfield_slug )  ){
+					if ( isset( $metabox_values[ $field_slug ][ $group_number ][ $subfield_slug ] ) ){
+						return $metabox_values[ $field_slug ][ $group_number ][ $subfield_slug ] ;
+					}
+				} else if ( $field_slug && $group_number ){
+					if ( isset( $metabox_values[ $field_slug ][ $group_number ] ) ){
+						return $metabox_values[ $field_slug ][ $group_number ] ;
+					}
+				} else if ( $field_slug ){
+					if ( isset( $metabox_values[ $field_slug ] ) ){
+						return $metabox_values[ $field_slug ];
+					}
+				} else {
+					return $metabox_values ;
 				}
-			} else if ( $field_slug && $group_number ){
-				if ( isset( $metabox_values[ $field_slug ][ $group_number ] ) ){
-					return $metabox_values[ $field_slug ][ $group_number ] ;
-				}
-			} else if ( $field_slug ){
-				if ( isset( $metabox_values[ $field_slug ] ) ){
-					return $metabox_values[ $field_slug ];
-				}
-			} else {
-				return $metabox_values ;
 			}
 			return false; 	
 		} 

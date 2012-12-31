@@ -382,10 +382,10 @@ class Field_Type {
 		$field_type = substr( $class_name, strlen(Field_Type::$class_prefix) ); 
 		if ( $field_type ){			
 			if ( file_exists( dirname( __FILE__ ).'/'.basename( __FILE__, '.php' ) . '/_js/'.$field_type.'.js' ) ){
-				wp_enqueue_script( $field_type, self::get_folder_url(). '/_js/'.$field_type.'.js', array( 'jquery', 'Options' ), '');
+				wp_enqueue_script( $class_name, self::get_folder_url(). '/_js/'.$field_type.'.js', array( 'jquery', 'Options' ), '');
 			} 
 			if ( file_exists( dirname( __FILE__ ).'/'.basename( __FILE__, '.php' ) . '/_css/'.$field_type.'.css' ) ){
-				wp_enqueue_style( $field_type, self::get_folder_url(). '/_css/'.$field_type.'.css', array( 'Options' ));
+				wp_enqueue_style( $class_name, self::get_folder_url(). '/_css/'.$field_type.'.css', array( 'Options' ));
 			}
 		}
 		if ( is_array( $subfield_types ) && sizeof( $subfield_types ) > 0 ){

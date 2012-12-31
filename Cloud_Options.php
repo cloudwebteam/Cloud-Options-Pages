@@ -428,7 +428,9 @@ function get_metabox_options( $post_id, $metabox_id = null, $field_slug = null, 
 		$field_slug = $metabox_id ; 
 		$metabox_id = $post_id; 
 		$post_id = $post->ID; 
-	}
+	} else {
+		$post_id = intval( $post_id );
+	}	
 	return Cloud_Metaboxes::get_options( $post_id, $metabox_id, $field_slug, $group_number, $subfield_slug );
 }
 add_shortcode( 'info' , 'shortcode_theme_get_info');
