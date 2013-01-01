@@ -39,7 +39,7 @@ $options_defaults = array (
 	'fields'	=> array (
 		'general' => array(
 			'title'				=> 'Default Field Title',
-			'layout'			=> array('label', 'input', 'description'),
+			'layout'			=> array('label', 'field', 'description'),
 			'cloneable'			=> false,
 			'size'				=> null,
 			'width' 			=> 6,
@@ -56,7 +56,7 @@ $options_defaults = array (
 		
 			'title'				=> 'Color',					
 			'settable_defaults' => true,
-			'layout'			=> array('label', 'input', 'description'),
+			'layout'			=> array('label', 'field', 'description'),
 			'cloneable'			=> false,
 			'size'				=> null,
 			'width' 			=> 6,			
@@ -72,7 +72,7 @@ $options_defaults = array (
 		),	
 		'date'		=> array(
 			'title'				=> 'Date',		
-			'layout'			=> array('label', 'input', 'description'),
+			'layout'			=> array('label', 'field', 'description'),
 			'cloneable'			=> false,
 			'description'		=> null,
 			'subfields'			=> null,
@@ -88,7 +88,7 @@ $options_defaults = array (
 		),		
 		'datetime'		=> array(
 			'title'				=> 'Date/Time',		
-			'layout'			=> array('label', 'input', 'description'),
+			'layout'			=> array('label', 'field', 'description'),
 			'cloneable'			=> false,
 			'description'		=> null,
 			'subfields'			=> null,
@@ -105,7 +105,7 @@ $options_defaults = array (
 		),
 		'group'		=> array(
 			'title'			=> 'Group',		
-			'layout'		=> array('label', 'input', 'description'),
+			'layout'		=> array('label', 'field', 'description'),
 			'cloneable'		=> false,
 			'size'			=> null,
 			'width' 		=> 6,			
@@ -119,7 +119,7 @@ $options_defaults = array (
 		),
 		'info'		=> array(
 			'title'			=> 'Info',
-			'layout'		=> array('label', 'input', 'description'),
+			'layout'		=> array('label', 'field', 'description'),
 			'cloneable'		=> false,
 			'description'	=> null,
 			'width' 		=> 6,						
@@ -131,7 +131,7 @@ $options_defaults = array (
 		),
 		'media' => array(
 			'title'			=> 'URL',		
-			'layout'		=> array('label', 'input', 'description'),
+			'layout'		=> array('label', 'field', 'description'),
 			'cloneable'		=> false,
 			'size'			=> 55,
 			'width' 		=> 6,			
@@ -146,7 +146,7 @@ $options_defaults = array (
 		),	
 		'post' => array(
 			'title'			=> 'Post Info',						
-			'layout'		=> array('label', 'input', 'description'),
+			'layout'		=> array('label', 'field', 'description'),
 			'cloneable'		=> false,
 			'image_size' 	=> false,
 			'description'	=> null,
@@ -163,7 +163,7 @@ $options_defaults = array (
 			'title'			=> 'Select Menu',				
 			'multiple'		=> false,
 			'options'		=> 'page',
-			'layout'		=> array('label', 'input', 'description'),
+			'layout'		=> array('label', 'field', 'description'),
 			'cloneable'		=> false,
 			'size'			=> 30,
 			'width' 		=> 6,			
@@ -176,7 +176,7 @@ $options_defaults = array (
 		),
 		'text' => array(
 			'title'				=> 'Text Input',						
-			'layout'			=> array('label', 'input', 'description'),
+			'layout'			=> array('label', 'field', 'description'),
 			'cloneable'			=> false,
 			'description'		=> null,
 			'size'				=> 55,	
@@ -189,7 +189,7 @@ $options_defaults = array (
 		),
 		'textarea' => array(
 			'title'			=> 'Textarea',
-			'layout'		=> array('label', 'input', 'description'),
+			'layout'		=> array('label', 'field', 'description'),
 			'cloneable'		=> false,
 			'description'	=> null,
 			'rows'			=> 3,
@@ -203,7 +203,7 @@ $options_defaults = array (
 		), 		
 		'time' => array(
 			'title'			=> 'Time',						
-			'layout'		=> array('label', 'input', 'description'),
+			'layout'		=> array('label', 'field', 'description'),
 			'cloneable'		=> false,
 			'description'	=> null,
 			'size'			=> 6,	
@@ -217,7 +217,7 @@ $options_defaults = array (
 		),		
 		'url' 		=> array(
 			'title'			=> 'Default URL Title',	
-			'layout'		=> array('label', 'input', 'description'),
+			'layout'		=> array('label', 'field', 'description'),
 			'cloneable'		=> false,
 			'size'			=> 55,
 			'width' 		=> 6,			
@@ -231,7 +231,7 @@ $options_defaults = array (
 		),	
 		'wysiwyg' => array(
 			'title'			=> 'WYSIWYG',
-			'layout'		=> array('label', 'input', 'description'),
+			'layout'		=> array('label', 'field', 'description'),
 			'cloneable'		=> false,
 			'description'	=> null,
 			'rows'			=> 3,

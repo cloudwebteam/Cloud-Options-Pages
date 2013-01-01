@@ -58,10 +58,7 @@ class Cloud_Field_media extends Field_Type {
 	public function enqueue_field_scripts_and_styles(){
 		// if they exist, enqueues css and js files with this fields name
 		parent::register_scripts_and_styles( __CLASS__ ); 
-		wp_enqueue_script('media-upload');
-		wp_enqueue_script('thickbox');	
-		
-		wp_enqueue_style('thickbox');
+		wp_enqueue_media(); 
 	}
 	
 	private function get_image(){
