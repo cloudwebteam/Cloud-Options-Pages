@@ -144,7 +144,7 @@ class Field_Type {
 		$info['name'] = $name; 
 		$info['description'] = isset( $args['info']['description'] ) ? $args['info']['description'] : null;
 		$info['id']   = $input_id;
-		$info['value'] = $value ? $value : $default_value;
+		$info['value'] = $value !== false && $value !== null ? $value : $default_value;
 		$info['default'] = $default_value; 
 		$info['settable_defaults'] = isset( $args['info']['settable_defaults'] ) ? $args['info']['settable_defaults'] : false;
 		
