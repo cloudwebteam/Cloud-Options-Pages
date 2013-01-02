@@ -1,6 +1,13 @@
+.field.type-wysiwyg .field-row > .input {
+	width: 100%;
+}
 .field.type-wysiwyg .wp-editor-wrap {
 	float: left;
 	max-width: 100%;
+	width: 100%;
+}
+.field.type-wysiwyg .wp-editor-container {
+	background: #fff;
 }
 .metabox.side .field.type-wysiwyg {
 	padding-left: 0 ;
