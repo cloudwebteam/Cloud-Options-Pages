@@ -42,9 +42,13 @@ class Cloud_Field_select extends Field_Type {
 
 			if ( is_array( $options ) && sizeof( $options ) > 0 ){
 				if ( $this->multiple ){
-					foreach( $posts as $post ){ 
-						if ( is_array( $this->info['value'] ) && in_array( $post->ID, $this->info['value'] )){
+					foreach( $options as $value => $option ){ 
+						if ( is_array( $this->info['value'] ) && in_array( $value, $this->info['value'] )){
 							$selected = 'selected';
+						} else if ( is_array( $this->info['default'] ) && in_array( $value, $this->info['default'] ) ) {
+							$selected = 'selected';			
+						} else if ( $this->info['default'] == $value){			
+							$selected = 'selected';									
 						} else {
 							$selected = '';
 						}					
@@ -52,8 +56,11 @@ class Cloud_Field_select extends Field_Type {
 					}				
 				} else {
 					$html .= $this->multiple ? '' : '<option value="">Please select one...</option>'; 
+					
 					foreach( $options as $value => $option ){ 
 						if ( $this->info['value'] == $value ){
+							$selected = 'selected';
+						} else if (  $this->info['default'] == $value ){			
 							$selected = 'selected';
 						} else {
 							$selected = '';
@@ -71,7 +78,11 @@ class Cloud_Field_select extends Field_Type {
 						if ( $this->multiple ){
 							foreach( $posts as $post ){ 
 								if ( is_array( $this->info['value'] ) && in_array( $post->ID, $this->info['value'] )){
-									$selected = 'selected';
+									$selected = 'selected';								
+								} else if ( is_array( $this->info['default'] ) && in_array( $post->ID, $this->info['default'] ) ) {
+									$selected = 'selected';			
+								} else if ( $this->info['default'] == $post->ID ){			
+									$selected = 'selected';										
 								} else {
 									$selected = '';
 								}					
@@ -82,6 +93,8 @@ class Cloud_Field_select extends Field_Type {
 							foreach( $posts as $post ){ 
 								if ( $this->info['value'] == $post->ID ){
 									$selected = 'selected';
+								} else if (  $this->info['default'] == $post->ID ){			
+									$selected = 'selected';									
 								} else {
 									$selected = '';
 								}					
