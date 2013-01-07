@@ -32,7 +32,7 @@ class Cloud_Options_Pages {
 		$this->user_array = $user_pages ;
 		$this->prefix = 'Cloud_' ;
 		$this->options_name = $this->prefix . 'options';
-
+		$this->is_options_page = $this->is_options_page(); 
 		// setup 'user_enabled_overrides' and 'user_defaults' (mostly for color pickers)
 		$this->user_defaults = get_option( $this->prefix . 'user_defaults' );
 		add_action('wp_ajax_set_values_as_defaults', array( __CLASS__, 'set_values_as_defaults' ) );
@@ -42,13 +42,21 @@ class Cloud_Options_Pages {
 
 		self::$values = self::get_values(); 		
 		add_action( 'admin_init', array( $this, 'register_settings' ) ); 		
-		add_action('admin_menu', array( $this, 'create_options_pages' ) );	
-			add_action('admin_enqueue_scripts', array( $this, 'load_styles_and_scripts' ) );
-		if ( isset( $_GET['page'] ) && in_array( $_GET['page'], self::$pages ) ){	
-			add_action('admin_enqueue_scripts', array(Cloud_Options, 'load_styles_and_scripts') );	
+		add_action('admin_menu', array( $this, 'create_options_pages' ) );
+
+		if ( $this->is_options_page() ){	
+			add_action('admin_enqueue_scripts', array( 'Cloud_Options', 'load_styles_and_scripts') );	
 		}
 	}
-	
+	protected function is_options_page(){
+		$all_subpages = array(); 
+		foreach( self::$pages as $top_level ){
+			foreach( $top_level['subpages'] as $subpage_slug => $subpage ){
+				$all_subpages[] = $subpage_slug ;
+			}
+		}
+		return isset( $_GET['page'] ) && in_array( $_GET['page'], $all_subpages ) ;
+	}
 	protected function merge_with_defaults(){
 		$defaults = Cloud_Options::$defaults; 
 		$user_array = $this->user_array; 
@@ -159,13 +167,15 @@ class Cloud_Options_Pages {
 					$page_layout_function = $this->create_subpage($top_level_slug, $subpage_slug, $subpage);
 					$options_page_array[$top_level_slug]['subpages'][$subpage_slug]['callback'] = $page_layout_function; // save for later reference
 				}			
-				foreach ($subpage['sections'] as $section_slug => $section){
-					
-					$section_layout_function = $this->create_section( $subpage_slug, $section_slug, $section, $page_layout_function );
-					$options_page_array[$top_level_slug]['subpages'][$subpage_slug]['sections'][$section_slug]['callback'] = $section_layout_function ; // save for later reference 
-
-					foreach ( $section['fields'] as $field_slug => $field ){
-						$this->create_field( $top_level_slug, $subpage_slug, $section_slug, $field_slug, $field, $section_layout_function);						
+				if ( $this->is_options_page() ){	
+					foreach ($subpage['sections'] as $section_slug => $section){
+						
+						$section_layout_function = $this->create_section( $subpage_slug, $section_slug, $section, $page_layout_function );
+						$options_page_array[$top_level_slug]['subpages'][$subpage_slug]['sections'][$section_slug]['callback'] = $section_layout_function ; // save for later reference 
+	
+						foreach ( $section['fields'] as $field_slug => $field ){
+							$this->create_field( $top_level_slug, $subpage_slug, $section_slug, $field_slug, $field, $section_layout_function);						
+						}
 					}
 				}
 			}		
