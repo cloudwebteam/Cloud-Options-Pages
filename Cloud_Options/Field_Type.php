@@ -221,7 +221,6 @@ class Field_Type {
 			case 'metabox' :
 				global $post ;
 				$Metaboxes = Cloud_Metaboxes::get_instance();
-
 				$metabox_slug = $args['metabox'];
 				$field_slug = $args['field']; 	
 				$this->saved_values = $Metaboxes->get_option( $post->ID, $metabox_slug, $field_slug ) ;
@@ -239,8 +238,15 @@ class Field_Type {
 		if ( is_array( $this->saved_values ) ){
 
 			foreach ( $this->saved_values as $clone_number => $clone_value ){
-				$parent_to_retrieve = 	'get_theme_options( "'. $page_slug.'", "'. $section_slug . '" , "'. $field_slug.'" , ' . $clone_number .' )';	
-				$clones[$clone_number] = $this->make_clone( $clone_number, $clone_value, $name, $parent_to_retrieve ); 
+				switch ( $this->context ){
+					case 'options-page' : 
+						$parent_to_retrieve = 	'get_theme_options( "'. $page_slug.'", "'. $section_slug . '" , "'. $field_slug.'" , ' . $clone_number .' )';	
+						break;
+					case 'metabox' : 
+						$parent_to_retrieve = 'get_theme_options( "'. $post->ID.'", "'. $metabox_slug . '" , "'. $field_slug.'" , ' . $clone_number .' )';	
+						$clones[$clone_number] = $this->make_clone( $clone_number, $clone_value, $name, $parent_to_retrieve ); 
+						break;
+				} 
 			} 
 		} else {
 			$clones[0] = $this->make_clone( 0, '', $name, $parent_to_retrieve); 

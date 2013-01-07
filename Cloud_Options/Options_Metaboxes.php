@@ -75,7 +75,7 @@ class Cloud_Metaboxes {
 			$posts = array( $post ); 
 		} else if ( is_array( $add_to ) ){ 
 			// check if its just a declaration of post_types
-			if ( sizeof( $add_to ) == 1 && isset( $add_to['post_type'] ) ) {
+			if ( sizeof( $add_to ) > 0 && isset( $add_to['post_type'] ) ) {
 				if ( isset( $_GET['post_type'] ) ){
 					//creating new post of this post type? 
 					if ( stripos( $_SERVER['REQUEST_URI'] , 'post-new' ) !== false ){
@@ -215,15 +215,21 @@ class Cloud_Metaboxes {
 				if ( isset( $field_slug ) && isset( $group_number ) && isset( $subfield_slug )  ){
 					if ( isset( $metabox_values[ $field_slug ][ $group_number ][ $subfield_slug ] ) ){
 						return $metabox_values[ $field_slug ][ $group_number ][ $subfield_slug ] ;
-					}
+					} else {
+					 	return '';
+					 }
 				} else if ( $field_slug && $group_number ){
 					if ( isset( $metabox_values[ $field_slug ][ $group_number ] ) ){
 						return $metabox_values[ $field_slug ][ $group_number ] ;
-					}
+					} else {
+					 	return '';
+					 }					
 				} else if ( $field_slug ){
 					if ( isset( $metabox_values[ $field_slug ] ) ){
 						return $metabox_values[ $field_slug ];
-					}
+					} else {
+					 	return '';
+					 }
 				} else {
 					return $metabox_values ;
 				}

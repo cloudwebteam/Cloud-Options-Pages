@@ -27,7 +27,7 @@ jQuery(document).ready(function($){
 		         
 		         preview_image.slideUp('fast', function(){
 		         	$(this).removeClass('hidden'); 
-		         	$(this).attr('src', url );
+		         	$(this).attr('src', url ).attr( 'title', attachment.title ); 
 		         	$(this).slideDown('fast');
 		         }); 
 			} else {
