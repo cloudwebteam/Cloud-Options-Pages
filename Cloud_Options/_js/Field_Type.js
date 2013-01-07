@@ -71,7 +71,7 @@ jQuery( function($){
 			inputs.each( function(){
 				var prev_name = $(this).attr('name');
 				if ( prev_name !== undefined ){
-					$(this).attr('name', prev_name.replace(/\[\d\]/g, '['+counter+']' ) );
+					$(this).attr('name', prev_name.replace(/\[\d+\]/g, '['+counter+']' ) );
 				}
 			});
 			// change the "code" link

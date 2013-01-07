@@ -83,6 +83,8 @@
 }
 .cloud-options .field-row {
 	padding: .375em 0 0;
+	width: 100%;
+	position: relative; 
 }
 .cloud-options .field-row:first-child {
 	padding: 0;
@@ -100,7 +102,7 @@
 .cloud-options .field-row .label,
 .cloud-options .field-row .input,
 .cloud-options .field-row .description {
-	float: left;
+	display: inline-block; 
 }
 .cloud-options .label { 
 	/* reset...collides with a bootstrap class */
@@ -119,16 +121,20 @@
 	font-size: .875em;
 	padding-top: 3px ;
 }	
+
 .cloud-options .label label {
 	margin-bottom: 0;
 	line-height: 1em;
 }
 .cloud-options .field-row > * {
+
 	margin-right: 15px;
+	max-width: 100%;
 }
 .cloud-options .input + .description {
 	padding: 2px 0 0;
 }
+
 .cloud-options .label + .description {
 	padding-top: 3px; 
 }
@@ -194,6 +200,9 @@
 /***====================================================================================================================================
 		CLONEABLE FIELDS
 	==================================================================================================================================== ***/
+.cloneable {
+	width: 100%;
+}
 .clone {
 	cursor: move;
 }
@@ -242,7 +251,6 @@
 	border-top: 1px dashed #ccc;
 	position: relative;
 	clear: both;	
-	float: left;
 	min-height: 2em;
 }
 .cloneable .clone:first-child {
