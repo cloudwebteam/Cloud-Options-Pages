@@ -75,7 +75,8 @@ function add_sidebars_management(){
 				'before_title' => '<h3 class="title">' ,
 				'after_title' => '</h3>',
 				'before_widget' => '<li id="%1$s" class="widget text-content %2$s" >' ,
-				'after_widget'	=> '</li>' 
+				'after_widget'	=> '</li>' ,
+				'description' => $sidebar['description']
 			); 
 		}		
 	 	if ( is_array( $sidebars_to_register )){
