@@ -62,30 +62,48 @@ function add_sidebars_management(){
 		)
 	);
 	Cloud_Options::add_pages( $sidebars_page );
-	if ( $saved_sidebars = Custom_Theme::get_sidebars() ) {
-		if( is_array( $saved_sidebars ) ){
-			$sidebars = array() ;
-			foreach( $saved_sidebars as $key => $sidebar ){
-				$sidebars[ $sidebar['id'] ] = $sidebar['name'] ;
+	
+	$saved_sidebars_option = get_option( 'sidebars' ) ;
+	$saved_sidebars = $saved_sidebars_option['sidebars']['sidebar'] ;
+	if( is_array( $saved_sidebars ) ){
+		$sidebars_to_register = array() ;
+		foreach( $saved_sidebars as $key => $sidebar ){
+			$sidebar_id = isset( $saved_sidebars[$key]['name'] ) ? strtolower( preg_replace( '/ /', '-',  $saved_sidebars[$key]['name'] ) ) : 'sidebar-'.$key ; 			
+			$sidebars_to_register[$key] = array( 
+				'name' => $sidebar['name'],
+				'id' => $sidebar_id, 
+				'before_title' => '<h3 class="title">' ,
+				'after_title' => '</h3>',
+				'before_widget' => '<li id="%1$s" class="widget text-content %2$s" >' ,
+				'after_widget'	=> '</li>' 
+			); 
+		}		
+	 	if ( is_array( $sidebars_to_register )){
+			foreach( $sidebars_to_register as $sidebar ){
+				register_sidebar( $sidebar ); 		
 			}
-			$metaboxes = array(
-				'sidebars'	=> array(
-					'title' 	=> 'Sidebar',
-					'fields'		=> array(
-						'sidebar' => array(
-							'title' => 'Select a Sidebar',
-							'type' => 'select', 
-							'defaults' => 'default',
-							'options' => $sidebars,
-							'description' => 'If a sidebar is selected, it will appear on this page. Otherwise, content will be full-width.'
-						)
+		}
+		
+		foreach( $sidebars_to_register as $key => $sidebar ){
+			$sidebars[ $sidebar['id'] ] = $sidebar['name'] ;
+		}
+		$metaboxes = array(
+			'sidebars'	=> array(
+				'title' 	=> 'Sidebar',
+				'fields'		=> array(
+					'sidebar' => array(
+						'title' => 'Select a Sidebar',
+						'type' => 'select', 
+						'defaults' => 'default',
+						'options' => $sidebars,
+						'description' => 'If a sidebar is selected, it will appear on this page. Otherwise, content will be full-width.'
 					)
 				)
-			);
-			Cloud_Options::add_metaboxes( array( 'post_type' => 'page' ), $metaboxes, 'side','low' );
-			
-			add_action( 'admin_menu', 'move_widgets_page' );
-		}
+			)
+		);
+		Cloud_Options::add_metaboxes( array( 'post_type' => 'page' ), $metaboxes, 'side','low' );
+		
+		add_action( 'admin_menu', 'move_widgets_page' );
 	}
 }
 add_sidebars_management() ;
