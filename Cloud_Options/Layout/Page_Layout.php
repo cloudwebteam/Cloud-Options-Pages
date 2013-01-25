@@ -58,7 +58,7 @@
 			
 			return $page_info; 		
 		}
-		public function standard(){
+		public function standard( $post = '', $args = ''){
 			// make variables available and easy to use by extracting them
 			extract( self::get_layout_info( ), EXTR_OVERWRITE );
 			?>

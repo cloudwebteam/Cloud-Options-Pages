@@ -57,7 +57,7 @@
 			
 			return $section_info; 		
 		}
-		public function standard( $section ){
+		public function standard( $section = '', $args = '' ){
 			// make variables available and easy to use by extracting them
 			extract( self::get_layout_info( $section ) );
 

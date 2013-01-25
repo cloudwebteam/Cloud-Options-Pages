@@ -15,7 +15,7 @@
 			}		
 		}
 
-		public function standard(){
+		public function standard( $post = '', $args = '' ){
 			$subpage_slug = $_GET['page'];
 			$Options = Options_Page::get_instance();
 			$page_info = $Options->get_options_page_info($subpage_slug); 
