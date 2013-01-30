@@ -28,7 +28,7 @@
 			$classes[] = 'cloud' ;
 			$classes[] = 'metabox';
 			$classes[] = 'cloud-options';
-			$classes[] = $metabox['metabox_context'] ;
+			$classes[] = $metabox['context'] ;
 			$classes[] = $metabox['layout'] ; 
 			if ( $metabox['_has_settable_defaults'] ){
 				$classes[] = 'has-settable-defaults' ;
