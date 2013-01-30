@@ -79,7 +79,6 @@ $options_defaults = array (
 			'subfields'			=> null,
 			'size'				=> 8,	
 			'width' 			=> 6,
-			'store_as_ID' 		=> false, 
 			'date_format'		=> 'mm/dd/yy', // see http://docs.jquery.com/UI/Datepicker/formatDate for options		
 			'default' 			=> '',			
 			'editor_list'		=> false,			
@@ -226,21 +225,6 @@ $options_defaults = array (
 			'sort'			=> true,
 			'_lock'			=> false				
 		),		
-		'url' 		=> array(
-			'title'			=> 'Default URL Title',	
-			'layout'		=> array('label', 'field', 'description'),
-			'cloneable'		=> false,
-			'size'			=> 55,
-			'width' 		=> 6,			
-			'description'	=> null,
-			'default' 		=> '',			
-			'editor_list'	=> false,
-			'code_link' 	=> true, 
-			'clone_controls'=> true,
-			'sort'			=> true,
-			'_lock'			=> false				
-							
-		),	
 		'wysiwyg' => array(
 			'title'			=> 'WYSIWYG',
 			'layout'		=> array('label', 'field', 'description'),
