@@ -39,11 +39,12 @@
 	padding: .5em 0 0 15px;
 	margin: 0; 
 	float: right;
+	font-weight: normal;	
 }
 .type-group .group .copy_to_use {
 	position: absolute; 
-	left: -40px; 
-	top: 0;
+	right: 0; 
+	top: -.25em;
 }
 .type-group .group .copy_to_use a {
 	float: left;
@@ -51,8 +52,8 @@
 .type-group .add-remove {
 	position: absolute; 
 	bottom: 0; 
-	right: 0;
-	margin: 0 5px 5px 0;
+	left: 100%;
+	margin: 0 0 0 10px ;
 	width: 50px;
 }
 .type-group .add,

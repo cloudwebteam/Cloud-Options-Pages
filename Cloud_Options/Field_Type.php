@@ -300,7 +300,10 @@ class Field_Type {
 		$classes[] = 'field' ;
 		$classes[] = 'cf' ;
 		$classes[] = 'type-'.$this->type ;
-		$classes[] = $this->info['sort'] ? '' : 'no-sort'; 
+		$classes[] = $this->info['sort'] ? '' : 'no-sort';
+		if (  $this->info['cloneable'] ){
+			$classes[] = 'has-cloneable' ;
+		}
 		if ( $field_info['parent_layout'] === 'grid' ){
 			$classes[] = isset( $field_info['width'] ) ? 'span' . $field_info['width'] : 'span6';
 		}
