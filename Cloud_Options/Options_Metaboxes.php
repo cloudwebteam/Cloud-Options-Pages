@@ -35,11 +35,11 @@ class Cloud_Metaboxes {
 		foreach( $this->passed_in_metaboxes as $passed_in ){
 			if( self::valid_on_current_page( $passed_in[ 'add_to' ] ) ){
 				foreach ( $passed_in['user_array'] as $key => $array ){
-					if ( $passed_in['context'] && ! isset( $array['metabox_context'] ) ){
-						$array['metabox_context'] =  $passed_in['context']  ; 
+					if ( $passed_in['context'] && ! isset( $array['context'] ) ){
+						$array['context'] =  $passed_in['context']  ; 
 					}
-					if ( $passed_in['priority'] && ! isset( $array['metabox_priority'] ) ){
-						$array['metabox_priority'] = $passed_in['priority'] ; 
+					if ( $passed_in['priority'] && ! isset( $array['priority'] ) ){
+						$array['priority'] = $passed_in['priority'] ; 
 					}				
 					$valid_array[$key] = $array;
 				}	
@@ -147,7 +147,7 @@ class Cloud_Metaboxes {
 			$title 			= $metabox['title']; 
 			$callback 		= $this->get_metabox_layout_function( $metabox['layout'] ); 
 
-			add_meta_box( $id, $title, $callback, '', $metabox['metabox_context'], $metabox['metabox_priority'], $metabox );		
+			add_meta_box( $id, $title, $callback, '', $metabox['context'], $metabox['priority'], $metabox );		
 
 		}
 	}
