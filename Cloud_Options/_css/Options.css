@@ -145,7 +145,7 @@
 .copy_to_use {
 	position: absolute;
 	left: 100%; 
-	top: -4px;
+	top: -7px;
 	margin-left: 10px; 
 	display: inline-block;
 	padding: 5px;
@@ -304,6 +304,10 @@
 	position: relative; 
 	font-weight: bold; 
 	font-size: 1em;
+}
+/* on side */
+#side-sortables .cloud.metabox .clone {
+	margin-right: 45px;
 }
 
 

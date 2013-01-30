@@ -21,10 +21,16 @@
 	padding-bottom: 0;
 }
 .type-group .group table {
-	margin: 0 5px;
+	table-layout: fixed ;
+}
+.type-group .group table tr {
+	max-width: 100%; 
 }
 .type-group .group table td {
 	padding-bottom: .5em;
+	width: auto; 
+	overflow:hidden; 
+	white-space: nowrap ;
 }
 .field.type-group .group th {
 }
@@ -88,4 +94,8 @@
 }
 .field.type-group:hover .group .field:hover .copy_to_use {
 	display: block;
+}
+
+#side-sortables .cloud.metabox .group td {
+	max-width: 120px;
 }
