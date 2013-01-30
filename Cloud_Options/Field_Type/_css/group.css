@@ -9,9 +9,8 @@
 }
 .type-group .group {
 	margin: .5em 0;
-	padding: 1em 0;
+	padding:  .5em 0;
 	border: 1px dashed #ccc;
-	background: #fafafa;
 }
 .type-group.no-sort .group {
 	cursor: default;
@@ -27,17 +26,20 @@
 	max-width: 100%; 
 }
 .type-group .group table td {
-	padding-bottom: .5em;
-	width: auto; 
-	overflow:hidden; 
-	white-space: nowrap ;
+	padding: .25em 0 ;
 }
 .field.type-group .group th {
+	width: 120px; 
+	padding: .25em 10px;
+	vertical-align: middle ;
 }
-.field.type-group .group .label {
-	float: none; 
-	margin-right: 10px;
+.cloud-options.options-page .section.standard .group th > .label{
+	float: right; 
+	margin-right: 0;
 	position: relative;
+	width: 100%; 
+	text-align: right;	
+	padding-top: 0;
 	 
 }
 .field.type-group .group .label label {
@@ -46,11 +48,13 @@
 	margin: 0; 
 	float: right;
 	font-weight: normal;	
+
 }
 .type-group .group .copy_to_use {
 	position: absolute; 
-	right: 0; 
+	right: 100%; 
 	top: -.25em;
+	left: auto;
 }
 .type-group .group .copy_to_use a {
 	float: left;
@@ -95,6 +99,15 @@
 .field.type-group:hover .group .field:hover .copy_to_use {
 	display: block;
 }
+
+/* side positioned metabox */
+#side-sortables .cloud.metabox .group th {
+	max-width: 50px;
+}
+#side-sortables .cloud.metabox .group label {
+	padding-left: 0;
+}
+
 
 #side-sortables .cloud.metabox .group td {
 	max-width: 120px;

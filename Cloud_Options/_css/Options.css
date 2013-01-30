@@ -262,9 +262,8 @@
 }
 .clone .copy_to_use {
 	position: absolute;
-	top: .7em;
-	right: 0;
-	left: auto;
+	top: 1em;
+	left: -60px;
 }
 .clone .number {
 	position: absolute;
