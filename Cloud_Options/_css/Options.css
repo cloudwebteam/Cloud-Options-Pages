@@ -121,6 +121,8 @@
 	font-weight: bold;
 	font-size: .875em;
 	padding-top: 3px ;
+	max-width: 100%; 
+	white-space: normal ;
 }	
 
 .cloud-options .label label {
