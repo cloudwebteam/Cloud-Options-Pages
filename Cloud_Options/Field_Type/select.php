@@ -56,8 +56,11 @@ class Cloud_Field_select extends Field_Type {
 					}				
 				} else {
 					$html .= $this->multiple ? '' : '<option value="">Please select one...</option>'; 
-					
+					$is_associative_array = $this->is_assoc( $options ) ;
 					foreach( $options as $value => $option ){ 
+						if ( ! $is_associative_array ){
+							$value = $option;
+						}
 						if ( $this->info['value'] == $value ){
 							$selected = 'selected';
 						} else if (  $this->info['default'] == $value ){			
@@ -106,6 +109,9 @@ class Cloud_Field_select extends Field_Type {
 			}
 		}
 		return $html;
+	}
+	private function is_assoc($arr) {
+	    return array_keys($arr) !== range(0, count($arr) - 1);
 	}
 	
    /**
