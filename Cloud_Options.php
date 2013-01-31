@@ -24,7 +24,7 @@ class Cloud_Options  {
 		self::$dir = get_bloginfo( 'template_directory' );
 		self::$ABS = dirname( __FILE__ ) .  '/'. __CLASS__ ;
 		  
-		$this->prefix = 'Resound_' ;
+		$this->prefix = 'Cloud_' ;
 		$this->current_page = $this->get_current_page(); 
 		// load everything in /Cloud_Options
 		$this->load_theme_classes(); 
