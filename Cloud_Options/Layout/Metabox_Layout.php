@@ -45,9 +45,11 @@
 			?>
 
 			    <div class="<?php echo $classes; ?>">
+			    	<?php if ( $description ){ ?>
 					<div class="header">			    
 				    	<?php echo $description; ?>
 					</div>
+					<?php } ?>
 					<div class="row-fluid">
 				    <?php echo $fields; ?>
 					</div>
