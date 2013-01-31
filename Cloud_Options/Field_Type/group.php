@@ -45,7 +45,7 @@ class Cloud_Field_group extends Field_Type {
 		$this->field_groups = $this->set_fields( $args );
 		
 		if ( $this->info['clone_controls'] ){
-			$this->add_and_remove = '<div class="add-remove"><a class="add">+</a><a class="remove">-</a></div>';		
+			$this->add_and_remove = '<div class="add-remove"><a class="remove">-</a><a class="add">+</a></div>';		
 		} else {
 			$this->add_and_remove = '' ; 
 		}

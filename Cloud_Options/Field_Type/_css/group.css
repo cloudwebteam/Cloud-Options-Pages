@@ -8,9 +8,10 @@
 	width: 100%;
 }
 .type-group .group {
-	margin: .5em 0;
-	padding:  .5em 0;
+	margin: .5em 30px .5em 0;
+	padding:  .5em 3px .5em 0;
 	border: 1px dashed #ccc;
+	background: #fff; 
 }
 .type-group.no-sort .group {
 	cursor: default;
@@ -21,17 +22,21 @@
 }
 .type-group .group table {
 	table-layout: fixed ;
+	width: 100%; 
 }
 .type-group .group table tr {
 	max-width: 100%; 
+	width: 100%;
 }
 .type-group .group table td {
 	padding: .25em 0 ;
+	width: 75%
 }
 .field.type-group .group th {
-	width: 120px; 
-	padding: .25em 10px;
+	width: 20%; 
+	padding: .25em 2%;
 	vertical-align: middle ;
+	text-align: right; 
 }
 .cloud-options.options-page .section.standard .group th > .label{
 	float: right; 
@@ -44,7 +49,7 @@
 }
 .field.type-group .group .label label {
 	font-size: 1em ;
-	padding: .5em 0 0 15px;
+	padding: 0 0 0 15px;
 	margin: 0; 
 	float: right;
 	font-weight: normal;	
@@ -101,14 +106,16 @@
 }
 
 /* side positioned metabox */
+#side-sortables .cloud.metabox .group {
+	margin-right: 10px ;
+}
 #side-sortables .cloud.metabox .group th {
 	max-width: 50px;
 }
 #side-sortables .cloud.metabox .group label {
 	padding-left: 0;
 }
-
-
-#side-sortables .cloud.metabox .group td {
-	max-width: 120px;
+#side-sortables .cloud.metabox .group .add-remove a {
+	display: block; 
 }
+
