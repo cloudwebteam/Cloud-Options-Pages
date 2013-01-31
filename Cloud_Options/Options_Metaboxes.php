@@ -37,6 +37,7 @@ class Cloud_Metaboxes {
 				foreach ( $passed_in['user_array'] as $key => $array ){
 					if ( $passed_in['context'] && ! isset( $array['context'] ) ){
 						$array['context'] =  $passed_in['context']  ; 
+					} else {
 					}
 					if ( $passed_in['priority'] && ! isset( $array['priority'] ) ){
 						$array['priority'] = $passed_in['priority'] ; 
@@ -142,7 +143,6 @@ class Cloud_Metaboxes {
 	}
 	public function create_metaboxes(){
 		foreach ( self::$metaboxes as $metabox_slug => $metabox ){
-
 			$id 			= $metabox_slug;
 			$title 			= $metabox['title']; 
 			$callback 		= $this->get_metabox_layout_function( $metabox['layout'] ); 
