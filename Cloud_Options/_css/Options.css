@@ -75,6 +75,11 @@
 .cloud-options select {
 	margin-bottom: 0; 
 }
+.cloud-options select {
+	height: 1.5em; 
+	line-height: 1.5em;
+	margin: .25em 0;
+}
 /***====================================================================================================================================
 		GENERAL FIELD STYLES
 	==================================================================================================================================== ***/
@@ -295,10 +300,16 @@
 /***====================================================================================================================================
 		METABOX - SPECIFIC
 	==================================================================================================================================== ***/
+.cloud-options.metabox {
+	padding: .5em 0 0 0 ; 
+}
 .cloud-options.metabox > .header {
 	border-bottom: 1px solid #ccc; 
-	padding: 1em 0;
+	padding: 0 0 .5em 0;
 	margin-bottom: 1em; 
+}
+.cloud-options.metabox .field {
+	padding-bottom: .5em ;
 }
 .cloud-options.metabox label,
 .cloud-options.metabox .label {
