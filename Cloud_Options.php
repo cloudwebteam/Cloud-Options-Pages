@@ -416,9 +416,30 @@ add_action( 'init', array( 'Cloud_Options', 'get_instance' ) ) ;
  */
 function get_theme_options( $subpage_id = null, $section_id = null, $field_id = null , $group_number = null, $subfield_id = null ){
 	$Options_Pages = Cloud_Options_Pages::get_instance();
-
 	return $Options_Pages->get_options( $subpage_id, $section_id, $field_id, $group_number, $subfield_id );
 }
+/*
+*
+*	function for getting theme options with locale
+*/
+/*
+function get_theme_options( $subpage_id = null, $section_id = null, $field_id = null , $group_number = null, $subfield_id = null ){
+	$Options_Pages = Cloud_Options_Pages::get_instance();
+
+	$locale = isset( $_COOKIE['locale'] ) ? $_COOKIE['locale'] : 'en_US';
+	
+	if ( $locale !== 'en_US' ){
+		if( $result = $Options_Pages->get_options( $subpage_id . '-'.$locale, $section_id, $field_id, $group_number, $subfield_id ) ){
+			return $result ;
+		} else {
+			return $Options_Pages->get_options( $subpage_id, $section_id, $field_id, $group_number, $subfield_id );		
+		}
+	} else {
+		return $Options_Pages->get_options( $subpage_id, $section_id, $field_id, $group_number, $subfield_id );
+	}
+}
+*/
+
 function get_metabox_options( $post_id, $metabox_id = null, $field_slug = null, $group_number = null, $subfield_slug = null ){
 	if ( ! is_numeric( $post_id ) ){
 		global $post; 
