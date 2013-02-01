@@ -1,5 +1,5 @@
 jQuery( function($){
-	$('.field.type-datetime .datepicker').each( function(){
+	$('.field.type-datetime .datetimepicker').each( function(){
 		var dateFormat = $(this).data('dateformat'); 	
 		var timeFormat = $(this).data('timeformat'); 
 		$(this).datetimepicker({
