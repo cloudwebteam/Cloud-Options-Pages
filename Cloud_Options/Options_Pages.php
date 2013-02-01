@@ -265,16 +265,17 @@ class Cloud_Options_Pages {
 	}
 	// Retrieve whatever level of specificity is desired: page, section, field, group, subfield
 	public function get_options( $page_slug = null , $section_slug = null , $field_slug = null , $group_number = null, $subfield_slug = null ){		
+	
 		if ( ! self::$values ) self::$values = self::get_values() ;
-		foreach( self::$values as $page_slug => $options ){
+		foreach( self::$values as $option_page_slug => $options ){
 			foreach( $options as $subpage_slug => $options ){
 				if ( $subpage_slug === $page_slug ){
-					$top_page_slug = $page_slug ;
+					$top_page_slug = $option_page_slug ;
 					break 2;
 				}
 			}
 		}	
-
+		
 		// ha ha, overkill...but it might be useful to be able to grab individual group values
 		if ( isset( $top_page_slug ) ){ 
 			if ( isset( $page_slug ) ){
