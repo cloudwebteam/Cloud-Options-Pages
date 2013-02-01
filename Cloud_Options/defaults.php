@@ -134,7 +134,7 @@ $options_defaults = array (
 			'_lock'			=> false											
 		),
 		'media' => array(
-			'title'			=> 'URL',		
+			'title'			=> 'Media',		
 			'layout'		=> array('label', 'field', 'description'),
 			'cloneable'		=> false,
 			'size'			=> 55,
@@ -181,6 +181,24 @@ $options_defaults = array (
 			'sort'			=> true,
 			'_lock'			=> false											
 		),
+		'startend'		=> array(
+			'title'				=> 'Start/End',		
+			'layout'			=> array('label', 'field', 'description'),
+			'cloneable'			=> false,
+			'description'		=> null,
+			'size'				=> 19,
+			'width' 			=> 6,	
+			'field_type' 		=> 'date', // date,time, datetime
+			'date_format'		=> 'mm-dd-yy', // see http://docs.jquery.com/UI/Datepicker/formatDate for options
+			'time_format' 		=> 'h:mm tt',	// see http://trentrichardson.com/examples/timepicker/ for options
+			'default' 			=> '',		
+			'editor_list'		=> false,
+			'code_link' 		=> true, 
+			'clone_controls'	=> true	 , 
+			'sort'				=> true	,
+			'_lock'				=> false				
+													
+		),		
 		'text' => array(
 			'title'				=> 'Text Input',						
 			'layout'			=> array('label', 'field', 'description'),
@@ -210,6 +228,7 @@ $options_defaults = array (
 			'sort'			=> true,
 			'_lock'			=> false										
 		), 		
+		
 		'time' => array(
 			'title'			=> 'Time',						
 			'layout'		=> array('label', 'field', 'description'),
@@ -224,7 +243,7 @@ $options_defaults = array (
 			'clone_controls'=> true, 
 			'sort'			=> true,
 			'_lock'			=> false				
-		),		
+		),	
 		'wysiwyg' => array(
 			'title'			=> 'WYSIWYG',
 			'layout'		=> array('label', 'field', 'description'),
