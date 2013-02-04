@@ -2,6 +2,10 @@
 	position: relative;
 	cursor: move;
 }
+.type-group > .field-row > .input,
+.type-group > * > .field-row > .input {
+	width: 100%; 
+}
 .type-group .groups {
 	margin: 0;
 	max-width: 100%;	
