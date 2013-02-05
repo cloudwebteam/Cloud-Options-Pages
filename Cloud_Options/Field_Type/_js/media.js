@@ -7,10 +7,9 @@ jQuery(document).ready(function($){
 
 		var send_attachment_bkp = wp.media.editor.send.attachment;
 		var button = $(this);
-		var targetfield = button.siblings('input');
-     	var preview_image = targetfield.siblings('img.preview-image'); 		
+		var targetfield = button.parent().siblings('input.url_field');
+     	var preview_image = button.parent().siblings('.image').find('img.preview-image'); 		
 		var to_insert = targetfield.data('to_insert') ;
-		console.log( to_insert );
 		_custom_media = true;
 		wp.media.editor.send.attachment = function(props, attachment){
 			if ( _custom_media ) {
