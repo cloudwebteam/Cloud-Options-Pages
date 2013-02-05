@@ -20,14 +20,14 @@ class Cloud_Field_media extends Field_Type {
 	protected function get_field_html( $args ){
 		$data_to_retrieve = $this->figure_out_data_to_retrieve( $args ); 
 	
-		$this->url_button = '<input class="upload_button btn btn-mini" type="button" name="upload_button" value="Find Media" /><span class="storing">Storing as: '.$data_to_retrieve.'</span>';
+		$this->url_button = '<div class="selector"><input class="upload_button btn btn-mini" type="button" name="upload_button" value="Find Media" /><span class="storing">Storing: '.$data_to_retrieve.'</span></div>';
 		$this->size = isset( $args['info']['size'] ) ? $args['info']['size'] : $this->size; 	
 
 		if ( $args['info']['use_image'] ){
-			$this->image = $this->get_image();	
+			$this->image = '<span class="image">'.$this->get_image().'</span>';	
 			$input_type = 'hidden' ;
 		} else {
-			$this->image = '';
+			$this->image = '' ;	
 			$input_type = 'text' ;
 		}
 		
