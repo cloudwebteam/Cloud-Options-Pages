@@ -49,9 +49,17 @@ class Cloud_Field_startend extends Field_Type {
 		$start_value = isset( $this->info['value']['start'] ) ? $this->info['value']['start'] : '' ;
 		$end_value = isset( $this->info['value']['end'] ) ? $this->info['value']['end'] : '' ;		
 		
-		$fields = '' ;
-		$fields .= '<span class="selector"><span class="start-label">Start</span><input data-dateformat="'.$date_format.'" data-timeformat="'.$time_format.'"  type="text" id="'.$this->info['prefix'] . $this->info['id'] . '" class="datetimepicker start" name="'.$this->info['name'] . '[start]" size="'.$this->size.'" type="text" value="' . $start_value. '" /></span>';	
-		$fields .= '<span class="selector"><span class="end-label">End</span><input data-dateformat="'.$date_format.'" data-timeformat="'.$time_format.'"  type="text" id="'.$this->info['prefix'] . $this->info['id'] . '-end" class="datetimepicker end" name="'.$this->info['name'] . '[end]" size="'.$this->size.'" type="text" value="' . $end_value . '" /></span>';	
+		
+		$start_utc_field = '<input class="timestamp" type="hidden" name="'.$this->info['name'] . '[start]" value=\'' . $start_value . '\' />';
+		$end_utc_field = '<input class="timestamp" type="hidden" name="'.$this->info['name'] . '[end]" value=\'' . $end_value . '\' />';
+		
+		$start_value_array = json_decode( $start_value , true) ; 
+		$start_value_utc = isset( $start_value_array['datetime'] ) ? $start_value_array['datetime'] : false ;
+		$end_value_array = json_decode( $end_value , true ) ; 
+		$end_value_utc = isset( $end_value_array['datetime'] ) ? $end_value_array['datetime'] : false ;		
+		$fields = '' ;		
+		$fields .= '<span class="selector"><span class="start-label">Start</span>'.$start_utc_field.'<input data-dateformat="'.$date_format.'" data-timeformat="'.$time_format.'"  type="text" id="'.$this->info['prefix'] . $this->info['id'] . '" class="datetimepicker start" size="'.$this->size.'" type="text" value="' . $start_value_utc. '" /></span>';	
+		$fields .= '<span class="selector"><span class="end-label">End</span>'.$end_utc_field.'<input data-dateformat="'.$date_format.'" data-timeformat="'.$time_format.'"  type="text" id="'.$this->info['prefix'] . $this->info['id'] . '-end" class="datetimepicker end" size="'.$this->size.'" type="text" value="' . $end_value_utc . '" /></span>';	
 
 		return $fields; 
 	}	

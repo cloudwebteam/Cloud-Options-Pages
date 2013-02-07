@@ -18,9 +18,10 @@ class Cloud_Field_datetime extends Field_Type {
 		$date_format = isset( $args['info']['date_format'] ) ?  $args['info']['date_format'] : 'mm/dd/yy' ; 
 		$time_format = isset( $args['info']['time_format'] ) ?  $args['info']['time_format'] : 'hh:mm tt' ; 
 
-
-		$field = '<input data-dateformat="'.$date_format.'" data-timeformat="'.$time_format.'" type="text" id="'.$this->info['prefix'] . $this->info['id'] . '" class="datetimepicker" name="'.$this->info['name'] . '" size="'.$this->size.'" type="text" value="' . $this->info['value'] . '" />';	
-		return $field;
+		$utc_field = '<input class="timestamp" type="hidden" name="'.$this->info['name'] . '" value=\'' . $this->info['value'] . '\' />';
+		$value = json_decode($this->info['value'], true) ;
+		$field = '<input data-dateformat="'.$date_format.'" data-timeformat="'.$time_format.'" type="text" id="'.$this->info['prefix'] . $this->info['id'] . '" class="datetimepicker" size="'.$this->size.'" value="' . $value['datetime'] . '" />';	
+		return $utc_field.$field;
 	}
 	
 	public function enqueue_field_scripts_and_styles(){
@@ -39,6 +40,12 @@ class Cloud_Field_datetime extends Field_Type {
 		// if they exist, enqueues css and js files with this fields name
 		parent::register_scripts_and_styles( __CLASS__ ); 
 	}	
+	public static function get_option( $value , $spec ){
+		$date_format = $spec['date_format_php'] ; 
+		$time_format = $spec['time_format_php'] ; 
+		
+		return date( $date_format . ' ' .$time_format , $value );
+	}
 	
    /**
 	* LAYOUTS FOR THIS FIELD
