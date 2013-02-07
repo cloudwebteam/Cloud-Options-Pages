@@ -160,9 +160,14 @@ class Cloud_Metaboxes {
 		if ( !wp_is_post_revision( $post_id ) ){
 			foreach ( self::$metaboxes as $metabox_id => $metabox ){
 				if ( isset( $_POST[ $metabox_id ] ) ){
-					update_post_meta( $post_id, $metabox_id, $_POST[ $metabox_id ] ); 
-				} else {
-				}
+					if ( is_array( $_POST[ $metabox_id ] ) ){
+						if ( is_array_empty( $_POST[ $metabox_id ] ) ){
+							delete_post_meta( $post_id, $metabox_id, false ); 
+						} else {
+							update_post_meta( $post_id, $metabox_id, $_POST[ $metabox_id ] ); 						
+						}
+					}
+				} 
 			}
 		}
 		return $post_id ;
@@ -248,4 +253,25 @@ class Cloud_Metaboxes {
 		}
 	}	
 
+}
+
+/***====================================================================================================================================
+		HELPERS
+	==================================================================================================================================== ***/
+function is_array_empty($InputVariable){
+   $Result = true;
+
+   if (is_array($InputVariable) && count($InputVariable) > 0)
+   {
+      foreach ($InputVariable as $Value)
+      {
+         $Result = $Result && is_array_empty($Value);
+      }
+   }
+   else
+   {
+      $Result = empty($InputVariable);
+   }
+
+   return $Result;
 }
