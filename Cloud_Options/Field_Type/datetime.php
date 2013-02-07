@@ -41,11 +41,9 @@ class Cloud_Field_datetime extends Field_Type {
 		// if they exist, enqueues css and js files with this fields name
 		parent::register_scripts_and_styles( __CLASS__ ); 
 	}	
-	public static function get_option( $value , $spec ){
+	public static function get_option(  $value , $spec ){
 		$date_format = $spec['date_format_php'] ; 
-		$time_format = $spec['time_format_php'] ; 
-		
-		return date( $date_format . ' ' .$time_format , $value );
+		return date( $date_format  , $value );
 	}
 	
    /**
