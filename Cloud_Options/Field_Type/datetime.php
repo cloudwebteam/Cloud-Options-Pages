@@ -19,8 +19,9 @@ class Cloud_Field_datetime extends Field_Type {
 		$time_format = isset( $args['info']['time_format'] ) ?  $args['info']['time_format'] : 'hh:mm tt' ; 
 
 		$utc_field = '<input class="timestamp" type="hidden" name="'.$this->info['name'] . '" value=\'' . $this->info['value'] . '\' />';
-		$value = json_decode($this->info['value'], true) ;
-		$field = '<input data-dateformat="'.$date_format.'" data-timeformat="'.$time_format.'" type="text" id="'.$this->info['prefix'] . $this->info['id'] . '" class="datetimepicker" size="'.$this->size.'" value="' . $value['datetime'] . '" />';	
+		$value_array = json_decode($this->info['value'], true) ;
+		$value = isset( $value_array['datetime'] ) ? $value_array['datetime'] : false ;
+		$field = '<input data-dateformat="'.$date_format.'" data-timeformat="'.$time_format.'" type="text" id="'.$this->info['prefix'] . $this->info['id'] . '" class="datetimepicker" size="'.$this->size.'" value="' . $value . '" />';	
 		return $utc_field.$field;
 	}
 	

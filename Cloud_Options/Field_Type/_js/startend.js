@@ -28,8 +28,8 @@ jQuery( function($){
 					
 				end.datetimepicker('option', 'minDate', start.datetimepicker( 'getDate' ) );
 				if (end.val() === '') {
-					end.datetimepicker( 'setDate', dateText );
-					end.sibling('.timestamp' ).val( JSON.stringify( value_to_save ) ) ;
+					end.datetimepicker( 'setDate', time  );
+					end.siblings('.timestamp' ).val( JSON.stringify( value_to_save ) ) ;
 				}
 			};
 		} else {
@@ -73,28 +73,59 @@ jQuery( function($){
 		
 		var end = field.find( 'input.end' ); 
 		var start = field.find( 'input.start' );	
-			
+
+		var input = $(this) ;
+		if( input.val() ){
+			var startingValue = new Date( input.val()*1000 ) ;
+		} else {
+			var startingValue = false ;
+		}
+					
 		if ( is_start ){
 			var minDate = '' ;
-			var onClose = function( dateText, inst ){
+			var onClose = function( time, instance ){
+				var year = instance.selectedYear;
+				var month = instance.selectedMonth; 
+				var day = instance.selectedDay; 
+				var date_object = new Date( year, month, day ) ; 
+				
+				var timestamp = date_object.getTime() /1000 ;
+				var value_to_save = {
+					'datetime' : timestamp
+				} ;
+				
+				input.siblings( '.timestamp' ).val( JSON.stringify( value_to_save ) ) ;			
 				end.datepicker('option', 'minDate', start.datepicker( 'getDate' ) );
-				if (end.val() === '') {
-					end.datepicker( 'setDate', dateText );
+				if (end.val() == '') {
+					end.siblings('.timestamp').val( JSON.stringify( value_to_save )  );				
+					end.datepicker( 'setDate', time );
 				}
 			};
 		} else {
 			var minDate = start.val() ; 
-			var onClose = false ;
+			var onClose = function( time, instance ){
+				var year = instance.selectedYear;
+				var month = instance.selectedMonth; 
+				var day = instance.selectedDay; 
+				var date_object = new Date( year, month, day ) ; 
+				
+				var timestamp = date_object.getTime() /1000 ;
+				var value_to_save = {
+					'datetime' : timestamp
+				} ;
+				input.siblings( '.timestamp' ).val( JSON.stringify( value_to_save ) ) ;
+			} ;
 		}		
-		$(this).datepicker({
+		input.datepicker({
 			dateFormat : dateFormat,
 			timeFormat : timeFormat,
-			hourGrid : 4, 
-			minuteGrid : 15,
-			stepMinute : 5, 
 			onClose : onClose,
 			minDate : minDate
 		}); 
+		if ( startingValue ){
+			input.datepicker('setDate', startingValue )  ;
+		}
+				
 	}); 	
 	$('.field.type-startend .timepicker').each( function(){
 		var field = $(this).parents( '.field.type-startend' );	

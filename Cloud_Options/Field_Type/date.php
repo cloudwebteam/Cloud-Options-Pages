@@ -18,8 +18,12 @@ class Cloud_Field_date extends Field_Type {
 		
 		$date_format = isset( $args['info']['date_format'] ) ?  $args['info']['date_format'] : 'mm/dd/yy' ; 
 		
-		$field = '<input data-dateformat="'.$date_format.'" type="text" id="'.$this->info['prefix'] . $this->info['id'] . '" class="datepicker" name="'.$this->info['name'] . '" size="'.$this->size.'" type="text" value="' . $this->info['value'] . '" />';	
-		return $field;
+		$utc_field = '<input class="timestamp" type="hidden" name="'.$this->info['name'] . '" value=\'' . $this->info['value'] . '\' />';		
+		$value_array = json_decode($this->info['value'], true) ;
+		$value = isset( $value_array['datetime'] ) ? $value_array['datetime'] : false ;
+		
+		$field = '<input data-dateformat="'.$date_format.'" type="text" id="'.$this->info['prefix'] . $this->info['id'] . '" class="datepicker"  size="'.$this->size.'" value="' . $value . '" />';	
+		return $utc_field.$field;
 	}
 	
 	public function enqueue_field_scripts_and_styles(){
