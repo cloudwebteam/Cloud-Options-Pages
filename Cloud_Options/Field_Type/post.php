@@ -18,18 +18,22 @@ class Cloud_Field_post extends Field_Type {
 
 	protected function get_field_html( $args ){
 		$this->size = isset( $args['info']['size'] ) ? $args['info']['size'] : ''; 	
-		$property_to_get = isset( $args['info']['get'] ) ? $this->property_to_get( $args['info']['get'] ) : 'ID' ; 
-		$image_size = isset( $args['info']['image_size'] ) ? $args['info']['image_size'] : false ; 
+		$this->property_to_get = isset( $args['info']['get'] ) ? $this->property_to_get( $args['info']['get'] ) : 'ID' ; 
+		$image_size = isset( $args['info']['image_size'] ) ? $args['info']['image_size'] : 'thumbnail' ; 
 		
-		$field = '<input data-image_size="'.$image_size.'" data-to_get="'.$property_to_get. '" type="text" id="'.$this->info['prefix'] . $this->info['id'] . '" name="'.$this->info['name'] . '" size="'.$this->size.'" type="text" value="' . $this->info['value'] . '" />';	
+		$field = '<input class="target-field" data-image_size="'.$image_size.'" data-to_get="'.$this->property_to_get. '" type="hidden" id="'.$this->info['prefix'] . $this->info['id'] . '" name="'.$this->info['name'] . '" size="'.$this->size.'" type="text" value=\'' . $this->info['value'] . '\' />';	
+		$current_data = $this->get_current_data( ) ;
 
-		return $field;
+		return $field . $current_data;
 	}
 	protected function property_to_get( $property = '' ){ 
 		switch ( $property ){
 			case 'ID' : 
 			case 'id' : 
 				return 'ID'; 
+				break; 
+			case 'post' : 
+				return 'post' ;
 				break; 
 			case 'title' : 
 			case 'post_title' : 
@@ -43,10 +47,20 @@ class Cloud_Field_post extends Field_Type {
 			case 'post_excerpt' : 
 				return 'post_excerpt' ;
 				break; 
-			case 'thumbnail' :
-			case 'image' :
+			case 'image' : 
+			case 'thumbnail' : 
 			case 'post_thumbnail' : 
 				return 'post_thumbnail' ;
+				break; 
+			case 'image_url' : 
+			case 'thumbnail_url' : 
+			case 'post_thumbnail_url' :
+				return 'post_thumbnail' ;
+				break; 		
+			case 'image_id' :
+			case 'thumbnail_id' : 
+			case 'post_thumbnail_id' : 
+				return 'post_thumbnail_id' ;
 				break; 
 			case 'url' : 
 			case 'permalink' :
@@ -57,6 +71,20 @@ class Cloud_Field_post extends Field_Type {
 				
 		}
 	} 
+	protected function get_current_data( ){
+		$saved_data = json_decode( $this->info['value'], true ) ; 
+		if ( $saved_data ){
+			$post_id = $saved_data['post'] ;
+			$post = get_post( $post_id ) ;
+		}
+		$current_data = '<p class="current-data"><a class="select-post" href="#">Select a post</a> <span class="current">Selected post: <b class="post-title">'.$post->post_title.'</b> (set to grab <span class="post-property">'. $this->property_to_get .'</span>) </p>' ;
+		if ( $this->context == 'metabox' ){	
+			$current_data .= '<div class="preview"><div class="inner">'.get_metabox_options( $_GET['post'], $this->args['metabox'], $this->args['field'] ).'</div></div>' ;
+		} else {
+			get_metabox_options( $args['top_level'], $args['subpage'], $args['section'], $args['field'] ) ;
+		}	
+		return $current_data ;
+	}
 	public function enqueue_field_scripts_and_styles(){
 		$type = substr( __CLASS__, strlen( Field_Type::$class_prefix ) );
 		// if they exist, enqueues css and js files with this fields name
@@ -107,46 +135,66 @@ class Cloud_Field_post extends Field_Type {
 		$results = _WP_Editors::wp_link_query( $args );
 		if ( isset( $results ) && is_array( $results ) && sizeof( $results ) > 0 ){
 			foreach( $results as $result ){  
-				switch( $property_to_retrieve ){
-					case 'post_content': 
-					case 'ID' :
-					case 'post_excerpt' : 
-					case 'post_title' : 
-						$post = get_post( $result['ID'] ); 
-						$to_insert = $post->$property_to_retrieve ; 
-						break; 
-					case 'post_thumbnail' : 
-						if ( $image_size ){
-							$image_array = wp_get_attachment_image_src( get_post_thumbnail_id( $result['ID'] ), $image_size ) ;	
-							$to_insert = $image_array[0] ; 										
-						} else {
-							$to_insert = get_post_thumbnail_id( $result['ID'] ) ;						
-						}
-						break; 
-					case 'url' : 
-						$to_insert = get_permalink( $result['ID'] ) ; 
-						break;
-					default : 
-						$metabox_array = preg_split( '/[\"\']?,[\t ]*[\'\"]?/', $property_to_retrieve ); 
-						$metabox = isset( $metabox_array[0] ) ? $metabox_array[0] : null;
-						$field = isset( $metabox_array[1] ) ? $metabox_array[1] : null;
-						$group = isset( $metabox_array[2] ) ? $metabox_array[2] : null;
-						$subfield = isset( $metabox_array[3] ) ? $metabox_array[3] : null;		
-						$metabox_data = get_metabox_options( $result['ID'], $metabox , $field, $group, $subfield ) ;
-						if ( is_string( $metabox_data ) ){
-							$to_insert = $metabox_data; 
-						} else {
-							$to_insert = false;
-						}
-						break; 
-					}
+				$to_insert = self::get_option( $result['ID'], $property_to_retrieve ); 
 				if ( $to_insert ){ ?>
-					<li><a data-to_insert="<?php echo $to_insert; ?>" title="<?php echo $property_to_retrieve; ?>: <?php echo $to_insert; ?>" href="<?php echo get_permalink($result['ID'] ); ?>"><?php echo $result['title']; ?><span class='type'><?php echo $result['info'] ; ?></span></a></li>
+					<li>
+						<a data-post_id="<?php echo $result['ID']; ?>" href="<?php echo get_permalink($result['ID'] ); ?>">
+							<span class="title"><?php echo $result['title']; ?></span>
+							<span class='type'><?php echo $result['info'] ; ?></span>
+						</a>
+						<div class="to_insert"><?php echo $to_insert ; ?></div>
+					</li>
 				<?php }
 			}
 		}
 		wp_die();
 	}
+	public static function get_option( $post_id, $spec ){
+		if ( is_string( $spec ) ){
+
+			$prop_to_get = $spec ;
+		} else {
+			$prop_to_get = self::property_to_get( $spec['get'] ); 
+		} 
+		$value = '' ;
+		switch ( $prop_to_get ){
+			case 'ID' : 
+				return $post_id ;
+				break; 
+			case 'post' : 
+				$value = get_post( $post_id ) ;
+				break;
+			case 'post_title' : 
+				$post = get_post( $post_id ) ;
+				return $post->post_title ; 
+				break; 
+			case 'post_content' : 
+				$post = get_post( $post_id ) ;
+				return apply_filters( 'the_content', $post->post_content ) ; 
+				break; 
+			case 'post_excerpt' : 
+				$post = get_post( $post_id ) ;
+				return apply_filters( 'the_excerpt', $post->post_excerpt ) ; 				
+				break; 
+			case 'post_thumbnail' : 
+				$image_size = isset( $spec['image_size'] ) ? $spec['image_size'] : 'full' ;
+				return get_the_post_thumbnail( $post_id, 'thumbnail'  ) ;
+				break;
+			case 'post_thumbnail_id' : 
+				$attachment_id = get_post_thumbnail_id( $post_id ) ;
+				return $attachment_id ;
+				break; 					
+			case 'post_thumbnail_url' :
+				$attachment_id = get_post_thumbnail_id( $post_id ) ;
+				$image_size = isset( $spec['image_size'] ) ? $spec['image_size'] : 'full' ;							 			
+				$image_info = wp_get_attachment_image_src( $attachment_id, $image_size ) ;				
+				return $image_info[0] ;
+				break; 
+			case 'url' :
+				return get_permalink( $post_id );
+				break ;				
+		}
+	}	
 	
    /**
 	* LAYOUTS FOR THIS FIELD

@@ -18,7 +18,7 @@ class Cloud_Field_media extends Field_Type {
 	}	
 
 	protected function get_field_html( $args ){
-		$data_to_display = self::figure_out_data_to_display( $args['info'] ); 
+		$data_to_display = self::property_to_get( $args['info'] ); 
 	
 		$url_button = '<div class="selector"><input class="upload_button btn btn-mini" type="button" name="upload_button" value="Find Media" /><span class="storing">Display: '.$data_to_display.'</span></div>';
 		$this->size = isset( $args['info']['size'] ) ? $args['info']['size'] : $this->size; 	
@@ -36,7 +36,7 @@ class Cloud_Field_media extends Field_Type {
 		
 		return $url_button . $field . $displayed_value . $image ;
 	}
-	protected static function figure_out_data_to_display( $info ){
+	protected static function property_to_get( $info ){
 		if ( isset( $info['get'] ) ){
 
 			switch ( $info['get'] ){
@@ -64,16 +64,12 @@ class Cloud_Field_media extends Field_Type {
 	private function get_image(){
 		
 		if ( isset( $this->info['value'] ) && $this->info['value'] !== '' ){
-			if( is_numeric( $this->info['value'] ) ){
-				$attachment_id = $this->info['value'] ; 
+			$value = json_decode( $this->info['value'], true ) ;
+			if( $value && is_numeric( $value['media'] ) ){
+				$attachment_id = $value['media'] ; 
 				$image_info = wp_get_attachment_image_src( $attachment_id, 'thumb', true ) ; 
 				$url = $image_info[0] ;
-			} else if ( strpos( $this->info['value'], '<img' ) == 0 ){
-				preg_match( '/http:[\/\/[\w:\.-]+/', $this->info['value'], $matches ) ;
-				$url = isset( $matches[ 0 ] ) ? $matches[ 0 ] : '' ; 
-			} else {
-				$url = $this->info['value'] ; 
-			}
+			} 
 			if ( $url ){
 				return '<img class="preview-image img-polaroid" src="'.$url.'" title="'.$url.'" />';			
 			}
@@ -81,10 +77,10 @@ class Cloud_Field_media extends Field_Type {
 
 		return '<img class="hidden preview-image img-polaroid" title="No image" />';	
 	}	
-	public function get_option( $attachment_id, $spec ){
-		$data_to_display = self::figure_out_data_to_display( $spec ); 
+	public static function get_option( $attachment_id, $spec ){
+		$prop_to_get = self::property_to_get( $spec ); 
 		$value = '' ;
-		switch ( $data_to_display ){
+		switch ( $prop_to_get ){
 			case 'url' : 
 				$size = isset( $spec['image_size'] ) ? $spec['image_size'] : 'full' ; 
 				$image_info = wp_get_attachment_image_src( $attachment_id, $size ) ;

@@ -9,7 +9,12 @@ jQuery( function($){
 			this.list.find('li a').each( function(){
 				$(this).click( function(e){
 					e.preventDefault();
-					post_info_target.val( $(this).data('to_insert') );
+					var value_to_save = {
+						post : $(this).data('post_id')
+					} ;
+					post_info_target.val( JSON.stringify( value_to_save ) );
+					post_info_target.siblings( '.preview' ).find( '.inner' ).html( $(this).parents( 'li' ).find( '.to_insert' ).html() ) ;
+					post_info_target.siblings( '.current-data').find( '.post-title' ).text( $(this).find( '.title').text() ) ; 
 					$.fancybox.close();
 					
 				});
@@ -72,11 +77,11 @@ jQuery( function($){
 		ajax.get_list( $(this).val() );
 	});	
 	
-	$('.field.type-post input').click( function(e){
+	$('.field.type-post .select-post').click( function(e){
 		post_info_field = $(this).parents('.field' );
-		post_info_target = $(this).addClass( 'target' ); 
-		post_info_to_get = $(this).data('to_get'); 
-		post_info_image_size = $(this).data('image_size'); 
+		post_info_target = $(this).parents( '.input').find('.target-field').first().addClass( 'target' ); 
+		post_info_to_get = post_info_target.data('to_get'); 
+		post_info_image_size = post_info_target.data('image_size'); 
 		var popup_content = post_info_field.find('.popup > div'); 
 		$.fancybox.open({ 
 			href : '#' + popup.attr('id'), 

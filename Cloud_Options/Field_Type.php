@@ -13,6 +13,7 @@ class Field_Type {
 	protected $attributes = array();
 	
 	protected function __construct( $class_name, $args){
+		$this->args = $args ;
 		// where is the field being placed? Metabox? Options page? Somewhere else?
 		$this->context = isset( $args['context'] ) ? $args['context'] : 'options-page' ; 
 		
@@ -369,7 +370,7 @@ class Field_Type {
 		}
 		return $layout;
 	}
-	public function get_option( $value, $spec ){
+	public static function get_option( $value, $spec ){
 		return $value ;
 	}
 	
