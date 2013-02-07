@@ -369,6 +369,9 @@ class Field_Type {
 		}
 		return $layout;
 	}
+	public function get_option( $value, $spec ){
+		return $value ;
+	}
 	
 	public function standard ( ){ ?>
 		<tr valign="top" <?php echo $this->attributes; ?>>

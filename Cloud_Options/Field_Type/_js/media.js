@@ -13,8 +13,11 @@ jQuery(document).ready(function($){
 		_custom_media = true;
 		wp.media.editor.send.attachment = function(props, attachment){
 			if ( _custom_media ) {
-				var url = attachment.sizes[ props.size ].url ;				
-			
+				var url = attachment.sizes[ props.size ].url ;
+				var value_to_save = {
+					media : attachment.id
+				} ;	
+				targetfield.val( JSON.stringify( value_to_save ) ) ;
 				if ( to_insert === 'ID' ){
 					targetfield.val( attachment.id );
 				} else if ( to_insert === 'url' ){				

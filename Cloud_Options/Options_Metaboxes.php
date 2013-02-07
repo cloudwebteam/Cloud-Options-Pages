@@ -5,9 +5,9 @@ class Cloud_Metaboxes {
 	protected $values ;
 	// whatever the user passes in
 	protected $passed_in_metaboxes = array();
-	protected $valid_metaboxes = array(); 
 	// after merging with defaults
-	public static $metaboxes = array();
+	public static $valid_metaboxes = array();
+	public static $metaboxes = array() ;
 	
 	public static function init( $user_metaboxes ){
 		if ( sizeof( $user_metaboxes ) > 0 ){
@@ -26,13 +26,18 @@ class Cloud_Metaboxes {
 		$this->passed_in_metaboxes = $user_metaboxes ;
 		// create metaboxes
 		add_action( 'admin_init', array( $this, 'set_metaboxes' ) ) ;
+		add_action( 'template_redirect', array( $this, 'set_metaboxes' ) ) ;
 
 		add_action( 'save_post', array( $this, 'save_metaboxes' ) );
 	
 	}
 	public function set_metaboxes( ){
 		$valid_array = array();
+		$all_array = array() ;
 		foreach( $this->passed_in_metaboxes as $passed_in ){
+			foreach ( $passed_in['user_array'] as $key => $array ){	
+				$metabox_array[ $key ] = $array ; 	
+			}	
 			if( self::valid_on_current_page( $passed_in[ 'add_to' ] ) ){
 				foreach ( $passed_in['user_array'] as $key => $array ){
 					if ( $passed_in['context'] && ! isset( $array['context'] ) ){
@@ -42,13 +47,16 @@ class Cloud_Metaboxes {
 					if ( $passed_in['priority'] && ! isset( $array['priority'] ) ){
 						$array['priority'] = $passed_in['priority'] ; 
 					}				
-					$valid_array[$key] = $array;
+					$valid_array[] = $key ;
 				}	
 			}
 		}
-		$this->valid_metaboxes = $valid_array ;
-		self::$metaboxes = $this->merge_with_defaults();
-			
+		self::$metaboxes = $this->merge_with_defaults( $metabox_array );
+		foreach( self::$metaboxes as $metabox_id => $array ){
+			if( in_array($metabox_id, $valid_array ) ){
+				self::$valid_metaboxes[ $metabox_id ] = $array ; 
+			}
+		}
 		if ( sizeof( self::$metaboxes ) > 0 ){
 			$this->enqueue_metabox_scripts(); 
 			add_action('add_meta_boxes', array( $this, 'create_metaboxes' ) );
@@ -115,12 +123,11 @@ class Cloud_Metaboxes {
 			return false;
 		}	
 	}	 	
-	protected function merge_with_defaults(){
+	protected function merge_with_defaults( $metaboxes ){
 		$defaults = Cloud_Options::$defaults; 
-		$user_array = $this->valid_metaboxes; 
 
 		$_master = array();					
-		foreach ($user_array as $metabox_slug => $metabox){
+		foreach ($metaboxes as $metabox_slug => $metabox){
 			$_master[ $metabox_slug ] = array();  
 			$_master[ $metabox_slug ] = Cloud_Options::merge_with_defaults( 'metaboxes', $metabox ); 
 		}
@@ -142,7 +149,7 @@ class Cloud_Metaboxes {
 		}
 	}
 	public function create_metaboxes(){
-		foreach ( self::$metaboxes as $metabox_slug => $metabox ){
+		foreach ( self::$valid_metaboxes as $metabox_slug => $metabox ){
 			$id 			= $metabox_slug;
 			$title 			= $metabox['title']; 
 			$callback 		= $this->get_metabox_layout_function( $metabox['layout'] ); 
@@ -214,33 +221,80 @@ class Cloud_Metaboxes {
 	}
 	public static function get_options( $post_id, $metabox_slug, $field_slug = null , $group_number = null, $subfield_slug = null ){
 		if ( isset( $metabox_slug ) && $metabox_slug ){
-			$metabox_values =  get_post_meta( $post_id , $metabox_slug, true) ; 
+			$metabox_values =  get_post_meta( $post_id , $metabox_slug, true) ;
+
+			$option_keys = array( 
+				'metabox' => $metabox_slug
+			) ;
+			
+			$return_value = false ; 
 			if ( $metabox_values ) {
+
 			
 				if ( isset( $field_slug ) && isset( $group_number ) && isset( $subfield_slug )  ){
+				
 					if ( isset( $metabox_values[ $field_slug ][ $group_number ][ $subfield_slug ] ) ){
-						return $metabox_values[ $field_slug ][ $group_number ][ $subfield_slug ] ;
-					} else {
-					 	return '';
-					 }
-				} else if ( $field_slug && $group_number ){
+						$option_keys[] 	= $field_slug ;
+						$option_keys[] 	= $field_slug ;
+						$option_keys[] 	= $field_slug ;												
+						$return_value = $metabox_values[ $field_slug ][ $group_number ][ $subfield_slug ] ;
+					}
+				} else if ( isset( $field_slug ) && isset( $group_number ) ){
 					if ( isset( $metabox_values[ $field_slug ][ $group_number ] ) ){
-						return $metabox_values[ $field_slug ][ $group_number ] ;
-					} else {
-					 	return '';
-					 }					
-				} else if ( $field_slug ){
+						$option_keys[] 	= $field_slug ;
+						$option_keys[] 	= $group_number ;					
+						$return_value = $metabox_values[ $field_slug ][ $group_number ] ;
+					}				
+				} else if ( $field_slug ){				
 					if ( isset( $metabox_values[ $field_slug ] ) ){
-						return $metabox_values[ $field_slug ];
-					} else {
-					 	return '';
-					 }
+						$option_keys[] 	= $field_slug ;					
+						$return_value = $metabox_values[ $field_slug ];
+					}
 				} else {
-					return $metabox_values ;
+					$return_value = $metabox_values ;
 				}
 			}
-			return false; 	
+			
+			return self::convert_dynamic_data( $return_value , $option_keys ); 	
 		} 
+	}
+	protected static function convert_dynamic_data( $value , $keys ){	
+		if ( $value ){
+			if ( is_string( $value ) ){
+				$json_array = json_decode( $value, true ) ;
+				if ( $json_array && is_array( $json_array ) ){
+					$Cloud_metaboxes = self::get_instance() ;	
+					$metaboxes = $Cloud_metaboxes::$metaboxes ;
+					$array_spec = $metaboxes ;				
+					$array_spec = $metaboxes[ array_shift( $keys ) ] ;
+					$key_names = array( 'fields', false, 'subfields' ) ;					
+					foreach( $keys as $index => $key ){
+						$key_name = $key_names[ $index ] ;
+						if ( $key_name ){
+							$array_spec = isset( $array_spec[$key_name][$key] ) ? $array_spec[$key_name][$key] : $array_spec ;	
+						} else {
+							$array_spec = isset( $array_spec[$key] ) ? $array_spec[$key] : $array_spec ;													
+						}
+					}
+	
+					foreach( $json_array as $field_type => $data ){
+						$value = $field_type ;
+						if ( class_exists( Field_Type::get_class_name( $field_type ) ) ){
+							$field_class = Field_Type::get_class_name( $field_type ) ;
+							$value = $field_class::get_option( $data, $array_spec ) ;
+						} else {
+							echo 'no class by that name' ;
+						}
+					}
+				}
+			} else if ( is_array( $value ) ){
+				foreach ( $value as $index => &$item ){
+					$keys[] = $index ;
+					$item = self::convert_dynamic_data( $item , $keys ) ;
+				}
+			}
+		} 
+		return $value ;
 	}
 	public function is_option_enabled( $post_id, $metabox_slug, $field_slug, $group_number = null, $subfield_slug = null ){
 		$enabled_options = $this->get_option( $post_id, $metabox_slug, 'enabled' );

@@ -147,6 +147,7 @@ $options_defaults = array (
 			'clone_controls'=> true, 
 			'sort'			=> true,
 			'use_image'		=> true,
+			'image_size' 	=> 'full',
 			'_lock'			=> false											
 		),	
 		'post' => array(

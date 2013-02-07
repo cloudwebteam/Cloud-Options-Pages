@@ -18,28 +18,28 @@ class Cloud_Field_media extends Field_Type {
 	}	
 
 	protected function get_field_html( $args ){
-		$data_to_retrieve = $this->figure_out_data_to_retrieve( $args ); 
+		$data_to_display = self::figure_out_data_to_display( $args['info'] ); 
 	
-		$this->url_button = '<div class="selector"><input class="upload_button btn btn-mini" type="button" name="upload_button" value="Find Media" /><span class="storing">Storing: '.$data_to_retrieve.'</span></div>';
+		$url_button = '<div class="selector"><input class="upload_button btn btn-mini" type="button" name="upload_button" value="Find Media" /><span class="storing">Display: '.$data_to_display.'</span></div>';
 		$this->size = isset( $args['info']['size'] ) ? $args['info']['size'] : $this->size; 	
 
 		if ( $args['info']['use_image'] ){
-			$this->image = '<span class="image">'.$this->get_image().'</span>';	
-			$input_type = 'hidden' ;
+			$image = '<span class="image">'.$this->get_image().'</span>';	
+			$displayed_value = '' ;
 		} else {
-			$this->image = '' ;	
-			$input_type = 'text' ;
+			$image = '' ;	
+			$displayed_value = '<span class="value">'.$this->info['value'].'</span>' ;
 		}
 		
+		$field = '<input data-to_display="'.$data_to_display.'" class="url_field" type="hidden" id="'.$this->info['prefix'] . $this->info['id'] . '" name="'.$this->info['name'] . '" size="'.$this->size.'" type="text" value=\'' . $this->info['value'] . '\' />';
+		$field .= $displayed_value ;
 		
-		$field = '<input data-to_insert="'.$data_to_retrieve.'" class="url_field" type="'.$input_type.'" id="'.$this->info['prefix'] . $this->info['id'] . '" name="'.$this->info['name'] . '" size="'.$this->size.'" type="text" value="' . $this->info['value'] . '" />';
-		
-		return $this->url_button .$field . $this->image;
+		return $url_button . $field . $displayed_value . $image ;
 	}
-	protected function figure_out_data_to_retrieve( $args ){
-		if ( isset( $args['info']['get'] ) ){
+	protected static function figure_out_data_to_display( $info ){
+		if ( isset( $info['get'] ) ){
 
-			switch ( $args['info']['get'] ){
+			switch ( $info['get'] ){
 				case 'ID' : 
 				case 'id' :
 					return 'ID' ;
@@ -81,7 +81,25 @@ class Cloud_Field_media extends Field_Type {
 
 		return '<img class="hidden preview-image img-polaroid" title="No image" />';	
 	}	
-  
+	public function get_option( $attachment_id, $spec ){
+		$data_to_display = self::figure_out_data_to_display( $spec ); 
+		$value = '' ;
+		switch ( $data_to_display ){
+			case 'url' : 
+				$size = isset( $spec['image_size'] ) ? $spec['image_size'] : 'full' ; 
+				$image_info = wp_get_attachment_image_src( $attachment_id, $size ) ;
+				$value = $image_info[0] ; // returns url
+				break; 
+			case 'image' : 
+				$size = isset( $spec['image_size'] ) ? $spec['image_size'] : 'full' ; 
+				$value  = wp_get_attachment_image( $attachment_id, $size ) ;
+				break; 
+			case 'ID' :
+				$value = $attachment_id ; 
+				break ;				
+		}
+		return $value ;
+	}
   
   
    /**
