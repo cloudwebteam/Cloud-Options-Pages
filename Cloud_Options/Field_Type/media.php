@@ -69,10 +69,11 @@ class Cloud_Field_media extends Field_Type {
 				$attachment_id = $value['media'] ; 
 				$image_info = wp_get_attachment_image_src( $attachment_id, 'thumb', true ) ; 
 				$url = $image_info[0] ;
+				if ( $url ){
+					return '<img class="preview-image img-polaroid" src="'.$url.'" title="'.$url.'" />';			
+				}
 			} 
-			if ( $url ){
-				return '<img class="preview-image img-polaroid" src="'.$url.'" title="'.$url.'" />';			
-			}
+			return false ;
 		}
 
 		return '<img class="hidden preview-image img-polaroid" title="No image" />';	
