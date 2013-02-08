@@ -297,8 +297,10 @@ class Field_Type {
 		return $description;
 	}
 	protected function get_attributes( $field_info ){
+
 		$classes = array(); 
 		$classes[] = 'field' ;
+		$classes[] = 'field_slug-' . $this->args['field'] ; 
 		$classes[] = 'cf' ;
 		$classes[] = 'type-'.$this->type ;
 		$classes[] = $this->info['sort'] ? '' : 'no-sort';
