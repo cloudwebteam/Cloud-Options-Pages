@@ -2,12 +2,18 @@
 	padding: .5em 0 1em;
 }
 .field.type-divider .label {	
-	color: #444; 
+	color: #efefef; 
 	text-transform: uppercase;
-	padding: 1em 0 .5em ;	
+	padding: .5em 15px .5em ;	
+	display: block; 
+	background: #444; 
 }
-.field.type-divider .label label {
+.field.type-divider .label label,
+.field.type-group .group .field.type-divider .label label {
 	cursor: default;
+	float: none ; 
+	text-align: left; 
+	padding: 0 ;
 }
 
 .field.type-divider > .row ,
@@ -16,6 +22,7 @@
 }
 .field.type-divider .divider {
 	display: block; 
+	margin-bottom: .5em;
 }
 .field.type-divider .copy_to_use {
 	display: none !important ;
