@@ -1,0 +1,22 @@
+.field.type-divider {
+	padding: .5em 0 1em;
+}
+.field.type-divider .label {	
+	color: #444; 
+	text-transform: uppercase;
+	padding: 1em 0 .5em ;	
+}
+.field.type-divider .label label {
+	cursor: default;
+}
+
+.field.type-divider > .row ,
+.field.type-divider .divider {
+	border-bottom: 2px solid #ccc;
+}
+.field.type-divider .divider {
+	display: block; 
+}
+.field.type-divider .copy_to_use {
+	display: none !important ;
+}
