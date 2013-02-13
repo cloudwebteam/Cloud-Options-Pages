@@ -77,9 +77,16 @@ class Cloud_Field_post extends Field_Type {
 			$post_id = $saved_data['post'] ;
 			$post = get_post( $post_id ) ;
 		}
-		$current_data = '<p class="current-data"><a class="select-post" href="#">Select a post</a> <span class="current">Selected post: <b class="post-title">'.$post->post_title.'</b> (set to grab <span class="post-property">'. $this->property_to_get .'</span>) </p>' ;
+		$current_data = '<p class="current-data">' ; 
+		$current_data .= '<span class="current">Post: <b class="post-title">'.$post->post_title.'</b> (Retrieving: <span class="post-property">'. $this->property_to_get .'</span>)</span>' ;
+		$current_data .= '<a class="select-post" href="#">Select a post</a>' ;
+		$current_data .= '</p>' ;
 		if ( $this->context == 'metabox' ){	
-			$current_data .= '<div class="preview"><div class="inner">'.get_metabox_options( $_GET['post'], $this->args['metabox'], $this->args['field'] ).'</div></div>' ;
+			$metabox = $this->args['metabox'] ; 
+			$field = $this->args['field'] ; 
+			$group_number = isset( $this->args['group_number'] ) ? $this->args['group_number'] : '' ;
+			$subfield = isset( $this->args['subfield'] ) ? $this->args['subfield'] : '' ;
+			$current_data .= '<div class="preview"><div class="inner">'.get_metabox_options( $_GET['post'], $metabox, $field, $group_number, $subfield ).'</div></div>' ;
 		} else {
 			get_metabox_options( $args['top_level'], $args['subpage'], $args['section'], $args['field'] ) ;
 		}	

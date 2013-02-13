@@ -275,22 +275,31 @@ class Cloud_Options_Pages {
 				}
 			}
 		}	
-		
-		// ha ha, overkill...but it might be useful to be able to grab individual group values
+		$return_values = '' ;
+		$path_to_option = array() ;
 		if ( isset( $top_page_slug ) ){ 
+			$path_to_option['top_level'] = $top_page_slug ;
 			if ( isset( $page_slug ) ){
+				$path_to_option['subpages'] = $page_slug ;
 				if ( isset( $section_slug ) ){
+					$path_to_option['sections'] = $section_slug ;
 					if ( isset( $field_slug ) ){
+						$path_to_option['fields'] = $field_slug ;
 						if ( isset( $group_number ) ){
+							$path_to_option[] = $section_slug ;
 							if ( isset( $subfield_slug ) ){
+								$path_to_option['subfields'] = $subfield_slug ;
 								if (  isset( self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number][$subfield_slug] ) && is_array( self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number] ) ) {
-									return self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number][$subfield_slug] ;
+									$return_value = self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number][$subfield_slug] ;
+									return self::convert_dynamic_data( $return_value , $path_to_option ); 	
 								} else {
 									return false;
 								}
 							}
 							if ( is_int( $group_number ) && is_array( self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug]) && isset( self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number] ) ) {
-								return self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number] ;
+								$return_value = self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number] ;
+								return self::convert_dynamic_data( $return_value , $path_to_option ); 	
+								
 							} else {
 								return false; 
 							}	 
@@ -299,35 +308,83 @@ class Cloud_Options_Pages {
 							// check if the current page has settable defaults before going to all the hassle of checking the field
 							if ( self::$pages[$top_page_slug]['subpages'][$page_slug]['_has_settable_defaults'] ){
 								if ( $this->is_option_enabled( $top_page_slug, $page_slug, $section_slug, $field_slug ) ){
-									return self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug] ;
+									$return_value = self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug] ;
 								} else {
-									return $this->user_defaults[$top_page_slug][$page_slug][$section_slug][$field_slug] ;
+									$return_value = $this->user_defaults[$top_page_slug][$page_slug][$section_slug][$field_slug] ;
 								}
+								return self::convert_dynamic_data( $return_value , $path_to_option ); 	
+								
 							} else {
-								return self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug] ;
+								$return_value = self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug] ;			
+								return self::convert_dynamic_data( $return_value , $path_to_option ); 	
 							}						
 						} else {
 							return false; 
 						}
 					}
 					if ( isset( self::$values[$top_page_slug][$page_slug][$section_slug] ) ) {
-						return self::$values[$top_page_slug][$page_slug][$section_slug] ; 
+						$return_value = self::$values[$top_page_slug][$page_slug][$section_slug] ; 
+						return self::convert_dynamic_data( $return_value , $path_to_option ); 							
 					} else {
 						return false;
 					}
 				}
 				if ( isset( self::$values[$top_page_slug][$page_slug] ) ){ 
-					return self::$values[$top_page_slug][$page_slug] ; 
+					$return_value = self::$values[$top_page_slug][$page_slug] ; 
+					return self::convert_dynamic_data( $return_value , $path_to_option ); 						
 				} else {
 					return false; 
 				}
 			}
 			if ( isset( self::$values[$top_page_slug] ) ) {
-				return self::$values[$top_page_slug]; 
+				$return_value = self::$values[$top_page_slug]; 
+				return self::convert_dynamic_data( $return_value , $path_to_option ); 					
 			} else {
 				return false;
 			}
 		}
+		return false ;
+	}
+	protected static function convert_dynamic_data( $value , $path_to_option ){	
+		if ( $value ){
+			if ( is_string( $value ) ){
+
+				$json_array = json_decode( $value, true ) ;
+				if ( $json_array && is_array( $json_array ) ){
+					// grab top_level page array
+					$array_spec = self::$pages[ array_shift( $path_to_option ) ] ;
+
+					foreach( $path_to_option as $spec_key => $key_name ){
+						if ( ! is_numeric( $spec_key ) ){
+							if ( $spec_key ){
+								$array_spec = is_array( $array_spec[$spec_key] ) && isset( $array_spec[$spec_key][$key_name] ) ? $array_spec[$spec_key][$key_name] : $array_spec ;	
+							} else {
+								$array_spec = is_array( $array_spec ) && isset( $array_spec[$key] ) ? $array_spec[$key] : $array_spec ;													
+							}
+						}						
+					}
+					
+					foreach( $json_array as $field_type => $data ){
+						$value = $field_type ;
+						if ( class_exists( Field_Type::get_class_name( $field_type ) ) ){
+							$field_class = Field_Type::get_class_name( $field_type ) ;
+							$value = $field_class::get_option( $data, $array_spec ) ;
+						} else {
+							echo 'no class by that name' ;
+						}
+					}
+				}
+				
+			} else if ( is_array( $value ) ){
+				foreach ( $value as $index => &$item ){
+					$path_to_nested_option = $path_to_option ;
+					$path_to_nested_option[] = $index ;
+					$item = self::convert_dynamic_data( $item , $path_to_nested_option ) ;
+				}
+			}
+		} 
+
+		return $value ;
 	}
 	/**
 	 * Methods for distilling information from the user array ( like compiling parent page, parent section, parent field, etc )

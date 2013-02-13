@@ -7,10 +7,14 @@
 	width: 100%; 
 }
 .field.type-post .current-data .select-post {
-	display: block; 
-	line-height: 2em; 
+	padding-left: 10px;
+	display: inline-block; 
+	padding-top: 1em;
 }
-
+.field.type-post .preview {
+	float: none; 
+	display: block; 
+}
 .field.type-post .preview .inner{
 	border: 1px solid #ccc; 
 	background: #fff; 
@@ -56,7 +60,6 @@
 	margin-bottom: 0;
 	font-size: 1em;
 	color: #666;
-	text-transform: uppercase;
 	text-align: center;
 }
 #wp-link-dialog .query-results .title span {
