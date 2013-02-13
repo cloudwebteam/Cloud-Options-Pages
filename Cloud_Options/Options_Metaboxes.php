@@ -57,7 +57,7 @@ class Cloud_Metaboxes {
 				self::$valid_metaboxes[ $metabox_id ] = $array ; 
 			}
 		}
-		if ( sizeof( self::$metaboxes ) > 0 ){
+		if ( sizeof( self::$valid_metaboxes ) > 0 ){
 			$this->enqueue_metabox_scripts(); 
 			add_action('add_meta_boxes', array( $this, 'create_metaboxes' ) );
 		}		
@@ -252,7 +252,6 @@ class Cloud_Metaboxes {
 					$return_value = $metabox_values ;
 				}
 			}
-			
 			return self::convert_dynamic_data( $return_value , $option_keys ); 	
 		} 
 	}
@@ -275,7 +274,6 @@ class Cloud_Metaboxes {
 							} else {
 								$array_spec = is_array( $array_spec ) && isset( $array_spec[$key] ) ? $array_spec[$key] : $array_spec ;													
 							}
-
 						}
 					}
 					
