@@ -53,6 +53,25 @@ $options_defaults = array (
 			'sort'				=> true, 
 			'_lock'				=> false			
 		), 
+		'checkbox' => array(
+			'title'				=> 'Checkbox',
+			'layout'			=> array(array( 'field','label' ), 'description'),
+			'cloneable'			=> false,
+			'checkbox_value' 	=> 1,
+			'multiple' 			=> false,
+			'options' 			=> false,
+			'size'				=> null,
+			'width' 			=> 6,
+			'description'		=> null,
+			'editor_list'		=> false,
+			'default' 			=> '',			
+			'subfields'			=> null,
+			'settable_defaults' => false,
+			'code_link' 		=> true, 
+			'clone_controls'	=> true,
+			'sort'				=> true, 
+			'_lock'				=> false			
+		),
 		'color'		=> array(
 		
 			'title'				=> 'Color',					
@@ -195,6 +214,8 @@ $options_defaults = array (
 			'date_format'		=> 'mm-dd-yy', // see http://docs.jquery.com/UI/Datepicker/formatDate for options
 			'time_format' 		=> 'h:mm tt',	// see http://trentrichardson.com/examples/timepicker/ for options
 			'date_format_php'	=> 'D, M jS g:i a',
+			'start_label' 		=> 'Start',
+			'end_label' 		=> 'End',
 			'default' 			=> '',		
 			'editor_list'		=> false,
 			'code_link' 		=> true, 
