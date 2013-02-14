@@ -52,7 +52,7 @@ class Cloud_Field_select extends Field_Type {
 						} else {
 							$selected = '';
 						}					
-						$html .= '<option '.$selected .' value="'.$post->ID.'">'.$post->post_title.'</option>' ; 
+						$html .= '<option '.$selected .' value="'.$value.'">'.$option.'</option>' ; 
 					}				
 				} else {
 					$html .= $this->multiple ? '' : '<option value="">Please select one...</option>'; 
