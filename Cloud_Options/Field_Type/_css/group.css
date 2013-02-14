@@ -39,7 +39,7 @@
 .field.type-group .group th {
 	width: 20%; 
 	padding: .25em 2%;
-	vertical-align: middle ;
+	vertical-align: top;
 	text-align: right; 
 }
 .cloud-options.options-page .section.standard .group th > .label{
