@@ -81,7 +81,9 @@ class Cloud_Field_post extends Field_Type {
 			$post_title = 'None selected' ;
 		}
 		$current_data = '<p class="current-data">' ; 
-		$current_data .= '<span class="current">Post: <b class="post-title">'.$post_title.'</b> <span class="post-property">Retrieves '. $this->property_to_get .'</span></span>' ;
+		$current_data .= '<span class="current">Post: <b class="post-title">'.$post_title.'</b>' ; 
+		$current_data .= $this->info['code_link'] ? '<span class="post-property">Retrieves '. $this->property_to_get .'</span>' : '' ;
+		$current_data .= '</span>' ;
 		$current_data .= '<a class="select-post" href="#">Select a post</a>' ;
 		$current_data .= '</p>' ;
 		if ( $this->context == 'metabox' ){	

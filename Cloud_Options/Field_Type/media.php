@@ -20,7 +20,11 @@ class Cloud_Field_media extends Field_Type {
 	protected function get_field_html( $args ){
 		$data_to_display = self::property_to_get( $args['info'] ); 
 	
-		$url_button = '<div class="selector"><input class="upload_button btn btn-mini" type="button" name="upload_button" value="Find Media" /><span class="storing">Retrieves: '.$data_to_display.'</span></div>';
+		$url_button = '<div class="selector">';
+		$url_button .= '<input class="upload_button btn btn-mini" type="button" name="upload_button" value="Find Media" />';
+		$url_button .= $this->info['code_link'] ? '<span class="storing">Retrieves: '.$data_to_display.'</span>' : '' ;
+		$url_button .= '</div>' ;
+		
 		$this->size = isset( $args['info']['size'] ) ? $args['info']['size'] : $this->size; 	
 
 		if ( $args['info']['use_image'] ){
