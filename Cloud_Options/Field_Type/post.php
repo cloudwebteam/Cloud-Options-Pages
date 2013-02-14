@@ -76,9 +76,12 @@ class Cloud_Field_post extends Field_Type {
 		if ( $saved_data ){
 			$post_id = $saved_data['post'] ;
 			$post = get_post( $post_id ) ;
+			$post_title = $post->post_title ;
+		} else {
+			$post_title = 'None selected' ;
 		}
 		$current_data = '<p class="current-data">' ; 
-		$current_data .= '<span class="current">Post: <b class="post-title">'.$post->post_title.'</b> (Retrieving: <span class="post-property">'. $this->property_to_get .'</span>)</span>' ;
+		$current_data .= '<span class="current">Post: <b class="post-title">'.$post_title.'</b> <span class="post-property">Retrieves '. $this->property_to_get .'</span></span>' ;
 		$current_data .= '<a class="select-post" href="#">Select a post</a>' ;
 		$current_data .= '</p>' ;
 		if ( $this->context == 'metabox' ){	
@@ -86,7 +89,10 @@ class Cloud_Field_post extends Field_Type {
 			$field = $this->args['field'] ; 
 			$group_number = isset( $this->args['group_number'] ) ? $this->args['group_number'] : '' ;
 			$subfield = isset( $this->args['subfield'] ) ? $this->args['subfield'] : '' ;
-			$current_data .= '<div class="preview"><div class="inner">'.get_metabox_options( $_GET['post'], $metabox, $field, $group_number, $subfield ).'</div></div>' ;
+			
+			$preview_data = get_metabox_options( $_GET['post'], $metabox, $field, $group_number, $subfield );
+			$preview_data = $preview_data ? '<div class="inner">'.$preview_data.'</div>' : '' ;
+			$current_data .= '<div class="preview">'.$preview_data.'</div>' ;
 		} else {
 			get_metabox_options( $args['top_level'], $args['subpage'], $args['section'], $args['field'] ) ;
 		}	

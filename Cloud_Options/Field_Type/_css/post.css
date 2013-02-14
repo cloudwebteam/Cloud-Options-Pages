@@ -1,7 +1,12 @@
 .field.type-post .current-data {
-	width: 45%; 
-	float: left;
-	 
+	margin-bottom: 5px;
+}
+.field.type-post .current-data .post-property {
+	color: #999;
+	text-transform: uppercase;
+	font-style: italic;
+	font-size: .75em;
+	padding-left: 5px; 
 }
 .field.type-post .input {
 	width: 100%; 
@@ -9,21 +14,22 @@
 .field.type-post .current-data .select-post {
 	padding-left: 10px;
 	display: inline-block; 
-	padding-top: 1em;
+	float: right; 
 }
 .field.type-post .preview {
 	float: none; 
 	display: block; 
 }
 .field.type-post .preview .inner{
-	border: 1px solid #ccc; 
-	background: #fff; 
+	border: 1px solid #eee; 
+	background: #fafafa; 
 	overflow: scroll ;
 	max-height: 100px ;
-	float: right; 
+	float: left; 
 	padding: .5em 10px; 
 	border-radius: 3px; 
-	max-width: 48%; 
+	color: #666; 
+	font-size: .75em;
 }
 
 /***====================================================================================================================================
