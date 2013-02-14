@@ -286,11 +286,12 @@ class Cloud_Options_Pages {
 					if ( isset( $field_slug ) ){
 						$path_to_option['fields'] = $field_slug ;
 						if ( isset( $group_number ) ){
+
 							$path_to_option[] = $section_slug ;
 							if ( isset( $subfield_slug ) ){
 								$path_to_option['subfields'] = $subfield_slug ;
 								if (  isset( self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number][$subfield_slug] ) && is_array( self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number] ) ) {
-									$return_value = self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number][$subfield_slug] ;
+									$return_value = self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug][$group_number][$subfield_slug] ;										
 									return self::convert_dynamic_data( $return_value , $path_to_option ); 	
 								} else {
 									return false;
@@ -311,11 +312,11 @@ class Cloud_Options_Pages {
 									$return_value = self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug] ;
 								} else {
 									$return_value = $this->user_defaults[$top_page_slug][$page_slug][$section_slug][$field_slug] ;
-								}
+								}					
 								return self::convert_dynamic_data( $return_value , $path_to_option ); 	
 								
 							} else {
-								$return_value = self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug] ;			
+								$return_value = self::$values[$top_page_slug][$page_slug][$section_slug][$field_slug] ;										
 								return self::convert_dynamic_data( $return_value , $path_to_option ); 	
 							}						
 						} else {
@@ -338,6 +339,7 @@ class Cloud_Options_Pages {
 			}
 			if ( isset( self::$values[$top_page_slug] ) ) {
 				$return_value = self::$values[$top_page_slug]; 
+			
 				return self::convert_dynamic_data( $return_value , $path_to_option ); 					
 			} else {
 				return false;
@@ -346,6 +348,7 @@ class Cloud_Options_Pages {
 		return false ;
 	}
 	protected static function convert_dynamic_data( $value , $path_to_option ){	
+
 		if ( $value ){
 			if ( is_string( $value ) ){
 
@@ -353,7 +356,8 @@ class Cloud_Options_Pages {
 				if ( $json_array && is_array( $json_array ) ){
 					// grab top_level page array
 					$array_spec = self::$pages[ array_shift( $path_to_option ) ] ;
-
+					$spec_key_names = array( 'subpages', 'sections', 'fields', 'subfields' ); 
+					
 					foreach( $path_to_option as $spec_key => $key_name ){
 						if ( ! is_numeric( $spec_key ) ){
 							if ( $spec_key ){
@@ -361,8 +365,20 @@ class Cloud_Options_Pages {
 							} else {
 								$array_spec = is_array( $array_spec ) && isset( $array_spec[$key] ) ? $array_spec[$key] : $array_spec ;													
 							}
-						}						
+						} else {
+							if ( ! is_numeric( $key_name ) ){
+								$still_looking = true;
+								while ( $still_looking && sizeof( $spec_key_names ) > 0 ){
+									$spec_key = array_shift( $spec_key_names ) ;
+									if ( isset( $array_spec[$spec_key] ) &&  is_array( $array_spec[$spec_key] ) && isset( $array_spec[$spec_key][$key_name] ) ){
+										$array_spec =  $array_spec[$spec_key][$key_name] ;	
+									}						
+								}
+							}
+						}										
 					}
+			
+
 					
 					foreach( $json_array as $field_type => $data ){
 						$value = $field_type ;
