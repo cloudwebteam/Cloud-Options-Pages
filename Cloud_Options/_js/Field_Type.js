@@ -77,7 +77,7 @@ jQuery( function($){
 			// change the "code" link
 			if ( $(this).find('input.copy').size() > 0 ){
 				var prev_copy_to_use = $(this).find('input.copy').attr('value') ;			
-				$(this).find('input.copy').val( prev_copy_to_use.replace(/ \d/g, ' ' + counter ) );
+				$(this).find('input.copy').val( prev_copy_to_use.replace(/ \d+/g, ' ' + counter ) );
 			}
 			counter++;
 			
