@@ -95,10 +95,12 @@ class Cloud_Metaboxes {
 						}
 					}
 				} else {
-					if ( $add_to['post_type'] == 'post' ){
-						return true;
-					} else if ( is_array( $add_to['post_type'] ) && in_array('post', $add_to['post_type'] ) ){
-						return true;
+					if ( stripos( $_SERVER['REQUEST_URI'] , 'post-new' ) !== false ){
+						if ( $add_to['post_type'] == 'post' ){
+							return true;
+						} else if ( is_array( $add_to['post_type'] ) && in_array('post', $add_to['post_type'] ) ){
+							return true;
+						}
 					}
 				}
 			} 
