@@ -94,8 +94,14 @@ class Cloud_Metaboxes {
 							return true; 	
 						}
 					}
+				} else {
+					if ( $add_to['post_type'] == 'post' ){
+						return true;
+					} else if ( is_array( $add_to['post_type'] ) && in_array('post', $add_to['post_type'] ) ){
+						return true;
+					}
 				}
-			}
+			} 
 			$add_to['numberposts'] = -1; 
 			$posts = get_posts( $add_to );
 			
