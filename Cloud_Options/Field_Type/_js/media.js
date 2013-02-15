@@ -39,6 +39,16 @@ jQuery(document).ready(function($){
 		wp.media.editor.open(button);
 		return false;
 	});
+	field.find( '.remove').click( function(){
+		var parent_field = $(this).parents('.field.type-media');
+		var preview_image = parent_field.find( 'img.preview-image');
+		var input = field.find( 'input.url_field' ); 
+		input.val('');
+		preview_image.slideUp('fast', function(){
+	     	$(this).addClass('hidden'); 
+	     	$(this).attr('src', '');
+	    }); 	
+	});
 	$('.add_media').on('click', function(){
 		_custom_media = false;
 	});

@@ -28,7 +28,7 @@ class Cloud_Field_media extends Field_Type {
 		$this->size = isset( $args['info']['size'] ) ? $args['info']['size'] : $this->size; 	
 
 		if ( $args['info']['use_image'] ){
-			$image = '<span class="image">'.$this->get_image().'</span>';	
+			$image = '<span class="image">'.$this->get_image().'<a class="remove">X</a></span>';	
 			$displayed_value = '' ;
 		} else {
 			$image = '' ;	

@@ -20,6 +20,7 @@
 	margin: .5em 0;
 }
 
+
 .field.type-media .storing {
 	float: left;
 	clear: left; 	
@@ -30,6 +31,17 @@
 }
 .field.type-media .image {
 	float: left; 
+	position: relative; 
+}
+.field.type-media .image .remove {
+	position: absolute; 
+	left: 100%; 
+	top: 0; 
+	margin-left: 10px;
+	cursor: pointer;
+}
+.field.type-media .image .hidden + .remove {
+	display: none;
 }
 .field.type-media .preview-image {
 	max-width: 190px;
