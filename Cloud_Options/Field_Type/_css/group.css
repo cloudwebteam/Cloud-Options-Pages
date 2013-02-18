@@ -85,7 +85,7 @@
 	height: 1.25em;
 	line-height: 1em;
 	margin: .125em 0 ;
-	display: inline-block;
+	display: block;
 	text-align: center;
 	cursor: pointer;
 	z-index: 20;
