@@ -19,13 +19,14 @@ class Cloud_Field_color extends Field_Type {
 	}	
 
 	protected function get_field_html( $args ){	
+		
 		if ( $this->info['settable_defaults'] ){
 			$default_swab = '<div class="default-swab-container"><span class="default-swab" title="Click for default color" style="background:'.$this->info['default'] .'">df</span></div>' ;
 			$checked = $this->info['enabled'] ? 'checked="checked"' : '' ;
 			$this->enabler = '<span class="enable-override"><input type="checkbox" value="true" name="'. $this->info['enabled_name'].'" id="'.$this->info['enabled_name'].'" class="option_enabler color" '.$checked. ' /><label for="'.$this->info['enabled_name'].'">Override default</span></label>';
 			$hidden = $this->info['enabled'] ? '' : 'style="display: none; "' ; 			
 		} else { 
-			$default_swab = '<div class="default-swab-container"><span class="default-swab" title="Click for default color" style="background:'.$this->info['default'] .'">df</span></div>' ;
+			$default_swab = '' ;
 			$this->enabler = '';
 			$hidden = '';
 		}				

@@ -75,7 +75,6 @@ $options_defaults = array (
 		'color'		=> array(
 		
 			'title'				=> 'Color',					
-			'settable_defaults' => true,
 			'layout'			=> array('label', 'field', 'description'),
 			'cloneable'			=> false,
 			'size'				=> null,
@@ -83,7 +82,7 @@ $options_defaults = array (
 			'description'		=> null,
 			'editor_list'		=> false,
 			'subfields'			=> null,
-			'settable_defaults' => true,
+			'settable_defaults' => false,
 			'default'			=> '#FFFFFF',									
 			'code_link' 		=> true, 
 			'clone_controls'	=> true, 
