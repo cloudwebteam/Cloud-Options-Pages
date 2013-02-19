@@ -231,60 +231,77 @@ class Cloud_Metaboxes {
 		if ( isset( $metabox_slug ) && $metabox_slug ){
 			$metabox_values =  get_post_meta( $post_id , $metabox_slug, true) ;
 
-			$option_keys = array( 
+			$path_to_option = array( 
 				'metabox' => $metabox_slug
 			) ;
-			
 			$return_value = false ; 
 			if ( $metabox_values ) {
-
-			
-				if ( isset( $field_slug ) && isset( $group_number ) && isset( $subfield_slug )  ){
-				
-					if ( isset( $metabox_values[ $field_slug ][ $group_number ][ $subfield_slug ] ) ){
-						$option_keys[] 	= $field_slug ;
-						$option_keys[] 	= $subfield_slug ;												
-						$return_value = $metabox_values[ $field_slug ][ $group_number ][ $subfield_slug ] ;
+				if ( isset( $field_slug ) ){
+					$path_to_option['fields'] 	= $field_slug ;
+					if ( isset( $group_number ) ){
+						$path_to_option[] 	= $group_number ;
+						if ( isset( $subfield_slug ) ){		
+							$path_to_option['subfields'] 	= $subfield_slug ;												
+							if ( isset( $metabox_values[ $field_slug ][ $group_number ][ $subfield_slug ] ) ){
+								$return_value = $metabox_values[ $field_slug ][ $group_number ][ $subfield_slug ] ;
+								return self::convert_dynamic_data( $return_value , $path_to_option ) ;
+							} else {
+								return false;
+							}
+						}
+						if ( isset( $metabox_values[ $field_slug ][ $group_number ] ) ){
+							$return_value = $metabox_values[ $field_slug ][ $group_number ] ;
+							return self::convert_dynamic_data( $return_value , $path_to_option ) ;
+						} else {
+							return false;
+						}							
 					}
-				} else if ( isset( $field_slug ) && isset( $group_number ) ){
-					if ( isset( $metabox_values[ $field_slug ][ $group_number ] ) ){
-						$option_keys[] 	= $field_slug ;
-						$return_value = $metabox_values[ $field_slug ][ $group_number ] ;
-					}				
-				} else if ( $field_slug ){				
 					if ( isset( $metabox_values[ $field_slug ] ) ){
-						$option_keys[] 	= $field_slug ;					
-						$return_value = $metabox_values[ $field_slug ];
+						$return_value = $metabox_values[ $field_slug ] ;
+						return self::convert_dynamic_data( $return_value , $path_to_option ) ;
+					} else {
+						return false;
 					}
-				} else {
-					$return_value = $metabox_values ;
 				}
+				return self::convert_dynamic_data( $metabox_values , $path_to_option ) ;
 			}
-			return self::convert_dynamic_data( $return_value , $option_keys ); 	
+			return false; 	
 		} 
 	}
-	protected static function convert_dynamic_data( $value , $option_keys ){	
-		if ( $value ){
+	protected static function convert_dynamic_data( $value , $path_to_option ){	
+		if ( $value ){		
 			if ( is_string( $value ) ){
-
 				$json_array = json_decode( $value, true ) ;
+				
 				if ( $json_array && is_array( $json_array ) ){
 					$Cloud_metaboxes = self::get_instance() ;	
 					$metaboxes = $Cloud_metaboxes::$metaboxes ;
 					$array_spec = $metaboxes ;				
-					$array_spec = $metaboxes[ array_shift( $option_keys ) ] ;
-					$key_names = array( 'fields', 'subfields' ) ;	
-					foreach( $option_keys as $index => $key ){
-						if ( ! is_numeric( $key ) ){
-							$key_name = array_shift( $key_names ) ;
-							if ( $key_name ){
-								$array_spec = is_array( $array_spec[$key_name] ) && isset( $array_spec[$key_name][$key] ) ? $array_spec[$key_name][$key] : $array_spec ;	
+					$array_spec = $metaboxes[ array_shift( $path_to_option ) ] ; 											
+					$spec_key_names = array( 'fields', 'subfields' ) ;		
+
+					foreach( $path_to_option as $spec_key => $key_name ){
+						if ( ! is_numeric( $spec_key ) ){
+							if ( $spec_key ){
+								$array_spec = is_array( $array_spec[$spec_key] ) && isset( $array_spec[$spec_key][$key_name] ) ? $array_spec[$spec_key][$key_name] : $array_spec ;	
 							} else {
 								$array_spec = is_array( $array_spec ) && isset( $array_spec[$key] ) ? $array_spec[$key] : $array_spec ;													
 							}
-						}
+						} else {
+							if ( ! is_numeric( $key_name ) ){
+								$still_looking = true;
+								while ( $still_looking && sizeof( $spec_key_names ) > 0 ){
+									$spec_key = array_shift( $spec_key_names ) ;
+									if ( isset( $array_spec[$spec_key] ) &&  is_array( $array_spec[$spec_key] ) && isset( $array_spec[$spec_key][$key_name] ) ){
+										$array_spec =  $array_spec[$spec_key][$key_name] ;	
+										$still_looking = false;
+									}						
+								}
+							}
+						}	
 					}
 					
+
 					foreach( $json_array as $field_type => $data ){
 						$value = $field_type ;
 						if ( class_exists( Field_Type::get_class_name( $field_type ) ) ){
@@ -297,7 +314,7 @@ class Cloud_Metaboxes {
 				}
 			} else if ( is_array( $value ) ){
 				foreach ( $value as $index => &$item ){
-					$path_to_item = $option_keys ;
+					$path_to_item = $path_to_option ;
 					$path_to_item[] = $index ;
 					$item = self::convert_dynamic_data( $item , $path_to_item ) ;
 				}
