@@ -96,7 +96,7 @@ class Cloud_Field_post extends Field_Type {
 			$preview_data = $preview_data ? '<div class="inner">'.$preview_data.'</div>' : '' ;
 			$current_data .= '<div class="preview">'.$preview_data.'</div>' ;
 		} else {
-			get_metabox_options( $this->args['top_level'], $this->args['subpage'], $this->args['section'], $this->args['field'] ) ;
+			get_theme_options( $this->args['top_level'], $this->args['subpage'], $this->args['section'], $this->args['field'] ) ;
 		}	
 		return $current_data ;
 	}
