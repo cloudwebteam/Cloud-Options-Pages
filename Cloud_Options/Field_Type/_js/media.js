@@ -13,7 +13,14 @@ jQuery(document).ready(function($){
 		_custom_media = true;
 		wp.media.editor.send.attachment = function(props, attachment){
 			if ( _custom_media ) {
-				var url = attachment.sizes[ props.size ].url ;
+				if ( attachment.type === 'image' ){
+					var url = attachment.sizes[ props.size ].url ;
+					var image_url = url ;
+				} else {
+					var url = attachment.url;
+					var image_url = attachment.icon;
+				}
+
 				var value_to_save = {
 					media : attachment.id
 				} ;	
@@ -29,7 +36,7 @@ jQuery(document).ready(function($){
 		         
 		         preview_image.slideUp('fast', function(){
 		         	$(this).removeClass('hidden'); 
-		         	$(this).attr('src', url ).attr( 'title', attachment.title ); 
+		         	$(this).attr('src', image_url ).attr( 'title', attachment.title ); 
 		         	$(this).slideDown('fast');
 		         }); 
 			} else {

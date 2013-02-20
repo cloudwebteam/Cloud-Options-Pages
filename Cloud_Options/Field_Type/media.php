@@ -89,7 +89,11 @@ class Cloud_Field_media extends Field_Type {
 			case 'url' : 
 				$size = isset( $spec['image_size'] ) ? $spec['image_size'] : 'full' ; 
 				$image_info = wp_get_attachment_image_src( $attachment_id, $size ) ;
-				$value = $image_info[0] ; // returns url
+				if ( $image_info ){
+					$value = $image_info[0] ; // returns url
+				} else {
+					$value = wp_get_attachment_url( $attachment_id );
+				}
 				break; 
 			case 'image' : 
 				$size = isset( $spec['image_size'] ) ? $spec['image_size'] : 'full' ; 
