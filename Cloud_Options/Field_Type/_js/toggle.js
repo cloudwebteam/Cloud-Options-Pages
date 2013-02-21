@@ -40,8 +40,8 @@ jQuery( function($){
 				fields.slideUp('fast'); 
 			}
 		}
-		function toggle_fields( show ){
-			if ( show ){
+		function toggle_fields( ){
+			if ( input.is( ':checked' ) ){
 				show_fields( fields_to_show ) ;
 				hide_fields( fields_to_hide );				
 			} else {
@@ -51,12 +51,8 @@ jQuery( function($){
 		}		
 		
 		input.click( function(){
-		
-			if ( input.is( ':checked' ) ){
-				toggle_fields( true ); 		
-			} else {
-				toggle_fields( false ); 
-			}
+			toggle_fields( ) ;
 		});
+		toggle_fields( );
 	});
 });
