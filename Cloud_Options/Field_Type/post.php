@@ -77,11 +77,13 @@ class Cloud_Field_post extends Field_Type {
 			$post_id = $saved_data['post'] ;
 			$post = get_post( $post_id ) ;
 			$post_title = $post->post_title ;
+			$post_type = '<span class="post-type">'.get_post_type_object( $post->post_type )->labels->singular_name .'</span>';
 		} else {
 			$post_title = 'None selected' ;
+			$post_type =  '<span class="post_type"></span>' ;
 		}
 		$current_data = '<p class="current-data">' ; 
-		$current_data .= '<span class="current">Post: <b class="post-title">'.$post_title.'</b>' ; 
+		$current_data .= '<span class="current">'.$post_type.': <b class="post-title">'.$post_title.'</b>' ; 
 		$current_data .= $this->info['code_link'] ? '<span class="post-property">Retrieves '. $this->property_to_get .'</span>' : '' ;
 		$current_data .= '</span>' ;
 		$current_data .= '<a class="select-post" href="#">Select a post</a>' ;
@@ -94,9 +96,11 @@ class Cloud_Field_post extends Field_Type {
 			
 			$preview_data = get_metabox_options( $_GET['post'], $metabox, $field, $group_number, $subfield );
 			$preview_data = $preview_data ? '<div class="inner">'.$preview_data.'</div>' : '' ;
-			$current_data .= '<div class="preview">'.$preview_data.'</div>' ;
+			if ( $this->args['info']['preview'] ){
+				$current_data .= '<div class="preview">'.$preview_data.'</div>' ;
+			}
 		} else {
-			get_theme_options( $this->args['top_level'], $this->args['subpage'], $this->args['section'], $this->args['field'] ) ;
+			get_metabox_options( $args['top_level'], $args['subpage'], $args['section'], $args['field'] ) ;
 		}	
 		return $current_data ;
 	}

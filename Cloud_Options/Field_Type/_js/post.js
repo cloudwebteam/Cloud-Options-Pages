@@ -15,6 +15,7 @@ jQuery( function($){
 					post_info_target.val( JSON.stringify( value_to_save ) );
 					post_info_target.siblings( '.preview' ).html( '<div class="inner">' + $(this).parents( 'li' ).find( '.to_insert' ).html() + '</div>' ) ;
 					post_info_target.siblings( '.current-data').find( '.post-title' ).text( $(this).find( '.title').text() ) ; 
+					post_info_target.siblings( '.current-data').find( '.post-type' ).text( $(this).find( '.type').text() ) ; 					
 					$.fancybox.close();
 					
 				});
@@ -78,6 +79,7 @@ jQuery( function($){
 	});	
 	
 	$('.field.type-post .select-post').click( function(e){
+		e.preventDefault();
 		post_info_field = $(this).parents('.field' );
 		post_info_target = $(this).parents( '.input').find('.target-field').first().addClass( 'target' ); 
 		post_info_to_get = post_info_target.data('to_get'); 
