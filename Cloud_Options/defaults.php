@@ -178,6 +178,7 @@ $options_defaults = array (
 			'description'	=> null,
 			'size'			=> 55,	
 			'get' 			=> 'ID',
+			'preview'	 	=> true,
 			'width' 		=> 6,	
 			'default' 		=> '',							
 			'editor_list'	=> false,
