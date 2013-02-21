@@ -268,7 +268,25 @@ $options_defaults = array (
 			'clone_controls'=> true, 
 			'sort'			=> true,
 			'_lock'			=> false				
-		),	
+		),
+		'toggle' => array(
+			'title'				=> 'Toggle',
+			'layout'			=> array(array( 'field','label' ), 'description'),
+			'checkbox_value' 	=> 1,
+			'size'				=> null,
+			'width' 			=> 6,
+			'description'		=> null,
+			'show' 				=> false,
+			'hide'				=> false,
+			'editor_list'		=> false,
+			'default' 			=> '',			
+			'subfields'			=> null,
+			'settable_defaults' => false,
+			'code_link' 		=> true, 
+			'clone_controls'	=> true,
+			'sort'				=> true, 
+			'_lock'				=> false			
+		),			
 		'wysiwyg' => array(
 			'title'			=> 'WYSIWYG',
 			'layout'		=> array('label', 'field', 'description'),
