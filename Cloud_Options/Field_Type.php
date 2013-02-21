@@ -300,7 +300,7 @@ class Field_Type {
 
 		$classes = array(); 
 		$classes[] = 'field' ;
-		$classes[] = 'field_slug-' . $this->args['field'] ; 
+		$classes[] = $this->info['is_subfield'] ? 'field_slug-' . $this->args['subfield'] : 'field_slug-' . $this->args['field'] ; 
 		$classes[] = 'cf' ;
 		$classes[] = 'type-'.$this->type ;
 		$classes[] = $this->info['sort'] ? '' : 'no-sort';
