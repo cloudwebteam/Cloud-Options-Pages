@@ -2,7 +2,7 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-class Cloud_Field_textarea extends Field_Type {
+class Cloud_Field_textarea extends Cloud_Field {
 
 	public static function create_field( $args ){
 		$field_type = __CLASS__;

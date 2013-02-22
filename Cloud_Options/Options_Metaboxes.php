@@ -149,7 +149,7 @@ class Cloud_Metaboxes {
 			foreach( self::$metaboxes as $metabox ){
 				if ( isset( $metabox['fields'] ) &&  is_array( $metabox['fields'] ) && sizeof( $metabox['fields'] ) > 0 ){				
 					foreach( $metabox['fields'] as $field ){
-						$field_type = Field_Type::get_class_name( $field['type'] );
+						$field_type = Cloud_Field::get_class_name( $field['type'] );
 						add_action( 'admin_enqueue_scripts', array( $field_type, 'enqueue_field_scripts_and_styles' ) ); 		
 					}
 				}
@@ -304,8 +304,8 @@ class Cloud_Metaboxes {
 
 					foreach( $json_array as $field_type => $data ){
 						$value = $field_type ;
-						if ( class_exists( Field_Type::get_class_name( $field_type ) ) ){
-							$field_class = Field_Type::get_class_name( $field_type ) ;
+						if ( class_exists( Cloud_Field::get_class_name( $field_type ) ) ){
+							$field_class = Cloud_Field::get_class_name( $field_type ) ;
 							$value = $field_class::get_option( $data, $array_spec ) ;
 						} else {
 							echo 'no class by that name' ;

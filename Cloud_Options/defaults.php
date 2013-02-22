@@ -1,7 +1,7 @@
 <?php
 
 // fallback defaults for every possible option should be here. 
-// test comment
+
 global $options_defaults; 
 $options_defaults = array (
 

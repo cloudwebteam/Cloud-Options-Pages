@@ -382,8 +382,8 @@ class Cloud_Options_Pages {
 					
 					foreach( $json_array as $field_type => $data ){
 						$value = $field_type ;
-						if ( class_exists( Field_Type::get_class_name( $field_type ) ) ){
-							$field_class = Field_Type::get_class_name( $field_type ) ;
+						if ( class_exists( Cloud_Field::get_class_name( $field_type ) ) ){
+							$field_class = Cloud_Field::get_class_name( $field_type ) ;
 							$value = $field_class::get_option( $data, $array_spec ) ;
 						} else {
 							echo 'no class by that name' ;

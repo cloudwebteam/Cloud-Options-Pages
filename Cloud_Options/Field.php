@@ -1,5 +1,5 @@
 <?php 
-class Field_Type {
+class Cloud_Field {
 	public static $default_type = 'text' ;
 	public static $default_layout = 'custom' ; 
 	public static $class_prefix = 'Cloud_Field_' ; 
@@ -394,7 +394,7 @@ class Field_Type {
 		<?php
 	}	
 	protected static function register_scripts_and_styles( $class_name, $subfield_types = null ){
-		$field_type = substr( $class_name, strlen(Field_Type::$class_prefix) ); 
+		$field_type = substr( $class_name, strlen(Cloud_Field::$class_prefix) ); 
 		if ( $field_type ){			
 			if ( file_exists( dirname( __FILE__ ).'/'.basename( __FILE__, '.php' ) . '/_js/'.$field_type.'.js' ) ){
 				wp_enqueue_script( $class_name, self::get_folder_url(). '/_js/'.$field_type.'.js', array( 'jquery', 'Options' ), '');
@@ -405,7 +405,7 @@ class Field_Type {
 		}
 		if ( is_array( $subfield_types ) && sizeof( $subfield_types ) > 0 ){
 			foreach ( $subfield_types as $subfield_type ){
-				$subfield_class = Field_Type::get_class_name( $subfield_type ) ; 
+				$subfield_class = Cloud_Field::get_class_name( $subfield_type ) ; 
 				if ( class_exists( $subfield_class ) ){
 					call_user_func( array( $subfield_class, 'enqueue_field_scripts_and_styles' ) ); 		
 				}

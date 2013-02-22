@@ -2,7 +2,7 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-class Cloud_Field_select extends Field_Type {
+class Cloud_Field_select extends Cloud_Field {
 	protected $info ;
 	protected $field ;
 	protected $label ;

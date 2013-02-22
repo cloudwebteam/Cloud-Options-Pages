@@ -2,7 +2,7 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-class Cloud_Field_post extends Field_Type {
+class Cloud_Field_post extends Cloud_Field {
 	public static $wp_link_dialog_id = 'wp_link_popup' ; 
 	
 	protected $accepted_properties = array( 'ID', 'id', 'title', 'post_title', 'content', 'post_content', 'excerpt', 'post_excerpt', 'thumbnail', 'post_thumbnail', 'image', 'url', 'permalink' ); 
@@ -105,7 +105,7 @@ class Cloud_Field_post extends Field_Type {
 		return $current_data ;
 	}
 	public function enqueue_field_scripts_and_styles(){
-		$type = substr( __CLASS__, strlen( Field_Type::$class_prefix ) );
+		$type = substr( __CLASS__, strlen( Cloud_Field::$class_prefix ) );
 		// if they exist, enqueues css and js files with this fields name
 		parent::register_scripts_and_styles( __CLASS__ ); 
 		wp_localize_script( __CLASS__, 'link_popup_id' , self::$wp_link_dialog_id ); 

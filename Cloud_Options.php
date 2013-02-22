@@ -31,7 +31,7 @@ class Cloud_Options  {
 		$this->load_global_styles_and_scripts() ;
 
 		//load all files within specific folders within /Cloud_Options/
-		$this->load_theme_classes('Field_Type');
+		$this->load_theme_classes('Field');
 		$this->load_theme_classes('Layout'); 
 		
 		// get defaults array from defaults.php
@@ -197,10 +197,10 @@ class Cloud_Options  {
 		wp_register_script('Bootstrap',  self::get_folder_url().'/_css/bootstrap/js/bootstrap.min.js'); 
 		wp_register_script('scrollTo', self::get_folder_url().'/__inc/js/jquery.scrollTo-1.4.3.1-min.js'); 
 		wp_register_script('Options', self::get_folder_url().'/_js/Options.js', array( 'thickbox', 'media-upload', 'jquery-ui-core', 'jquery-ui-sortable' ) ); 
-		wp_register_script('Field_Type', self::get_folder_url().'/_js/Field_Type.js' ) ;
+		wp_register_script('Cloud_Field', self::get_folder_url().'/_js/Cloud_Field.js' ) ;
 		wp_enqueue_script('Bootstrap');
 		wp_enqueue_script('scrollTo');
-		wp_enqueue_script('Field_Type');			
+		wp_enqueue_script('Cloud_Field');			
 		wp_enqueue_script('Options');		
 		wp_localize_script('Options', 'wp_vars', array(
 			'ajax_url' 	=> admin_url( 'admin-ajax.php' ),
@@ -268,8 +268,8 @@ class Cloud_Options  {
 				}
 			}
 			// valid type?						
-			if ( !isset( $type ) || !class_exists( Field_Type::get_class_name( $type ) ) ) { 						
-				$type = Field_Type::$default_type ; 
+			if ( !isset( $type ) || !class_exists( Cloud_Field::get_class_name( $type ) ) ) { 						
+				$type = Cloud_Field::$default_type ; 
 			}
 			// set type
 			$_field['type'] = $type ;
@@ -324,8 +324,8 @@ class Cloud_Options  {
 						}
 					}
 					// valid type?						
-					if ( !isset( $subfield_type ) || !class_exists( Field_Type::get_class_name( $subfield_type ) ) ) { 						
-						$subfield_type = Field_Type::$default_type ; 
+					if ( !isset( $subfield_type ) || !class_exists( Cloud_Field::get_class_name( $subfield_type ) ) ) { 						
+						$subfield_type = Cloud_Field::$default_type ; 
 					}
 					
 					// set type
@@ -395,7 +395,7 @@ class Cloud_Options  {
 	public function get_field_layout_function( $info, $page_slug = '', $section_slug = '', $slug = '', $section_layout_function = '' ) {
 		$type 	= $info['type'];
 
-		$field_type = Field_Type::get_class_name( $type );
+		$field_type = Cloud_Field::get_class_name( $type );
 		// strange, I know, but this is necessary to get the scripts added early enough. At this point, we KNOW they want to field. 
 		add_action( 'admin_enqueue_scripts', array( $field_type, 'enqueue_field_scripts_and_styles' ) ); 		
 		return array( $field_type, 'create_field' ) ;

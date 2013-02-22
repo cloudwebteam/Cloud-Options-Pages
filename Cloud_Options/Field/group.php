@@ -2,7 +2,7 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-class Cloud_Field_group extends Field_Type {
+class Cloud_Field_group extends Cloud_Field {
 	protected $info ;
 	protected $fields ;
 	protected $label ;
@@ -75,8 +75,8 @@ class Cloud_Field_group extends Field_Type {
 	
 		foreach ( $this->args['info']['subfields'] as $subfield_id => $subfield ){ 
 			$type 	= isset( $subfield['type'] ) ? $subfield['type'] : 'standard' ;
-			$field_type = class_exists( Field_Type::get_class_name( $type ) ) ? $type : parent::$default_type;
-			$field_type_class_name = Field_Type::get_class_name( $field_type );
+			$field_type = class_exists( Cloud_Field::get_class_name( $type ) ) ? $type : parent::$default_type;
+			$field_type_class_name = Cloud_Field::get_class_name( $field_type );
 			// switch "copy_to_use" availability together
 			$subfield['code_link'] = $this->info['code_link']; 
  

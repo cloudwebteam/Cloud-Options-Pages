@@ -2,7 +2,7 @@
 // Prevent loading this file directly
 defined( 'ABSPATH' ) || exit;
 
-class Cloud_Field_divider extends Field_Type {
+class Cloud_Field_divider extends Cloud_Field {
 	protected $size = 50; 
 
 	public static function create_field( $args ){
