@@ -67,15 +67,22 @@ jQuery( function($){
 		groups = container.find( '.group' );
 		var counter = 0;
 		groups.each( function(){
+			var group = $(this);
 			var inputs = $(this).find('input, textarea').not('[type="button"], .copy'); 
 			//increment the inputs' name attributes so that it is saved as a unique value
 			inputs.each( function(){
 				var prev_name = $(this).attr('name');
 				if ( prev_name !== undefined ){
-					console.log( 'replaced' );
 					$(this).attr('name', prev_name.replace(/\[\d+\]/g, '['+counter+']' ) );
 				}
+				var prev_id = $(this).attr('id');
+				var new_id = prev_id.replace(/-\d+-/g, '-'+counter+'-' ); 
+				$(this).attr('id', new_id  );
+				
+				group.find("label[for='"+prev_id+"']").attr('for', new_id  );
+
 			});
+
 			// change the "code" link
 			if ( $(this).find('input.copy').size() > 0 ){
 				var prev_copy_to_use = $(this).find('input.copy').attr('value') ;

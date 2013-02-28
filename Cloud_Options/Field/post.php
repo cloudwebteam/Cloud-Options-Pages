@@ -80,7 +80,7 @@ class Cloud_Field_post extends Cloud_Field {
 			$post_type = '<span class="post-type">'.get_post_type_object( $post->post_type )->labels->singular_name .'</span>';
 		} else {
 			$post_title = 'None selected' ;
-			$post_type =  '<span class="post_type"></span>' ;
+			$post_type =  '<span class="post_type">Post</span>' ;
 		}
 		$current_data = '<p class="current-data">' ; 
 		$current_data .= '<span class="current">'.$post_type.': <b class="post-title">'.$post_title.'</b>' ; 
