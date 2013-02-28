@@ -1,0 +1,35 @@
+.ui-widget.ui-datepicker {
+	font-size: 1em;
+}
+.ui-timepicker-div dt {
+	float: left; 
+	width: 24.5%;
+	padding-right: 5%;
+	clear: both;
+	height: 2em;
+	text-align: right;
+	text-transform: uppercase;
+	font-size: .875em;
+}
+.ui-timepicker-div dd {
+	width: 70%;
+	float: right;
+	margin: 0;
+	padding-bottom: .5em;	
+}
+.field.type-startend .selector {
+	display: inline-block; 
+}
+.field.type-startend .start-label,
+.field.type-startend .end-label {
+	font-weight: bold; 
+	font-size: .875em;
+	padding-right: 5px; 
+	width: 30px;
+	display: inline-block ;
+	text-align: right; 
+	
+}
+.field.type-startend input {
+	margin-right: 15px; 
+}

@@ -11,7 +11,7 @@ abstract class Cloud_Forms {
 	// the master array with the defaults for form
 	protected $defaults;
 	// the data the user provides
-	protected $passed_in;
+	protected static $passed_in = array() ;
 	// the data after it is merged with defaults;
 	protected $spec;
 	// the list of scripts to enqueue
@@ -25,25 +25,35 @@ abstract class Cloud_Forms {
 		$this->loader = Cloud_Loader::get_instance();		
 				
 		// loads folder with this class's name	
-		$this->load_directories(); 	
+		$this->load_directory();		
+		$this->load_directories( array( 'Layout', 'Layout/Field' ) ); 	
 		// load global scripts and styles	
 		$this->load_global_scripts(); 
 		$this->load_global_styles();
 		
 		// get defaults array from defaults.php
-		$this->set_defaults();		
+		$this->defaults = $this->set_defaults();	
+		
+		$this->spec = $this->merge_with_defaults();
+		
+		$this->init();
 	}
-	protected function init(){}
+	protected function init(){
+		
+	}
 		
 	/***====================================================================================================================================
 			HANDLE AUTO-LOADING OF FILES
 		==================================================================================================================================== ***/
-	protected function load_directory(){
-		$this->loader->load_directory( __CLASS__ );
+	protected function load_directory( $folder = '' ){
+		if ( ! $folder ){
+			$this->loader->load_directory( __CLASS__ );
+		} else {
+			$this->loader->load_directory( $folder );
+		}
 	}
-	protected function load_directories(){
-		$this->load_directory();
-		foreach( $this->directories_to_load as $directory_name ){
+	protected function load_directories( $folders = array() ){
+		foreach( $folders as $directory_name ){
 			$this->loader->load_directory( $directory_name );
 		}
 	}
@@ -104,33 +114,38 @@ abstract class Cloud_Forms {
 		==================================================================================================================================== ***/
 	private function set_defaults(){
 		// declared in defaults.php	
-		global $form_defaults; 
-		$this->defaults = $form_defaults;
+		global $cloud_form_defaults; 
+		return $cloud_form_defaults;
 	}			
-	protected static function merge_with_defaults( $type, $section = array(), $subpage = array(), $top_level_page = array() ){
-		// $type is in case we ever need multiple types of merges. Right now, the only type is section/metabox (smae thing )
+	protected function merge_with_defaults(){
+		// implemented by children ( note, can use 'finish_merge_with_defaults' to finish it out )
+	}
+	protected function finish_merge_with_defaults( $type, $section = array(), $subpage = array(), $top_level_page = array() ){
+		// $type is in case we ever need multiple types of merges. Right now, the only type is section/metabox (same thing )
 		
-		$defaults = self::$defaults; 
+		$defaults = $this->defaults; 
 
-		foreach ( $defaults['sections'] as $key => $default_value ) {
-			if ( isset( $section[$key] ) ){
-				$set_value = $section[$key] ;
+		foreach ( $defaults['sections'] as $section_slug => $default_value ) {
+			if ( isset( $section[$section_slug] ) ){
+				$set_value = $section[$section_slug] ;
 			} else {
-				if ( isset ( $subpage['defaults']['sections'][$key] ) ) {
-					$set_value = $subpage['defaults']['sections'][$key];
-				} else if ( isset ( $top_level_page['defaults']['sections'][$key] ) ) {
-					$set_value = $top_level_page['defaults']['sections'][$key];
+				if ( isset ( $subpage['defaults']['sections'][$section_slug] ) ) {
+					$set_value = $subpage['defaults']['sections'][$section_slug];
+				} else if ( isset ( $top_level_page['defaults']['sections'][$section_slug] ) ) {
+					$set_value = $top_level_page['defaults']['sections'][$section_slug];
 				} else {
 					$set_value = $default_value;
 				}
 			}
-			$_section[$key]	= $set_value;
+			$_section[$section_slug]	= $set_value;
 		}				
 	
 		foreach ( $section['fields'] as $field_slug => $field ){
-
 			$_section['fields'][$field_slug] = array();  
 			$_field =& $_section['fields'][$field_slug]; 
+			$_field['section_slug'] = $section_slug ; 
+			$_field['subpage_slug'] = $section[ 'subpage_slug' ];
+			$_field['field_slug'] = $field_slug; 
 			$type = '';
 			// establish type ( if it is specificied by user anywhere and is a valid type , else default )						
 			if ( isset( $field['type'] ) ){
@@ -157,16 +172,16 @@ abstract class Cloud_Forms {
 			} else {
 				$field_defaults = $defaults['fields']['general'] ;
 			}
-			foreach ( $field_defaults as $key => $default_value ) { 
-				if ( isset( $field[$key] ) ){
-					$set_value = $field[$key];  
+			foreach ( $field_defaults as $field_slug => $default_value ) { 
+				if ( isset( $field[$field_slug] ) ){
+					$set_value = $field[$field_slug];  
 				} else {
-					if ( isset ( $section['defaults']['fields'][$key] ) ) {
-						$set_value = $section['defaults']['fields'][$key];
-					} else if ( isset ( $subpage['defaults']['fields'][$key] ) ) {
-						$set_value = $subpage['defaults']['fields'][$key];
-					} else if ( isset ( $top_level_page['defaults']['fields'][$key] ) ) {
-						$set_value = $top_level_page['defaults']['fields'][$key];
+					if ( isset ( $section['defaults']['fields'][$field_slug] ) ) {
+						$set_value = $section['defaults']['fields'][$field_slug];
+					} else if ( isset ( $subpage['defaults']['fields'][$field_slug] ) ) {
+						$set_value = $subpage['defaults']['fields'][$field_slug];
+					} else if ( isset ( $top_level_page['defaults']['fields'][$field_slug] ) ) {
+						$set_value = $top_level_page['defaults']['fields'][$field_slug];
 					} else {
 						$set_value = $default_value; 
 					}
@@ -174,8 +189,8 @@ abstract class Cloud_Forms {
 				}
 
 				// if something has already set the master value (like for the default (below!) )
-				if ( !isset( $_field[$key] ) ){							
-					$_field[$key] = $set_value ;
+				if ( !isset( $_field[$field_slug] ) ){							
+					$_field[$field_slug] = $set_value ;
 				}
 
 
@@ -185,8 +200,10 @@ abstract class Cloud_Forms {
 				foreach ( $field['subfields'] as $subfield_slug => $subfield ){
 					$_field['subfields'][$subfield_slug]= array();  
 					$_subfield =& $_field['subfields'][$subfield_slug]; 
-					
-					
+					$_subfield['subpage_slug'] = $section[ 'subpage_slug' ];					
+					$_subfield['section_slug'] = $section_slug ; 
+					$_subfield['field_slug'] = $field_slug ;		
+					$_subfield['subfield_slug'] = $subfield_slug ;
 					// establish type ( if it is specificied by user anywhere and is a valid type , else default )						
 					$subfield_type = '' ;
 					if ( isset( $subfield['type'] ) ){
@@ -243,6 +260,10 @@ abstract class Cloud_Forms {
 		return $_section ;
 
 	}
+	
+	/***====================================================================================================================================
+			
+		==================================================================================================================================== ***/
 	
 
 }
