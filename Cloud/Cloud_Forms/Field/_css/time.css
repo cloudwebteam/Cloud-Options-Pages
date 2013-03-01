@@ -1,0 +1,23 @@
+.field.type-time .input {
+	width: 110px;
+	position: relative;
+}
+
+.cloud .timepicker + .add-on {
+	padding: 0; 
+	border-radius: 3px;
+	top: -1px;
+	position: relative; 
+}
+.cloud .dropdown-menu table {
+	table-layout: auto;
+}
+.cloud .dropdown-menu table td {
+	width: auto;
+}
+.cloud .dropdown-menu table td input {
+	box-sizing: content-box;
+}
+.cloud .dropdown-menu.open {
+	display: block;
+}

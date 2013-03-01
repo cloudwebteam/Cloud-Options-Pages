@@ -4,20 +4,20 @@ ini_set('display_errors',1);
 error_reporting(E_ALL);
 error_reporting(-1);
 	
-define( 'Cloud_dir', 'localhost/cloud/wp-content/themes/Cloud_Boilerplate' ); 
-define( 'Cloud_ABS', dirname( __FILE__ ) ); 
+define( 'Cloud_dir', 'http://localhost/cloud/wp-content/themes/Cloud_Boilerplate/Cloud' ); 
+define( 'Cloud_ABS', dirname( __FILE__ ) . '/Cloud' ); 
 define( 'Cloud_prefix' , 'Cloud_' );
 class Cloud_Loader {
 	protected static $instance; 
-	protected static $ABS ;
-	protected static $main_folder = 'Cloud';
+	protected static $ABS = Cloud_ABS ;
+	protected static $dir = Cloud_dir ;
 	// what directories, in addition to the one with this class name, would you like to load?
-	protected $directories_to_load = array('Field');	
+	protected $directories_to_load = array('Cloud_Forms');	
 
 	private function __construct(){
-		self::$ABS = Cloud_ABS .'/'.self::$main_folder; 
 		// loads folder with this class's name	
 		$this->load_directory(); 	
+		$this->load_directories();
  	}
 	public static function init(){
 		return self::get_instance();
