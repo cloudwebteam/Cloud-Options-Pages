@@ -36,7 +36,7 @@ abstract class Cloud_Forms {
 		$this->spec = $this->merge_with_defaults();
 		
 		$this->init();
-		
+
 	}
 	public static function get_instance(){
 		if ( ! self::$instance ){
@@ -107,19 +107,23 @@ abstract class Cloud_Forms {
 		self::register_script( 'jquery-ui-timepicker-addon', self::get_folder_url() . '/__inc/jquery-ui-timepicker-addon/jquery-ui-timepicker-addon.js', array( 'jquery', 'bootstrap') );
 		self::register_script( 'bootstrap-timepicker', self::get_folder_url() . '/__inc/bootstrap_timepicker/bootstrap-timepicker.min.js', array( 'jquery') ); 
 		
+		self::enqueue_script( 'jquery' ); 
+		self::enqueue_script( 'bootstrap' );
 		self::enqueue_script( __CLASS__, self::get_folder_url() .'/_js/Cloud_Forms.js', array( 'jquery', 'bootstrap' ) ); 
 		self::enqueue_script( 'Cloud_Field', self::get_folder_url() .'/_js/Cloud_Field.js', array( 'jquery' ) ); 		
 	}
 	protected function load_global_styles(){	
+		self::register_style( 'reset' , self::get_folder_url() .'/_css/reset.css' );
 		self::register_style( 'bootstrap', self::get_folder_url() .'/__inc/bootstrap/css/bootstrap.min.css' ); 
 		self::register_style( 'bootstrap-responsive', self::get_folder_url() .'/__inc/bootstrap/css/bootstrap-responsive.min.css', array( 'bootstrap' ) ); 
 		
 		self::register_style( 'bootstrap-timepicker', self::get_folder_url(). '/__inc/bootstrap_timepicker/bootstrap-timepicker.min.css', array( 'bootstrap') );
 
+		self::enqueue_style( 'reset' ); 		
 		self::enqueue_style( __CLASS__ .'-global', self::get_folder_url() .'/_css/Cloud_Forms_Global.css' ); 		
 		self::enqueue_style( __CLASS__, self::get_folder_url() .'/_css/Cloud_Forms.css' ); 
 	}
-	public static function enqueue_script( $handle, $path, $dependencies = false ){
+	public static function enqueue_script( $handle, $path = false , $dependencies = false ){
 		if ( $path ){
 			$item_to_enqueue = array(
 				'handle' => $handle, 
@@ -168,13 +172,27 @@ abstract class Cloud_Forms {
 		);	
 		self::$registered_styles[ $handle ] = $item_to_enqueue ;
 	}
-	protected function sort_array_by_dependencies( $a, $b ){
-		if ( is_array( $a['dependencies'] ) ){
-			if ( in_array($b['handle'], $a['dependencies']) ){
-				return true;
+	protected function sort_array_by_dependencies( $array_to_sort ){
+		$sorted_array = array();
+		while ( sizeof( $array_to_sort ) > 0 ){ 
+			foreach( $array_to_sort as $handle => $item ){
+				$all_dependencies_present = true; 
+		
+				if ( is_array( $item['dependencies'] ) && sizeof( $item['dependencies'] ) > 0 ){
+					foreach( $item['dependencies'] as $dependency_handle ){
+						if ( ! isset( $sorted_array[$dependency_handle] ) ){
+							$all_dependencies_present = false ;
+							break;
+						}
+					}
+				}
+				if ( $all_dependencies_present ){
+					$sorted_array[ $handle ] = $item ;
+					unset( $array_to_sort[ $handle ] );					
+				}
 			}
 		}
-		return 0;
+		return $sorted_array ;
 	}
 	protected function filter_out_styles_without_needed_dependencies( &$item, $key, &$array ){
 		if ( is_array( $item['dependencies'] ) ){
@@ -243,6 +261,7 @@ abstract class Cloud_Forms {
 			$_field['section_slug'] = $section_slug ; 
 			$_field['subpage_slug'] = $section[ 'subpage_slug' ];
 			$_field['field_slug'] = $field_slug; 
+
 			$type = '';
 			// establish type ( if it is specificied by user anywhere and is a valid type , else default )						
 			if ( isset( $field['type'] ) ){
@@ -269,9 +288,9 @@ abstract class Cloud_Forms {
 			} else {
 				$field_defaults = $defaults['fields']['general'] ;
 			}
-			foreach ( $field_defaults as $field_slug => $default_value ) { 
-				if ( isset( $field[$field_slug] ) ){
-					$set_value = $field[$field_slug];  
+			foreach ( $field_defaults as $att_slug => $default_value ) {
+ 				if ( isset( $field[$att_slug] ) ){
+					$set_value = $field[$att_slug];  
 				} else {
 					if ( isset ( $section['defaults']['fields'][$field_slug] ) ) {
 						$set_value = $section['defaults']['fields'][$field_slug];
@@ -286,8 +305,8 @@ abstract class Cloud_Forms {
 				}
 
 				// if something has already set the master value (like for the default (below!) )
-				if ( !isset( $_field[$field_slug] ) ){							
-					$_field[$field_slug] = $set_value ;
+				if ( !isset( $_field[$att_slug] ) ){							
+					$_field[$att_slug] = $set_value ;
 				}
 
 
@@ -301,6 +320,7 @@ abstract class Cloud_Forms {
 					$_subfield['section_slug'] = $section_slug ; 
 					$_subfield['field_slug'] = $field_slug ;		
 					$_subfield['subfield_slug'] = $subfield_slug ;
+
 					// establish type ( if it is specificied by user anywhere and is a valid type , else default )						
 					$subfield_type = '' ;
 					if ( isset( $subfield['type'] ) ){

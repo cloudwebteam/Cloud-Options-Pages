@@ -3,13 +3,6 @@
 defined( 'ABSPATH' ) || exit;
 
 class Cloud_Field_select extends Cloud_Field {
-	protected $info ;
-	protected $field ;
-	protected $label ;
-	protected $options = 'post' ; 
-	protected $attributes = '' ;
-	protected $multiple ; 
-
 	public static function create_field( $args ){
 		$field = new self( $args ); 
 	}
@@ -24,7 +17,7 @@ class Cloud_Field_select extends Cloud_Field {
 			$multiple = '';
 		}
 		if ( $this->options_list ){
-			$field = '<select id="'.$this->info['prefix'] . $this->info['id'] . '" name="'.$this->info['name'] . '" '.$multiple.' value="' . $this->info['value'] . '">'. $this->options_list.'</select>';
+			$field = '<select id="'. $this->info['id'] . '" name="'.$this->info['name'] . '" '.$multiple.' value="' . $this->info['value'] . '">'. $this->options_list.'</select>';
 		} else {
 			$field = 'No options available.';
 		}

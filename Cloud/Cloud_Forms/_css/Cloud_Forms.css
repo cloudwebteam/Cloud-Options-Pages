@@ -1,57 +1,57 @@
 /***====================================================================================================================================
 		TYPOGRAPHY
 	==================================================================================================================================== ***/
-.cloud-options.wrap h1 {
+.cloud-form h1 {
 	font-size: 2em;
 }
-.cloud-options.wrap h2 {
+.cloud-form h2 {
 	font-size: 1.5em;
 }
-.cloud-options.wrap h3 {
+.cloud-form h3 {
 	font-size: 1.125em;
 }
-.cloud-options.wrap h4 {
+.cloud-form h4 {
 	font-size: 1em;
 }
-.cloud-options.wrap h5 {
+.cloud-form h5 {
 	font-size: .875em;
 }
-.cloud-options.wrap h6 {
+.cloud-form h6 {
 	font-size: .75em;
 }
 /***====================================================================================================================================
 		GENERAL PAGE 
 	==================================================================================================================================== ***/
-.cloud-options {
+.cloud-form {
 	max-width: 1170px;
 	font-family: sans-serif ;
 }
-.cloud-options .tabbable {
+.cloud-form .tabbable {
 	padding-top: 2em;
 }
-.cloud-options .tab-content {
+.cloud-form .tab-content {
 	overflow: visible;
 }
-.cloud-options #scroll-nav {
+.cloud-form #scroll-nav {
 	top: 90px;
 }
-.cloud-options #scroll-content {
+.cloud-form #scroll-content {
 	margin-left: 135px;
 	padding: 0 15px;
 }
-.cloud-options #scroll-content .section {
+.cloud-form #scroll-content .section {
 	margin-bottom: 1em;
 	padding: 2em 30px;
 	background: #fafafa;
 	border: 1px solid #ccc;
 }
-.cloud-options .wrap.scroll .submit {
+.cloud-form .wrap.scroll .submit {
 	margin-left: 150px;
 }
 /***====================================================================================================================================
 		GENERAL SECTION 
 	==================================================================================================================================== ***/
-.cloud-options .section > .header {
+.cloud-form .section > .header {
 	padding: 0 0 1em 15px ;
 	border-bottom: 1px dashed #efefef;
 	margin-bottom: 2em ;
@@ -60,22 +60,22 @@
 /***====================================================================================================================================
 		GENERAL INPUT STYLES
 	==================================================================================================================================== ***/
-.cloud-options input,
-.cloud-options textarea, 
-.cloud-options select {
+.cloud-form input,
+.cloud-form textarea, 
+.cloud-form select {
 	max-width: 98%; 
 	padding: 0 5px; 
 	width: auto; 
 }
-.cloud-options .input ul {
+.cloud-form .input ul {
 	margin: 0;
 }
-.cloud-options .input input,
-.cloud-options textarea, 
-.cloud-options select {
+.cloud-form .input input,
+.cloud-form textarea, 
+.cloud-form select {
 	margin-bottom: 0; 
 }
-.cloud-options select {
+.cloud-form select {
 	height: 1.5em; 
 	line-height: 1.5em;
 	margin: .25em 0;
@@ -83,34 +83,34 @@
 /***====================================================================================================================================
 		GENERAL FIELD STYLES
 	==================================================================================================================================== ***/
-.cloud-options .field {
+.cloud-form .field {
 	position: relative;
 	padding: 0 0 2em; 	
 }
-.cloud-options .field-row {
+.cloud-form .field-row {
 	padding: .375em 0 0;
 	width: 100%;
 	position: relative; 
 }
-.cloud-options .field-row:first-child {
+.cloud-form .field-row:first-child {
 	padding: 0;
 }
 /* clearfix */
-.cloud-options .field-row:before,
-.cloud-options .field-row:after {
+.cloud-form .field-row:before,
+.cloud-form .field-row:after {
     content: " "; /* 1 */
     display: table; /* 2 */
 }
-.cloud-options .field-row:after {
+.cloud-form .field-row:after {
     clear: both;
 }
 
-.cloud-options .field-row .label,
-.cloud-options .field-row .input,
-.cloud-options .field-row .description {
+.cloud-form .field-row .label,
+.cloud-form .field-row .input,
+.cloud-form .field-row .description {
 	display: inline-block; 
 }
-.cloud-options .label { 
+.cloud-form .label { 
 	/* reset...collides with a bootstrap class */
 	width: auto; 
 	height: auto; 
@@ -130,20 +130,20 @@
 	white-space: normal ;
 }	
 
-.cloud-options .label label {
+.cloud-form .label label {
 	margin-bottom: 0;
 	line-height: 1em;
 }
-.cloud-options .field-row > * {
+.cloud-form .field-row > * {
 
 	margin-right: 15px;
 	max-width: 100%;
 }
-.cloud-options .input + .description {
+.cloud-form .input + .description {
 	padding: 2px 0 0;
 }
 
-.cloud-options .label + .description {
+.cloud-form .label + .description {
 	padding-top: 3px; 
 }
 /***====================================================================================================================================
@@ -182,7 +182,7 @@
 .field .clone .copy_to_use a {
 	float: left;
 }
-.cloud-options .copy_to_use .copy-container {
+.cloud-form .copy_to_use .copy-container {
 	display: none;
 	position: absolute; 
 	top: 0%;
@@ -190,7 +190,7 @@
 	z-index: 100;
 	width: 300px;
 }
-.cloud-options .copy_to_use .copy {
+.cloud-form .copy_to_use .copy {
 	font-size: 1em;
 	padding: 0 5px;
 	border: 1px solid #08C;
@@ -290,32 +290,32 @@
 /***====================================================================================================================================
 		OPTIONS PAGE - SPECIFIC
 	==================================================================================================================================== ***/
-.cloud-options.options-page .field .title {
+.cloud-form.options-page .field .title {
 	margin-right: 70px;
 	white-space: nowrap;
 	float: none;
 	clear: none;
 }
-.cloud-options.options-page .section.standard th > .label {
+.cloud-form.options-page .section.standard th > .label {
 	float: left; 
 	width: 70%; 
 }
 /***====================================================================================================================================
 		METABOX - SPECIFIC
 	==================================================================================================================================== ***/
-.cloud-options.metabox {
+.cloud-form.metabox {
 	padding: .5em 0 0 0 ; 
 }
-.cloud-options.metabox > .header {
+.cloud-form.metabox > .header {
 	border-bottom: 1px solid #ccc; 
 	padding: 0 0 .5em 0;
 	margin-bottom: 1em; 
 }
-.cloud-options.metabox .field {
+.cloud-form.metabox .field {
 	padding-bottom: .5em ;
 }
-.cloud-options.metabox label,
-.cloud-options.metabox .label {
+.cloud-form.metabox label,
+.cloud-form.metabox .label {
 	position: relative; 
 	font-weight: bold; 
 	font-size: 1em;

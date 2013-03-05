@@ -25,14 +25,22 @@ jQuery( function($){
 	}
 	var setup_reordering = function( multiple ){
 		if ( multiple.parents('.no-sort').size() == 0 ){	
-			multiple.sortable({
-				update: function(){
-					reset_value_keys( multiple );
-				    jQuery(this).height(jQuery(this).height());
-				},
-				start: function(){
-				    jQuery(this).height(jQuery(this).height());				
-				}				
+			multiple.each( function(){
+				var group_container = $(this);
+				var container_height = group_container.height();
+				group_container.sortable({
+					update: function(){
+						reset_value_keys( multiple );
+						//group_container.height( 'auto' );
+						//container_height = group_container.height() ;
+					},
+					stop : function(){
+						//group_container.height('auto');
+					},
+					start: function(){					
+						//group_container.height( container_height ) ;	
+					}				
+				});
 			});
 		}
 	};

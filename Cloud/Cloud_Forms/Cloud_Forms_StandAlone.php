@@ -56,10 +56,11 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 
 	protected function order_styles_and_scripts(){
 		array_walk( self::$styles, array( $this, 'filter_out_styles_without_needed_dependencies'), &self::$styles );
-		usort( self::$styles, array( $this, 'sort_array_by_dependencies') );	
+		self::$styles = $this->sort_array_by_dependencies( self::$styles );	
 		
 		array_walk( self::$scripts, array( $this, 'filter_out_scripts_without_needed_dependencies'), &self::$scripts );
-		usort( self::$scripts, array( $this, 'sort_array_by_dependencies') );		
+		self::$scripts = $this->sort_array_by_dependencies( self::$scripts );	
+			
 	} 
 	protected function print_styles(){
 		foreach( self::$styles as $style ){ ?>

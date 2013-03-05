@@ -21,7 +21,7 @@ class Cloud_Field_date extends Cloud_Field {
 		return $utc_field.$field;
 	}
 	
-	public function enqueue_scripts_and_styles(){
+	public function enqueue_scripts_and_styles( ){
 
 		$this->enqueue_script( 'jquery-ui-datepicker' );
 

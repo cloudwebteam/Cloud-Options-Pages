@@ -72,7 +72,7 @@ class Cloud_Field_startend extends Cloud_Field {
         $field .= '</div>' ;	
         return $field ;
     }		
-	public function enqueue_scripts_and_styles(){
+	public function enqueue_scripts_and_styles( ){
 
 		$this->enqueue_script( 'bootstrap-timepicker' );
 		$this->enqueue_style( 'bootstrap-timepicker' );

@@ -34,11 +34,13 @@ class Cloud_Field {
 		$value = $this->get_value( $field_slug, $section_slug );
 
 		$cloneable =  isset( $this->spec['cloneable'] ) ? $this->spec['cloneable'] : false;
-		$subfield_slug = isset( $this->spec['subfield'] ) ? $this->spec['subfield'] : '' ; 
 		$default_value =  isset( $this->spec['default'] ) ? $this->spec['default'] : ''; 
 			
 		// part of a group?
-		if ( $subfield_slug ){
+		$is_subfield = isset( $this->spec['subfield_slug'] ) ;
+		
+		if ( $is_subfield ){
+			$subfield_slug = isset( $this->spec['subfield_slug'] ) ? $this->spec['subfield_slug'] : '' ; 
 			$group_number = isset( $this->spec['group_number'] ) ? $this->spec['group_number'] : 0 ;		
 			$value = $value && isset( $value[$group_number][$subfield_slug] ) ? $value[$group_number][$subfield_slug] : ''; 
 			$name = $name . '['.$group_number.']['.$subfield_slug.']'; 	
@@ -61,8 +63,7 @@ class Cloud_Field {
 		
 		$info['layout'] = isset ($this->spec['layout'] ) ? $this->spec['layout'] : 'default';
 		$info['width'] = isset( $this->spec['width'] ) ? $this->spec['width'] : 6; 
-		$info['is_subfield'] = $subfield_slug !== '' ? true : false;
-
+		$info['is_subfield'] = $is_subfield ;
 		return $info;
 	}
 	protected function get_value( $field_slug, $section_slug = '' , $form_slug = '' ){
@@ -80,7 +81,7 @@ class Cloud_Field {
 		if ( $this->info['cloneable'] ){
 			$components['field'] = $this->make_cloneable( );
 		} else {
-			$components['field'] = '<div class="input">'.$this->get_field_html( ) .'</div>'; 		
+			$components['field'] = '<div class="input cf">'.$this->get_field_html( ) .'</div>'; 		
 		}				
 		$extra_components = $this->make_extra_components( );		
 		if ( is_array($extra_components) && sizeof( $extra_components ) > 0 ){
@@ -234,7 +235,7 @@ class Cloud_Field {
 
 		$classes = array(); 
 		$classes[] = 'field' ;
-		$classes[] = $this->info['is_subfield'] ? 'field_slug-' . $this->spec['subfield_slug'] : 'field_slug-' . $this->spec['field_slug'] ; 
+		$classes[] = $this->info['is_subfield'] ? 'field_slug-' . $this->spec['subfield_slug'] : 'subfield_slug-' . $this->spec['field_slug'] ; 
 		$classes[] = 'cf' ;
 		$classes[] = 'type-'.$this->spec['type'] ;
  
@@ -291,7 +292,7 @@ class Cloud_Field {
 			$layout = self::$default_layout; 
 		}
 
-		if ( isset( $this->info['parent_layout'] ) && $this->info['parent_layout'] === 'standard' ) {
+		if ( isset( $this->spec['parent_layout'] ) && $this->spec['parent_layout'] === 'standard' ) {
 			$layout = 'standard'; 
 		}
 		
@@ -303,7 +304,7 @@ class Cloud_Field {
 	
 	public function standard ( ){ ?>
 		<tr valign="top" <?php echo $this->attributes; ?>>
-			<th scope="row"><?php echo $this->label; ?></th>
+			<th scope="row"><?php echo $this->components['label'];  ?></th>
 			<td>	
 				<?php echo $this->arranged_components ; ?>
 			</td>
@@ -324,8 +325,9 @@ class Cloud_Field {
 	protected function enqueue_style( $handle, $path = '', $dependencies = '' ){
 		Cloud_Forms_StandAlone::enqueue_style( $handle, $path, $dependencies ); 
 	}	
-	protected function enqueue_scripts_and_styles(){
-		$class_name = get_class( $this );
+	public function enqueue_scripts_and_styles( ){
+	
+		$class_name = get_class( $this ) ;
 		$field_type = $this->spec['type']; 
 		if ( $field_type ){		
 		
@@ -340,16 +342,7 @@ class Cloud_Field {
 				$this->enqueue_style( $class_name, $css_path, array( 'Cloud_Forms' ));
 			}
 		}
-		if ( isset( $this->spec['subfields'] ) && is_array( $this->spec['subfields'] ) ){
-			$subfields = $this->spec['subfields'] ;
-			foreach ( $subfields as $subfield ){
-				$subfield_type = $subfield['type'] ; 
-				$subfield_class = Cloud_Field::get_class_name( $subfield_type ) ; 
-				if ( class_exists( $subfield_class ) ){
-					call_user_func( array( $subfield_class, 'enqueue_field_scripts_and_styles' ) ); 		
-				}
-			}			
-		}
+
 	}
 	public static function get_folder_url(){
 		return Cloud_Forms::get_folder_url() . '/'. basename( __FILE__, '.php') ;
