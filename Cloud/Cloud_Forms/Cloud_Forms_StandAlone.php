@@ -2,7 +2,8 @@
 class Cloud_Forms_StandAlone extends Cloud_Forms {
 	protected $forms = array(); 
 	protected $directories_to_load = array('Field');	
-
+	protected $validation_enabled = true; 
+	protected $has_validation_errors = false;
 	// singleton get method
 	public static function get_instance(){
 		if ( !self::$instance ){
@@ -12,6 +13,7 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 		return self::$instance; 
 	}
 	protected function init(){
+		$this->validate_forms() ;
 		$this->load_directories( array( 'Layout', 'Field') );
 		$this->forms = $this->construct_forms(); 
 		$this->order_styles_and_scripts(); 		
@@ -27,7 +29,7 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 		$_master = array();
 		foreach ( $passed_in as $form_slug => $form ){	
 			$_form =& $_master[$form_slug];
-			
+
 			foreach ( $defaults['subpages'] as $subpage_slug => $default_value ) {
 				if ( isset( $form[$subpage_slug] ) ){
 					$set_value = $form[$subpage_slug];
@@ -43,12 +45,24 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 			foreach ( $form['sections'] as $section_slug => $section){
 				$_form['sections'][$section_slug] = array();  
 				$_section =& $_form['sections'][$section_slug];	
-				$section['subpage_slug'] = $subpage_slug;
+				$section['form_slug'] = $form_slug;
 				$section['section_slug'] = $section_slug;
 				$_section = $this->finish_merge_with_defaults( 'sections', $section, $form ); 
 			}
 		}
 		return $_master;	
+	}
+	// all this does is add a 'validation_error' item to the field specs of those fields that failed to validate, and return a general success or failure message	
+	protected function validate_forms(){
+		foreach( $this->spec as $form_slug => $form_array ){
+				
+			if ( $this->validation_enabled && isset( $_POST['form_id'] ) && $_POST['form_id'] == $form_slug ){
+				$validation_results = Validator::validate( $_POST, $form_array )  ;				
+				$this->has_validation_errors = $validation_results['success'] ? false : true ;
+				$this->spec[ $form_slug ][ 'sections' ] = $validation_results['updated_form_spec']; 
+			}		
+		}
+	
 	}
 	/***====================================================================================================================================
 			LOAD SCRIPTS AND STYLES

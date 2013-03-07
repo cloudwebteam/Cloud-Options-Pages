@@ -22,7 +22,10 @@
 			$classes[] = $spec['layout'] ; 
 				
 			$layout_vars['classes'] = implode ( ' ', $classes ); 		
-						
+			
+			// set up a hidden input that identifies the form in the $_POST request
+			$layout_vars[ 'form_id_field' ] = '<input type="hidden" name="form_id" value="' . $form_slug . '" />' ;
+		
 			// set up submit button html 
 			$layout_vars['submit_button' ] = '<p class="submit"><input type="submit" class="button-primary" value="Save Changes" /></p>';
 			
@@ -44,6 +47,7 @@
 				    <?php foreach ( $sections as $section ) { ?>
 				    	<?php echo $section; ?>
 				    <?php } ?>		    
+					<?php echo $form_id_field; ?>				    
 				    <?php echo $submit_button; ?>
 			    </form>
 			</div>
@@ -64,6 +68,7 @@
 					   <?php echo $section['html']; ?>
 				    <?php } ?>
 				    </div>
+					<?php echo $form_id_field; ?>				    				    
 				    <?php echo $submit_button; ?>
 				    <?php echo $set_defaults; ?>				    
 			    </form>
@@ -96,6 +101,7 @@
 						</div>
 						<?php } ?>
 					</div>
+					<?php echo $form_id_field; ?>				    					
 				    <?php echo $submit_button; ?>
 				    <?php echo $set_defaults; ?>				    
 			    </form>
@@ -128,6 +134,7 @@
 						</div>
 						<?php } ?>
 					</div>
+					<?php echo $form_id_field; ?>				    					
 				    <?php echo $submit_button; ?>
 				    <?php echo $set_defaults; ?>				    
 			    </form>
@@ -160,6 +167,7 @@
 						</div>
 						<?php } ?>
 					</div>
+					<?php echo $form_id_field; ?>				    					
 				    <?php echo $submit_button; ?>
 				    <?php echo $set_defaults; ?>				    
 			    </form>
@@ -193,6 +201,7 @@
 					    	</div>
 					    <?php } ?>
 					</div>
+					<?php echo $form_id_field; ?>				    					
 				    <?php echo $submit_button; ?>
 				    <?php echo $set_defaults; ?>				    
 			   </form>

@@ -14,7 +14,7 @@ class Cloud_Field_time extends Cloud_Field {
 		$time_format = isset( $this->spec['time_format'] ) ?  $this->spec['time_format'] : 'hh:mm tt' ; 
 
         $field = '<div class="input-append bootstrap-timepicker">' ; 
-        $field .= '<input id="'. $this->info['id'].'" type="text" class="timepicker input-small">' ;
+        $field .= '<input id="'. $this->info['id'].'" name="'.$this->info['name'].'" type="text" class="timepicker input-small">' ;
         $field .= '<span class="add-on"><i class="icon-time"></i></span>' ;
         $field .= '</div>' ;
 		return $field;

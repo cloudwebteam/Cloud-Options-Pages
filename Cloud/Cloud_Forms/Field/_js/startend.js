@@ -110,7 +110,9 @@ jQuery( function($){
 					convert_to_saved_value( input, false ) ;
 				} ;
 			}
-			$(this).timepicker().on( 'changeTime.timepicker' , onChange ) ; 
+			$(this).timepicker({
+				showInputs : false			
+			}).on( 'changeTime.timepicker' , onChange ) ; 
 		}); 	
 
 				

@@ -26,11 +26,14 @@ class Cloud_Field {
 		$this->{ $this->layout }(); 
 	}
 	protected function setup_information(){
-		$form_slug = $this->spec['subpage_slug'];
+		$form_slug = $this->spec['form_slug'];
 		$section_slug = $this->spec['section_slug'];
 		$field_slug = $this->spec['field_slug']; 
-		$input_id = $form_slug . '_' . $section_slug . '_' . $field_slug ;				
+
+		$input_id = $form_slug . '_' . $section_slug . '_' . $field_slug ;	
+					
 		$name =  $section_slug.'['.$field_slug.']';
+ 
 		$value = $this->get_value( $field_slug, $section_slug );
 
 		$cloneable =  isset( $this->spec['cloneable'] ) ? $this->spec['cloneable'] : false;
@@ -78,6 +81,7 @@ class Cloud_Field {
 	protected function construct_field(){
 		$components['label'] = '<div class="label">' .$this->get_label() .'</div>' ; 
 		$components['description'] = $this->get_description( );
+		$components['error'] = $this->get_error();
 		if ( $this->info['cloneable'] ){
 			$components['field'] = $this->make_cloneable( );
 		} else {
@@ -101,7 +105,9 @@ class Cloud_Field {
 	}
 	// each field needs to know how to create itself. This is where they do it. 
 	protected function get_field_html(){ echo 'this field needs to implement get_field_html()'; }
-	
+	protected function get_error(){
+		return isset( $this->spec['validation_error'] ) ? '<span class="error">'.$this->spec['validation_error'] .'</spec>' : '' ;
+	}
 	// optional, allows each field to create its own necessary components, returns array of components. 
 	protected function make_extra_components( ){
 		return array();

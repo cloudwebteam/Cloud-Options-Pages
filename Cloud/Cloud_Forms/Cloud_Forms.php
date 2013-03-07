@@ -19,6 +19,8 @@ abstract class Cloud_Forms {
 	protected static $registered_styles ;
 	protected static $styles; 
 	
+	protected $validation_enabled = false ;
+	
 	protected function __construct(){
 		self::$dir = Cloud_dir . '/' . __CLASS__ ;
 		self::$ABS = Cloud_ABS . '/' . __CLASS__ ;
@@ -254,12 +256,12 @@ abstract class Cloud_Forms {
 			}
 			$_section[$section_slug]	= $set_value;
 		}				
-	
+
 		foreach ( $section['fields'] as $field_slug => $field ){
 			$_section['fields'][$field_slug] = array();  
 			$_field =& $_section['fields'][$field_slug]; 
-			$_field['section_slug'] = $section_slug ; 
-			$_field['subpage_slug'] = $section[ 'subpage_slug' ];
+			$_field['section_slug'] = $section['section_slug'] ; 
+			$_field['form_slug'] = $section[ 'form_slug' ];
 			$_field['field_slug'] = $field_slug; 
 
 			$type = '';
@@ -316,8 +318,8 @@ abstract class Cloud_Forms {
 				foreach ( $field['subfields'] as $subfield_slug => $subfield ){
 					$_field['subfields'][$subfield_slug]= array();  
 					$_subfield =& $_field['subfields'][$subfield_slug]; 
-					$_subfield['subpage_slug'] = $section[ 'subpage_slug' ];					
-					$_subfield['section_slug'] = $section_slug ; 
+					$_subfield['form_slug'] = $section[ 'form_slug' ];					
+					$_subfield['section_slug'] = $section[ 'section_slug' ] ; 
 					$_subfield['field_slug'] = $field_slug ;		
 					$_subfield['subfield_slug'] = $subfield_slug ;
 
@@ -373,7 +375,7 @@ abstract class Cloud_Forms {
 			}
 
 					
-		}	
+		}		
 		return $_section ;
 
 	}
