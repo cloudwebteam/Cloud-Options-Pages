@@ -14,9 +14,8 @@ class Cloud_Field_date extends Cloud_Field {
 		$date_format = isset( $this->spec['date_format'] ) ?  $this->spec['date_format'] : 'mm/dd/yy' ; 
 		
 		$utc_field = '<input class="timestamp" type="hidden" name="'.$this->info['name'] . '" value=\'' . $this->info['value'] . '\' />';		
-		$value_array = json_decode($this->info['value'], true) ;
+		$value_array = json_decode( stripslashes( $this->info['value'] ), true) ;
 		$value = isset( $value_array['datetime'] ) ? $value_array['datetime'] : false ;
-		
 		$field = '<input data-dateformat="'.$date_format.'" type="text" id="'.$this->info['id'] . '" class="datepicker"  size="'.$this->size.'" value="' . $value . '" />';	
 		return $utc_field.$field;
 	}
