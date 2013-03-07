@@ -40,13 +40,15 @@
 		return $form_data; 
 	}
 	protected function add_errors_to_form_spec(){
-		$errors = array();
-		foreach( $this->form_data as $slug => $post_data ){			
+
+		$starting_array_level = array_shift( $this->array_hierarchy ) ;
+		while( ! isset( $this->form_spec[ $starting_array_level ] ) && sizeof( $this->array_hierarchy ) > 0 ){
 			$starting_array_level = array_shift( $this->array_hierarchy ) ;
-			while( ! isset( $this->form_spec[ $starting_array_level ] ) && sizeof( $this->array_hierarchy ) > 0 ){
-				$starting_array_level = array_shift( $this->array_hierarchy ) ;
-			}
-			$spec = $this->form_spec[ $starting_array_level ][ $slug ] ;
+		}		
+		$validation_spec = $this->form_spec[ $starting_array_level ] ;
+		foreach( $validation_spec as $slug => $spec ){			
+
+			$post_data = isset( $_POST[ $slug ] ) ? $_POST[ $slug ] : array() ;
 			$validation_spec[ $slug ] = $this->get_field_validation_spec( $post_data , &$spec, $this->array_hierarchy  ); 			
 		}
 		return $validation_spec ; 		
