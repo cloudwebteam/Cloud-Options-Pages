@@ -3,9 +3,10 @@ jQuery( function($){
 		var dateFormat = $(this).data('dateformat'); 	
 		
 		var input = $(this) ;
-		if ( input.val() ){
-			console.log( input.val() );
+		if ( input.hasClass( 'saves-json') && input.val() ){
 			var startingValue = new Date( input.val()*1000 ) ;
+		} else if( input.val() ){
+			var startingValue = input.val() ;
 		} else {
 			var startingValue = '' ;
 		}
