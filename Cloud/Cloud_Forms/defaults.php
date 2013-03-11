@@ -109,18 +109,10 @@ $cloud_form_defaults = array (
 		),
 		'divider' => array(
 			'title'				=> 'Divider',
-			'layout'			=> array('label', 'field' , 'error', 'description'),
-			'cloneable'			=> false,
+			'layout'			=> array('label', 'field', 'description'),
 			'size'				=> null,
 			'width' 			=> 6,
 			'description'		=> null,
-			'default' 			=> '',			
-			'subfields'			=> null,
-			'clone_controls'	=> true,
-			'sort'				=> true, 
-			'required' 			=> false,
-			'validate' 			=> false,
-			'error'				=> false			
 		),		
 		'group'		=> array(
 			'title'			=> 'Group',		
@@ -139,16 +131,9 @@ $cloud_form_defaults = array (
 		),
 		'info'		=> array(
 			'title'			=> 'Info',
-			'layout'		=> array('label', 'field' , 'error', 'description'),
-			'cloneable'		=> false,
+			'layout'		=> array('label', 'field' , 'description'),
 			'description'	=> null,
 			'width' 		=> 6,	
-			'default' 		=> '',								
-			'clone_controls'=> true, 
-			'sort'			=> true, 
-			'required' 		=> false,
-			'validate' 		=> false,
-			'error'			=> false			
 		),
 		'select'	=> array(
 			'title'			=> 'Select Menu',				
