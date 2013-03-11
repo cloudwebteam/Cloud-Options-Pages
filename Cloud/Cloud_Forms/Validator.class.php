@@ -72,7 +72,7 @@
 							$field_spec = $spec[ $array_level ][ $subfield_slug ] ;
 							unset( $fields_to_check[ $subfield_slug ] );
 							if ( $field_error = $this->validate_field( $field_spec, $subfield_value ) ){
-								$spec[ $array_level ][ $subfield_slug ]['validation_error'] = $field_error ;
+								$spec[ $array_level ][ $subfield_slug ][$slug]['validation_error'] = $field_error ;
 								$this->success = false ;
 							}
 						} 

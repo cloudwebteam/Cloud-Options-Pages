@@ -13,6 +13,7 @@ class Cloud_Field {
 	
 	protected function __construct( $spec ){
 		$this->spec = $spec ;
+		$this->is_subfield = isset( $this->spec['subfield_slug'] ) ;
 		$this->enqueue_scripts_and_styles(); 
 		$this->info = $this->setup_information(); 
 		$this->attributes = $this->get_attributes() ;
@@ -40,9 +41,8 @@ class Cloud_Field {
 		$default_value =  isset( $this->spec['default'] ) ? $this->spec['default'] : ''; 
 			
 		// part of a group?
-		$is_subfield = isset( $this->spec['subfield_slug'] ) ;
 		
-		if ( $is_subfield ){
+		if ( $this->is_subfield ){
 			$subfield_slug = isset( $this->spec['subfield_slug'] ) ? $this->spec['subfield_slug'] : '' ; 
 			$group_number = isset( $this->spec['group_number'] ) ? $this->spec['group_number'] : 0 ;		
 			$value = $value && isset( $value[$group_number][$subfield_slug] ) ? $value[$group_number][$subfield_slug] : ''; 
@@ -66,7 +66,9 @@ class Cloud_Field {
 		
 		$info['layout'] = isset ($this->spec['layout'] ) ? $this->spec['layout'] : 'default';
 		$info['width'] = isset( $this->spec['width'] ) ? $this->spec['width'] : 6; 
-		$info['is_subfield'] = $is_subfield ;
+		$info['save_json'] = false ;
+		$info['is_subfield'] = $this->is_subfield ;
+		
 		return $info;
 	}
 	protected function get_value( $field_slug, $section_slug = '' , $form_slug = '' ){
@@ -106,7 +108,12 @@ class Cloud_Field {
 	// each field needs to know how to create itself. This is where they do it. 
 	protected function get_field_html(){ echo 'this field needs to implement get_field_html()'; }
 	protected function get_error(){
-		return isset( $this->spec['validation_error'] ) ? '<span class="error">'.$this->spec['validation_error'] .'</spec>' : '' ;
+		if ( $this->is_subfield ){
+			$group_number = isset( $this->spec['group_number'] ) ? $this->spec['group_number'] : 0 ;
+			return isset( $this->spec[ $group_number ]['validation_error'] ) ? '<span class="error">'.$this->spec[ $group_number ]['validation_error'] .'</spec>' : '' ;					
+		} else {
+			return isset( $this->spec['validation_error'] ) ? '<span class="error">'.$this->spec['validation_error'] .'</spec>' : '' ;
+		}
 	}
 	// optional, allows each field to create its own necessary components, returns array of components. 
 	protected function make_extra_components( ){
