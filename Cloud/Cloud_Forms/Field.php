@@ -248,7 +248,7 @@ class Cloud_Field {
 
 		$classes = array(); 
 		$classes[] = 'field' ;
-		$classes[] = $this->info['is_subfield'] ? 'field_slug-' . $this->spec['subfield_slug'] : 'subfield_slug-' . $this->spec['field_slug'] ; 
+		$classes[] = $this->info['is_subfield'] ? 'subfield_slug-' . $this->spec['subfield_slug'] : 'field_slug-' . $this->spec['field_slug'] ; 
 		$classes[] = 'cf' ;
 		$classes[] = 'type-'.$this->spec['type'] ;
  

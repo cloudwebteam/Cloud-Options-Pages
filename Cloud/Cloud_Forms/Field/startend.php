@@ -19,16 +19,16 @@ class Cloud_Field_startend extends Cloud_Field {
 		$this->end_value = isset( $this->info['value']['end'] ) ? $this->info['value']['end'] : '' ;	
 		$this->end_utc = $this->parse_dynamic_value( $this->end_value ) ;	
 		
-		$this->start_utc_field = '<input class="timestamp" type="hidden" name="'.$this->info['name'] . '[start]" value=\'' . $this->start_value . '\' />';
-		$this->end_utc_field = '<input class="timestamp" type="hidden" name="'.$this->info['name'] . '[end]" value=\'' . $this->end_value . '\' />';
-		
+		$this->start_utc_field = $this->info['save_json'] ? '<input class="timestamp" type="hidden" name="'.$this->info['name'] . '[start]" value=\'' . $this->start_value . '\' />' : '' ;
+		$this->end_utc_field = $this->info['save_json'] ? '<input class="timestamp" type="hidden" name="'.$this->info['name'] . '[end]" value=\'' . $this->end_value . '\' />' : '' ;	
 
 		$field = $this->make_start_or_end_field( 'start' ); 
 		$field .= $this->make_start_or_end_field( 'end' ); 	
 		
 		return $field ;
 	}	
-
+	protected function get_dynamic_field(){
+	}
 	protected function parse_dynamic_value( $value ){
 		$json_array = json_decode( $value , true) ; 
 		return isset( $json_array['datetime'] ) ? $json_array['datetime'] : false ;	
@@ -62,12 +62,16 @@ class Cloud_Field_startend extends Cloud_Field {
 		return $label;
 	}
 	protected function get_date_field( $start_or_end ){
-		$field = '<input data-dateformat="'.$this->date_format.'" type="text" id="' . $this->info['id'] . '-'.$start_or_end . '" class="datepicker '.$start_or_end.'" size="'.$this->size.'" value="' .  $this->start_utc. '" />' ;
+		$name = $this->info['save_json'] ? '' : 'name="'.$this->info['name'].'['.$start_or_end.']"' ;
+	
+		$field = '<input data-dateformat="'.$this->date_format.'" '.$name.' type="text" id="' . $this->info['id'] . '-'.$start_or_end . '" class="datepicker '.$start_or_end.'" size="'.$this->size.'" value="' .  $this->start_utc. '" />' ;
 		return $field ;
 	}
 	protected function get_time_field( $start_or_end ){
+		$name = $this->info['save_json'] ? '' : 'name="'.$this->info['name'].'['.$start_or_end.']"' ;
+		
 		$field = '<div class="input input-append bootstrap-timepicker">' ; 
-        $field .= '<input name="'.$this->info['name'] . '['.$start_or_end.']" type="text" value="'.$this->start_value.'" class="timepicker '.$start_or_end.' input-small">' ;
+        $field .= '<input name="'.$this->info['name'] . '['.$start_or_end.']" type="text" '.$name.' value="'.$this->start_value.'" class="timepicker '.$start_or_end.' input-small">' ;
         $field .= '<span class="add-on"><i class="icon-time"></i></span>' ;
         $field .= '</div>' ;	
         return $field ;

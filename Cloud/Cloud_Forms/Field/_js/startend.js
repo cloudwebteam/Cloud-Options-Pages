@@ -41,7 +41,6 @@ jQuery( function($){
 				}			
 				timestamp_input.val( input.val() );
 			}
-	console.log( timestamp_input.val() );			
 		}
 		datepickers.each( function(){
 			var input = $(this) ;
@@ -51,7 +50,7 @@ jQuery( function($){
 			if( input.val() ){
 				var startingValue = new Date( input.val()*1000 ) ;
 			} else {
-				var startingValue = new Date() ;
+				var startingValue = false ;
 			}
 			var end = field.find( 'input.datepicker.end' ); 
 			var timestamp_input = input.siblings( '.timestamp' );		
@@ -69,9 +68,10 @@ jQuery( function($){
 					
 					timestamp_input.val( JSON.stringify( value_to_save ) ) ;			
 					if ( is_start ){
-						if ( end.val() ){
-							end.datepicker('option', 'minDate', input.datepicker( 'getDate' ) );
-						} else {
+						console.log( input.datepicker( 'getDate' ) );
+						end.datepicker('option', 'minDate', input.datepicker( 'getDate' ) );
+					
+						if ( end.val() == '' ){
 							end.datepicker('setDate', input.datepicker( 'getDate' ) );
 						}
 					}

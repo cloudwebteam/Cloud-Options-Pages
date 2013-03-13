@@ -1,13 +1,19 @@
 .field.type-time .input {
-	width: 110px;
+	width: 80px;
 	position: relative;
 }
-
+.field.type-time .bootstrap-timepicker {
+	max-width: 100%;
+}
 .cloud .timepicker + .add-on {
 	padding: 0; 
 	border-radius: 3px;
 	top: -1px;
 	position: relative; 
+}
+.field.type-time .add-on i {
+	margin-top: 3px;
+	margin-left: 2px; 
 }
 .cloud .dropdown-menu table {
 	table-layout: auto;

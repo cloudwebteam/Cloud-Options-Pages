@@ -45,14 +45,20 @@ class Cloud_Field_select extends Cloud_Field {
 				} else {
 					$html .= $this->multiple ? '' : '<option value="">Please select one...</option>'; 
 					$is_associative_array = $this->is_assoc( $options ) ;
+					$selected_found = false;					
+					$selected = '';
 					foreach( $options as $value => $option ){ 
 						if ( ! $is_associative_array ){
 							$value = $option;
 						}
-						if ( $this->info['value'] == $value ){
-							$selected = 'selected';
-						} else if (  $this->info['default'] == $value ){			
-							$selected = 'selected';
+						if ( ! $selected_found ){
+							if ( $this->info['value'] == $value ){
+								$selected_found = true ;
+								$selected = 'selected';
+							} else if ( $this->info['default'] == $value ){			
+								$selected = 'selected';
+								$selected_found = true ;								
+							}
 						} else {
 							$selected = '';
 						}

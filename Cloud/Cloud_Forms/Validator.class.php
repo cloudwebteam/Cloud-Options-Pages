@@ -56,8 +56,7 @@
 	protected function get_field_validation_spec( $post_data, &$spec, $array_hierarchy, $errors = array() ){
 		$array_level = array_shift( $array_hierarchy );	
 		if ( is_array( $post_data ) ){
-
-			$fields_to_check = $spec[ $array_level ] ;
+			$fields_to_check = isset( $spec[ $array_level ] ) ? $spec[ $array_level ] : array() ;
 			foreach( $post_data as $slug => $slug_post_data ){
 
 				if ( ! is_numeric( $slug ) ){
@@ -121,8 +120,8 @@
 		}
 	}
 	//checks both arrays and strings
-	protected function value_has_been_input( $field_value ){
-		if ( $field_value ){
+	protected function value_has_been_input( $field_value = null ){
+		if ( $field_value !== null && $field_value !== '' ){
 			if ( is_array( $field_value ) && sizeof( $field_value ) > 0 ){
 				foreach( $field_value as $key => $value){
 				    if( ! empty($value) ){
