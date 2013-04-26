@@ -190,6 +190,7 @@ $options_defaults = array (
 		'select'	=> array(
 			'title'			=> 'Select Menu',				
 			'multiple'		=> false,
+			'use_query' 	=> false, 
 			'options'		=> 'page',
 			'layout'		=> array('label', 'field', 'description'),
 			'cloneable'		=> false,

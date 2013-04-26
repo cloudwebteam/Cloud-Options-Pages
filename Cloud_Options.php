@@ -197,7 +197,7 @@ class Cloud_Options  {
 		wp_register_script('Bootstrap',  self::get_folder_url().'/_css/bootstrap/js/bootstrap.min.js'); 
 		wp_register_script('scrollTo', self::get_folder_url().'/__inc/js/jquery.scrollTo-1.4.3.1-min.js'); 
 		wp_register_script('Options', self::get_folder_url().'/_js/Options.js', array( 'thickbox', 'media-upload', 'jquery-ui-core', 'jquery-ui-sortable' ) ); 
-		wp_register_script('Cloud_Field', self::get_folder_url().'/_js/Cloud_Field.js' ) ;
+		wp_register_script('Cloud_Field', self::get_folder_url().'/_js/Field.js' ) ;
 		wp_enqueue_script('Bootstrap');
 		wp_enqueue_script('scrollTo');
 		wp_enqueue_script('Cloud_Field');			
