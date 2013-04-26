@@ -37,10 +37,48 @@ class Cloud_Field_select extends Cloud_Field {
 	}
 	private function get_options_list( $args ){
 		$html = '';
+		if ( $args['info']['use_query'] == true ){
+			$query_args = wp_parse_args( array( 
+				'numberposts' => -1
+			), $args['info']['options'] ); 
+			$posts = get_posts( $query_args );
+			if ( sizeof( $posts ) > 0 ){
+				if ( $this->multiple ){
+					foreach( $posts as $post ){ 
+						if ( is_array( $this->info['value'] ) && in_array( $post->ID, $this->info['value'] )){
+							$selected = 'selected';								
+						} else if ( is_array( $this->info['default'] ) && in_array( $post->ID, $this->info['default'] ) ) {
+							$selected = 'selected';			
+						} else if ( $this->info['default'] == $post->ID ){			
+							$selected = 'selected';										
+						} else {
+							$selected = '';
+						}					
+						$html .= '<option '.$selected .' value="'.$post->ID.'">'.$post->post_title.'</option>' ; 
+					}
+				} else {
+					$html .= $this->multiple ? '' : '<option value="">Please select one...</option>'; 
+					foreach( $posts as $post ){ 
+						if ( $this->info['value'] == $post->ID ){
+							$selected = 'selected';
+						} else if (  $this->info['default'] == $post->ID ){			
+							$selected = 'selected';									
+						} else {
+							$selected = '';
+						}					
+						$html .= '<option '.$selected .' value="'.$post->ID.'">'.$post->post_title.'</option>' ; 
+					}						
+				}
+			}
+			return $html; 
+		}
 		if ( isset( $args['info'][ 'options' ] ) ){
 			$options = $args['info'][ 'options' ] ; 
 
-			if ( is_array( $options ) && sizeof( $options ) > 0 ){
+			if ( is_array( $options ) ){
+				if ( sizeof( $options ) == 0 ){
+					return false ;
+				}
 				if ( $this->multiple ){
 					foreach( $options as $value => $option ){ 
 						if ( is_array( $this->info['value'] ) && in_array( $value, $this->info['value'] )){

@@ -48,7 +48,7 @@ jQuery( function($){
 			// copy an existing group 
 			var new_input = group.clone(true).hide();
 			//get rid of the values
-			new_input.find('input').not('[type="button"], .copy').val('');
+			new_input.find('input, textarea').not('[type="button"], .copy, [type="checkbox"], [type="radio"]').val('');
 			// specific changes for specific fields
 			new_input.find('.media-url img').addClass('hidden');
 			group.after( new_input );
@@ -68,7 +68,7 @@ jQuery( function($){
 		var counter = 0;
 		groups.each( function(){
 			var group = $(this);
-			var inputs = $(this).find('input, textarea').not('[type="button"], .copy'); 
+			var inputs = $(this).find('input, textarea, select').not('[type="button"], .copy'); 
 			//increment the inputs' name attributes so that it is saved as a unique value
 			inputs.each( function(){
 				var prev_name = $(this).attr('name');
