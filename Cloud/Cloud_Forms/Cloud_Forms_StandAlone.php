@@ -13,29 +13,24 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 		return self::$instance; 
 	}
 	protected function init(){
-		$this->validate_forms() ;
-		$this->load_directories( array( 'Layout', 'Field') );
-		$this->forms = $this->construct_forms(); 
-		$this->order_styles_and_scripts(); 		
-		$this->print_styles() ;
-		$this->print_scripts() ;
+
+		$this->load_directories( array( 'Layout', 'Field') ); 		
+
 	}
 	/***====================================================================================================================================
 			CREATING SPEC
 		==================================================================================================================================== ***/
-	protected function merge_with_defaults(){
+	protected function merge_with_defaults( $form_slug, $form ){
 		$defaults = $this->defaults; 
-		$passed_in = self::$passed_in;  
-		$_master = array();
-		foreach ( $passed_in as $form_slug => $form ){	
-			$_form =& $_master[$form_slug];
-
-			foreach ( $defaults['subpages'] as $subpage_slug => $default_value ) {
+		$_form = array() ;
+		// if it has sub-sections, deal with it as a complex form
+		if ( isset( $form['sections'] ) ){
+			foreach ( $defaults['forms'] as $subpage_slug => $default_value ) {
 				if ( isset( $form[$subpage_slug] ) ){
 					$set_value = $form[$subpage_slug];
 				} else {
-					if ( isset ( $top_level_page['defaults']['subpages'][$subpage_slug] ) ) {
-						$set_value = $top_level_page['defaults']['subpages'][$subpage_slug];
+					if ( isset ( $top_level_page['defaults']['forms'][$subpage_slug] ) ) {
+						$set_value = $top_level_page['defaults']['forms'][$subpage_slug];
 					} else {
 						$set_value = $default_value;
 					}					
@@ -47,19 +42,37 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 				$_section =& $_form['sections'][$section_slug];	
 				$section['form_slug'] = $form_slug;
 				$section['section_slug'] = $section_slug;
-				$_section = $this->finish_merge_with_defaults( 'sections', $section, $form ); 
+				$_section = $this->finish_merge_with_defaults( $section, $form ); 
 			}
+		// if it doesn't, just proceed with a simple form. 
+		} else {		
+			$form['form_slug'] = $form_slug ; 
+			// merge in the defaults' 'forms' array, and unset the sections (since obviously this form has no sections)
+			foreach ( $defaults['forms'] as $option_key => $default_value ) {
+				if ( isset( $form[$option_key] ) ){
+					$set_value = $form[$option_key] ;
+				} else {
+					$set_value = $default_value;
+				}
+				$_form[$option_key] = $set_value;
+			}			
+			$_form = array_merge( $_form, $this->finish_merge_with_defaults( $form ) ); 
+			unset( $_form['sections'] ); 
 		}
-		return $_master;	
+		return $_form;	
 	}
 	// all this does is add a 'validation_error' item to the field specs of those fields that failed to validate, and return a general success or failure message	
 	protected function validate_forms(){
 		foreach( $this->spec as $form_slug => $form_array ){
-				
 			if ( $this->validation_enabled && isset( $_POST['form_id'] ) && $_POST['form_id'] == $form_slug ){
-				$validation_results = Validator::validate( $_POST, $form_array )  ;				
+				$validation_results = Validator::validate( $_POST, $form_array )  ;			
 				$this->has_validation_errors = $validation_results['success'] ? false : true ;
-				$this->spec[ $form_slug ][ 'sections' ] = $validation_results['updated_form_spec']; 
+
+				if ( isset( $this->spec[ $form_slug][ 'sections' ] ) ){
+					$this->spec[ $form_slug ][ 'sections' ] = $validation_results['updated_form_spec']; 
+				} else {
+					$this->spec[ $form_slug ][ 'fields' ]  = $validation_results['updated_form_spec']; 				
+				}
 			}		
 		}
 	
@@ -76,12 +89,12 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 		self::$scripts = $this->sort_array_by_dependencies( self::$scripts );	
 			
 	} 
-	protected function print_styles(){
+	public function print_styles(){
 		foreach( self::$styles as $style ){ ?>
 		<link rel="stylesheet" href="<?php echo $style['path']; ?>" />
 		<?php }
 	}
-	protected function print_scripts(){
+	public function print_scripts(){
 		foreach( self::$scripts as $script ){ ?>
 		<script src="<?php echo $script['path']; ?>" ></script>
 		<?php }
@@ -89,20 +102,43 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 	/***====================================================================================================================================
 			HANDLE ADDING FORMS
 		==================================================================================================================================== ***/
-	public static function add_form( $array ){
-		foreach( $array as $key => $array){
-			self::$passed_in[ $key ] = $array;
-		}
-	}
+
 	protected function construct_forms(){
 		$forms = array();
 		foreach( $this->spec as $form_slug => $form_spec ){
-			$layout = Layout_Form::get_layout_function( $form_spec['layout'] );
-			ob_start();
-				Layout_Form::$layout( $form_slug, $form_spec );
-			$forms[ $form_slug ] = ob_get_clean();
+			
+			if ( isset( $form_spec['sections'] ) ){
+
+				$layout = Layout_Form::get_layout_function( $form_spec['layout'] );
+				Layout_Form::$layout( $form_slug, $form_spec ); 
+			} else {
+				$forms[ $form_slug ] = Layout_Section::standAlone( $form_slug, $form_spec ); 
+			}
+			
 		}
 		return $forms; 
+	}
+	public function register( $arg1, $arg2 = false ){
+		if ( is_array( $arg1 ) ){
+			foreach( $arg1 as $form_slug => $form ){
+				$this->passed_in[ $form_slug ] = $form;
+				$this->spec[ $form_slug ] = $this->merge_with_defaults( $form_slug, $form );
+			}
+		} else {
+			$form_slug = $arg1; 
+			$form = $arg2; 
+			$this->passed_in[ $form_slug ] = $arg2;
+			$this->spec[ $form_slug ] = $this->merge_with_defaults( $form_slug, $form );
+		}
+	}	
+	public function head(){
+		if ( $this->spec ){
+			$this->validate_forms() ;	
+			$this->forms = $this->construct_forms(); 
+			$this->order_styles_and_scripts();
+			$this->print_styles();
+			$this->print_scripts(); 
+		}
 	}
 	public function display( $form_slug ){
 		echo $this->forms[ $form_slug ] ;
@@ -113,6 +149,23 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 	}	
 	public static function get_include_path(){
 		return self::$ABS .'/'. basename( __FILE__, '.php' ) ; 	
-	}	
+	}
+	public function ajax_validate_form(){
+		$form_slug = $_POST['ajax_form_id']; 
+		$submission_data = $_POST['ajax_form_data'] ;
+		parse_str( $submission_data, $submission_data ) ;
+
+		$Forms = Cloud_Forms_StandAlone::get_instance(); 
+		if ( isset( $Forms->spec[ $form_slug ] ) ){
+			$validation_results = Validator::validate( $submission_data, $Forms->spec[ $form_slug ] );  
+			$response = $validation_results ; 
+		} else {
+			$response = array( 
+				'error' => 'Not a valid form name' 
+			); 
+		}
+		echo json_encode( $response );
+		die; 
+	}
 }
 

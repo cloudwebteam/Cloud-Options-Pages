@@ -1,5 +1,5 @@
 <?php 
-	class Layout_Form extends Layout {
+	class Layout_Form extends Layout1 {
 		private static function get_layout_info( $form_slug, $spec ){
 			$layout_vars = array(); 
 			$layout_vars['form_slug'] = $form_slug;
@@ -19,7 +19,10 @@
 			$classes = array(); 
 			$classes[] = 'cloud'; //necessary to keep Bootstrap from interfering
 			$classes[] = 'cloud-form';
-			$classes[] = $spec['layout'] ; 
+			$classes[] = $spec['layout'] ;
+			if ( $spec['ajax'] ){
+				$classes[] = 'ajax' ;
+			}
 				
 			$layout_vars['classes'] = implode ( ' ', $classes ); 		
 			
@@ -39,11 +42,12 @@
 		public static function standard( $form_slug = '' , $spec = '' ){
 			// make variables available and easy to use by extracting them
 			extract( self::get_layout_info( $form_slug, $spec ), EXTR_OVERWRITE );
+			ob_start(); 
 			?>
-			<div id="page-<?php echo $form_slug; ?>" class="<?php echo $classes; ?>">
+			<div id="form-<?php echo $form_slug; ?>" class="<?php echo $classes; ?>">
 				<?php echo $title; ?>
 				<?php echo $description; ?>
-				<form action="" method="post">
+				<form data-id="<?php echo $form_slug; ?>" action="" method="post">
 				    <?php foreach ( $sections as $section ) { ?>
 				    	<?php echo $section; ?>
 				    <?php } ?>		    
@@ -52,12 +56,13 @@
 			    </form>
 			</div>
 			<?php
-		}
+			return ob_get_clean();
+		}	
 		public static function grid(){
 			// make variables available and easy to use by extracting them
 			extract( self::get_layout_info( ) );
 			?>
-			<div id="page-<?php echo $subpage_slug; ?>" class="<?php echo $classes; ?>"> 
+			<div id="form-<?php echo $subpage_slug; ?>" class="<?php echo $classes; ?>"> 
 				<?php echo $icon; ?> 
 				<?php echo $title; ?>
 				<?php echo $description; ?>			    

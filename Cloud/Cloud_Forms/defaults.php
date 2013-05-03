@@ -4,11 +4,12 @@
 
 global $cloud_form_defaults; 
 $cloud_form_defaults = array (
-	'subpages'	=> array (
+	'forms'	=> array (
 		'title'			=> 'Default Page Title',
 		'layout'		=> 'standard',
 		'style'			=> 'standard',
 		'description' 	=> null,
+		'ajax' 			=> false,
 		'sections'		=> array (
 		)	
 	), 

@@ -9,7 +9,7 @@ abstract class Cloud_Forms {
 	// the master array with the defaults for form
 	protected $defaults;
 	// the data the user provides
-	protected static $passed_in = array() ;
+	protected $passed_in = array() ;
 	// the data after it is merged with defaults;
 	protected $spec;
 	// the list of scripts to enqueue
@@ -34,9 +34,7 @@ abstract class Cloud_Forms {
 
 		// get defaults array from defaults.php
 		$this->defaults = $this->set_defaults();	
-		
-		$this->spec = $this->merge_with_defaults();
-		
+				
 		$this->init();
 
 	}
@@ -110,7 +108,6 @@ abstract class Cloud_Forms {
 		self::register_script( 'bootstrap-timepicker', self::get_folder_url() . '/__inc/bootstrap_timepicker/bootstrap-timepicker.min.js', array( 'jquery') ); 
 		
 		self::enqueue_script( 'jquery' ); 
-		self::enqueue_script( 'bootstrap' );
 		self::enqueue_script( __CLASS__, self::get_folder_url() .'/_js/Cloud_Forms.js', array( 'jquery', 'bootstrap' ) ); 
 		self::enqueue_script( 'Cloud_Field', self::get_folder_url() .'/_js/Cloud_Field.js', array( 'jquery' ) ); 		
 	}
@@ -237,8 +234,7 @@ abstract class Cloud_Forms {
 	protected function merge_with_defaults(){
 		// implemented by children ( note, can use 'finish_merge_with_defaults' to finish it out )
 	}
-	protected function finish_merge_with_defaults( $type, $section = array(), $subpage = array(), $top_level_page = array() ){
-		// $type is in case we ever need multiple types of merges. Right now, the only type is section/metabox (same thing )
+	protected function finish_merge_with_defaults( $section = array(), $subpage = array(), $top_level_page = array() ){
 		
 		$defaults = $this->defaults; 
 
@@ -260,7 +256,7 @@ abstract class Cloud_Forms {
 		foreach ( $section['fields'] as $field_slug => $field ){
 			$_section['fields'][$field_slug] = array();  
 			$_field =& $_section['fields'][$field_slug]; 
-			$_field['section_slug'] = $section['section_slug'] ; 
+			$_field['section_slug'] = !empty( $section['section_slug'] ) ? $section['section_slug'] : false ; 
 			$_field['form_slug'] = $section[ 'form_slug' ];
 			$_field['field_slug'] = $field_slug; 
 

@@ -15,7 +15,6 @@
 		'wtf'		=> 'Not registered in class, how here?'
 	); 
 	public static function validate( $form_submission_data = '' , $form_fields = '' ){
-		
 		$validation = new self( $form_submission_data, $form_fields ); 
 		return array( 
 			'success' => $validation->success,
@@ -48,7 +47,7 @@
 		$validation_spec = $this->form_spec[ $starting_array_level ] ;
 		foreach( $validation_spec as $slug => $spec ){			
 
-			$post_data = isset( $_POST[ $slug ] ) ? $_POST[ $slug ] : array() ;
+			$post_data = isset( $this->form_data[ $slug ] ) ? $this->form_data[ $slug ] : array() ;
 			$validation_spec[ $slug ] = $this->get_field_validation_spec( $post_data , &$spec, $this->array_hierarchy  ); 			
 		}
 		return $validation_spec ; 		
@@ -97,7 +96,6 @@
 		return $spec; 
 	}
 	protected function validate_field( $field_spec , $field_value = '' ){
-
 		if ( isset( $field_spec['required'] ) && $field_spec['required'] && ! $this->value_has_been_input( $field_value ) ){
 			return is_string( $field_spec['required'] ) ? $field_spec['required'] : self::$messages['required'] ; 
 		} else if ( $this->value_has_been_input( $field_value ) ){
@@ -105,8 +103,8 @@
 				// returns the validator-generated error, if there is an error
 				$validator_error = $this->{ $field_spec['validate'] }( $field_value ); 
 				if ( $validator_error ){
-					// if there is a custom error message specified, use that, otherwise the normal validator one.
-					return isset( $field_spec['error'] ) ? $field_spec['error'] : self::get_error_message( $field_spec['validate'] ) ; 
+					// if there is a custom error message specified, use that, otherwise the normal validator one.					
+					return !empty( $field_spec['error'] ) ? $field_spec['error'] : self::get_error_message( $field_spec['validate'] ) ; 
 				}
 			}		
 		}
@@ -128,7 +126,7 @@
 					    return true; 
 				    }
 				}
-			} else if ( is_array( $field_value ) ){
+			} else if ( !$field_value ){
 				return false; 
 			} else {
 				return true; 
@@ -174,13 +172,18 @@
 		}
 	}	
 	protected function phone( $field_value = '' ){
-	
-		if ( preg_match( '/\d{3}/', $field_value[0] ) && preg_match( '/\d{3}/', $field_value[1] ) &&  preg_match( '/\d{4}/', $field_value[2] ) ){
-			return false; 
+		if ( is_array( $field_value ) ){
+			if ( preg_match( '/\d{3}/', $field_value[0] ) && preg_match( '/\d{3}/', $field_value[1] ) &&  preg_match( '/\d{4}/', $field_value[2] ) ){
+				return false; 
+			} else {
+				return true; 
+			}
 		} else {
-			return true ;
-		}
-		
+			if ( strlen( $field_value ) < 9 || ! preg_match( '/^[\d\.\-\(\)x]+$/' , $field_value ) ){
+				return true;
+			}
+		}	
+		return false; 
 	}
 	protected function pin( $field_value = '' ){
 

@@ -1,5 +1,5 @@
 <?php
-	abstract class Layout {
+	abstract class Layout1 {
 		
 		private static $default_layout; 
 
@@ -8,9 +8,8 @@
 			self::$constructor_class = $class_instance ;
 		}
 		public static function get_layout_function( $layout = null ){
-		
 			self::$default_layout = 'standard'; 
-			if ( get_called_class() && method_exists( get_called_class() , $layout) ){
+			if ( $layout && get_called_class() && method_exists( get_called_class() , $layout) ){
 				return $layout;
 			} else {
 				return self::$default_layout;

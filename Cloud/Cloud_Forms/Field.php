@@ -29,11 +29,18 @@ class Cloud_Field {
 	protected function setup_information(){
 		$form_slug = $this->spec['form_slug'];
 		$section_slug = $this->spec['section_slug'];
+		
 		$field_slug = $this->spec['field_slug']; 
 
-		$input_id = $form_slug . '_' . $section_slug . '_' . $field_slug ;	
-					
-		$name =  $section_slug.'['.$field_slug.']';
+		// if its part of a complex, multi-section form
+		if ( $section_slug ){
+			$input_id = $form_slug . '_' . $section_slug . '_' . $field_slug ;			
+			$name = $section_slug.'['.$field_slug.']' ;
+		// if its a standAlone form
+		} else {
+			$input_id  = $form_slug . '_'.$field_slug ; 
+			$name = $field_slug ;
+		}
  
 		$value = $this->get_value( $field_slug, $section_slug );
 
@@ -82,13 +89,13 @@ class Cloud_Field {
 	}
 	protected function construct_field(){
 		$components['label'] = '<div class="label">' .$this->get_label() .'</div>' ; 
-		$components['description'] = $this->get_description( );
-		$components['error'] = $this->get_error();
 		if ( $this->info['cloneable'] ){
 			$components['field'] = $this->make_cloneable( );
 		} else {
 			$components['field'] = '<div class="input cf">'.$this->get_field_html( ) .'</div>'; 		
 		}				
+		$components['description'] = $this->get_description( );
+		$components['error'] = $this->get_error();		
 		$extra_components = $this->make_extra_components( );		
 		if ( is_array($extra_components) && sizeof( $extra_components ) > 0 ){
 			$components = array_merge( $components, $extra_components ); 
@@ -132,7 +139,7 @@ class Cloud_Field {
 
 				// if, an array, then foreach element of the array, 
 				// check if it is a valid field element, then place it in the row. 
-				if ( is_array( $row ) && sizeof( $row ) > 0 ){ ?>
+				if ( $row && is_array( $row ) && sizeof( $row ) > 0 ){ ?>
 					<div class="field-row">
 					<?php foreach( $row as $row_item ){ 
 						if ( $label_in_left_column && $row_item == 'label' ){
@@ -140,6 +147,7 @@ class Cloud_Field {
 						} else { 				
 							if ( isset( $this->components[$row_item] ) && $this->components[$row_item] && is_string( $this->components[$row_item] ) ){
 								echo $this->components[$row_item] ; 
+								unset( $this->components[$row_item] );
 							}
 						}
 					} ?>
@@ -151,12 +159,19 @@ class Cloud_Field {
 					if ( $label_in_left_column && $row == 'label' ){
 						// do nothing						
 					} else {
-						if ( isset( $this->components[$row] ) && $this->components[$row] && is_string( $this->components[$row] ) ){ ?>
+						if ( $row && isset( $this->components[$row] ) && $this->components[$row] && is_string( $this->components[$row] ) ){ ?>
 							<div class="field-row"><?php echo $this->components[$row] ; ?></div>
-						<?php }
+						<?php 
+							unset( $this->components[$row] );
+						
+						}
 					}
 				}
 			}
+			// any unspecified elements are appended so they aren't left out. Used items have been unset (see above). 
+			foreach( $this->components as $unspecified_item ){ ?>
+				<div class="field-row"><?php echo $unspecified_item ; ?></div>
+			<?php }
 		}
 		return ob_get_clean() ;
 	}
