@@ -1,10 +1,6 @@
 <?php 
 // ERROR REPORTING
-ini_set('display_errors',1); 
-error_reporting(E_ALL);
-error_reporting(-1);
-	
-define( 'Cloud_dir', 'http://localhost/cloud/wp-content/themes/Cloud_Boilerplate/Cloud' ); 
+define( 'Cloud_dir', get_bloginfo('template_directory').'/Cloud' ); 
 define( 'Cloud_ABS', dirname( __FILE__ ) . '/Cloud' ); 
 define( 'Cloud_prefix' , 'Cloud_' );
 class Cloud_Loader {
@@ -39,9 +35,16 @@ class Cloud_Loader {
 	public function load_directory( $folder = false ){ 
 		$load_folder = $folder ?  self::$ABS . '/' . $folder : self::$ABS ;
 		$load_list = array( ) ;
-		$load_list = array_merge( $load_list , self::get_folder_files( $load_folder ) );
+		$load_list = array_merge( $load_list , self::get_folder_files( $load_folder ) );		
+
+		$main_file = $load_folder . '/'.$folder .'.php'; 
+		if ( file_exists( $main_file ) ){
+			include_once ( $main_file );
+		}
 		foreach ( $load_list as $file ){
-			include_once $file;
+			if ( $file !== $main_file ){
+				include_once $file;
+			}
 		}
 	}
 	protected static function get_folder_files( $folder_abs_path ){
