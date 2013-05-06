@@ -7,7 +7,7 @@ jQuery( function($){
 		
 		var data_to_show = input.data('show'); 
 		var data_to_hide = input.data('hide');
-		var in_table_based_layout = input.parents('.standard.section').size() > 0 ;
+		var in_table_based_layout = input.parents('.table-layout.section').size() > 0 ;
 		
 		function parse_data( data, parent_key ){
 			var fields = $();

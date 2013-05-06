@@ -20,6 +20,7 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 	protected function merge_with_defaults( $form_slug, $form ){
 		$defaults = $this->defaults; 
 		$_form = array() ;
+		
 		// if it has sub-sections, deal with it as a complex form
 		if ( isset( $form['sections'] ) ){
 			foreach ( $defaults['forms'] as $subpage_slug => $default_value ) {
@@ -65,7 +66,6 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 			if ( $this->validation_enabled && isset( $_POST['form_id'] ) && $_POST['form_id'] == $form_slug ){
 				$validation_results = Validator::validate( $_POST, $form_array )  ;			
 				$this->has_validation_errors = $validation_results['success'] ? false : true ;
-
 				if ( isset( $this->spec[ $form_slug][ 'sections' ] ) ){
 					$this->spec[ $form_slug ][ 'sections' ] = $validation_results['updated_form_spec']; 
 				} else {
@@ -152,7 +152,11 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 		}
 	}
 	public function display( $form_slug ){
-		echo $this->forms[ $form_slug ] ;
+		if ( isset( $this->forms[ $form_slug ] ) ){
+			echo $this->forms[ $form_slug ] ;
+		} else { ?>
+			<div class="cloud cloud-form form-not-found">Form "<?php echo $form_slug; ?>" has not been registered</div>
+		<?php }
 	}
 
 	public static function get_folder_url(){

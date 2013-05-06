@@ -10,6 +10,7 @@ $cloud_form_defaults = array (
 		'style'			=> 'standard',
 		'description' 	=> null,
 		'ajax' 			=> false,
+		'submit_text' 	=> 'Save',
 		'sections'		=> array (
 		)	
 	), 

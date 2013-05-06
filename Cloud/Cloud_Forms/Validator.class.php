@@ -76,7 +76,7 @@
 								$field_spec = $spec[ $array_level ][ $subfield_slug ] ;
 								unset( $fields_to_check[ $subfield_slug ] );
 								if ( $field_error = $this->validate_field( $field_spec, $subfield_value ) ){
-									$spec[ $array_level ][ $subfield_slug ][$slug]['validation_error'] = $field_error ;
+									$spec['validation_error'][ $slug ][ $subfield_slug ] = $field_error ; 
 									$this->success = false ;
 								}
 							} 
@@ -109,6 +109,7 @@
 		return $spec; 
 	}
 	protected function validate_field( $field_spec , $field_value = '' ){
+		
 		if ( isset( $field_spec['required'] ) && $field_spec['required'] && ! $this->value_has_been_input( $field_value ) ){
 			return is_string( $field_spec['required'] ) ? $field_spec['required'] : self::$messages['required'] ; 
 		} else if ( $this->value_has_been_input( $field_value ) ){

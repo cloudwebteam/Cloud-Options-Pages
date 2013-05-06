@@ -69,6 +69,8 @@ abstract class Cloud_Forms {
 	protected function load_global_scripts(){
 		self::register_script( 'jquery', 'http://code.jquery.com/jquery-1.9.1.min.js' ); 
 		self::register_script( 'bootstrap', self::get_folder_url() .'/__inc/bootstrap/js/bootstrap.min.js', array( 'jquery' ) );  
+		self::register_script( 'scrollTo', self::get_folder_url() .'/__inc/jquery.scrollTo.min.js', array( 'jquery' ) );  
+		
 		// full jQuery UI
 		self::register_script( 'jquery-ui-core', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.core.min.js', array('jquery') );
 		self::register_script( 'jquery-effects-core', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect.min.js', array('jquery') );
@@ -110,7 +112,7 @@ abstract class Cloud_Forms {
 		self::register_script( 'bootstrap-timepicker', self::get_folder_url() . '/__inc/bootstrap_timepicker/bootstrap-timepicker.min.js', array( 'jquery') ); 
 		
 		self::enqueue_script( 'jquery' ); 
-		self::enqueue_script( __CLASS__, self::get_folder_url() .'/_js/Cloud_Forms.js', array( 'jquery', 'bootstrap' ) ); 
+		self::enqueue_script( __CLASS__, self::get_folder_url() .'/_js/Cloud_Forms.js', array( 'jquery', 'scrollTo' ) ); 
 		self::enqueue_script( 'Cloud_Field', self::get_folder_url() .'/_js/Cloud_Field.js', array( 'jquery' ) ); 		
 	}
 	protected function load_global_styles(){	
@@ -249,6 +251,7 @@ abstract class Cloud_Forms {
 			} else {
 				if ( isset ( $subpage['defaults']['sections'][$section_slug] ) ) {
 					$set_value = $subpage['defaults']['sections'][$section_slug];
+
 				} else if ( isset ( $top_level_page['defaults']['sections'][$section_slug] ) ) {
 					$set_value = $top_level_page['defaults']['sections'][$section_slug];
 				} else {
@@ -270,6 +273,7 @@ abstract class Cloud_Forms {
 			if ( isset( $field['type'] ) ){
 				$type = $field['type'];  							
 			} else {
+			
 				if ( isset ( $section['defaults']['fields']['type'] ) ) {
 					$type = $section['defaults']['fields']['type'];
 				} else if ( isset ( $subpage['defaults']['fields']['type'] ) ) {
@@ -295,12 +299,12 @@ abstract class Cloud_Forms {
  				if ( isset( $field[$att_slug] ) ){
 					$set_value = $field[$att_slug];  
 				} else {
-					if ( isset ( $section['defaults']['fields'][$field_slug] ) ) {
-						$set_value = $section['defaults']['fields'][$field_slug];
-					} else if ( isset ( $subpage['defaults']['fields'][$field_slug] ) ) {
-						$set_value = $subpage['defaults']['fields'][$field_slug];
-					} else if ( isset ( $top_level_page['defaults']['fields'][$field_slug] ) ) {
-						$set_value = $top_level_page['defaults']['fields'][$field_slug];
+					if ( isset ( $section['defaults']['fields'][$att_slug] ) ) {
+						$set_value = $section['defaults']['fields'][$att_slug];
+					} else if ( isset ( $subpage['defaults']['fields'][$att_slug] ) ) {
+						$set_value = $subpage['defaults']['fields'][$att_slug];
+					} else if ( isset ( $top_level_page['defaults']['fields'][$att_slug] ) ) {
+						$set_value = $top_level_page['defaults']['fields'][$att_slug];
 					} else {
 						$set_value = $default_value; 
 					}
@@ -320,7 +324,7 @@ abstract class Cloud_Forms {
 					$_field['subfields'][$subfield_slug]= array();  
 					$_subfield =& $_field['subfields'][$subfield_slug]; 
 					$_subfield['form_slug'] = $section[ 'form_slug' ];					
-					$_subfield['section_slug'] = $section[ 'section_slug' ] ; 
+					$_subfield['section_slug'] = isset( $section[ 'section_slug' ] ) ? $section['section_slug'] : false ; 
 					$_subfield['field_slug'] = $field_slug ;		
 					$_subfield['subfield_slug'] = $subfield_slug ;
 

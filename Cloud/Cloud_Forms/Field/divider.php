@@ -10,7 +10,7 @@ class Cloud_Field_divider extends Cloud_Field {
 	}
 
 	protected function get_field_html( ){
-		return '<div class="divider"></div>' ;
+		return false ;
 	}
 	
    /**

@@ -1,6 +1,9 @@
 /***====================================================================================================================================
 		TYPOGRAPHY
 	==================================================================================================================================== ***/
+.cloud-form {	
+	font-size: 1em; 
+}
 .cloud-form h1 {
 	font-size: 2em;
 }
@@ -19,42 +22,46 @@
 .cloud-form h6 {
 	font-size: .75em;
 }
+.cloud-form .title {
+	padding: .25em 0; 
+	line-height: 1.125em;
+}
+.cloud-form .description {
+	color: #777; 
+	font-style: italic; 
+	font-weight: light; 
+	font-size: .875em;
+	padding: .25em 0;
+}
 /***====================================================================================================================================
 		GENERAL PAGE 
 	==================================================================================================================================== ***/
 .cloud-form {
-	max-width: 1170px;
+	max-width: 100%;
 	font-family: sans-serif ;
 }
-.cloud-form .tabbable {
-	padding-top: 2em;
+.cloud-form form > * {
+	padding: 0 15px; 
 }
-.cloud-form .tab-content {
-	overflow: visible;
+.cloud-form .form-fields,
+.cloud-form footer {
+	padding-top: 1em; 
+	padding-bottom: 1em;  
+
 }
-.cloud-form #scroll-nav {
-	top: 90px;
+.cloud-form.form-not-found {
+	padding: 1em 15px; 
+	font-style: italic; 
+	border: 1px solid #ccc; 
+	margin: 1em 0; 
 }
-.cloud-form #scroll-content {
-	margin-left: 135px;
-	padding: 0 15px;
-}
-.cloud-form #scroll-content .section {
-	margin-bottom: 1em;
-	padding: 2em 30px;
-	background: #fafafa;
-	border: 1px solid #ccc;
-}
-.cloud-form .wrap.scroll .submit {
-	margin-left: 150px;
-}
+
 /***====================================================================================================================================
 		GENERAL SECTION 
 	==================================================================================================================================== ***/
-.cloud-form .section > .header {
-	padding: 0 0 1em 15px ;
-	border-bottom: 1px dashed #efefef;
-	margin-bottom: 2em ;
+.cloud-form .section > header {
+	padding: 1em 0 ;
+	border-bottom: 1px dashed #ccc;
 }
 
 /***====================================================================================================================================
@@ -78,17 +85,18 @@
 .cloud-form select {
 	height: 1.5em; 
 	line-height: 1.5em;
-	margin: .25em 0;
 }
 /***====================================================================================================================================
 		GENERAL FIELD STYLES
 	==================================================================================================================================== ***/
 .cloud-form .field {
 	position: relative;
-	padding: 0 0 2em; 	
+	padding: .25em 0; 	
+	line-height: 1em; 
 }
+
 .cloud-form .field-row {
-	padding: .375em 0 0;
+	padding: .25em 0 0;
 	width: 100%;
 	position: relative; 
 }

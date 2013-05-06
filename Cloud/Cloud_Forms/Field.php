@@ -79,23 +79,34 @@ class Cloud_Field {
 		return $info;
 	}
 	protected function get_value( $field_slug, $section_slug = '' , $form_slug = '' ){
-		if ( $field_slug && $section_slug && $form_slug ){
-			return isset( $_REQUEST[$form_slug][$section_slug][$field_slug] ) ? $_REQUEST[$form_slug][$section_slug][$field_slug] : false ; 	
-		} else if ( $field_slug && $section_slug ){
-			return isset( $_REQUEST[$section_slug][$field_slug] ) ? $_REQUEST[$section_slug][$field_slug] : false ; 	
-		} else {
-			return isset( $_REQUEST[$field_slug] ) ? $_REQUEST[$field_slug] : false ; 	
+		if ( isset( $_REQUEST['form_id'] ) && $_REQUEST['form_id'] === $this->spec['form_slug'] ){
+			if ( $field_slug && $section_slug && $form_slug ){
+				return isset( $_REQUEST[$form_slug][$section_slug][$field_slug] ) ? $_REQUEST[$form_slug][$section_slug][$field_slug] : false ; 	
+			} else if ( $field_slug && $section_slug ){
+				return isset( $_REQUEST[$section_slug][$field_slug] ) ? $_REQUEST[$section_slug][$field_slug] : false ; 	
+			} else {
+				return isset( $_REQUEST[$field_slug] ) ? $_REQUEST[$field_slug] : false ; 	
+			}
 		}
 	}
 	protected function construct_field(){
-		$components['label'] = '<div class="label">' .$this->get_label() .'</div>' ; 
+		if ( $label = $this->get_label() ){
+			$components['label'] = '<div class="label">' .$label.'</div>' ; 
+		}
 		if ( $this->info['cloneable'] ){
 			$components['field'] = $this->make_cloneable( );
 		} else {
-			$components['field'] = '<div class="input cf">'.$this->get_field_html( ) .'</div>'; 		
-		}				
-		$components['description'] = $this->get_description( );
-		$components['error'] = $this->get_error();		
+			if ( $field = $this->get_field_html( ) ){
+				$components['field'] = '<div class="input cf">'.$field.'</div>'; 		
+			}
+		}			
+			
+		if ( $description = $this->get_description() ) {
+			$components['description'] = $description ; 
+		}
+		if ( $error = $this->get_error() ){
+			$components['error'] = $error;		
+		}
 		$extra_components = $this->make_extra_components( );		
 		if ( is_array($extra_components) && sizeof( $extra_components ) > 0 ){
 			$components = array_merge( $components, $extra_components ); 
@@ -115,12 +126,7 @@ class Cloud_Field {
 	// each field needs to know how to create itself. This is where they do it. 
 	protected function get_field_html(){ echo 'this field needs to implement get_field_html()'; }
 	protected function get_error(){
-		if ( $this->is_subfield ){
-			$group_number = isset( $this->spec['group_number'] ) ? $this->spec['group_number'] : 0 ;
-			return isset( $this->spec[ $group_number ]['validation_error'] ) ? '<span class="error">'.$this->spec[ $group_number ]['validation_error'] .'</span>' : '' ;
-		} else {
-			return isset( $this->spec['validation_error'] ) && ! is_array( $this->spec['validation_error'] ) ? '<span class="error">'.$this->spec['validation_error'] .'</spec>' : '' ;
-		}
+		return isset( $this->spec['validation_error'] ) && ! is_array( $this->spec['validation_error'] ) ? '<span class="error">'.$this->spec['validation_error'] .'</spec>' : '' ;
 	}
 	// optional, allows each field to create its own necessary components, returns array of components. 
 	protected function make_extra_components( ){
@@ -139,20 +145,28 @@ class Cloud_Field {
 
 				// if, an array, then foreach element of the array, 
 				// check if it is a valid field element, then place it in the row. 
-				if ( $row && is_array( $row ) && sizeof( $row ) > 0 ){ ?>
-					<div class="field-row">
-					<?php foreach( $row as $row_item ){ 
-						if ( $label_in_left_column && $row_item == 'label' ){
-						 // do nothing
-						} else { 				
-							if ( isset( $this->components[$row_item] ) && $this->components[$row_item] && is_string( $this->components[$row_item] ) ){
-								echo $this->components[$row_item] ; 
-								unset( $this->components[$row_item] );
-							}
+				if ( $row && is_array( $row ) && sizeof( $row ) > 0 ){ 
+					$row_components = '' ; 
+					foreach( $row as $row_item ){ 
+						if ( !empty( $this->components[ $row_item ] ) ){
+							$row_components .= $this->components[$row_item] ; 
+							unset( $this->components[ $row_item ] ); 
 						}
-					} ?>
-					</div> 
-				<?php
+					}
+					if ( $label_in_left_column && $row_item == 'label' ){
+					 // do nothing
+					} else { 				
+						if ( isset( $this->components[$row_item] ) && $this->components[$row_item] && is_string( $this->components[$row_item] ) ){
+							$row_components .= $this->components[ $row_item ] ; 
+							unset( $this->components[$row_item] );
+						}
+					}
+					
+					if ( $row_components ){ ?>
+					<div class="field-row">
+						<?php echo $row_components ; ?>
+					</div>
+					<?php }
 				// otherwise, check if the provided string is a valid field element, then place it in the row. 
 				} else {
 					// if its a standard layout ( table based  ) the label is needed on the left, so don't put it here					
@@ -163,15 +177,16 @@ class Cloud_Field {
 							<div class="field-row"><?php echo $this->components[$row] ; ?></div>
 						<?php 
 							unset( $this->components[$row] );
-						
 						}
 					}
 				}
 			}
 			// any unspecified elements are appended so they aren't left out. Used items have been unset (see above). 
-			foreach( $this->components as $unspecified_item ){ ?>
+			foreach( $this->components as $unspecified_item ){ 
+				if ( $unspecified_item ){ ?>
 				<div class="field-row"><?php echo $unspecified_item ; ?></div>
 			<?php }
+			}
 		}
 		return ob_get_clean() ;
 	}

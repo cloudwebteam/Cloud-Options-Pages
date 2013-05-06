@@ -58,6 +58,7 @@ jQuery( function($){
 			//get rid of the values
 			new_input.find('input').not('[type="button"], .copy').val('');
 			// specific changes for specific fields
+			new_input.find('.error').remove();			
 			new_input.find('.media-url img').addClass('hidden');
 			group.after( new_input );
 			new_input.fadeIn(); 

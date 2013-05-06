@@ -1,5 +1,5 @@
 <?php 
-	class Layout_Section extends Layout1 {
+	class Layout_Section extends Layout {
 		public static function get_layout_function( $layout = null ){
 			$layout_function = parent::get_layout_function( $layout  );
 
@@ -15,33 +15,18 @@
 			
 			$layout_vars = array();
 			
-			// place items with particular importance for every layout here. 
 			$layout_vars['id'] = $section_slug ; 
-
-			// if available, set up title and description			
-			$layout_vars['title'] = isset( $spec['title'] ) ? '<h3 class="title">'.$spec['title'] .'</h3>' : '' ;
-			$layout_vars['description'] = isset( $spec['description'] ) ? '<span class="description">'.$spec['description'] .'</span>' : '' ;
 			
 			//set up section classes
 			$classes = array(); 
 			$classes[] = 'section';
-			$classes[] = $spec['layout'] ; 
-			
-
 			
 			// if its a simple, one section form
 			if ( !$page_spec ){
-				$classes[] = 'cloud' ;
-				$classes[] = 'cloud-form';
-
-				if ( $spec['ajax'] ){
-					$classes[] = 'ajax' ;
-				}				
-				$layout_vars[ 'json_spec' ] = $spec['ajax'] ? '<div id="json_spec_'.$section_slug.'" style="display:none !important;">'.json_encode( $spec ).'</div>' : '' ;
-				// set up a hidden input that identifies the form in the $_POST request
-				$layout_vars[ 'form_id_field' ] = '<input type="hidden" name="form_id" value="' . $section_slug . '" />' ;
-				// set up submit button html 
-				$layout_vars['submit_button' ] = '<p class="submit"><input type="submit" class="button-primary" value="Save Changes" /></p>';
+				$form_classes = self::get_form_classes( $form_slug, $spec ); 		
+				$classes = array_merge( $classes, $form_classes ); 
+				$layout_vars['header'] = self::get_form_header( $form_slug, $spec ); 			
+				$layout_vars['footer'] = self::get_form_footer( $form_slug, $spec ); 
 			} else {
 			// if the page is a grid layout, give section a width (specified 1-12, default 12) 
 				if(  $page_spec['layout'] === 'grid' ){
@@ -50,6 +35,12 @@
 				if ( $page_spec['layout'] === 'tab'	){
 					$layout_vars['title'] = '' ;
 				}
+				$title = isset( $spec['title'] ) ? '<h3 class="title">'.$spec['title'] .'</h3>' : '' ;
+				$description  = isset( $spec['description'] ) ? '<span class="description">'.$spec['description'] .'</span>' : '' ;		
+				if ( $title || $description ){
+					$layout_vars['header'] = '<header class="cloud-section-header">'. $title. $description .'</header>'; 
+				}		
+				$layout_vars['footer'] = false; 
 			}
 
 			$layout_vars['classes'] = implode ( ' ', $classes ); 
@@ -63,79 +54,65 @@
 			}				
 			return $layout_vars; 		
 		}
-		public static function standard( $slug, $spec, $page_spec = false ){
-			// make variables available and easy to use by extracting them
-			extract( self::get_layout_info( $slug, $spec, $page_spec ) );
-			ob_start();	?>
-			<div class='<?php echo $classes; ?>'>
-				<div class="header">
-			    	<?php echo $title; ?>
-			    	<?php echo $description; ?>
-				</div>
-			    <table class="form-table">
-				    <?php foreach ( $fields as $field ) { ?>
-				    	<?php echo $field; ?>
-				    <?php } ?>				    
-				</table>
-				
-			</div>
-			<?php 
-			$output = ob_get_clean();
-			return $output;
-			
-		}
+
 		public static function standAlone( $slug, $spec, $page_spec = false ){
 			// make variables available and easy to use by extracting them
 			extract( self::get_layout_info( $slug, $spec, $page_spec ) );
 			ob_start();	?>
 			<div id="form-<?php echo $slug; ?>" class="<?php echo $classes; ?>">
 				<form data-id="<?php echo $slug; ?>" action="" method="post">
-			
-					<div class="header">			
-				    	<?php echo $title; ?>
-				    	<?php echo $description; ?>
-					</div>
+					<?php echo $header; ?>
 					<div class="fields">
 				    <?php foreach ( $fields as $field ) { ?>
 				    	<?php echo $field; ?>
 				    <?php } ?>
 					</div>
-					<div class="footer">
-					
-					<?php echo $json_spec; ?>
-					<?php echo $form_id_field; ?>
-			    	<?php echo $submit_button; ?>
-					</div>
+					<?php echo $footer; ?>
 				</form>						
 			</div>
 			<?php 
 			$output = ob_get_clean();
 			return $output;		
-		}
-
-		public static function grid( $slug, $spec, $page_spec  ){
+		}		
+		public static function standard( $slug, $spec, $page_spec = false ){
 			// make variables available and easy to use by extracting them
 			extract( self::get_layout_info( $slug, $spec, $page_spec ) );
-			ob_start();
-			?>	
-			    <div class="<?php echo $classes; ?>">
-				<?php if ( $title || $description ){ ?>
-					<div class="header">			    
-				    	<?php echo $title; ?>
-				    	<?php echo $description; ?>
-					</div>
-				<?php } ?>
-					<div class="row-fluid">
+			ob_start();	?>
+			<div class='<?php echo $classes; ?>'>
+				<?php echo $header; ?>
+
+			    <div class="form-fields">
 				    <?php foreach ( $fields as $field ) { ?>
 				    	<?php echo $field; ?>
-				    <?php } ?>	
-					</div>
+				    <?php } ?>				    
 				</div>
-			<?php	
+				<?php echo $footer; ?>
+				
+			</div>
+			<?php 
 			$output = ob_get_clean();
 			return $output;
 			
-		}	
-								
+		}			
+		public static function table( $slug, $spec, $page_spec = false ){
+			// make variables available and easy to use by extracting them
+			extract( self::get_layout_info( $slug, $spec, $page_spec ) );
+			ob_start();	?>
+			<div class='<?php echo $classes; ?>'>
+				<?php echo $header; ?>
+
+			    <table class="form-table">
+				    <?php foreach ( $fields as $field ) { ?>
+				    	<?php echo $field; ?>
+				    <?php } ?>				    
+				</table>
+				<?php echo $footer; ?>
+				
+			</div>
+			<?php 
+			$output = ob_get_clean();
+			return $output;
+			
+		}				
 	}
 ?>

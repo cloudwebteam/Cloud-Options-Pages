@@ -1,5 +1,5 @@
 <?php
-	abstract class Layout1 {
+	abstract class Layout {
 		
 		private static $default_layout; 
 
@@ -14,5 +14,37 @@
 			} else {
 				return self::$default_layout;
 			}		
+		}
+		protected static function get_form_classes( $form_slug, $spec ){
+			//set up classes
+			$classes = array(); 
+			$classes[] = 'cloud'; //necessary to keep Bootstrap from interfering
+			$classes[] = 'cloud-form';
+			$classes[] = $spec['layout'] . '-layout';
+			if ( $spec['ajax'] ){
+				$classes[] = 'ajax' ;
+			}	
+			return $classes; 
+		}
+		protected static function get_form_footer( $form_slug, $spec ){
+			// set up a hidden input that identifies the form in the $_POST request
+			$form_id_field = '<input type="hidden" name="form_id" value="' . $form_slug . '" />' ;
+			// set up submit button html 
+			$submit_button = '<p class="submit"><input type="submit" class="button-primary" value="'.$spec['submit_text'].'" /></p>';
+			// if ajax is enabled, include spec in a hidden div
+			$json_spec = $spec['ajax'] ? '<div id="json_spec_'.$form_slug.'" style="display:none !important;">'.json_encode( $spec ).'</div>' : '' ;
+			
+			return '<footer class="form">'.$form_id_field . $json_spec . $submit_button .'</footer>' ; 
+		}		
+		protected static function get_form_header( $form_slug, $spec ){
+			// setup title and description
+			$title = !empty( $spec['title'] ) ? '<h2 class="title">'.$spec['title'] .'</h2>' : false; 
+			$description = !empty( $spec['description'] ) ? '<h4 class="description">'.$spec['description'] .'</h4>' : false; 			
+			if ( $title || $description ){
+				$header = '<header class="cloud-form-header">'.$title .$description.'</header>' ; 
+			} else {
+				$header = false;
+			}
+			return $header; 
 		}
 	}

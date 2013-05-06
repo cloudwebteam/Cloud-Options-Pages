@@ -1,19 +1,12 @@
-.ui-widget.ui-datepicker {
-	font-size: 1em;
+.cloud-form .field .input-append {
+	margin-bottom: 0px;
+	margin-left: 10px; 
+	width: 70px;  
 }
-.ui-timepicker-div dt {
-	float: left; 
-	width: 24.5%;
-	padding-right: 5%;
-	clear: both;
-	height: 2em;
-	text-align: right;
-	text-transform: uppercase;
-	font-size: .875em;
+.cloud-form .field .input-append .add-on {
+	position: absolute; 
+	height: 100%; 
 }
-.ui-timepicker-div dd {
-	width: 70%;
-	float: right;
-	margin: 0;
-	padding-bottom: .5em;	
+.cloud-form .field .input-append .add-on i {
+	margin: 5px 0 0 2px; 
 }
