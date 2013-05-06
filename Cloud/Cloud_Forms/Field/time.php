@@ -1,6 +1,6 @@
 <?php 
 // Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
+defined( 'Cloud_ABS' ) || exit;
 
 class Cloud_Field_time extends Cloud_Field {
 

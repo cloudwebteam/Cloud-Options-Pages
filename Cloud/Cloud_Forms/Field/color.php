@@ -1,6 +1,6 @@
 <?php 
 // Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
+defined( 'Cloud_ABS' ) || exit;
 
 class Cloud_Field_color extends Cloud_Field {
 	protected $size = 45; 

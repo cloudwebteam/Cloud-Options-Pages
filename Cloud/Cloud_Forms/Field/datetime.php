@@ -1,6 +1,6 @@
 <?php 
 // Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
+defined( 'Cloud_ABS' ) || exit;
 
 class Cloud_Field_datetime extends Cloud_Field {
 	public static function create_field( $args ){
