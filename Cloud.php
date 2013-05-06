@@ -1,6 +1,6 @@
 <?php 
 // ERROR REPORTING
-define( 'Cloud_dir', get_bloginfo('template_directory').'/Cloud' ); 
+define( 'Cloud_dir','http://localhost/cloud/site3/wp-content/themes/Cloud_Boilerplate1/Cloud' ); 
 define( 'Cloud_ABS', dirname( __FILE__ ) . '/Cloud' ); 
 define( 'Cloud_prefix' , 'Cloud_' );
 class Cloud_Loader {
@@ -43,7 +43,7 @@ class Cloud_Loader {
 		}
 		foreach ( $load_list as $file ){
 			if ( $file !== $main_file ){
-				include_once $file;
+				include_once $file;	
 			}
 		}
 	}
