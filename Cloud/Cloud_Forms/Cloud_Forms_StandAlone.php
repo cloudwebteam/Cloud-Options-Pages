@@ -13,7 +13,6 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 	}
 	protected function init(){	
 
-
 	}
 	/***====================================================================================================================================
 			CREATING SPEC

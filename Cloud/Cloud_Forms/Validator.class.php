@@ -16,6 +16,7 @@
 	); 
 	public static function validate( $form_submission_data = '' , $form_fields = '' ){
 		$validation = new self( $form_submission_data, $form_fields ); 
+
 		return array( 
 			'success' => $validation->success,
 			'updated_form_spec' => $validation->form_spec_with_errors ,
@@ -68,15 +69,24 @@
 						$spec[ $array_level ][ $slug ] = $this->get_field_validation_spec( $slug_post_data, &$child_spec, $array_hierarchy, $errors ) ; 
 					} 
 				} else {
-					foreach( $slug_post_data as $subfield_slug => $subfield_value ){
-						if ( isset( $spec[ $array_level ][ $subfield_slug ] ) ){
-							$field_spec = $spec[ $array_level ][ $subfield_slug ] ;
-							unset( $fields_to_check[ $subfield_slug ] );
-							if ( $field_error = $this->validate_field( $field_spec, $subfield_value ) ){
-								$spec[ $array_level ][ $subfield_slug ][$slug]['validation_error'] = $field_error ;
-								$this->success = false ;
-							}
-						} 
+					// is group 
+					if ( is_array( $slug_post_data ) ){
+						foreach( $slug_post_data as $subfield_slug => $subfield_value ){
+							if ( isset( $spec[ $array_level ][ $subfield_slug ] ) ){
+								$field_spec = $spec[ $array_level ][ $subfield_slug ] ;
+								unset( $fields_to_check[ $subfield_slug ] );
+								if ( $field_error = $this->validate_field( $field_spec, $subfield_value ) ){
+									$spec[ $array_level ][ $subfield_slug ][$slug]['validation_error'] = $field_error ;
+									$this->success = false ;
+								}
+							} 
+						}
+					// is simple cloneable
+					} else {
+						if ( $field_error = $this->validate_field( $spec, $slug_post_data ) ){
+							$spec['validation_error'][$slug] = $field_error ;
+							$this->success = false ;
+						}								
 					}
 				}
 			}			

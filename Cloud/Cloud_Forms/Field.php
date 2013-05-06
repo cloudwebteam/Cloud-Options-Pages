@@ -117,7 +117,7 @@ class Cloud_Field {
 	protected function get_error(){
 		if ( $this->is_subfield ){
 			$group_number = isset( $this->spec['group_number'] ) ? $this->spec['group_number'] : 0 ;
-			return isset( $this->spec[ $group_number ]['validation_error'] ) ? '<span class="error">'.$this->spec[ $group_number ]['validation_error'] .'</spec>' : '' ;					
+			return isset( $this->spec[ $group_number ]['validation_error'] ) ? '<span class="error">'.$this->spec[ $group_number ]['validation_error'] .'</span>' : '' ;
 		} else {
 			return isset( $this->spec['validation_error'] ) ? '<span class="error">'.$this->spec['validation_error'] .'</spec>' : '' ;
 		}
@@ -176,76 +176,46 @@ class Cloud_Field {
 		return ob_get_clean() ;
 	}
 	// wraps the field/fields in html that makes it cloneable
-	protected function make_cloneable( $args ){
-		switch ($this->context ){
-			case 'options-page' :
-				$Options_Pages = Cloud_Options_Pages::get_instance();
-				
-				$top_level_slug = $args['top_level'];		
-				$page_slug = $args['subpage'];
-				$section_slug = $args['section'];
-				$field_slug = $args['field']; 	
-				$this->saved_values = $Options_Pages->get_option( $top_level_slug, $page_slug, $section_slug, $field_slug ); 
-				break; 
-			case 'metabox' :
-				global $post ;
-				$Metaboxes = Cloud_Metaboxes::get_instance();
-				$metabox_slug = $args['metabox'];
-				$field_slug = $args['field']; 	
-				$this->saved_values = $Metaboxes->get_option( $post->ID, $metabox_slug, $field_slug ) ;
-				break ;
-		}
-		$this->args = $args;		
+	protected function make_cloneable( ){
+		$this->enqueue_script( 'jquery-ui-sortable' ); 
 		$name = $this->info['name']; 
-		$value = $this->info['value'] ;
-		$parent_to_retrieve = $this->info['to_retrieve']; 
-		$this->info['settable_defaults'] = false ;		
-
-
-
-		$clones = array(); 
-		if ( is_array( $this->saved_values ) ){
-
-			foreach ( $this->saved_values as $clone_number => $clone_value ){
-				switch ( $this->context ){
-					case 'options-page' : 
-						$parent_to_retrieve = 	'get_theme_options( "'. $page_slug.'", "'. $section_slug . '" , "'. $field_slug.'" , ' . $clone_number .' )';	
-						break;
-					case 'metabox' : 
-						$parent_to_retrieve = 'get_theme_options( "'. $post->ID.'", "'. $metabox_slug . '" , "'. $field_slug.'" , ' . $clone_number .' )';	
-						$clones[$clone_number] = $this->make_clone( $clone_number, $clone_value, $name, $parent_to_retrieve ); 
-						break;
-				} 
-			} 
-		} else {
-			$clones[0] = $this->make_clone( 0, '', $name, $parent_to_retrieve); 
-		}
-		$output = '<div class="input">';
-		$output .= '<ul class="cloneable cf">';
-		foreach( $clones as $clone_number => $clone ){
-			$output .= '<li class="clone cf">' ;
-			$output .= '<div class="number">'.($clone_number+1).'</div>';
-			$output .= $clone;
-			if ( $this->info['clone_controls'] ){
-				$output .= '<div class="add-remove"><a class="remove">-</a><a class="add">+</a></div>';
-			}
-			$output .= '</li>';
-		}
-		$output .= '</ul>';
-		$output .= '</div>' ;
+		$values = $this->info['value'] ;
 		
-		$this->field = $output;
-		$this->info['to_retrieve'] = $parent_to_retrieve ; 
+		$clones = array(); 
+		if ( is_array( $values ) ){
+			foreach ( $values as $clone_number => $clone_value ){
+				$clones[$clone_number][ 'clone' ] = $this->make_clone( $clone_number, $clone_value, $name ); 
+				$clones[$clone_number][ 'error' ] = isset( $this->spec['validation_error'][ $clone_number ] ) ? '<span class="error">'.$this->spec['validation_error'][ $clone_number ] .'</span>' : '' ;
+			}
+		} else {
+			$clones[0] = $this->make_clone( 0, '', $name ); 
+		}
+		$error = isset( $this->spec['validation_error'][ $clone_number ] ) ? '<span class="error">'.$this->spec['validation_error'][ $clone_number ] .'</spec>' : '' ;
+
+		ob_start(); ?>
+		<div class="input">
+			<ul class="cloneable cf">
+			<?php foreach( $clones as $clone_number => $clone ){ ?>
+				<li class="clone cf">
+					<div class="number"><?php echo $clone_number + 1 ; ?></div>
+					<?php echo $clone['clone']; ?>
+					<?php echo $clone['error']; ?>
+					<div class="add-remove"><a class="remove">-</a><a class="add">+</a></div>
+				</li>
+			<?php } ?>
+			</ul>
+		</div>
+		<?php $output = ob_get_clean(); 
+		return $output; 
 		 
 	}
-	protected function make_clone( $clone_number, $clone_value, $name, $to_retrieve  ){	
+	protected function make_clone( $clone_number, $clone_value, $name  ){	
 	
 		$this->info['name'] = $name.'['.$clone_number.']';
 		$this->info['value'] = $clone_value;	
-		$this->info['to_retrieve'] = $to_retrieve ;
-		$clone = $this->get_field_html( $this->args ); 
+		$clone = $this->get_field_html(); 
 
-		return $clone . self::get_copy_to_use( $this->info );
+		return $clone ;
 	}
 	protected function get_label(){
 		$label = "<label class='title' for='". $this->info['id'] . "' >" . $this->info['title'] ."</label>";
