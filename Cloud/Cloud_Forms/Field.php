@@ -119,7 +119,7 @@ class Cloud_Field {
 			$group_number = isset( $this->spec['group_number'] ) ? $this->spec['group_number'] : 0 ;
 			return isset( $this->spec[ $group_number ]['validation_error'] ) ? '<span class="error">'.$this->spec[ $group_number ]['validation_error'] .'</span>' : '' ;
 		} else {
-			return isset( $this->spec['validation_error'] ) ? '<span class="error">'.$this->spec['validation_error'] .'</spec>' : '' ;
+			return isset( $this->spec['validation_error'] ) && ! is_array( $this->spec['validation_error'] ) ? '<span class="error">'.$this->spec['validation_error'] .'</spec>' : '' ;
 		}
 	}
 	// optional, allows each field to create its own necessary components, returns array of components. 
@@ -188,9 +188,9 @@ class Cloud_Field {
 				$clones[$clone_number][ 'error' ] = isset( $this->spec['validation_error'][ $clone_number ] ) ? '<span class="error">'.$this->spec['validation_error'][ $clone_number ] .'</span>' : '' ;
 			}
 		} else {
-			$clones[0] = $this->make_clone( 0, '', $name ); 
+			$clones[0]['clone'] = $this->make_clone( 0, '', $name ); 
+			$clones[0]['error'] = false; 
 		}
-		$error = isset( $this->spec['validation_error'][ $clone_number ] ) ? '<span class="error">'.$this->spec['validation_error'][ $clone_number ] .'</spec>' : '' ;
 
 		ob_start(); ?>
 		<div class="input">

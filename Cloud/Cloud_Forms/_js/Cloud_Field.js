@@ -48,8 +48,11 @@ jQuery( function($){
 			//get rid of the values
 			new_input.find('input').not('[type="button"], .copy').val('');
 			
+			// get rid of error messages 
+			new_input.find( '.error' ).remove(); 
 			// specific changes for specific fields
 			new_input.find('.media-url img').addClass('hidden');
+			
 			clone.after( new_input );
 			new_input.fadeIn(); 
 
