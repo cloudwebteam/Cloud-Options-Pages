@@ -9,12 +9,10 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 		if ( !self::$instance ){
 			self::$instance = new self(); 
 		}
-		
 		return self::$instance; 
 	}
-	protected function init(){
+	protected function init(){	
 
-		$this->load_directories( array( 'Layout', 'Field') ); 		
 
 	}
 	/***====================================================================================================================================
@@ -44,6 +42,7 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 				$section['section_slug'] = $section_slug;
 				$_section = $this->finish_merge_with_defaults( $section, $form ); 
 			}
+		
 		// if it doesn't, just proceed with a simple form. 
 		} else {		
 			$form['form_slug'] = $form_slug ; 
@@ -58,7 +57,7 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 			}			
 			$_form = array_merge( $_form, $this->finish_merge_with_defaults( $form ) ); 
 			unset( $_form['sections'] ); 
-		}
+		}		
 		return $_form;	
 	}
 	// all this does is add a 'validation_error' item to the field specs of those fields that failed to validate, and return a general success or failure message	
@@ -80,7 +79,12 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 	/***====================================================================================================================================
 			LOAD SCRIPTS AND STYLES
 		==================================================================================================================================== ***/
-
+	protected function set_local_javascript_vars(){
+		$this->global_js_vars = array( 
+			'ajax_url' => self::$dir . '/ajax/standAlone.php',
+			'cloud_url' => self::$dir
+		); 
+	}
 	protected function order_styles_and_scripts(){
 		array_walk( self::$styles, array( $this, 'filter_out_styles_without_needed_dependencies'), &self::$styles );
 		self::$styles = $this->sort_array_by_dependencies( self::$styles );	
@@ -94,7 +98,15 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 		<link rel="stylesheet" href="<?php echo $style['path']; ?>" />
 		<?php }
 	}
-	public function print_scripts(){
+	public function print_scripts(){ 
+		if ( $this->global_js_vars ){ ?>
+		<script>
+			/* <! [CDATA[ */
+			var cloud = <?php echo json_encode( $this->global_js_vars ) ; ?>;
+			/* []> */			
+		</script>
+		<?php }
+		
 		foreach( self::$scripts as $script ){ ?>
 		<script src="<?php echo $script['path']; ?>" ></script>
 		<?php }
@@ -110,7 +122,7 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 			if ( isset( $form_spec['sections'] ) ){
 
 				$layout = Layout_Form::get_layout_function( $form_spec['layout'] );
-				Layout_Form::$layout( $form_slug, $form_spec ); 
+				$forms[ $form_slug ] = Layout_Form::$layout( $form_slug, $form_spec ); 
 			} else {
 				$forms[ $form_slug ] = Layout_Section::standAlone( $form_slug, $form_spec ); 
 			}
