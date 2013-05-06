@@ -25,16 +25,18 @@ abstract class Cloud_Forms {
 		self::$dir = Cloud_dir . '/' . __CLASS__ ;
 		self::$ABS = Cloud_ABS . '/' . __CLASS__ ;
 		$this->loader = Cloud_Loader::get_instance();		
-				
+
 		// loads folder with this class's name	
 		$this->load_directories( array( 'Field', 'Layout' ) ); 	
+		
 		// load global scripts and styles	
 		$this->load_global_scripts(); 
 		$this->load_global_styles();
-
+		
+		$this->set_local_javascript_vars(); 
+		
 		// get defaults array from defaults.php
 		$this->defaults = $this->set_defaults();	
-				
 		$this->init();
 
 	}
@@ -53,7 +55,7 @@ abstract class Cloud_Forms {
 		==================================================================================================================================== ***/
 	protected function load_directory( $directory_name = '' ){
 		$folder_path = $directory_name ? __CLASS__ . '/'.$directory_name : __CLASS__ ;
-		$this->loader->load_directory( $folder_path );
+		$this->loader->load_directory( $folder_path );		
 	}
 	protected function load_directories( $folders = array() ){
 		foreach( $folders as $directory_name ){
@@ -121,6 +123,9 @@ abstract class Cloud_Forms {
 		self::enqueue_style( 'reset' ); 		
 		self::enqueue_style( __CLASS__ .'-global', self::get_folder_url() .'/_css/Cloud_Forms_Global.css' ); 		
 		self::enqueue_style( __CLASS__, self::get_folder_url() .'/_css/Cloud_Forms.css' ); 
+	}
+	protected function set_local_javascript_vars(){
+		$this->global_js_vars = false; 
 	}
 	public static function enqueue_script( $handle, $path = false , $dependencies = false ){
 		if ( $path ){
