@@ -43,13 +43,16 @@
 		$starting_array_level = array_shift( $this->array_hierarchy ) ;
 		while( ! isset( $this->form_spec[ $starting_array_level ] ) && sizeof( $this->array_hierarchy ) > 0 ){
 			$starting_array_level = array_shift( $this->array_hierarchy ) ;
-		}		
+		}	
+			
 		$validation_spec = $this->form_spec[ $starting_array_level ] ;
 		foreach( $validation_spec as $slug => $spec ){			
 
 			$post_data = isset( $this->form_data[ $slug ] ) ? $this->form_data[ $slug ] : array() ;
 			$validation_spec[ $slug ] = $this->get_field_validation_spec( $post_data , &$spec, $this->array_hierarchy  ); 			
 		}
+
+		
 		return $validation_spec ; 		
 	}
 	protected function get_field_validation_spec( $post_data, &$spec, $array_hierarchy, $errors = array() ){
