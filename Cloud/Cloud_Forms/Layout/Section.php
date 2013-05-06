@@ -37,6 +37,7 @@
 				if ( $spec['ajax'] ){
 					$classes[] = 'ajax' ;
 				}				
+				$layout_vars[ 'json_spec' ] = $spec['ajax'] ? '<div id="json_spec_'.$section_slug.'" style="display:none !important;">'.json_encode( $spec ).'</div>' : '' ;
 				// set up a hidden input that identifies the form in the $_POST request
 				$layout_vars[ 'form_id_field' ] = '<input type="hidden" name="form_id" value="' . $section_slug . '" />' ;
 				// set up submit button html 
@@ -68,7 +69,6 @@
 			ob_start();	?>
 			<div class='<?php echo $classes; ?>'>
 				<div class="header">
-					HERE			    
 			    	<?php echo $title; ?>
 			    	<?php echo $description; ?>
 				</div>
@@ -95,14 +95,17 @@
 				    	<?php echo $title; ?>
 				    	<?php echo $description; ?>
 					</div>
-				    <table class="form-table">
-					    <?php foreach ( $fields as $field ) { ?>
-					    	<?php echo $field; ?>
-					    <?php } ?>				    
-					</table>
+					<div class="fields">
+				    <?php foreach ( $fields as $field ) { ?>
+				    	<?php echo $field; ?>
+				    <?php } ?>
+					</div>
+					<div class="footer">
+					
+					<?php echo $json_spec; ?>
 					<?php echo $form_id_field; ?>
 			    	<?php echo $submit_button; ?>
-					
+					</div>
 				</form>						
 			</div>
 			<?php 

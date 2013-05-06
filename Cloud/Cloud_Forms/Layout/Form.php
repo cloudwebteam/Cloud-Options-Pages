@@ -31,6 +31,8 @@
 		
 			// set up submit button html 
 			$layout_vars['submit_button' ] = '<p class="submit"><input type="submit" class="button-primary" value="Save Changes" /></p>';
+
+			$layout_vars[ 'json_spec' ] = $spec['ajax'] ? '<div id="json_spec_'.$form_slug.'" style="display:none !important;">'.json_encode( $spec ).'</div>' : '' ;
 			
 			// get sections' html 
 			foreach( $spec['sections'] as $section_slug => $section_spec ){
@@ -50,7 +52,8 @@
 				<form data-id="<?php echo $form_slug; ?>" action="" method="post">
 				    <?php foreach ( $sections as $section ) { ?>
 				    	<?php echo $section; ?>
-				    <?php } ?>		    
+				    <?php } ?>		
+				    <?php echo $json_spec; ?>    
 					<?php echo $form_id_field; ?>				    
 				    <?php echo $submit_button; ?>
 			    </form>
