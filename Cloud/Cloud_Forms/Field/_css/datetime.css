@@ -1,3 +1,6 @@
+.field.type-datetime .input {
+	margin-right: 45px; 
+}
 .cloud-form .field .input-append {
 	margin-bottom: 0px;
 	margin-left: 10px; 

@@ -105,7 +105,9 @@ class Cloud_Field {
 			$components['description'] = $description ; 
 		}
 		if ( $error = $this->get_error() ){
-			$components['error'] = $error;		
+			$components['error'] =  '<div class="error">'.$error.'</div>';		
+		} else {
+			$components['error'] =  '<div class="error"></div>' ; 
 		}
 		$extra_components = $this->make_extra_components( );		
 		if ( is_array($extra_components) && sizeof( $extra_components ) > 0 ){
@@ -125,9 +127,7 @@ class Cloud_Field {
 	}
 	// each field needs to know how to create itself. This is where they do it. 
 	protected function get_field_html(){ echo 'this field needs to implement get_field_html()'; }
-	protected function get_error(){
-		return isset( $this->spec['validation_error'] ) && ! is_array( $this->spec['validation_error'] ) ? '<span class="error">'.$this->spec['validation_error'] .'</spec>' : '' ;
-	}
+
 	// optional, allows each field to create its own necessary components, returns array of components. 
 	protected function make_extra_components( ){
 		return array();
@@ -244,6 +244,9 @@ class Cloud_Field {
 		}
 		return $description;
 	}
+	protected function get_error(){
+		return isset( $this->spec['validation_error'] ) && ! is_array( $this->spec['validation_error'] ) ? $this->spec['validation_error'] : false ;
+	}	
 	protected function get_attributes( ){
 
 		$classes = array(); 

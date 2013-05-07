@@ -1,6 +1,7 @@
 .field.type-time .input {
 	width: 80px;
 	position: relative;
+	margin-right: 45px; 
 }
 .field.type-time .bootstrap-timepicker {
 	max-width: 100%;
