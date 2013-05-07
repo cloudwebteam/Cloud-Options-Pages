@@ -311,44 +311,29 @@
 	display: none; 
 }
 /***====================================================================================================================================
-		OPTIONS PAGE - SPECIFIC
+		LAYOUTS
 	==================================================================================================================================== ***/
-.cloud-form.options-page .field .title {
-	margin-right: 70px;
-	white-space: nowrap;
-	float: none;
-	clear: none;
-}
-.cloud-form.options-page .section.standard th > .label {
+.cloud-form .tabs li {
 	float: left; 
-	width: 70%; 
 }
-/***====================================================================================================================================
-		METABOX - SPECIFIC
-	==================================================================================================================================== ***/
-.cloud-form.metabox {
-	padding: .5em 0 0 0 ; 
+.cloud-form .tabs li:first-child a {
+	padding-left: 0; 
 }
-.cloud-form.metabox > .header {
-	border-bottom: 1px solid #ccc; 
-	padding: 0 0 .5em 0;
-	margin-bottom: 1em; 
+
+.cloud-form .tabs li a {
+	display: block; 
+	padding: .5em 10px; 
+	color: #999;
+	text-decoration: none; 
 }
-.cloud-form.metabox .field {
-	padding-bottom: .5em ;
-}
-.cloud-form.metabox label,
-.cloud-form.metabox .label {
-	position: relative; 
+.cloud-form .tabs li.active a {
+	color: #333;
 	font-weight: bold; 
-	font-size: 1em;
-}
-/* on side */
-#side-sortables .cloud.metabox .clone {
-	margin-right: 25px;
 }
 
-
+.cloud-form .tabs li.has-error a {
+	color: #cc0000;
+}
 /***====================================================================================================================================
 		MISCELLANEOUS
 	==================================================================================================================================== ***/

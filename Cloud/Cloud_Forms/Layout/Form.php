@@ -15,7 +15,11 @@
 			// get sections' html 
 			foreach( $spec['sections'] as $section_slug => $section_spec ){
 				$layout = Layout_Section::get_layout_function( $section_spec['layout'] );
-				$layout_vars['sections'][] = Layout_Section::$layout( $section_slug, $section_spec, $spec ) ;
+				$layout_vars['sections'][ $section_slug ] = array( 
+					'html' => Layout_Section::$layout( $section_slug, $section_spec, $spec ),
+					'title' => $section_spec['title'], 
+					'description' => $section_spec['description']
+				);
 			}
 			return $layout_vars; 		
 		}
@@ -27,8 +31,8 @@
 			<div id="form-<?php echo $form_slug; ?>" class="<?php echo $classes; ?>">
 				<form data-id="<?php echo $form_slug; ?>" action="" method="post">
 					<?php echo $header ; ?>
-				    <?php foreach ( $sections as $section ) { ?>
-				    	<?php echo $section; ?>
+				    <?php foreach ( $sections as $section_slug => $section ) { ?>
+				    	<?php echo $section['html']; ?>
 				    <?php } ?>		
 				    <?php echo $footer; ?>
 			    </form>
@@ -44,14 +48,27 @@
 			<div id="form-<?php echo $form_slug; ?>" class="<?php echo $classes; ?>">
 				<form data-id="<?php echo $form_slug; ?>" action="" method="post">
 					<?php echo $header ; ?>			
-				    <?php foreach ( $sections as $section ) { ?>
-				    	<?php echo $section; ?>
+			    	<ul class="tabs cf">
+			    	<?php foreach ( $sections as $section_slug => $section ) { ?>			    	
+				    	<li class="section-<?php echo $section_slug; ?>-tab" ><a title="<?php echo $section['description']; ?>" href="#<?php echo $form_slug; ?>_<?php echo $section_slug; ?>"><?php echo $section['title']; ?></a></li>
+					    <?php } ?>
+			    	</ul>
+			    	<div class="tabs-content">
+				    <?php foreach ( $sections as $section_slug => $section ) { ?>
+			    		<div id="<?php echo $form_slug; ?>_<?php echo $section_slug; ?>">
+				    		<?php echo $section['html']; ?>
+			    		</div>
+
 				    <?php } ?>		
+				    </div>				    
 				    <?php echo $footer; ?>
 			    </form>
 			</div>
 			<?php
 			return ob_get_clean();			
+		}
+		public static function tabs_animated( $form_slug = '' , $spec = '' ){
+			return self::tabs( $form_slug , $spec ); 
 		}
 		
 	}
