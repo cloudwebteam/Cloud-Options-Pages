@@ -19,6 +19,7 @@ abstract class Cloud_Forms {
 	protected static $registered_styles ;
 	protected static $styles; 
 	
+	protected $directories_to_load = array( 'Field', 'Layout' ); 
 	protected $validation_enabled = false ;
 	
 	protected function __construct(){
@@ -27,7 +28,7 @@ abstract class Cloud_Forms {
 		$this->loader = Cloud_Loader::get_instance();		
 
 		// loads folder with this class's name	
-		$this->load_directories( array( 'Field', 'Layout' ) ); 	
+		$this->load_directories( ); 	
 		
 		// load global scripts and styles	
 		$this->load_global_scripts(); 
@@ -58,7 +59,7 @@ abstract class Cloud_Forms {
 		$this->loader->load_directory( $folder_path );		
 	}
 	protected function load_directories( $folders = array() ){
-		foreach( $folders as $directory_name ){
+		foreach( $this->directories_to_load as $directory_name ){
 			$this->load_directory( $directory_name );
 		}
 	}
@@ -233,7 +234,7 @@ abstract class Cloud_Forms {
 	/***====================================================================================================================================
 			HANDLE DEFAULTS
 		==================================================================================================================================== ***/
-	private function set_defaults(){
+	protected function set_defaults(){
 		// declared in defaults.php	
 		global $cloud_form_defaults; 
 		return $cloud_form_defaults;
@@ -264,8 +265,10 @@ abstract class Cloud_Forms {
 		foreach ( $section['fields'] as $field_slug => $field ){
 			$_section['fields'][$field_slug] = array();  
 			$_field =& $_section['fields'][$field_slug]; 
-			$_field['section_slug'] = !empty( $section['section_slug'] ) ? $section['section_slug'] : false ; 
-			$_field['form_slug'] = $section[ 'form_slug' ];
+			$_field['top_level_slug'] = isset( $section[ 'top_level_slug' ] ) ? $section['top_level_slug'] : false ; 			
+			$_field['form_slug'] = isset( $section[ 'form_slug' ] ) ? $section['form_slug'] : false ; 
+			$_field['subpage_slug'] = isset( $section[ 'subpage_slug' ] ) ? $section['subpage_slug'] : false ; 
+			$_field['section_slug'] = isset( $section[ 'section_slug' ] ) ? $section['section_slug'] : false ; 
 			$_field['field_slug'] = $field_slug; 
 
 			$type = '';
@@ -323,7 +326,9 @@ abstract class Cloud_Forms {
 				foreach ( $field['subfields'] as $subfield_slug => $subfield ){
 					$_field['subfields'][$subfield_slug]= array();  
 					$_subfield =& $_field['subfields'][$subfield_slug]; 
-					$_subfield['form_slug'] = $section[ 'form_slug' ];					
+					$_field['top_level_slug'] = isset( $section[ 'top_level_slug' ] ) ? $section['top_level_slug'] : false ; 			
+					$_subfield['form_slug'] = isset( $section[ 'form_slug' ] ) ? $section['form_slug'] : false ; 
+					$_subfield['subpage_slug'] = isset( $section[ 'subpage_slug' ] ) ? $section['subpage_slug'] : false ; 
 					$_subfield['section_slug'] = isset( $section[ 'section_slug' ] ) ? $section['section_slug'] : false ; 
 					$_subfield['field_slug'] = $field_slug ;		
 					$_subfield['subfield_slug'] = $subfield_slug ;
@@ -383,6 +388,12 @@ abstract class Cloud_Forms {
 		}		
 		return $_section ;
 
+	}
+	/***====================================================================================================================================
+			PUBLIC FUNCTIONS
+		==================================================================================================================================== ***/
+	public function get_spec( $form_slug ){
+		return !empty( $this->spec[$form_slug] ) ? $this->spec[ $form_slug ] : false ;
 	}
 	
 	/***====================================================================================================================================

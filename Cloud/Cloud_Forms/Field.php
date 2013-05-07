@@ -13,6 +13,7 @@ class Cloud_Field {
 	
 	protected function __construct( $spec ){
 		$this->spec = $spec ;
+		$this->is_WP = isset( $this->spec['subpage_slug'] ); 
 		$this->is_subfield = isset( $this->spec['subfield_slug'] ) ;
 		$this->enqueue_scripts_and_styles(); 
 		$this->info = $this->setup_information(); 
@@ -27,56 +28,13 @@ class Cloud_Field {
 		$this->{ $this->layout }(); 
 	}
 	protected function setup_information(){
-		$form_slug = $this->spec['form_slug'];
-		$section_slug = $this->spec['section_slug'];
-		
-		$field_slug = $this->spec['field_slug']; 
-
-		// if its part of a complex, multi-section form
-		if ( $section_slug ){
-			$input_id = $form_slug . '_' . $section_slug . '_' . $field_slug ;			
-			$name = $section_slug.'['.$field_slug.']' ;
-		// if its a standAlone form
+		if ( $this->is_WP ){
+			$info = WP_Cloud_Field_Atts::get( $this->spec ); 
 		} else {
-			$input_id  = $form_slug . '_'.$field_slug ; 
-			$name = $field_slug ;
+			$info = Cloud_Field_Atts::get( $this->spec ); 		
 		}
- 
-		$value = $this->get_value( $field_slug, $section_slug );
-
-		$cloneable =  isset( $this->spec['cloneable'] ) ? $this->spec['cloneable'] : false;
-		$default_value =  isset( $this->spec['default'] ) ? $this->spec['default'] : ''; 
-			
-		// part of a group?
+		return $info ;
 		
-		if ( $this->is_subfield ){
-			$subfield_slug = isset( $this->spec['subfield_slug'] ) ? $this->spec['subfield_slug'] : '' ; 
-			$group_number = isset( $this->spec['group_number'] ) ? $this->spec['group_number'] : 0 ;		
-			$value = $value && isset( $value[$group_number][$subfield_slug] ) ? $value[$group_number][$subfield_slug] : ''; 
-			$name = $name . '['.$group_number.']['.$subfield_slug.']'; 	
-			$input_id = $input_id . '_' . $subfield_slug . '-' .$group_number ;				
-			$cloneable = false;
-		}
-
-		$info = array(); 		
-		$info['title'] = $this->spec['title'];
-		$info['cloneable'] = $cloneable ;
-	
-		$info['clone_controls'] = isset( $this->spec['clone_controls'] ) ? $this->spec['clone_controls'] : true; 
-		$info['sort'] = isset( $this->spec['sort'] ) ? $this->spec['sort'] : true; 
-	
-		$info['name'] = $name; 
-		$info['description'] = $this->spec['description'] ;
-		$info['id']   = Cloud_prefix . $input_id;
-		$info['value'] = $value !== false && $value !== null ? $value : $default_value;
-		$info['default'] = $default_value; 
-		
-		$info['layout'] = isset ($this->spec['layout'] ) ? $this->spec['layout'] : 'default';
-		$info['width'] = isset( $this->spec['width'] ) ? $this->spec['width'] : 6; 
-		$info['save_json'] = false ;
-		$info['is_subfield'] = $this->is_subfield ;
-		
-		return $info;
 	}
 	protected function get_value( $field_slug, $section_slug = '' , $form_slug = '' ){
 		if ( isset( $_REQUEST['form_id'] ) && $_REQUEST['form_id'] === $this->spec['form_slug'] ){
@@ -105,9 +63,9 @@ class Cloud_Field {
 			$components['description'] = $description ; 
 		}
 		if ( $error = $this->get_error() ){
-			$components['error'] =  '<div class="error">'.$error.'</div>';		
+			$components['error'] =  '<div class="cloud-error">'.$error.'</div>';		
 		} else {
-			$components['error'] =  '<div class="error"></div>' ; 
+			$components['error'] =  '<div class="cloud-error"></div>' ; 
 		}
 		$extra_components = $this->make_extra_components( );		
 		if ( is_array($extra_components) && sizeof( $extra_components ) > 0 ){

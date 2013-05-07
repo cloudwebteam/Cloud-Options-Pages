@@ -214,12 +214,13 @@
 .field.has-error > * > .label {
 	color: #cc0000;
 }
-.field .error {
+.field .cloud-error {
 	color: #cc0000; 
 	font-size: .875em;
 	display: none;  
+	border: none; 
 }
-.field .input + .error {
+.field .input + .cloud-error {
 	padding-top: 8px; 
 }
 /***====================================================================================================================================
