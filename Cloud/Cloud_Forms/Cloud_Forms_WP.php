@@ -118,6 +118,7 @@ class Cloud_Forms_WP extends Cloud_Forms {
 				$position = $top_level_page['priority'] ; 
 				$function = array( 'Layout_WP_Page' , Layout_WP_Page::get_layout_function( $same_name_subpage[ 'layout' ] ) ) ;
 				add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position );
+
 			} else {
 				echo 'Cloud Notice: You have not added a subpage with the top level slug <br />' ; 
 			}

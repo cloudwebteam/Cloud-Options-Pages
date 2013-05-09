@@ -15,7 +15,7 @@
 
 			$layout_vars['header'] = self::get_form_header( $form_slug, $spec ); 		
 			ob_start();
-				settings_fields( $form_slug, $form_slug );
+				settings_fields( $form_slug );
 			$layout_vars['header'] .= ob_get_clean();	
 			ob_start(); 
 				submit_button(); 
@@ -74,7 +74,7 @@
 			extract( self::get_layout_info( ), EXTR_OVERWRITE );
 			?>
 			<div id="form-<?php echo $form_slug; ?>" class="<?php echo $classes; ?>">
-				<form data-id="<?php echo $form_slug; ?>" action="" method="post">
+				<form data-id="<?php echo $form_slug; ?>" action="options.php" method="post">
 					<?php echo $header ; ?>		
 			    	<ul class="tabs cf">
 			    	<?php foreach ( $sections as $section_slug => $section ) { ?>			    	

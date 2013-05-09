@@ -45,6 +45,7 @@
 	}
 	protected static function get_value( $top_level_slug, $subpage_slug, $section_slug, $field_slug ){
 		$Forms = Cloud_Forms_WP::get_instance(); 
+
 		return $Forms->get_saved_data( $top_level_slug, $subpage_slug, $section_slug, $field_slug ); 
 	}		
 }
