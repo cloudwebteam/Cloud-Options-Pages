@@ -3,6 +3,7 @@ class Cloud_Field {
 	public static $default_type = 'text' ;
 	public static $default_layout = 'custom' ; 
 	public static $class_prefix = 'Cloud_Field_' ; 
+	public static $is_WP = false; 
 	protected static $default_value ;
 	protected $layout = 'default'; // fallback layout type
 	protected $layouts = array();
@@ -13,9 +14,7 @@ class Cloud_Field {
 	
 	protected function __construct( $spec ){
 		$this->spec = $spec ;
-		$this->is_WP = isset( $this->spec['subpage_slug'] ); 
 		$this->is_subfield = isset( $this->spec['subfield_slug'] ) ;
-		$this->enqueue_scripts_and_styles(); 
 		$this->info = $this->setup_information(); 
 		$this->attributes = $this->get_attributes() ;
 		$this->layout = $this->get_layout();
@@ -28,7 +27,7 @@ class Cloud_Field {
 		$this->{ $this->layout }(); 
 	}
 	protected function setup_information(){
-		if ( $this->is_WP ){
+		if ( self::$is_WP ){
 			$info = WP_Cloud_Field_Atts::get( $this->spec ); 
 		} else {
 			$info = Cloud_Field_Atts::get( $this->spec ); 		
@@ -55,7 +54,7 @@ class Cloud_Field {
 			$components['field'] = $this->make_cloneable( );
 		} else {
 			if ( $field = $this->get_field_html( ) ){
-				$components['field'] = '<div class="input cf">'.$field.'</div>'; 		
+				$components['field'] = '<div class="input cf">'.$field. $this->copy_to_use() .'</div>'; 		
 			}
 		}			
 			
@@ -191,8 +190,20 @@ class Cloud_Field {
 		return $clone ;
 	}
 	protected function get_label(){
-		$label = "<label class='title' for='". $this->info['id'] . "' >" . $this->info['title'] ."</label>";
+		$label = "<label class='title' for='". $this->info['id'] . "' >" . $this->info['title'] . "</label>";
 		return $label;
+	}
+	protected function copy_to_use(){
+		if ( !empty( $this->info['to_retrieve'] ) ){
+			ob_start();?>
+			<span class="copy_to_use">
+				Use: <input type="text" value='<?php echo $this->info['to_retrieve'] ; ?>' />
+			</span>
+		<?php 
+			return ob_get_clean();
+		} else {
+			return false; 
+		}
 	}
 	protected function get_description( ){
 		if ( isset( $this->info['description'] ) && $this->info['description'] ){
@@ -293,27 +304,36 @@ class Cloud_Field {
 			</div>		
 		<?php
 	}	
-	protected function enqueue_script( $handle, $path = '' , $dependencies = '' ){
-		Cloud_Forms_StandAlone::enqueue_script( $handle, $path, $dependencies ); 
+	protected static function enqueue_script( $handle, $path = '' , $dependencies = '' ){
+		if ( self::$is_WP ){
+			Cloud_Forms_WP::enqueue_script( $handle, $path, $dependencies ); 
+		} else {
+			Cloud_Forms_StandAlone::enqueue_script( $handle, $path, $dependencies ); 
+		}
 	}
-	protected function enqueue_style( $handle, $path = '', $dependencies = '' ){
-		Cloud_Forms_StandAlone::enqueue_style( $handle, $path, $dependencies ); 
+	protected static function enqueue_style( $handle, $path = '', $dependencies = '' ){
+		if ( self::$is_WP ){
+			Cloud_Forms_WP::enqueue_style( $handle, $path, $dependencies ); 		
+		} else {
+			Cloud_Forms_StandAlone::enqueue_style( $handle, $path, $dependencies ); 
+		}
 	}	
-	public function enqueue_scripts_and_styles( ){
-	
-		$class_name = get_class( $this ) ;
-		$field_type = $this->spec['type']; 
+	public static function enqueue_scripts_and_styles( $field_type = false ){
+
+		$class_name = self::get_class_name( $field_type ); 
 		if ( $field_type ){		
-		
 			$js_abs = self::get_include_path() . '/_js/'.$field_type.'.js' ; 
 			$css_abs = self::get_include_path() . '/_css/'.$field_type.'.css' ; 
+			
 			if ( file_exists( $js_abs ) ){
-				$js_path = self::get_folder_url() . '/_js/'.$field_type.'.js' ; 
-				$this->enqueue_script( $class_name, $js_path, array( 'Cloud_Forms' ));
+			
+				$js_path = self::get_folder_url() . '/_js/'.$field_type.'.js' ; 				
+				self::enqueue_script( $class_name, $js_path, array( 'Cloud_Forms' ));
 			} 
 			if ( file_exists( $css_abs ) ){
+			
 				$css_path = self::get_folder_url() . '/_css/'.$field_type.'.css' ; 
-				$this->enqueue_style( $class_name, $css_path, array( 'Cloud_Forms' ));
+				self::enqueue_style( $class_name, $css_path, array( 'Cloud_Forms' ));
 			}
 		}
 

@@ -160,26 +160,39 @@
 	==================================================================================================================================== ***/
 .copy_to_use {
 	position: absolute;
-	left: 100%; 
-	top: -7px;
-	margin-left: 10px; 
+	right: 0; 
+	bottom: 100%; 
+	margin-left: 3px; 
 	display: inline-block;
-	padding: 5px;
-	height: 1em; 
+	padding: 3px;
+	height: auto; 
+	font-size: .75em;
+	color: #21779D;
 	font-family: monospace;	
 	display: none;
-}
-.copy_to_use > a {
-	display: block;
-	line-height: 1em;
-	background: #fafafa;
-	border: 1px #efefef solid;
-	border-radius: 3px;
-	padding: .375em 5px;
 	z-index: 100;
-	cursor: pointer;
-	float: right;
-	font-weight: normal; 
+	text-transform: uppercase;
+}
+.copy_to_use > input {
+	background: #fff;
+	width: 100px;	
+	border: 1px solid #ccc;
+	-webkit-transition: all .2s ease-out;
+	-moz-transition: all .2s ease-out;
+    -ms-transition: all .2s ease-out;
+    -o-transition: all .2s ease-out;
+	transition: all .2s ease-out;	
+}
+.copy_to_use.active > input {
+	width: 250px; 	
+	border: 1px solid #aaa;
+	background: #efefec;
+	box-shadow: 0 0 3px #24B2FF;
+	-webkit-transition: all .2s ease-in;
+	-moz-transition: all .2s ease-in;
+    -ms-transition: all .2s ease-in;
+    -o-transition: all .2s ease-in;
+	transition: all .2s ease-in;		
 }
 .field:hover .copy_to_use {
 	display: block;

@@ -20,9 +20,9 @@ class Cloud_Field_time extends Cloud_Field {
 		return $field;
 	}
 	
-	public function enqueue_scripts_and_styles( ){
-		$this->enqueue_script( 'bootstrap-timepicker' ); 
-		$this->enqueue_style( 'bootstrap-timepicker' );
+	public static function enqueue_scripts_and_styles( ){
+		self::enqueue_script( 'bootstrap-timepicker' ); 
+		self::enqueue_style( 'bootstrap-timepicker' );
 
 		// if they exist, enqueues css and js files with this fields name
 		parent::enqueue_scripts_and_styles( ); 

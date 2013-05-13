@@ -3,13 +3,19 @@ jQuery( function($){
 // handle copy_to_use code link
    
    // popup useful code snippets
-   $('a[rel="copy_to_use"]').click( function(e){
+   $('.copy_to_use input').click( function(e){
    		e.preventDefault();
-   		$(this).siblings('.copy-container').show().find('input').select().blur( function(){
-   			$(this).parents('.copy-container').hide();
-   		});
+   		var $input = $(this); 
+   		var $container = $input.parent(); 
+   		$input.select();
+   		$container.addClass('active'); 
    		
-   }); 
+   });    
+   $('.copy_to_use input').blur( function(e){
+   		var $input = $(this); 
+   		var $container = $input.parent(); 
+   		$container.removeClass('active');
+   	});   
    
  // handle cloneable fields
 	var setup_remove_click = function( elems ){

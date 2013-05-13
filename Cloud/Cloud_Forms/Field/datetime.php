@@ -45,10 +45,10 @@ class Cloud_Field_datetime extends Cloud_Field {
         $field .= '</div>' ;	
         return $field; 
 	}
-	public function enqueue_scripts_and_styles( ){
+	public static function enqueue_scripts_and_styles( ){
 
-		$this->enqueue_script( 'jquery-ui-datepicker' ) ;
-		$this->enqueue_script( 'bootstrap-timepicker' ) ; 
+		self::enqueue_script( 'jquery-ui-datepicker' ) ;
+		self::enqueue_script( 'bootstrap-timepicker' ) ; 
 		parent::enqueue_scripts_and_styles( ) ; 
 	}		
 	public static function get_option(  $value , $spec ){

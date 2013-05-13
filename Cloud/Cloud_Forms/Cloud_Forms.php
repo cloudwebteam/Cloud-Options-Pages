@@ -113,7 +113,7 @@ abstract class Cloud_Forms {
 		self::register_script( 'bootstrap-timepicker', self::get_folder_url() . '/__inc/bootstrap_timepicker/bootstrap-timepicker.min.js', array( 'jquery') ); 
 		
 		self::enqueue_script( 'jquery' ); 
-		self::enqueue_script( __CLASS__, self::get_folder_url() .'/_js/Cloud_Forms.js', array( 'jquery', 'scrollTo' ) ); 
+		self::enqueue_script( 'Cloud_Forms', self::get_folder_url() .'/_js/Cloud_Forms.js', array( 'jquery', 'scrollTo' ) ); 
 		self::enqueue_script( 'Cloud_Field', self::get_folder_url() .'/_js/Cloud_Field.js', array( 'jquery' ) ); 		
 	}
 	protected function load_global_styles(){	
@@ -264,11 +264,15 @@ abstract class Cloud_Forms {
 
 		foreach ( $section['fields'] as $field_slug => $field ){
 			$_section['fields'][$field_slug] = array();  
-			$_field =& $_section['fields'][$field_slug]; 
-			$_field['top_level_slug'] = isset( $section[ 'top_level_slug' ] ) ? $section['top_level_slug'] : false ; 			
-			$_field['form_slug'] = isset( $section[ 'form_slug' ] ) ? $section['form_slug'] : false ; 
-			$_field['subpage_slug'] = isset( $section[ 'subpage_slug' ] ) ? $section['subpage_slug'] : false ; 
-			$_field['section_slug'] = isset( $section[ 'section_slug' ] ) ? $section['section_slug'] : false ; 
+			$_field =& $_section['fields'][$field_slug];
+			if ( isset( $section['metabox_slug'] ) ){
+				$_field['metabox_slug'] = $section['metabox_slug'] ; 
+			} else {
+				$_field['top_level_slug'] = isset( $section[ 'top_level_slug' ] ) ? $section['top_level_slug'] : false ; 			
+				$_field['form_slug'] = isset( $section[ 'form_slug' ] ) ? $section['form_slug'] : false ; 
+				$_field['subpage_slug'] = isset( $section[ 'subpage_slug' ] ) ? $section['subpage_slug'] : false ; 
+				$_field['section_slug'] = isset( $section[ 'section_slug' ] ) ? $section['section_slug'] : false ; 
+			}
 			$_field['field_slug'] = $field_slug; 
 
 			$type = '';
@@ -291,7 +295,10 @@ abstract class Cloud_Forms {
 			}
 			// set type
 			$_field['type'] = $type ;
- 
+ 			
+			$field_classname = Cloud_Field::get_class_name( $type );
+			$field_classname::enqueue_scripts_and_styles( $type ) ;	// only this early to get them in Wordpress's queue early enough
+		
 			// go through defaults for that type
 			if ( isset(  $defaults['fields'][$type] ) ) {
 				$field_defaults =  $defaults['fields'][$type] ; 
@@ -326,10 +333,14 @@ abstract class Cloud_Forms {
 				foreach ( $field['subfields'] as $subfield_slug => $subfield ){
 					$_field['subfields'][$subfield_slug]= array();  
 					$_subfield =& $_field['subfields'][$subfield_slug]; 
-					$_field['top_level_slug'] = isset( $section[ 'top_level_slug' ] ) ? $section['top_level_slug'] : false ; 			
-					$_subfield['form_slug'] = isset( $section[ 'form_slug' ] ) ? $section['form_slug'] : false ; 
-					$_subfield['subpage_slug'] = isset( $section[ 'subpage_slug' ] ) ? $section['subpage_slug'] : false ; 
-					$_subfield['section_slug'] = isset( $section[ 'section_slug' ] ) ? $section['section_slug'] : false ; 
+					if ( isset( $section['metabox_slug'] ) ){
+						$_subfield['metabox_slug'] = $section['metabox_slug'] ; 
+					} else {
+						$_subfield['top_level_slug'] = isset( $section[ 'top_level_slug' ] ) ? $section['top_level_slug'] : false ; 			
+						$_subfield['form_slug'] = isset( $section[ 'form_slug' ] ) ? $section['form_slug'] : false ; 
+						$_subfield['subpage_slug'] = isset( $section[ 'subpage_slug' ] ) ? $section['subpage_slug'] : false ; 
+						$_subfield['section_slug'] = isset( $section[ 'section_slug' ] ) ? $section['section_slug'] : false ; 
+					}
 					$_subfield['field_slug'] = $field_slug ;		
 					$_subfield['subfield_slug'] = $subfield_slug ;
 
@@ -358,7 +369,10 @@ abstract class Cloud_Forms {
 						$subfield_defaults =  $defaults['fields'][$subfield_type] ; 
 					} else {
 						$subfield_defaults = $defaults['fields']['general'] ;
-					}									
+					}
+					$field_classname = Cloud_Field::get_class_name( $subfield_type );
+					$field_classname::enqueue_scripts_and_styles( $subfield_type ) ;	// only this early to get them in Wordpress's queue early enough
+					
 					foreach ( $subfield_defaults as $key => $subfield_default_value ) {
 						if ( isset( $subfield[$key] ) ){
 							$set_value = $subfield[$key];  

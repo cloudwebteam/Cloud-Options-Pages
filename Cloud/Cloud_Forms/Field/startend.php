@@ -76,12 +76,12 @@ class Cloud_Field_startend extends Cloud_Field {
         $field .= '</div>' ;	
         return $field ;
     }		
-	public function enqueue_scripts_and_styles( ){
+	public static function enqueue_scripts_and_styles( ){
 
-		$this->enqueue_script( 'bootstrap-timepicker' );
-		$this->enqueue_style( 'bootstrap-timepicker' );
+		self::enqueue_script( 'bootstrap-timepicker' );
+		self::enqueue_style( 'bootstrap-timepicker' );
 		
-		$this->enqueue_script( 'jquery-ui-datepicker' );
+		self::enqueue_script( 'jquery-ui-datepicker' );
 
 		parent::enqueue_scripts_and_styles( ); 
 	}	

@@ -45,7 +45,7 @@
 			}	
 			$Forms = Cloud_Forms_WP::get_instance(); 
 			$form_slug = $subpage ; 
-			$form_spec = $Forms->get_spec( $top_level, $subpage ) ; 
+			$form_spec = $Forms->get_page_spec( $top_level, $subpage ) ; 
 			return array( 
 				'top_level_slug' => $top_level,
 				'form_slug' => $form_slug, 
