@@ -116,9 +116,15 @@
 .cloud-form .field-row .label,
 .cloud-form .field-row .input,
 .cloud-form .field-row .description {
-	display: inline-block; 
+	display: block; 
 	position: relative; 
 }
+.cloud-form .field-row.inline-field-elements .label,
+.cloud-form .field-row.inline-field-elements .input,
+.cloud-form .field-row.inline-field-elements .description {
+	display: inline-block; 
+}
+
 .cloud-form .label { 
 	/* reset...collides with a bootstrap class */
 	width: auto; 
@@ -162,7 +168,6 @@
 	position: absolute;
 	right: 0; 
 	bottom: 100%; 
-	margin-left: 3px; 
 	display: inline-block;
 	padding: 3px;
 	height: auto; 
@@ -172,11 +177,18 @@
 	display: none;
 	z-index: 100;
 	text-transform: uppercase;
+	white-space: nowrap;
+}
+.copy_to_use .copy-label {
+	display: inline-block;
+	position: relative; 
+	top: -4px;  
 }
 .copy_to_use > input {
 	background: #fff;
 	width: 100px;	
 	border: 1px solid #ccc;
+	display: inline-block; 	
 	-webkit-transition: all .2s ease-out;
 	-moz-transition: all .2s ease-out;
     -ms-transition: all .2s ease-out;
@@ -193,6 +205,10 @@
     -ms-transition: all .2s ease-in;
     -o-transition: all .2s ease-in;
 	transition: all .2s ease-in;		
+}
+.inline-field-elements .copy_to_use {
+	left: 0; 
+	right: auto;
 }
 .field:hover .copy_to_use {
 	display: block;

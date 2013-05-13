@@ -57,11 +57,11 @@ class Cloud_Field_group extends Cloud_Field {
 		}
 		return $subfields;
 	}
-	public static function enqueue_scripts_and_styles(){
+	public static function enqueue_scripts_and_styles( $field_type ){
 		self::enqueue_script( 'jquery-ui-core' );
 		self::enqueue_script( 'jquery-ui-sortable' ); 		
 		// if they exist, enqueues css and js files with this fields name
-		parent::enqueue_scripts_and_styles( ); 
+		parent::enqueue_scripts_and_styles( $field_type ); 
 	}
 	// generates all the html for the groups so it can be stored and moved as $this->field
 	protected function get_groups_html(){ 

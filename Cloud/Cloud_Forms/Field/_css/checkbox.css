@@ -7,7 +7,6 @@
 
 .cloud .field.type-checkbox input {
 	position: relative ;
-	top: -4px; 
 	margin-right: 5px;
 }
 .field.type-checkbox .multiple-options {

@@ -121,7 +121,7 @@ abstract class Cloud_Forms {
 		self::register_style( 'bootstrap', self::get_folder_url() .'/__inc/bootstrap/css/bootstrap.min.css' ); 
 		self::register_style( 'bootstrap-responsive', self::get_folder_url() .'/__inc/bootstrap/css/bootstrap-responsive.min.css', array( 'bootstrap' ) ); 
 		
-		self::register_style( 'bootstrap-timepicker', self::get_folder_url(). '/__inc/bootstrap_timepicker/bootstrap-timepicker.min.css', array( 'bootstrap') );
+		self::register_style( 'bootstrap-timepicker', self::get_folder_url(). '/__inc/bootstrap_timepicker/bootstrap-timepicker.min.css');
 
 		self::enqueue_style( 'reset' ); 		
 		self::enqueue_style( __CLASS__ .'-global', self::get_folder_url() .'/_css/Cloud_Forms_Global.css' ); 		

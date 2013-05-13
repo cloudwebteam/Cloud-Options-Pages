@@ -32,11 +32,11 @@ class Cloud_Field_date extends Cloud_Field {
 		$field = '<input name="'.$this->info['name'] . '" data-dateformat="'.$this->date_format.'" type="text" id="'.$this->info['id'] . '" class="datepicker"  size="'.$this->size.'" value="' . $this->info['value'] . '" />';	
 		return $field; 
 	}
-	public static function enqueue_scripts_and_styles( ){
+	public static function enqueue_scripts_and_styles( $field_type ){
 
-		$this->enqueue_script( 'jquery-ui-datepicker' );
+		self::enqueue_script( 'jquery-ui-datepicker' );
 
-		parent::enqueue_scripts_and_styles( ); 
+		parent::enqueue_scripts_and_styles( $field_type ); 
 	}	
 	
    /**

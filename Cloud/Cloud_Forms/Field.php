@@ -120,7 +120,7 @@ class Cloud_Field {
 					}
 					
 					if ( $row_components ){ ?>
-					<div class="field-row">
+					<div class="field-row inline-field-elements">
 						<?php echo $row_components ; ?>
 					</div>
 					<?php }
@@ -197,7 +197,7 @@ class Cloud_Field {
 		if ( !empty( $this->info['to_retrieve'] ) ){
 			ob_start();?>
 			<span class="copy_to_use">
-				Use: <input type="text" value='<?php echo $this->info['to_retrieve'] ; ?>' />
+				<span class="copy-label">Use:</span> <input type="text" value='<?php echo $this->info['to_retrieve'] ; ?>' />
 			</span>
 		<?php 
 			return ob_get_clean();

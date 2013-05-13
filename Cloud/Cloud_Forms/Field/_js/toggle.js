@@ -2,7 +2,7 @@ jQuery( function($){
 	$('.field.type-toggle .input input').each( function(e){
 		var input = $(this); 
 		var field = input.parents( '.field.type-toggle' );
-		var section = field.parents( '.section' ); 
+		var section = field.parents( '.section, .metabox' ); 
 		var is_subfield = field.parents( '.field' ).size() > 0 ; 
 		
 		var data_to_show = input.data('show'); 
@@ -67,7 +67,7 @@ jQuery( function($){
 		input.click( function(){
 			input = $(this);
 		 	field = input.parents( '.field.type-toggle' );
-		 	section = field.parents( '.section' ); 
+		 	section = field.parents( '.section, .metabox' ); 
 		 	is_subfield = field.parents( '.field' ).size() > 0 ; 			
 		 	fields_to_show = parse_data( data_to_show ) ;
 		 	fields_to_hide = parse_data( data_to_hide ) ;
