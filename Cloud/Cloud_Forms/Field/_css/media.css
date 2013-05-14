@@ -33,14 +33,14 @@
 	float: left; 
 	position: relative; 
 }
-.field.type-media .image .remove {
+.field.type-media .image .remove-media {
 	position: absolute; 
 	left: 100%; 
 	top: 0; 
 	margin-left: 10px;
 	cursor: pointer;
 }
-.field.type-media .image .hidden + .remove {
+.field.type-media .image .hidden + .remove-media {
 	display: none;
 }
 .field.type-media .preview-image {

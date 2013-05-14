@@ -410,27 +410,31 @@ class Cloud_Forms_WP extends Cloud_Forms {
 				}
 			}
 		}
-		return $value ; 
+		return $this->convert_special_values( $value ); 
 	}	
 	public function get_metabox_data( $post_id, $metabox_slug, $field_slug = false, $clone_number = false, $subfield_slug = false ){
 		$value = false; 
 		$array_values = get_post_meta( $post_id, $metabox_slug, true );
-
+		$path_to_option = array( $metabox_slug ); 
 		
 		if ( $array_values ){
 			if ( $field_slug === false ){
 				$value = $array_values ; 
 			} else {
+				$path_to_option[] = $field_slug ; 
+
 				$array_values = isset( $array_values[ $field_slug ] ) ? $array_values[ $field_slug ] : false ;
 				if ( $array_values ){
 					if ( $clone_number === false ){
 						$value = $array_values ; 
 					} else {
+						$path_to_option[] = $clone_number ; 
 						$array_values = isset( $array_values[ $field_slug ][ $clone_number ] ) ? $array_values[ $field_slug ][ $clone_number ] : false ;
 						if ( $array_values ){
 							if ( $subfield_slug === false ){
 								$value = $array_values ; 
 							} else {
+								$path_to_option[] = $subfield_slug ; 
 								$array_values = isset( $array_values[ $field_slug ][ $clone_number ][ $subfield_slug ] ) ? $array_values[ $field_slug ][ $clone_number ][ $subfield_slug ] : false ;
 								if ( $array_values ){
 									$value = $array_values ; 
@@ -440,10 +444,89 @@ class Cloud_Forms_WP extends Cloud_Forms {
 					}
 				}
 			}
-		}								
-		return $value ;
+		}				
+		return $this->convert_dynamic_data( $value, $path_to_option, true ); 
 	}		
+	protected function has_dynamic_values( $value ){
+		if ( is_string( $value ) ){
+			return $this->is_JSON( $value ) ; 
+		} else if ( $value ){
+			$has_dynamic_data = false; 
+			array_walk_recursive( $value , array( $this, 'check_for_json' ), &$has_dynamic_data ); 
+			return $has_dynamic_data ; 
+		} 
+		return false; 
+	}
+	protected function check_for_json( $item, $key, &$has_json ){
+		if ( $this->is_JSON( $item ) ){
+			$has_json = true; 
+		}
+	}
+	protected function is_JSON( $string ){
+		json_decode($string);
+		return (json_last_error() == JSON_ERROR_NONE);
+	}
+	protected function convert_dynamic_data( $value , $path_to_option, $is_metabox = false ){	
 	
+		if ($this->has_dynamic_values( $value ) ){
+			if ( is_string( $value ) ){
+
+				$json_array = json_decode( $value, true ) ;
+				if ( $json_array && is_array( $json_array ) ){
+					// grab top_level page array
+
+					if ( $is_metabox ){
+						$array_spec = $this->metaboxes[ array_shift( $path_to_option ) ] ;
+						$spec_key_names = array( 'fields', 'subfields' ); 
+					} else {
+						$array_spec = $this->pages[ array_shift( $path_to_option ) ] ;
+						$spec_key_names = array( 'subpages', 'sections', 'fields', 'subfields' ); 					
+					}
+					
+					foreach( $path_to_option as $spec_key => $key_name ){
+						if ( ! is_numeric( $spec_key ) ){
+							if ( $spec_key ){
+								$array_spec = is_array( $array_spec[$spec_key] ) && isset( $array_spec[$spec_key][$key_name] ) ? $array_spec[$spec_key][$key_name] : $array_spec ;	
+							} else {
+								$array_spec = is_array( $array_spec ) && isset( $array_spec[$key] ) ? $array_spec[$key] : $array_spec ;													
+							}
+						} else {
+							if ( ! is_numeric( $key_name ) ){
+								$still_looking = true;
+								while ( $still_looking && sizeof( $spec_key_names ) > 0 ){
+									$spec_key = array_shift( $spec_key_names ) ;
+									if ( isset( $array_spec[$spec_key] ) &&  is_array( $array_spec[$spec_key] ) && isset( $array_spec[$spec_key][$key_name] ) ){
+										$array_spec =  $array_spec[$spec_key][$key_name] ;	
+									}						
+								}
+							}
+						}										
+					}
+			
+
+					
+					foreach( $json_array as $field_type => $data ){
+						$value = $field_type ;
+						if ( class_exists( Cloud_Field::get_class_name( $field_type ) ) ){
+							$field_class = Cloud_Field::get_class_name( $field_type ) ;
+							$value = $field_class::get_option( $data, $array_spec ) ;
+						} else {
+							echo 'no class by that name' ;
+						}
+					}
+				}
+				
+			} else if ( is_array( $value ) ){
+				foreach ( $value as $index => &$item ){
+					$path_to_nested_option = $path_to_option ;
+					$path_to_nested_option[] = $index ;
+					$item = $this->convert_dynamic_data( $item , $path_to_nested_option, $is_metabox ) ;
+				}
+			}
+		} 
+
+		return $value ;
+	}	
 	
 	public static function get_folder_url(){
 		return self::$dir .'/'. basename( __FILE__, '.php' )  ; 	
@@ -474,7 +557,7 @@ function get_metabox_options( $post_id, $metabox_slug = false , $field_slug = fa
 		$post_id = intval( $post_id );
 	}	
 	$Forms = Cloud_Forms_WP::get_instance(); 
-
+	
 	return $Forms->get_metabox_data( $post_id, $metabox_slug, $field_slug, $group_number, $subfield_slug ); 
 	
 	
