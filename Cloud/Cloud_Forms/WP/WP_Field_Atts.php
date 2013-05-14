@@ -57,7 +57,7 @@
 		$info['width'] = isset( $spec['width'] ) ? $spec['width'] : 6; 
 		$info['save_json'] = false ;
 		$info['is_subfield'] =  isset( $spec['subfield_slug'] ) && $spec['subfield_slug'] ? true: false ;
-		
+		$info['in_metabox'] = $is_metabox ; 
 		
 		$info['to_retrieve'] = $is_metabox ? 'get_metabox_options( '.implode(', ',$to_retrieve ) .'); ' : 'get_theme_options('.implode( ', ', $to_retrieve ).');'; 
 		return $info;	

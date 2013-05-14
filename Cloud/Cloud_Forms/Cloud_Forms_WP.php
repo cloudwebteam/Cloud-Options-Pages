@@ -111,8 +111,9 @@ class Cloud_Forms_WP extends Cloud_Forms {
 		==================================================================================================================================== ***/
 	protected function set_local_javascript_vars(){
 		$this->global_js_vars = array( 
-			'ajax_url' => self::$dir . '/ajax/standAlone.php',
-			'cloud_url' => self::$dir
+			'ajax_url' => admin_url( 'admin-ajax.php'),
+			'cloud_url' => self::$dir,
+			
 		); 
 	}
 	public function enqueue_scripts_and_styles(){
