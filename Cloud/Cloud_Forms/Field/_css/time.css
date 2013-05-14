@@ -1,7 +1,5 @@
 .field.type-time .input {
-	width: 80px;
 	position: relative;
-	margin-right: 45px; 
 }
 .field.type-time .bootstrap-timepicker {
 	max-width: 100%;
@@ -32,16 +30,14 @@
 .input-append, .input-prepend {
 	display: inline-block;
 	margin-bottom: 10px;
-	font-size: 0;
 	white-space: nowrap;
 	vertical-align: middle;
 }
-.cloud-form .field.type-datetime .input input {
+.cloud-form .field.type-time .input input.timepicker {
 	display: inline-block;
 	height: 20px;
 	padding: 4px 6px;
 	margin-bottom: 0;
-	font-size: 14px;
 	line-height: 20px;
 	color: #555;
 	vertical-align: middle;
@@ -55,17 +51,16 @@
 	min-width: 15px; 
 	width: 100px;
 }
-.cloud-form .field.type-datetime input.timepicker {
+.cloud-form .field.type-time input.timepicker {
 	font-size: 12px;
 }
 
-.cloud-form .input-append .add-on, .input-prepend .add-on {
+.cloud-form .field.type-time .input-append .add-on, .input-prepend .add-on {
 	display: inline-block;
 	width: auto;
 	height: 14px;
 	min-width: 16px;
 	padding: 0 2px;
-	font-size: 14px;
 	font-weight: normal;
 	line-height: 14px;
 	text-align: center;
@@ -81,11 +76,11 @@
 	-moz-border-radius: 0;
 	border-radius: 0;	
 }	
-.cloud-form .input-append .add-on i, .input-prepend .add-on .icon {
+.cloud-form .field.type-time .input-append .add-on i, .input-prepend .add-on .icon {
 	display: inline-block;
 	width: 14px;
 	height: 14px;
-	margin-top: 0px;
+	margin-top: 5px;
 	position: relative; 
 	top: -2px; 
 	line-height: 14px;
@@ -94,12 +89,12 @@
 	background-position: 14px 14px;
 	background-repeat: no-repeat;
 }
-.cloud-form .input-append .add-on .icon-time {
+.cloud-form .field.type-time .input-append .add-on .icon-time {
 	background-position: -48px -24px;
 	
 }
-.cloud-form .icon-chevron-up,
-.cloud-form .icon-chevron-down {
+.cloud-form .field.type-time  .icon-chevron-up,
+.cloud-form .field.type-time .icon-chevron-down {
 
 	display: inline-block;
 	width: 14px;
@@ -111,7 +106,7 @@
 	background-repeat: no-repeat;
 	background-position: -288px -120px;
 }
-.cloud-form .icon-chevron-down {
+.cloud-form .field.type-time .icon-chevron-down {
 	background-position: -313px -119px ;
 }
 .cloud-form .dropdown-menu {

@@ -123,8 +123,11 @@
 .cloud-form .field-row.inline-field-elements .input,
 .cloud-form .field-row.inline-field-elements .description {
 	display: inline-block; 
+	position: static; 
 }
-
+.cloud-form .field-row .input input[type="text"] {
+	padding: .125em 3px 0;
+}
 .cloud-form .label { 
 	/* reset...collides with a bootstrap class */
 	width: auto; 
@@ -150,9 +153,11 @@
 	line-height: 1em;
 }
 .cloud-form .field-row > * {
-
-	margin-right: 15px;
+	margin-left: 15px;
 	max-width: 100%;
+}
+.cloud-form .field-row > *:first-child {
+	margin-left: 0;
 }
 .cloud-form .input + .description {
 	padding: 2px 0 0;
@@ -207,8 +212,8 @@
 	transition: all .2s ease-in;		
 }
 .inline-field-elements .copy_to_use {
-	left: 0; 
-	right: auto;
+	left: auto; 
+	right: 0; 
 }
 .field:hover .copy_to_use {
 	display: block;
@@ -363,6 +368,21 @@
 
 .cloud-form .tabs li.has-error a {
 	color: #cc0000;
+}
+
+/***====================================================================================================================================
+		METABOX SPECIFIC
+	==================================================================================================================================== ***/
+#poststuff .cloud-form.metabox .cloud-form-header .description {
+	margin: 0; 
+	border-bottom: 1px solid #ccc; 
+	padding: .5em 0;
+}
+#poststuff .cloud-form.metabox .cloud-form-header .title {
+	display: none; 
+}
+.cloud-form.metabox .form-fields {
+	padding: 0; 
 }
 /***====================================================================================================================================
 		MISCELLANEOUS

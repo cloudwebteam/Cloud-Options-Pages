@@ -64,7 +64,7 @@
 	padding: 0 0 0 15px;
 	margin: 0; 
 	float: right;
-	font-weight: normal;	
+	font-weight: bold;
 
 }
 .field.type-group .group .input {
@@ -76,29 +76,23 @@
 }
 
 .type-group .group .copy_to_use {
-	position: absolute; 
-	right: 100%; 
-	top: -.25em;
-	left: auto;
-}
-.type-group .group .copy_to_use a {
-	float: left;
+	top: 0; 
+	bottom: auto;
 }
 .type-group .add-remove {
 	position: absolute; 
 	bottom: 0; 
 	left: 100%;
-	margin: 0 0 0 10px ;
-	width: 50px;
+	margin: 0 0 0 5px ;
 }
 .type-group .add-remove > .add,
 .type-group .add-remove > .remove {
-	font-size: 1.25em;
+	font-size: 1em;
 	background: #efefef;
 	border: 1px solid #ccc;
 	border-radius: 3px;
-	width: 20px;
-	height: 1.25em;
+	width: 15px;
+	height: 1.125em;
 	line-height: 1em;
 	margin: .125em 0 ;
 	display: block;
@@ -117,6 +111,7 @@
 .type-group .add:hover,
 .type-group .remove:hover {
 	text-decoration: none;
+	background: #fff; 
 }
 .field.type-group:hover .group .copy_to_use {
 	display: none;

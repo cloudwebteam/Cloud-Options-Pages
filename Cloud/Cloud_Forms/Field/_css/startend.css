@@ -15,10 +15,6 @@
 	position: relative; 
 	top: 3px;
 }
-.field.type-startend .input {
-	margin-right: 15px; 
-	display: inline-block;
-}
 
 .cloud .timepicker + .add-on {
 	padding: 0; 

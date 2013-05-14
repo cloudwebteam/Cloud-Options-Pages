@@ -9,12 +9,14 @@ jQuery( function($){
    		var $container = $input.parent(); 
    		$input.select();
    		$container.addClass('active'); 
+   		console.log( 'clicked' ); 
    		
    });    
    $('.copy_to_use input').blur( function(e){
    		var $input = $(this); 
    		var $container = $input.parent(); 
    		$container.removeClass('active');
+   		console.log( 'blur' ); 
    	});   
    
  // handle cloneable fields

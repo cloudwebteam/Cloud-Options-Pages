@@ -50,7 +50,8 @@ class Cloud_Field_datetime extends Cloud_Field {
 		self::enqueue_script( 'jquery-ui-datepicker' ) ;
 		self::enqueue_script( 'bootstrap-timepicker' ) ; 
 
-		self::enqueue_style ( 'bootstrap-timepicker' ) ; 
+		self::enqueue_style( 'bootstrap-timepicker' ) ;
+		self::enqueue_style( 'jquery-ui-lightness' ); 
 		
 		parent::enqueue_scripts_and_styles( $field_type  ) ; 
 	}		
