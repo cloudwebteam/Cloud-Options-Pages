@@ -27,6 +27,7 @@ jQuery( function($){
 				}				
 			}	
 		});
+		console.log( 'setup timepicker' ); 
 		$timepicker.timepicker({
 			showInputs : true, 
 			defaultTime: false, 
@@ -39,7 +40,6 @@ jQuery( function($){
 			$datepicker.datepicker('setDate', dateValue )  ;
 			$timepicker.timepicker( 'setTime', dateValue.toLocaleTimeString() );
 		}
-		
 	
 		 
 	}); 

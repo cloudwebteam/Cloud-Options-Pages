@@ -1,5 +1,6 @@
 .field.type-time .input {
 	position: relative;
+	margin-right: 12px;	
 }
 .field.type-time .bootstrap-timepicker {
 	max-width: 100%;
@@ -75,6 +76,7 @@
 	-webkit-border-radius: 0;
 	-moz-border-radius: 0;
 	border-radius: 0;	
+	margin-right: 10px; 
 }	
 .cloud-form .field.type-time .input-append .add-on i, .input-prepend .add-on .icon {
 	display: inline-block;
@@ -109,7 +111,7 @@
 .cloud-form .field.type-time .icon-chevron-down {
 	background-position: -313px -119px ;
 }
-.cloud-form .dropdown-menu {
+.cloud-form .field.type-time .dropdown-menu {
 	font-size: 14px; 
 	padding: 2px; 
 	position: absolute;
@@ -134,6 +136,9 @@
 	-webkit-background-clip: padding-box;
 	-moz-background-clip: padding;
 	background-clip: padding-box;
+}
+.cloud-form .field.type-time .dropdown-menu.open {
+	display: block; 
 }
 .bootstrap-timepicker-widget input {
 	width: 32px !important ;

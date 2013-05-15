@@ -133,4 +133,8 @@
 #side-sortables .cloud.metabox .group .add-remove a {
 	display: block; 
 }
-
+#side-sortables .cloud.metabox .type-group .group .copy_to_use {
+	right: 100%; 
+	left: auto; 
+	margin-right: -10px; 
+}

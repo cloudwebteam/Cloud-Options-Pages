@@ -1,3 +1,6 @@
+.field.type-datetime .input {
+	margin-right: 12px;	
+}
 .cloud-form .field .input-append {
 	margin-bottom: 0px;
 	margin-left: 10px; 
@@ -120,6 +123,9 @@
 	-webkit-background-clip: padding-box;
 	-moz-background-clip: padding;
 	background-clip: padding-box;
+}
+.cloud-form .field.type-datetime .dropdown-menu.open {
+	display: block; 
 }
 .bootstrap-timepicker-widget input {
 	width: 32px !important ;
