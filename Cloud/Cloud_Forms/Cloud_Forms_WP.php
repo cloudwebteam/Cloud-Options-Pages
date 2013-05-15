@@ -364,78 +364,70 @@ class Cloud_Forms_WP extends Cloud_Forms {
 		return !empty( $this->metaboxes[$metabox_slug] ) ? $this->metaboxes[ $metabox_slug ] : false ;
 	}	
 	
-	public function get_page_data( $top_level_slug = false, $subpage_slug = false, $section_slug = false, $field_slug = false, $clone_number = false, $subfield_slug = false ){
+	public function get_page_data( $subpage_slug = false, $section_slug = false, $field_slug = false, $clone_number = false, $subfield_slug = false ){
 		$value = false;
  
 		$array_values = $this->wp_saved ;
-		if ( $top_level_slug === false ){
-			$value = $array_values ; 
-		} else {
-			$array_values = isset( $this->wp_saved[ $top_level_slug ] ) ? $this->wp_saved[ $top_level_slug ] : false ;
-			if ( $array_values ){
-				if ( $subpage_slug === false ){
-					$value = $array_values ; 
-				} else {
-					$array_values = isset( $this->wp_saved[ $top_level_slug ][ $subpage_slug ] ) ? $this->wp_saved[ $top_level_slug ][ $subpage_slug ] : false ;
-					if ( $array_values ){
-						if ( $section_slug === false ){
-							$value = $array_values ; 
-						} else {
-							$array_values = isset( $this->wp_saved[ $top_level_slug ][ $subpage_slug ][ $section_slug ] ) ? $this->wp_saved[ $top_level_slug ][ $subpage_slug ][ $section_slug ] : false ;
-							if ( $array_values ){
-								if ( $field_slug === false ){
-									$value = $array_values ; 
-								} else {
-									$array_values = isset( $this->wp_saved[ $top_level_slug ][ $subpage_slug ][ $section_slug ][ $field_slug ] ) ? $this->wp_saved[ $top_level_slug ][ $subpage_slug ][ $section_slug ][ $field_slug ] : false ;
-									if ( $array_values ){
-										if ( $clone_number === false ){
-											$value = $array_values ; 
-										} else {
-											$array_values = isset( $this->wp_saved[ $top_level_slug ][ $subpage_slug ][ $section_slug ][ $field_slug ][ $clone_number ] ) ? $this->wp_saved[ $top_level_slug ][ $subpage_slug ][ $section_slug ][ $field_slug ][ $clone_number ] : false ;
-											if ( $array_values ){
-												if ( $subfield_slug === false ){
+			
+		if ( $array_values ){
+			if ( $subpage_slug === false ){
+				$value = $array_values ; 
+			} else {
+				$array_values = isset( $this->wp_saved[ $subpage_slug ] ) ? $this->wp_saved[ $subpage_slug ] : false ;
+				if ( $array_values ){
+					if ( $section_slug === false ){
+						$value = $array_values ; 
+					} else {
+						$array_values = isset( $this->wp_saved[ $subpage_slug ][ $section_slug ] ) ? $this->wp_saved[ $subpage_slug ][ $section_slug ] : false ;
+						if ( $array_values ){
+							if ( $field_slug === false ){
+								$value = $array_values ; 
+							} else {
+								$array_values = isset( $this->wp_saved[ $subpage_slug ][ $section_slug ][ $field_slug ] ) ? $this->wp_saved[ $subpage_slug ][ $section_slug ][ $field_slug ] : false ;
+								if ( $array_values ){
+									if ( $clone_number === false ){
+										$value = $array_values ; 
+									} else {
+										$array_values = isset( $this->wp_saved[ $subpage_slug ][ $section_slug ][ $field_slug ][ $clone_number ] ) ? $this->wp_saved[ $subpage_slug ][ $section_slug ][ $field_slug ][ $clone_number ] : false ;
+										if ( $array_values ){
+											if ( $subfield_slug === false ){
+												$value = $array_values ; 
+											} else {
+												$array_values = isset( $this->wp_saved[ $subpage_slug ][ $section_slug ][ $field_slug ][ $clone_number ][ $subfield_slug ] ) ? $this->wp_saved[ $subpage_slug ][ $section_slug ][ $field_slug ][ $clone_number ][ $subfield_slug ] : false ;
+												if ( $array_values ){
 													$value = $array_values ; 
-												} else {
-													$array_values = isset( $this->wp_saved[ $top_level_slug ][ $subpage_slug ][ $section_slug ][ $field_slug ][ $clone_number ][ $subfield_slug ] ) ? $this->wp_saved[ $top_level_slug ][ $subpage_slug ][ $section_slug ][ $field_slug ][ $clone_number ][ $subfield_slug ] : false ;
-													if ( $array_values ){
-														$value = $array_values ; 
-													}
 												}
-											}										
-										}
+											}
+										}										
 									}
 								}
-							}						
-						}
+							}
+						}						
 					}
 				}
 			}
 		}
-		return $this->convert_special_values( $value ); 
+
+		return $value; 
 	}	
 	public function get_metabox_data( $post_id, $metabox_slug, $field_slug = false, $clone_number = false, $subfield_slug = false ){
 		$value = false; 
 		$array_values = get_post_meta( $post_id, $metabox_slug, true );
-		$path_to_option = array( $metabox_slug ); 
 		
 		if ( $array_values ){
 			if ( $field_slug === false ){
 				$value = $array_values ; 
 			} else {
-				$path_to_option[] = $field_slug ; 
-
 				$array_values = isset( $array_values[ $field_slug ] ) ? $array_values[ $field_slug ] : false ;
 				if ( $array_values ){
 					if ( $clone_number === false ){
 						$value = $array_values ; 
 					} else {
-						$path_to_option[] = $clone_number ; 
 						$array_values = isset( $array_values[ $field_slug ][ $clone_number ] ) ? $array_values[ $field_slug ][ $clone_number ] : false ;
 						if ( $array_values ){
 							if ( $subfield_slug === false ){
 								$value = $array_values ; 
 							} else {
-								$path_to_option[] = $subfield_slug ; 
 								$array_values = isset( $array_values[ $field_slug ][ $clone_number ][ $subfield_slug ] ) ? $array_values[ $field_slug ][ $clone_number ][ $subfield_slug ] : false ;
 								if ( $array_values ){
 									$value = $array_values ; 
@@ -446,8 +438,9 @@ class Cloud_Forms_WP extends Cloud_Forms {
 				}
 			}
 		}				
-		return $this->convert_dynamic_data( $value, $path_to_option, true ); 
+		return $value; 
 	}		
+
 	protected function has_dynamic_values( $value ){
 		if ( is_string( $value ) ){
 			return $this->is_JSON( $value ) ; 
@@ -467,21 +460,30 @@ class Cloud_Forms_WP extends Cloud_Forms {
 		json_decode($string);
 		return (json_last_error() == JSON_ERROR_NONE);
 	}
-	protected function convert_dynamic_data( $value , $path_to_option, $is_metabox = false ){	
+	public function convert_dynamic_data( $value , $path_to_option, $is_metabox = false ){	
 	
 		if ($this->has_dynamic_values( $value ) ){
 			if ( is_string( $value ) ){
+				
 
 				$json_array = json_decode( $value, true ) ;
 				if ( $json_array && is_array( $json_array ) ){
 					// grab top_level page array
-
 					if ( $is_metabox ){
 						$array_spec = $this->metaboxes[ array_shift( $path_to_option ) ] ;
 						$spec_key_names = array( 'fields', 'subfields' ); 
 					} else {
-						$array_spec = $this->pages[ array_shift( $path_to_option ) ] ;
-						$spec_key_names = array( 'subpages', 'sections', 'fields', 'subfields' ); 					
+						
+						foreach( $this->pages as $top_level_slug => $top_level_page ){
+							foreach( $top_level_page[ 'subpages'] as $subpage_slug => $subpage ){
+								if ( $subpage_slug == $path_to_option['subpages'] ){
+									$array_spec = $subpage ; 
+									array_shift( $path_to_option); 
+									break 2; 
+								}
+							}
+						}
+						$spec_key_names = array( 'sections', 'fields', 'subfields' ); 											
 					}
 					
 					foreach( $path_to_option as $spec_key => $key_name ){
@@ -510,7 +512,8 @@ class Cloud_Forms_WP extends Cloud_Forms {
 						$value = $field_type ;
 						if ( class_exists( Cloud_Field::get_class_name( $field_type ) ) ){
 							$field_class = Cloud_Field::get_class_name( $field_type ) ;
-							$value = $field_class::get_option( $data, $array_spec ) ;
+
+							$value = $field_class::get_option( $data, $array_spec ) ;						
 						} else {
 							echo 'no class by that name' ;
 						}
@@ -543,7 +546,25 @@ class Cloud_Forms_WP extends Cloud_Forms {
 	==================================================================================================================================== ***/
 function get_theme_options( $subpage_slug = false, $section_slug = false, $field_slug = false, $clone_number = false, $subfield_slug = false ){
 	$Forms = Cloud_Forms_WP::get_instance(); 
-	return $Forms->get_page_data( $subpage_slug, $section_slug, $field_slug, $clone_number, $subfield_slug ); 
+	
+	if ( $subpage_slug ){
+		$path_to_option[ 'subpages' ] = $subpage_slug ; 
+		if ( $section_slug ){
+			$path_to_option['sections'] = $section_slug ; 
+			if ( $field_slug ){
+				$path_to_option['fields'] = $field_slug ; 
+				if ( $clone_number ){
+					$path_to_option[] = $clone_number ; 
+					if ( $subfield_slug ){
+						$path_to_option['subfields'] = $subfield_slug ; 
+					}
+				}
+			}
+		} 
+	}
+
+	return $Forms->convert_dynamic_data( $Forms->get_page_data( $subpage_slug, $section_slug, $field_slug, $clone_number, $subfield_slug ), $path_to_option, false ); 
+	
 }
 function get_metabox_options( $post_id, $metabox_slug = false , $field_slug = false, $group_number = false, $subfield_slug = false ){
 	if ( ! is_numeric( $post_id ) ){
@@ -559,7 +580,10 @@ function get_metabox_options( $post_id, $metabox_slug = false , $field_slug = fa
 	}	
 	$Forms = Cloud_Forms_WP::get_instance(); 
 	
-	return $Forms->get_metabox_data( $post_id, $metabox_slug, $field_slug, $group_number, $subfield_slug ); 
+	$path_to_option = array( 
+		$metabox_slug, $field_slug, $group_number, $subfield_slug
+	); 
+	return $Forms->convert_dynamic_data( $Forms->get_metabox_data( $post_id, $metabox_slug, $field_slug, $group_number, $subfield_slug ), $path_to_option, true ); 
 	
 	
 

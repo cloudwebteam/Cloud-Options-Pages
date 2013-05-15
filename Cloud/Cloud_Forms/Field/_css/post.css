@@ -31,6 +31,14 @@
 	color: #666; 
 	font-size: .75em;
 }
+.field.type-post .remove-post {
+	display: inline-block; 
+	padding: 0 5px; 
+	cursor: pointer; 
+}
+.field.type-post .remove-post.hidden {
+	display: none; 
+}
 
 /***====================================================================================================================================
 		"SEARCH CONTENT" DIALOG

@@ -17,7 +17,9 @@ jQuery( function($){
 		var post_info_to_get = $targetfield.data('to_get'); 
 		var post_info_image_size = $targetfield.data('image_size'); 
 		var $popup_content = $field.find( '.popup > div' ); 
-
+		var $remove = $field.find( '.remove-post' ); 
+		var $post_title = $field.find( '.post-title' ); 
+		var $post_type = $field.find( '.post_type' ); 
 		var content_list = {
 			list : $popup.find( '.query-results ul' ), 
 			init : function( e ){
@@ -27,10 +29,13 @@ jQuery( function($){
 						var value_to_save = {
 							post : $(this).data('post_id')
 						} ;
+
+						
 						$targetfield.val( JSON.stringify( value_to_save ) );
 						$targetfield.siblings( '.preview' ).html( '<div class="inner">' + $(this).parents( 'li' ).find( '.to_insert' ).html() + '</div>' ) ;
-						$targetfield.siblings( '.current-data').find( '.post-title' ).text( $(this).find( '.title').text() ) ; 
-						$targetfield.siblings( '.current-data').find( '.post-type' ).text( $(this).find( '.type').text() ) ; 					
+						$post_title.text( $(this).find( '.title').text() ) ; 
+						$post_type.text( $(this).find( '.type').text() ) ; 					
+						$remove.removeClass( 'hidden' ); 
 						$.fancybox.close();
 						
 					});
@@ -103,6 +108,12 @@ jQuery( function($){
 				autoSize: false
 			} );			
 		});
+		$remove.click( function(e){
+			$targetfield.val('');
+			$post_title.text( 'None Selected' ); 
+			$post_type.text( 'Post' ); 
+			$remove.addClass( 'hidden' ); 
+		}); 
 		$popup_search.keyup( function(){
 			ajax.get_list( $(this).val() );
 		});				

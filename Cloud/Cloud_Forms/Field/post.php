@@ -66,20 +66,25 @@ class Cloud_Field_post extends Cloud_Field {
 		}
 	} 
 	protected function get_current_data( ){
+
 		$saved_data = json_decode( $this->info['value'], true ) ; 
+	
 		if ( $saved_data ){
 			$post_id = $saved_data['post'] ;
 			$post = get_post( $post_id ) ;
 			$post_title = $post->post_title ;
 			$post_type = '<span class="post-type">'.get_post_type_object( $post->post_type )->labels->singular_name .'</span>';
+			$remove_class = ''; 
 		} else {
 			$post_title = 'None selected' ;
 			$post_type =  '<span class="post_type">Post</span>' ;
+			$remove_class = 'hidden' ; 
 		}
 		$current_data = '<p class="current-data">' ; 
 		$current_data .= '<span class="current">'.$post_type.': <b class="post-title">'.$post_title.'</b>' ; 
+		$current_data .=  '<a class="remove-post ' . $remove_class . '">X</a>' ; 
 		$current_data .= $this->spec['code_link'] ? '<span class="post-property">Retrieves '. $this->property_to_get .'</span>' : '' ;
-		$current_data .= '</span>' ;
+		$current_data .= '</span>';
 		$current_data .= '<a class="select-post" href="#">Select a post</a>' ;
 		$current_data .= '</p>' ;
 		if ( $this->info['in_metabox'] ){	
@@ -94,7 +99,7 @@ class Cloud_Field_post extends Cloud_Field {
 				$current_data .= '<div class="preview">'.$preview_data.'</div>' ;
 			}
 		} else {
-			get_theme_options( $this->args['top_level'], $this->args['subpage'], $this->args['section'], $this->args['field'] ) ;
+			get_theme_options( $this->spec['top_level_slug'], $this->spec['subpage_slug'], $this->spec['section_slug'], $this->spec['field_slug'] ) ;
 		}	
 		return $current_data ;
 	}
@@ -142,13 +147,15 @@ class Cloud_Field_post extends Cloud_Field {
 		require(ABSPATH . WPINC . '/class-wp-editor.php');
 		$results = _WP_Editors::wp_link_query( $args );
 		if ( isset( $results ) && is_array( $results ) && sizeof( $results ) > 0 ){
+
 			foreach( $results as $result ){  
+				$type = strpos( $result['info'], '/' ) ? 'Post' : $result['info']; 
 				$to_insert = self::get_option( $result['ID'], $property_to_retrieve ); 
 				if ( $to_insert ){ ?>
 					<li>
 						<a data-post_id="<?php echo $result['ID']; ?>" href="<?php echo get_permalink($result['ID'] ); ?>">
 							<span class="title"><?php echo $result['title']; ?></span>
-							<span class='type'><?php echo $result['info'] ; ?></span>
+							<span class='type'><?php echo $type ; ?></span>
 						</a>
 						<div class="to_insert"><?php echo $to_insert ; ?></div>
 					</li>
@@ -158,8 +165,8 @@ class Cloud_Field_post extends Cloud_Field {
 		wp_die();
 	}
 	public static function get_option( $post_id, $spec ){
-		if ( is_string( $spec ) ){
 
+		if ( is_string( $spec ) ){
 			$prop_to_get = $spec ;
 		} else {
 			$prop_to_get = self::property_to_get( $spec['get'] ); 
@@ -173,7 +180,7 @@ class Cloud_Field_post extends Cloud_Field {
 				$value = get_post( $post_id ) ;
 				break;
 			case 'post_title' : 
-				$post = get_post( $post_id ) ;
+				$post = get_post( $post_id ) ;			
 				return $post->post_title ; 
 				break; 
 			case 'post_content' : 
