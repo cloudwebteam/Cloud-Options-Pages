@@ -59,46 +59,13 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 		}		
 		return $_form;	
 	}
-	// all this does is add a 'validation_error' item to the field specs of those fields that failed to validate, and return a general success or failure message	
-	protected function validate_forms(){
-		foreach( $this->spec as $form_slug => $form_array ){
-			if ( $this->validation_enabled && isset( $_POST['form_id'] ) && $_POST['form_id'] == $form_slug ){
-				$validation_results = Validator::validate( $_POST, $form_array )  ;			
-				$this->has_validation_errors = $validation_results['success'] ? false : true ;
 
-				if ( isset( $this->spec[ $form_slug][ 'sections' ] ) ){
-					$this->spec[ $form_slug ][ 'sections' ] = $validation_results['updated_form_spec']; 
-					
-					if ( $this->has_validation_errors ){
-						$this->spec[ $form_slug ][ 'validation_error' ] = true; 		
-						$error_found = false; 
-						function check_for_error( $item, $key, &$error_found){
-							if ( isset( $item['validation_error'] ) ){
-								$error_found = true; 
-							}
-						}			
-						foreach( $this->spec[ $form_slug ]['sections' ]	as &$section ){
-							array_walk_recursive( $section, 'check_for_error', &$error_found );
-						}
-						if ( $error_found ){
-							$section['validation_error'] = true; 
-						}
-					}
-					
-				} else {
-					$this->spec[ $form_slug ][ 'fields' ]  = $validation_results['updated_form_spec']; 				
-					$this->spec[ $form_slug ][ 'validation_error' ] = true; 
-				}
-			}		
-		}
-	
-	}
 	/***====================================================================================================================================
 			LOAD SCRIPTS AND STYLES
 		==================================================================================================================================== ***/
 	protected function set_local_javascript_vars(){
 		$this->global_js_vars = array( 
-			'ajax_url' => self::$dir . '/ajax/standAlone.php',
+			'cloud_ajax' => self::$dir . '/ajax/standAlone.php',
 			'cloud_url' => self::$dir
 		); 
 	}
@@ -146,7 +113,7 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 		}
 		return $forms; 
 	}
-	public function register( $arg1, $arg2 = false ){
+	public function add_forms( $arg1, $arg2 = false ){
 		if ( is_array( $arg1 ) ){
 			foreach( $arg1 as $form_slug => $form ){
 				$this->passed_in[ $form_slug ] = $form;
@@ -182,22 +149,6 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 	public static function get_include_path(){
 		return self::$ABS .'/'. basename( __FILE__, '.php' ) ; 	
 	}
-	public function ajax_validate_form(){
-		$form_slug = $_POST['ajax_form_id']; 
-		$submission_data = $_POST['ajax_form_data'] ;
-		parse_str( $submission_data, $submission_data ) ;
 
-		$Forms = Cloud_Forms_StandAlone::get_instance(); 
-		if ( isset( $Forms->spec[ $form_slug ] ) ){
-			$validation_results = Validator::validate( $submission_data, $Forms->spec[ $form_slug ] );  
-			$response = $validation_results ; 
-		} else {
-			$response = array( 
-				'error' => 'Not a valid form name' 
-			); 
-		}
-		echo json_encode( $response );
-		die; 
-	}
 }
 

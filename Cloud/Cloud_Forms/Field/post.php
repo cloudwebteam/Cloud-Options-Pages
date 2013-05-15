@@ -135,7 +135,6 @@ class Cloud_Field_post extends Cloud_Field {
 	}
 	public function ajax_options_internal_search(){
 		check_ajax_referer( 'internal-linking', '_ajax_linking_nonce' );
-
 		$args = array();
 		$property_to_retrieve = isset( $_POST['to_get'] ) ? $_POST['to_get'] : 'ID' ; 
 		$image_size = isset( $_POST['image_size'] ) ? $_POST['image_size'] : false ;
@@ -217,3 +216,5 @@ class Cloud_Field_post extends Cloud_Field {
 	
 }
 add_action('wp_ajax_options-page-link-popup', array( 'Cloud_Field_post' , 'ajax_options_internal_search' ) );
+add_action('wp_ajax_nopriv_options-page-link-popup', array( 'Cloud_Field_post' , 'ajax_options_internal_search' ) );
+

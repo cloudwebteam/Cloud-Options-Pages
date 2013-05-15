@@ -20,7 +20,7 @@ abstract class Cloud_Forms {
 	protected static $styles; 
 	
 	protected $directories_to_load = array( 'Field', 'Layout' ); 
-	protected $validation_enabled = false ;
+	protected $validation_enabled = true ;
 	
 	protected function __construct(){
 		self::$dir = Cloud_dir . '/' . __CLASS__ ;
@@ -298,9 +298,6 @@ abstract class Cloud_Forms {
 			// set type
 			$_field['type'] = $type ;
  			
-			$field_classname = Cloud_Field::get_class_name( $type );
-			$field_classname::enqueue_scripts_and_styles( $type ) ;	// only this early to get them in Wordpress's queue early enough
-		
 			// go through defaults for that type
 			if ( isset(  $defaults['fields'][$type] ) ) {
 				$field_defaults =  $defaults['fields'][$type] ; 
@@ -372,9 +369,7 @@ abstract class Cloud_Forms {
 					} else {
 						$subfield_defaults = $defaults['fields']['general'] ;
 					}
-					$field_classname = Cloud_Field::get_class_name( $subfield_type );
-					$field_classname::enqueue_scripts_and_styles( $subfield_type ) ;	// only this early to get them in Wordpress's queue early enough
-					
+
 					foreach ( $subfield_defaults as $key => $subfield_default_value ) {
 						if ( isset( $subfield[$key] ) ){
 							$set_value = $subfield[$key];  
@@ -405,6 +400,60 @@ abstract class Cloud_Forms {
 		return $_section ;
 
 	}
+	/***====================================================================================================================================
+			FORM VALIDATION
+		==================================================================================================================================== ***/
+	
+	// all this does is add a 'validation_error' item to the field specs of those fields that failed to validate, and return a general success or failure message	
+	protected function validate_form( $form_slug ){
+		$form_spec = $this->forms[ $form_slug ] ; 
+		if ( $this->validation_enabled && isset( $_POST['form_id'] ) && $_POST['form_id'] == $form_slug ){
+			$validation_results = Validator::validate( $_POST, $form_spec )  ;			
+			$this->has_validation_errors = $validation_results['success'] ? false : true ;
+
+			if ( isset( $this->forms[ $form_slug][ 'sections' ] ) ){
+				$this->forms[ $form_slug ][ 'sections' ] = $validation_results['updated_form_spec']; 
+				
+				if ( $this->has_validation_errors ){
+					$this->forms[ $form_slug ][ 'validation_error' ] = true; 		
+					$error_found = false; 
+					function check_for_error( $item, $key, &$error_found){
+						if ( isset( $item['validation_error'] ) ){
+							$error_found = true; 
+						}
+					}			
+					foreach( $this->forms[ $form_slug ]['sections' ]	as &$section ){
+						array_walk_recursive( $section, 'check_for_error', &$error_found );
+					}
+					if ( $error_found ){
+						$section['validation_error'] = true; 
+					}
+				}
+				
+			} else {
+				$this->forms[ $form_slug ][ 'fields' ]  = $validation_results['updated_form_spec']; 				
+				$this->forms[ $form_slug ][ 'validation_error' ] = true; 
+			}
+		}		
+	
+	}
+	public function ajax_validate_form(){
+		$form_slug = $_POST['ajax_form_id']; 
+		$submission_data = $_POST['ajax_form_data'] ;
+		parse_str( $submission_data, $submission_data ) ;
+
+		$Forms = Cloud_Forms_StandAlone::get_instance(); 
+		if ( isset( $Forms->spec[ $form_slug ] ) ){
+			$validation_results = Validator::validate( $submission_data, $Forms->spec[ $form_slug ] );  
+			$response = $validation_results ; 
+		} else {
+			$response = array( 
+				'error' => 'Not a valid form name' 
+			); 
+		}
+		echo json_encode( $response );
+		die; 
+	}	
 	/***====================================================================================================================================
 			PUBLIC FUNCTIONS
 		==================================================================================================================================== ***/

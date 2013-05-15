@@ -27,10 +27,10 @@ class Cloud_Field {
 		$this->{ $this->layout }(); 
 	}
 	protected function setup_information(){
-		if ( self::$is_WP ){
-			$info = WP_Cloud_Field_Atts::get( $this->spec ); 
+		if ( !empty( $this->spec['form_slug'] ) ){
+			$info = Cloud_Field_Atts::get( $this->spec ); 	
 		} else {
-			$info = Cloud_Field_Atts::get( $this->spec ); 		
+			$info = WP_Cloud_Field_Atts::get( $this->spec ); 
 		}
 		return $info ;
 		

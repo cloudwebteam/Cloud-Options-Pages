@@ -27,7 +27,6 @@ jQuery( function($){
 				}				
 			}	
 		});
-		console.log( 'setup timepicker' ); 
 		$timepicker.timepicker({
 			showInputs : true, 
 			defaultTime: false, 

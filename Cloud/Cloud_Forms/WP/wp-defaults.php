@@ -17,6 +17,8 @@ $cloud_form_defaults_wp = array (
 		'layout' 		=> 'tabs',
 		'_has_settable_defaults' => false,
 	), 	
+	'forms' => array(
+	),
 	'sections'	=> array (
 		'context' => 'normal', 
 		'priority' => 'low' , 

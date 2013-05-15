@@ -1,13 +1,17 @@
 <?php 
 class Cloud_Forms_WP extends Cloud_Forms {
-	protected $forms = array(); 
 	protected $directories_to_load = array('Field', 'WP', 'Layout');	
 	protected $wp_saved ; 
+	
 	protected $passed_in_pages = array() ; 
 	protected $pages = array() ; 
+	
 	protected $passed_in_metaboxes = array() ; 
 	protected $metaboxes = array() ; 
 	protected $valid_metaboxes = array(); 
+	
+	protected $passed_in_forms = array() ; 
+	protected $forms = array() ; 
 	// singleton get method
 	public static function get_instance(){
 		if ( !self::$instance ){
@@ -20,6 +24,7 @@ class Cloud_Forms_WP extends Cloud_Forms {
 	}
 	public function wp_init(){
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts_and_styles' ) ); 	
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts_and_styles' ) ); 	
 		
 		// options pages
 		$this->wp_saved = $this->get_WP_saved_data(); 
@@ -28,7 +33,7 @@ class Cloud_Forms_WP extends Cloud_Forms {
 		
 		//metaboxes 
 		add_action( 'add_meta_boxes', array( $this, 'construct_metaboxes' ) ); 
-		add_action( 'save_post', array( $this, 'save_metaboxes' ) );
+		add_action( 'save_post', array( $this, 'save_metaboxes' ) );		
 		
 		Cloud_Field::$is_WP = true; 
 		
@@ -95,6 +100,49 @@ class Cloud_Forms_WP extends Cloud_Forms {
 		$_metabox = array_merge( $_metabox, $this->finish_merge_with_defaults( $section ) ); 
 		return $_metabox ; 
 	}	
+	protected function merge_form_with_defaults( $form_slug, $form ){
+		$defaults = $this->defaults; 
+		$_form = array() ;
+		
+		// if it has sub-sections, deal with it as a complex form
+		if ( isset( $form['sections'] ) ){
+			foreach ( $defaults['forms'] as $subpage_slug => $default_value ) {
+				if ( isset( $form[$subpage_slug] ) ){
+					$set_value = $form[$subpage_slug];
+				} else {
+					if ( isset ( $top_level_page['defaults']['forms'][$subpage_slug] ) ) {
+						$set_value = $top_level_page['defaults']['forms'][$subpage_slug];
+					} else {
+						$set_value = $default_value;
+					}					
+				}
+				$_form[$subpage_slug] = $set_value;
+			}						
+			foreach ( $form['sections'] as $section_slug => $section){
+				$_form['sections'][$section_slug] = array();  
+				$_section =& $_form['sections'][$section_slug];	
+				$section['form_slug'] = $form_slug;
+				$section['section_slug'] = $section_slug;
+				$_section = $this->finish_merge_with_defaults( $section, $form ); 
+			}
+		
+		// if it doesn't, just proceed with a simple form. 
+		} else {		
+			$form['form_slug'] = $form_slug ; 
+			// merge in the defaults' 'forms' array, and unset the sections (since obviously this form has no sections)
+			foreach ( $defaults['forms'] as $option_key => $default_value ) {
+				if ( isset( $form[$option_key] ) ){
+					$set_value = $form[$option_key] ;
+				} else {
+					$set_value = $default_value;
+				}
+				$_form[$option_key] = $set_value;
+			}			
+			$_form = array_merge( $_form, $this->finish_merge_with_defaults( $form ) ); 
+			unset( $_form['sections'] ); 
+		}		
+		return $_form;		
+	}
 	protected function get_WP_saved_data(){
 		$data = array(); 
 		foreach( $this->pages as $top_level_slug => $top_level_page ){
@@ -111,12 +159,55 @@ class Cloud_Forms_WP extends Cloud_Forms {
 		==================================================================================================================================== ***/
 	protected function set_local_javascript_vars(){
 		$this->global_js_vars = array( 
-			'ajax_url' => admin_url( 'admin-ajax.php'),
+			'cloud_ajax' => self::$dir . '/ajax/standAlone.php',
+			'wp_ajax' => admin_url( 'admin-ajax.php'),
 			'cloud_url' => self::$dir,
 			
 		); 
 	}
+	protected function get_needed_field_scripts_and_styles(){
+		$url = parse_url( $_SERVER['REQUEST_URI'] ) ; 
+		$script = basename( $url['path'] ); 
+		
+		//sets $query to array of parameters
+		$query = array();
+		if ( isset( $url['query'] ) ){
+			parse_str( $url['query'], $query ); 
+		}
+		function run_field_enqueue_function( $item, $key ){
+			if ( $key === 'type' ){
+				$field_type = $item ; 
+				$field_classname = Cloud_Field::get_class_name( $field_type );
+				$field_classname::enqueue_scripts_and_styles( $field_type ) ;	// only this early to get them in Wordpress's queue early enough
+			}
+		}
+		// if any valid metaboxes on page, obviously not an options page, and has no forms
+		if ( $this->valid_metaboxes ){
+			array_walk_recursive( $this->valid_metaboxes, 'run_field_enqueue_function' ); 
+		// if its a valid options page, obviously no forms
+		} else if ( $script === 'admin.php' ){ 		
+			if ( isset( $query['page'] ) ){
+				foreach( $this->pages as $top_level_slug => $page ){
+					if ( $query['page'] == $top_level_slug ){
+						array_walk_recursive( $page['subpages'][$top_level_slug], 'run_field_enqueue_function' ); 
+						break;
+					}
+					foreach( $page['subpages'] as $subpage_slug => $subpage ){
+						if ( $query['page'] === $top_level_slug . '.' . $subpage_slug ){
+							array_walk_recursive( $subpage, 'run_field_enqueue_function' ); 
+							break 2;						
+						}
+					}
+				}
+			}
+		// otherwise, there's no telling when they'll display a form, so we gotta be ready (only add the form on pages you want it!)
+		} else if ( $this->forms ) {
+			array_walk_recursive( $this->forms, 'run_field_enqueue_function' ); 
+		}
+
+	}
 	public function enqueue_scripts_and_styles(){
+		$this->get_needed_field_scripts_and_styles(); 
 		foreach( self::$registered_scripts as $script ){
 			wp_register_script( $script['handle'], $script['path'], $script['dependencies'] ); 
 		}
@@ -185,6 +276,22 @@ class Cloud_Forms_WP extends Cloud_Forms {
 			
 			add_meta_box( $id, $title, $callback, $post_type, $context, $priority, $callback_args );
 		}
+	}
+	public function form( $form_slug ){
+		$this->validate_form( $form_slug ); 
+		if ( isset( $this->forms[$form_slug] ) ){
+			$form_spec = $this->forms[ $form_slug ] ; 
+			if ( isset( $form_spec['sections'] ) ){
+				$layout = Layout_Form::get_layout_function( $form_spec['layout'] );
+				$form_html = Layout_Form::$layout( $form_slug, $form_spec ); 
+			} else {
+				$form_html = Layout_Section::standAlone( $form_slug, $form_spec ); 
+			}			
+		} else {
+			$form_html = 'No form "'.$form_slug.'" found' ; 		
+		}
+	
+		echo $form_html; 		
 	}
 	public function save_metaboxes( $post_id ){
 		  // First we need to check if the current user is authorised to do this action. 
@@ -278,6 +385,21 @@ class Cloud_Forms_WP extends Cloud_Forms {
 			}
 		}
 	}
+	public function add_forms( $arg1, $arg2 = false ){
+		if ( is_array( $arg1 ) ){
+			foreach( $arg1 as $form_slug => $form ){
+				$this->passed_in_forms[ $form_slug ] = $form;
+				$this->forms[ $form_slug ] = $this->merge_form_with_defaults( $form_slug, $form );
+			}
+		} else {
+			$form_slug = $arg1; 
+			$form = $arg2; 
+			$this->passed_in_forms[ $form_slug ] = $arg2;
+			$this->forms[ $form_slug ] = $this->merge_form_with_defaults( $form_slug, $form );
+		}
+	} 
+
+	
 	public function is_valid_on_current_page( $add_to ){
 		if ( is_string( $add_to ) ){
 			// slug or title provided
@@ -546,7 +668,7 @@ class Cloud_Forms_WP extends Cloud_Forms {
 	==================================================================================================================================== ***/
 function get_theme_options( $subpage_slug = false, $section_slug = false, $field_slug = false, $clone_number = false, $subfield_slug = false ){
 	$Forms = Cloud_Forms_WP::get_instance(); 
-	
+	$path_to_option = array(); 
 	if ( $subpage_slug ){
 		$path_to_option[ 'subpages' ] = $subpage_slug ; 
 		if ( $section_slug ){

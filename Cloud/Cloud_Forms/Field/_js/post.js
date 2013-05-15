@@ -54,7 +54,7 @@ jQuery( function($){
 						image_size : post_info_image_size
 					};
 					$loader_icon.show();
-					$.post( cloud.ajax_url, data, function( response ) {
+					$.post( cloud.wp_ajax, data, function( response ) {
 						if ( response ){
 							$none_found.hide();
 							content_list.list.html( response ).fadeIn('fast');
@@ -79,14 +79,14 @@ jQuery( function($){
 											
 				};
 				content_list.list.hide();
-				$.post( cloud.ajax_url, data, function( response ) {
+				$.post( cloud.wp_ajax, data, function( response ) {
 					if ( response ){
 						$none_found.hide();
 						content_list.list.html( response ).slideDown('fast');
 						content_list.init();
 					} else {
 						content_list.list.hide();
-						none_found.fadeIn('fast');
+						$none_found.fadeIn('fast');
 					}
 					$loader_icon.hide();
 				}, "html" );				
