@@ -1,7 +1,7 @@
 <?php 
 class Cloud_Forms_StandAlone extends Cloud_Forms {
 	protected $forms = array(); 
-	protected $directories_to_load = array('Field');	
+	protected $directories_to_load = array('Field', 'Layout' );	
 	protected $validation_enabled = true; 
 	protected $has_validation_errors = false;
 	// singleton get method
@@ -12,7 +12,6 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 		return self::$instance; 
 	}
 	protected function init(){	
-
 	}
 	/***====================================================================================================================================
 			CREATING SPEC
@@ -119,7 +118,6 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 		foreach( $this->spec as $form_slug => $form_spec ){
 			
 			if ( isset( $form_spec['sections'] ) ){
-
 				$layout = Layout_Form::get_layout_function( $form_spec['layout'] );
 				$forms[ $form_slug ] = Layout_Form::$layout( $form_slug, $form_spec ); 
 			} else {
@@ -145,7 +143,7 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 	public function head(){
 		if ( $this->spec ){
 			$this->validate_forms() ;	
-			$this->forms = $this->construct_forms(); 
+			$this->forms = $this->construct_forms();
 			$this->order_styles_and_scripts();
 			$this->print_styles();
 			$this->print_scripts(); 

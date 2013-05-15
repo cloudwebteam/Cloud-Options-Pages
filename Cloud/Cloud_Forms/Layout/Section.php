@@ -10,12 +10,12 @@
 			return $layout_function; 
 			
 		}	
-		private static function get_layout_info( $section_slug, $spec, $page_spec = false ){
+		private static function get_layout_info( $form_slug, $spec, $page_spec = false ){
 			// get all of the information stored in the master options array regarding this section and page
 			
 			$layout_vars = array();
 			
-			$layout_vars['id'] = $section_slug ; 
+			$layout_vars['id'] = $form_slug ; 
 			
 			//set up section classes
 			$classes = array(); 
@@ -60,7 +60,7 @@
 			extract( self::get_layout_info( $slug, $spec, $page_spec ) );
 			ob_start();	?>
 			<div id="form-<?php echo $slug; ?>" class="<?php echo $classes; ?>">
-				<form data-id="<?php echo $slug; ?>" action="" method="post">
+				<form data-id="<?php echo $slug; ?>" action="<?php bloginfo( 'url' ); ?>" method="post">
 					<?php echo $header; ?>
 					<div class="fields">
 				    <?php foreach ( $fields as $field ) { ?>

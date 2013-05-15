@@ -251,7 +251,6 @@
 .field .cloud-error {
 	color: #cc0000; 
 	font-size: .875em;
-	display: none;  
 	border: none; 
 }
 .field .input + .cloud-error {

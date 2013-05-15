@@ -83,11 +83,11 @@ class Cloud_Field_post extends Cloud_Field {
 		$current_data = '<p class="current-data">' ; 
 		$current_data .= '<span class="current">'.$post_type.': <b class="post-title">'.$post_title.'</b>' ; 
 		$current_data .=  '<a class="remove-post ' . $remove_class . '">X</a>' ; 
-		$current_data .= $this->spec['code_link'] ? '<span class="post-property">Retrieves '. $this->property_to_get .'</span>' : '' ;
+		$current_data .= !empty( $this->spec['code_link'] ) ? '<span class="post-property">Retrieves '. $this->property_to_get .'</span>' : '' ;
 		$current_data .= '</span>';
 		$current_data .= '<a class="select-post" href="#">Select a post</a>' ;
 		$current_data .= '</p>' ;
-		if ( $this->info['in_metabox'] ){	
+		if ( !empty( $this->info['in_metabox'] ) ){	
 			$metabox = $this->spec['metabox_slug'] ; 
 			$field = $this->spec['field_slug'] ; 
 			$group_number = isset( $this->spec['group_number'] ) ? $this->spec['group_number'] : '' ;

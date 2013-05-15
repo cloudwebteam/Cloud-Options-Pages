@@ -35,6 +35,9 @@ jQuery( function($){
 		}).on( 'hide.timepicker' , function(e){
 			set_combined_datetime();
 		}) ;		
+		var $dropdown = $field.find( '.dropdown-menu' ); 		
+		$dropdown.find( 'input' ).attr('name', '' ); 
+		
 		if ( $datetime.val() ){ 
 			var dateValue = new Date( $datetime.val() ); 
 			$datepicker.datepicker('setDate', dateValue )  ;

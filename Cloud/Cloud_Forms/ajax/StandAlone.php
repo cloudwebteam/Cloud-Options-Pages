@@ -19,9 +19,9 @@ function convert_true_false_to_booleans( &$item, $key ){
 array_walk_recursive( $form_spec, 'convert_true_false_to_booleans' ); 
 
 if ( $form_id ){
-	$Forms = Cloud_Forms_StandAlone::get_instance(); 
 	$validation_results = Validator::validate( $form_data, $form_spec ); 
 	$response = $validation_results; 
+
 } else {
 	$response = 'No form by that ID';
 }	

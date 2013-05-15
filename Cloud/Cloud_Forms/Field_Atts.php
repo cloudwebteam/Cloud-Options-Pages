@@ -13,8 +13,7 @@
 			$name = $field_slug ;
 		}
  
-		$value = self::get_value( $field_slug, $section_slug );
-
+		$value = self::get_value( $field_slug, $section_slug, $form_slug );
 		$cloneable =  isset( $spec['cloneable'] ) ? $spec['cloneable'] : false;
 		$default_value =  isset( $spec['default'] ) ? $spec['default'] : ''; 
 			
@@ -49,9 +48,9 @@
 		return $info;	
 	}
 	protected static function get_value( $field_slug, $section_slug = '' , $form_slug = '' ){
-		if ( isset( $_REQUEST['form_id'] ) && $_REQUEST['form_id'] === $this->spec['form_slug'] ){
+		if ( isset( $_REQUEST['form_id'] ) && $_REQUEST['form_id'] === $form_slug ){
 			if ( $field_slug && $section_slug && $form_slug ){
-				return isset( $_REQUEST[$form_slug][$section_slug][$field_slug] ) ? $_REQUEST[$form_slug][$section_slug][$field_slug] : false ; 	
+				return isset( $_REQUEST[$section_slug][$field_slug] ) ? $_REQUEST[$section_slug][$field_slug] : false ; 	
 			} else if ( $field_slug && $section_slug ){
 				return isset( $_REQUEST[$section_slug][$field_slug] ) ? $_REQUEST[$section_slug][$field_slug] : false ; 	
 			} else {
