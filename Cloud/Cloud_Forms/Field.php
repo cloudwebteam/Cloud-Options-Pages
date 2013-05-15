@@ -231,6 +231,9 @@ class Cloud_Field {
 		if ( isset( $this->info['parent_layout'] ) && $this->info['parent_layout'] === 'grid' ){
 			$classes[] = isset( $this->info['width'] ) ? 'span' . $this->info['width'] : 'span6';
 		}
+		if ( isset( $this->spec['validation_error'] ) && $this->spec['validation_error'] ){
+			$classes[] = 'has-error' ; 
+		}
 		$classes[] = isset( $this->info['style'] ) ? $this->info['style'] :  '' ;
 		
 		return  ' class="'.implode( ' ' , $classes ) .'" '; 

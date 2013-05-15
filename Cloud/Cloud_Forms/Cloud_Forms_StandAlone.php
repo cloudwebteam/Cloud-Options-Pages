@@ -65,10 +65,29 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 			if ( $this->validation_enabled && isset( $_POST['form_id'] ) && $_POST['form_id'] == $form_slug ){
 				$validation_results = Validator::validate( $_POST, $form_array )  ;			
 				$this->has_validation_errors = $validation_results['success'] ? false : true ;
+
 				if ( isset( $this->spec[ $form_slug][ 'sections' ] ) ){
 					$this->spec[ $form_slug ][ 'sections' ] = $validation_results['updated_form_spec']; 
+					
+					if ( $this->has_validation_errors ){
+						$this->spec[ $form_slug ][ 'validation_error' ] = true; 		
+						$error_found = false; 
+						function check_for_error( $item, $key, &$error_found){
+							if ( isset( $item['validation_error'] ) ){
+								$error_found = true; 
+							}
+						}			
+						foreach( $this->spec[ $form_slug ]['sections' ]	as &$section ){
+							array_walk_recursive( $section, 'check_for_error', &$error_found );
+						}
+						if ( $error_found ){
+							$section['validation_error'] = true; 
+						}
+					}
+					
 				} else {
 					$this->spec[ $form_slug ][ 'fields' ]  = $validation_results['updated_form_spec']; 				
+					$this->spec[ $form_slug ][ 'validation_error' ] = true; 
 				}
 			}		
 		}

@@ -12,14 +12,23 @@
 
 			$layout_vars['header'] = self::get_form_header( $form_slug, $spec ); 			
 			$layout_vars['footer'] = self::get_form_footer( $form_slug, $spec ); 
+			
 			// get sections' html 
 			foreach( $spec['sections'] as $section_slug => $section_spec ){
+			
 				$layout = Layout_Section::get_layout_function( $section_spec['layout'] );
 				$layout_vars['sections'][ $section_slug ] = array( 
 					'html' => Layout_Section::$layout( $section_slug, $section_spec, $spec ),
 					'title' => $section_spec['title'], 
 					'description' => $section_spec['description']
 				);
+				$has_error_class = isset( $section_spec['validation_error'] ) && $section_spec['validation_error'] ? 'has-error' : ''  ; 
+				ob_start(); 
+				
+				?>
+					<li class="section-<?php echo $section_slug; ?>-tab <?php echo $has_error_class ; ?>" ><a title="<?php echo $section_spec['description']; ?>" href="#<?php echo $form_slug; ?>_<?php echo $section_slug; ?>"><?php echo $section_spec['title']; ?></a></li>				
+				<?php $layout_vars['tabs'][] = ob_get_clean(); 
+
 			}
 			return $layout_vars; 		
 		}
@@ -49,9 +58,9 @@
 				<form data-id="<?php echo $form_slug; ?>" action="" method="post">
 					<?php echo $header ; ?>			
 			    	<ul class="tabs cf">
-			    	<?php foreach ( $sections as $section_slug => $section ) { ?>			    	
-				    	<li class="section-<?php echo $section_slug; ?>-tab" ><a title="<?php echo $section['description']; ?>" href="#<?php echo $form_slug; ?>_<?php echo $section_slug; ?>"><?php echo $section['title']; ?></a></li>
-					    <?php } ?>
+			    	<?php foreach ( $tabs as $tab ) {
+			    		echo $tab; 
+					} ?>
 			    	</ul>
 			    	<div class="tabs-content">
 				    <?php foreach ( $sections as $section_slug => $section ) { ?>

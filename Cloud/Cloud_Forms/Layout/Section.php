@@ -31,7 +31,10 @@
 			// if the page is a grid layout, give section a width (specified 1-12, default 12) 
 				if(  $page_spec['layout'] === 'grid' ){
 					$classes[] =  isset( $spec['width'] ) ? 'span'.$spec['width'] : 'span12';
-				}				
+				}	
+				if ( isset( $spec['validation_error'] ) && $spec['validation_error'] ){
+					$classes[] = 'has-error' ; 
+				}								
 				if ( $page_spec['layout'] === 'tab'	){
 					$layout_vars['title'] = '' ;
 				}
@@ -44,7 +47,7 @@
 			}
 
 			$layout_vars['classes'] = implode ( ' ', $classes ); 
-
+			
 			// get sections' html 
 			foreach( $spec['fields'] as $field_slug => $field_spec ){
 				$field_type = Cloud_Field::get_class_name( $field_spec['type'] );

@@ -24,6 +24,9 @@
 			if ( isset( $spec['ajax'] ) && $spec['ajax'] ){
 				$classes[] = 'ajax' ;
 			}	
+			if ( isset( $spec['validation_error'] ) && $spec['validation_error'] ){
+				$classes[] = 'has-error' ; 
+			}			
 			return $classes; 
 		}
 		protected static function get_form_footer( $form_slug, $spec ){
