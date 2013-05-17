@@ -19,7 +19,7 @@ abstract class Cloud_Forms {
 	protected static $registered_styles ;
 	protected static $styles; 
 	
-	protected $directories_to_load = array( 'Field', 'Layout' ); 
+	protected $directories_to_load = array( 'Layout', 'Layout/Field' ); 
 	protected $validation_enabled = true ;
 	
 	protected function __construct(){
