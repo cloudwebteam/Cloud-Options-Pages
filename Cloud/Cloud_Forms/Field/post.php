@@ -113,7 +113,6 @@ class Cloud_Field_post extends Cloud_Field {
 	public static function options_page_link_popup( $args ){ ?>
 		<div id="<?php echo self::$wp_link_dialog_id; ?>" style="display: none;">
 			<form id="wp-link-dialog" tabindex="-1">
-				<?php wp_nonce_field( 'internal-linking', '_ajax_linking_nonce', false ); ?>
 				<div class="link-search-wrapper cf">
 					<label for='link-search-field'>Search Site</label>
 					<input type="text" id="link-search-field" class="link-search-field" tabindex="60" autocomplete="off" />
@@ -134,19 +133,19 @@ class Cloud_Field_post extends Cloud_Field {
 		<?php
 	}
 	public function ajax_options_internal_search(){
-		check_ajax_referer( 'internal-linking', '_ajax_linking_nonce' );
 		$args = array();
 		$property_to_retrieve = isset( $_POST['to_get'] ) ? $_POST['to_get'] : 'ID' ; 
 		$image_size = isset( $_POST['image_size'] ) ? $_POST['image_size'] : false ;
 		
-		if ( isset( $_POST['search'] ) )
+		if ( isset( $_POST['search'] ) ){
 			$args['s'] = stripslashes( $_POST['search'] );
+		}
 		$args['pagenum'] = ! empty( $_POST['page'] ) ? absint( $_POST['page'] ) : 1;
 	
 		require(ABSPATH . WPINC . '/class-wp-editor.php');
 		$results = _WP_Editors::wp_link_query( $args );
-		if ( isset( $results ) && is_array( $results ) && sizeof( $results ) > 0 ){
 
+		if ( isset( $results ) && is_array( $results ) && sizeof( $results ) > 0 ){
 			foreach( $results as $result ){  
 				$type = strpos( $result['info'], '/' ) ? 'Post' : $result['info']; 
 				$to_insert = self::get_option( $result['ID'], $property_to_retrieve ); 
@@ -164,7 +163,7 @@ class Cloud_Field_post extends Cloud_Field {
 		wp_die();
 	}
 	public static function get_option( $post_id, $spec ){
-
+		$post_id = intval( $post_id );
 		if ( is_string( $spec ) ){
 			$prop_to_get = $spec ;
 		} else {
@@ -205,8 +204,11 @@ class Cloud_Field_post extends Cloud_Field {
 				return $image_info[0] ;
 				break; 
 			case 'url' :
+			case 'link' :
 				return get_permalink( $post_id );
 				break ;				
+			default : 
+				return $post_id; 
 		}
 	}	
 	
@@ -216,4 +218,3 @@ class Cloud_Field_post extends Cloud_Field {
 	
 }
 add_action('wp_ajax_options-page-link-popup', array( 'Cloud_Field_post' , 'ajax_options_internal_search' ) );
-add_action('wp_ajax_nopriv_options-page-link-popup', array( 'Cloud_Field_post' , 'ajax_options_internal_search' ) );

@@ -1,5 +1,5 @@
 .field.type-post .current-data {
-	margin-bottom: 5px;
+	margin:  2px 0 5px;
 }
 .field.type-post .current-data .post-property {
 	color: #999;
@@ -21,8 +21,8 @@
 	display: block; 
 }
 .field.type-post .preview .inner{
-	border: 1px solid #eee; 
-	background: #fafafa; 
+	border: 1px solid #ccc; 
+	background: #eee; 
 	overflow: scroll ;
 	max-height: 100px ;
 	float: left; 
