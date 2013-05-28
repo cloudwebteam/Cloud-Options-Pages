@@ -118,7 +118,7 @@ $cloud_form_defaults = array (
 		),		
 		'group'		=> array(
 			'title'			=> 'Group',		
-			'layout'		=> array('label', 'field' , 'error', 'description'),
+			'layout'		=> array('label', 'description', 'field' , 'error' ),
 			'cloneable'		=> false,
 			'size'			=> null,
 			'width' 		=> 6,			
