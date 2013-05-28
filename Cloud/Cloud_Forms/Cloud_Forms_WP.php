@@ -294,16 +294,18 @@ class Cloud_Forms_WP extends Cloud_Forms {
 		echo $form_html; 		
 	}
 	public function save_metaboxes( $post_id ){
-		  // First we need to check if the current user is authorised to do this action. 
-		  if ( 'page' == $_POST['post_type'] ) {
-			  if ( ! current_user_can( 'edit_page', $post_id ) )
-			  	return;
-		  } else {
-			  if ( ! current_user_can( 'edit_post', $post_id ) )
-			  	return;
-		  }	
+
 		// Now can save the value to the database
-		if ( !wp_is_post_revision( $post_id ) ){
+		if ( isset( $_POST['post_type'] ) && !wp_is_post_revision( $post_id ) ){
+            // First we need to check if the current user is authorised to do this action. 
+            if ( 'page' == $_POST['post_type'] ) {
+                if ( ! current_user_can( 'edit_page', $post_id ) )
+                    return;
+            } else {
+                if ( ! current_user_can( 'edit_post', $post_id ) )
+                    return;
+            }	
+            
 			$Forms = Cloud_Forms_WP::get_instance();
 			foreach ( $Forms->metaboxes as $metabox_id => $metabox ){
 				if ( isset( $_POST[ $metabox_id ] ) ){
@@ -400,7 +402,7 @@ class Cloud_Forms_WP extends Cloud_Forms {
 	} 
 
 	
-	public function is_valid_on_current_page( $add_to ){
+	protected function is_valid_on_current_page( $add_to ){
 		if ( is_string( $add_to ) ){
 			// slug or title provided
 			if ( $post = get_page_by_title( $add_to ) ){
@@ -420,6 +422,19 @@ class Cloud_Forms_WP extends Cloud_Forms {
 			$post = get_post( $add_to );
 			$posts = array( $post ); 
 		} else if ( is_array( $add_to ) ){ 
+            // check if it includes a template parameter, and return false if the current page doesn't use that template
+    		if ( isset( $add_to['template'] ) && isset( $_GET['post'] ) ) {
+    		    $template = get_post_meta( $_GET['post'], '_wp_page_template', true );
+                if ( $template ){
+                    $all_templates = wp_get_theme()->get_page_templates(); 
+                    if ( ! isset( $all_templates[ $template ] ) || ( $all_templates[ $template ] !== $add_to['template'] )){
+                        return false;
+                    } else {
+                        unset( $add_to[ 'template'] ) ;
+                    }
+                }
+            }
+            
 			// check if its just a declaration of post_types
 			if ( sizeof( $add_to ) > 0 && isset( $add_to['post_type'] ) ) {
 				if ( isset( $_GET['post_type'] ) ){
@@ -442,6 +457,9 @@ class Cloud_Forms_WP extends Cloud_Forms {
 				}
 			} 
 			$add_to['numberposts'] = -1; 
+            if ( ! isset( $add_to['post_type'])){
+                $add_to['post_type'] = array( 'page') ;
+            }
 			$posts = get_posts( $add_to );
 			
 		}
