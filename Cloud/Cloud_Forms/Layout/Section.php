@@ -63,7 +63,7 @@
 			extract( self::get_layout_info( $slug, $spec, $page_spec ) );
 			ob_start();	?>
 			<div id="form-<?php echo $slug; ?>" class="<?php echo $classes; ?>">
-				<form data-id="<?php echo $slug; ?>" action="<?php bloginfo( 'url' ); ?>" method="post">
+				<form data-id="<?php echo $slug; ?>" action="" method="post">
 					<?php echo $header; ?>
 					<div class="fields">
 				    <?php foreach ( $fields as $field ) { ?>
