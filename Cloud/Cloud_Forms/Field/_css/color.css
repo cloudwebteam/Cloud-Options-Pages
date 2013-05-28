@@ -1,0 +1,132 @@
+.default-swab-container {
+	border-right : 1px solid #ccc;	
+	float: left;
+	margin: .25em 10px .25em 0;
+}
+.default-swab{
+	margin: 1px 10px .5em 0;
+	font-size: .75em;
+	text-align: center;
+	height: 17px;
+	line-height: 17px;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	width: 17px;
+	color: #fff;
+	cursor: pointer;
+	display: inline-block;
+	
+}
+.no-default {
+	margin: 1px 20px .5em 0;
+	font-size: .75em;
+	text-align: center;
+	height: 17px;
+	line-height: 17px;
+	width: 17px;
+	color: #D54E21;
+	border: 1px solid transparent;
+	display: inline-block;	
+	border-radius: 3px;	
+}
+.field.type-color .color-picker {
+	min-height: 1em;
+}
+.field.type-color .color-picker-input {
+	margin: 0 10px 0 0;	
+	font-size: .875em; 
+}
+.field.type-color  .color-picker .default-swab {
+	margin-right: 5px;
+}
+.field.type-color .option {
+	float: left;
+	line-height: 22px;
+	height: 22px;
+	padding: 3px 0 6px 0;
+}
+
+.field.type-color .color-toggle {
+	padding: .25em 2px .25em 5px;
+	float: left;
+	background: #fff;
+	border-radius: 3px;
+	background: #fafafa; 
+	border: 1px solid #ccc; 
+}
+.field.type-color .option_enabler {
+	float: left;
+}
+.field.type-color .enable-override {
+	margin: .25em 0 .25em 5px;
+	float: left;
+	display: block;
+	padding: 4px 6px;
+	color: #666;
+	text-transform: uppercase;
+	line-height: 1em;
+	
+}
+.field.type-color .enable-override label {
+	padding: 0 5px 0 10px;
+	font-size: .75em;
+	margin: 0;
+	white-space: nowrap ;
+	float: left; 
+}
+.field.type-color .input + .description {
+	padding-top: 1em;
+}
+/***====================================================================================================================================
+		SET DEFAULTS 
+	==================================================================================================================================== ***/
+#values-from-defaults {
+	display: block;
+	padding: .5em 5px;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	float: left;
+	text-decoration: none;
+	font-weight: bold;
+	margin-right: 120px;
+}
+#values-from-defaults:hover {
+	background: #fafafa;
+	border-color: #aaa;
+}
+#values-as-defaults {
+	margin: .5em 0 ;
+	display: inline-block;
+	font-style: italic;
+	color: #999;
+	font-size: .875em;
+	padding-right: 22px;
+	line-height: 17px;
+	height: 17px;
+	background: url(images/exclamation.png) no-repeat right top;
+	position: relative;
+}
+#values-as-defaults:hover {
+	background: url(images/exclamation.png) no-repeat right bottom;
+}
+#values-as-defaults .success {
+	display: none;
+	color: #21759B;
+	position: absolute; 
+	top: 0;
+	right: 105%;
+	border: 1px solid #ccc;
+	padding: .5em 5px;
+	border-radius: 3px;
+}	
+
+/***====================================================================================================================================
+		confirmation dialog
+	==================================================================================================================================== ***/
+.change-defaults-confirmation {
+	font-size: 1em !important ;
+}
+#set-default-values-popup {
+	background: #111;
+	display: none; 
+}

@@ -1,0 +1,38 @@
+.ui-widget.ui-datepicker {
+	font-size: 1em;
+}
+.field.type-startend .selector {
+	display: inline-block; 
+}
+.field.type-startend .start-label,
+.field.type-startend .end-label {
+	font-weight: bold; 
+	font-size: .875em;
+	padding-right: 5px; 
+	width: 30px;
+	display: inline-block ;
+	text-align: right; 
+	position: relative; 
+	top: 3px;
+}
+
+.cloud .timepicker + .add-on {
+	padding: 0; 
+	border-radius: 3px;
+	top: -1px;
+	position: relative; 
+}
+.cloud .dropdown-menu table {
+	table-layout: auto;
+}
+.cloud .dropdown-menu table td {
+	width: auto;
+}
+.cloud .dropdown-menu table td input {
+	box-sizing: content-box;
+}
+.cloud .dropdown-menu.open {
+	display: block;
+}
+
+
