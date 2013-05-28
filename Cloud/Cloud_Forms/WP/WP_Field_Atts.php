@@ -29,8 +29,8 @@
 
 		// part of a group?
 		if ( isset( $spec['subfield_slug'] ) && $spec['subfield_slug']){
-			$subfield_slug = isset( $spec['subfield_slug'] ) ; 
-			$group_number = isset( $spec['group_number'] ) ? $spec['group_number'] : 0 ;		
+			$subfield_slug = $spec['subfield_slug'] ; 
+            $group_number = isset( $spec['group_number'] ) ? $spec['group_number'] : 0 ;		
 			$value = $value && isset( $value[$group_number][$subfield_slug] ) ? $value[$group_number][$subfield_slug] : ''; 
 			$name = $name . '['.$group_number.']['.$subfield_slug.']'; 	
 			$input_id = $input_id . '_' . $subfield_slug . '-' .$group_number ;				
