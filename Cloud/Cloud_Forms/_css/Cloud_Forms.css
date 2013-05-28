@@ -266,8 +266,8 @@
 	padding-top: .5em; 
 }
 
-.cloneable {
-	width: 100%;
+.cloud-form .input .cloneable {
+    margin-right: 60px;
 }
 .clone {
 	cursor: move;

@@ -10,3 +10,8 @@
 	top: -3px; 
 	margin-right: 5px;
 }
+.cloud .group .field.type-toggle input {
+    position: relative ;
+	top: 5px; 
+	margin-right: 5px;
+}
