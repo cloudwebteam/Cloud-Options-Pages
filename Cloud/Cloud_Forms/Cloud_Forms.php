@@ -4,6 +4,9 @@ abstract class Cloud_Forms {
 	public static $prefix = Cloud_prefix ;
 	public static $ABS ;
 	public static $dir ;
+	
+	
+	protected static $loader ; 
 	// singleton (get method in child classes)
 	protected static $instance; 
 	// the master array with the defaults for form
@@ -19,26 +22,24 @@ abstract class Cloud_Forms {
 	protected static $registered_styles ;
 	protected static $styles; 
 	
-	protected $directories_to_load = array( 'Layout', 'Layout/Field' ); 
+	protected $directories_to_load = array( 'Layout', 'Field' ); 
 	protected $validation_enabled = true ;
 	
 	protected function __construct(){
-		self::$dir = Cloud_dir . '/' . __CLASS__ ;
-		self::$ABS = Cloud_ABS . '/' . __CLASS__ ;
-		$this->loader = Cloud_Loader::get_instance();		
 
+		self::$loader = Cloud_Loader::get_instance();		
+		self::$dir = self::$loader->dir() . '/' . __CLASS__ ;
+		self::$ABS = self::$loader->ABS() . '/' . __CLASS__ ;
 		// loads folder with this class's name	
 		$this->load_directories( ); 	
-		
 		// load global scripts and styles	
 		$this->load_global_scripts(); 
 		$this->load_global_styles();
 		
 		$this->set_local_javascript_vars(); 
-		
 		// get defaults array from defaults.php
 		$this->defaults = $this->set_defaults();	
-		$this->init();
+		$this->init();		
 
 	}
 	public static function get_instance(){
@@ -55,8 +56,8 @@ abstract class Cloud_Forms {
 			HANDLE AUTO-LOADING OF FILES
 		==================================================================================================================================== ***/
 	protected function load_directory( $directory_name = '' ){
-		$folder_path = $directory_name ? __CLASS__ . '/'.$directory_name : __CLASS__ ;
-		$this->loader->load_directory( $folder_path );		
+		$folder_path = $directory_name ? __CLASS__ . '/'.$directory_name : __CLASS__ ;	
+		self::$loader->load_directory( $folder_path );		
 	}
 	protected function load_directories( $folders = array() ){
 		foreach( $this->directories_to_load as $directory_name ){
@@ -67,48 +68,7 @@ abstract class Cloud_Forms {
 	/***====================================================================================================================================
 			HANDLE LOADING OF SCRIPTS AND STYLES
 		==================================================================================================================================== ***/
-	protected function load_global_scripts(){
-		self::register_script( 'jquery', 'http://code.jquery.com/jquery-1.9.1.min.js' ); 
-		self::register_script( 'bootstrap', self::get_folder_url() .'/__inc/bootstrap/js/bootstrap.min.js', array( 'jquery' ) );  
-		self::register_script( 'scrollTo', self::get_folder_url() .'/__inc/jquery.scrollTo.min.js', array( 'jquery' ) );  
-		
-		// full jQuery UI
-		self::register_script( 'jquery-ui-core', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.core.min.js', array('jquery') );
-		self::register_script( 'jquery-effects-core', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect.min.js', array('jquery') );
-		self::register_script( 'jquery-effects-blind', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-blind.min.js', array('jquery-effects-core') );
-		self::register_script( 'jquery-effects-bounce', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-bounce.min.js', array('jquery-effects-core') );
-		self::register_script( 'jquery-effects-clip', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-clip.min.js', array('jquery-effects-core') );
-		self::register_script( 'jquery-effects-drop', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-drop.min.js', array('jquery-effects-core') );
-		self::register_script( 'jquery-effects-explode', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-explode.min.js', array('jquery-effects-core') );
-		self::register_script( 'jquery-effects-fade', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-fade.min.js', array('jquery-effects-core') );
-		self::register_script( 'jquery-effects-fold', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-fold.min.js', array('jquery-effects-core') );
-		self::register_script( 'jquery-effects-highlight', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-highlight.min.js', array('jquery-effects-core') );
-		self::register_script( 'jquery-effects-pulsate', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-pulsate.min.js', array('jquery-effects-core') );
-		self::register_script( 'jquery-effects-scale', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-scale.min.js', array('jquery-effects-core') );
-		self::register_script( 'jquery-effects-shake', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-shake.min.js', array('jquery-effects-core') );
-		self::register_script( 'jquery-effects-slide', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-slide.min.js', array('jquery-effects-core') );
-		self::register_script( 'jquery-effects-transfer', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-transfer.min.js', array('jquery-effects-core') );
-	
-		self::register_script( 'jquery-ui-accordion', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.accordion.min.js', array('jquery-ui-core', 'jquery-ui-widget') );
-		self::register_script( 'jquery-ui-autocomplete', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.autocomplete.min.js', array('jquery-ui-core', 'jquery-ui-widget', 'jquery-ui-position', 'jquery-ui-menu') );
-		self::register_script( 'jquery-ui-button', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.button.min.js', array('jquery-ui-core', 'jquery-ui-widget') );
-		self::register_script( 'jquery-ui-datepicker', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.datepicker.min.js', array('jquery-ui-core') );
-		self::register_script( 'jquery-ui-dialog', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.dialog.min.js', array('jquery-ui-resizable', 'jquery-ui-draggable', 'jquery-ui-button', 'jquery-ui-position') );
-		self::register_script( 'jquery-ui-draggable', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.draggable.min.js', array('jquery-ui-core', 'jquery-ui-mouse') );
-		self::register_script( 'jquery-ui-droppable', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.droppable.min.js', array('jquery-ui-draggable') );
-		self::register_script( 'jquery-ui-menu', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.menu.min.js', array( 'jquery-ui-core', 'jquery-ui-widget', 'jquery-ui-position' ) );
-		self::register_script( 'jquery-ui-mouse', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.mouse.min.js', array('jquery-ui-widget') );
-		self::register_script( 'jquery-ui-position', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.position.min.js', array('jquery') );
-		self::register_script( 'jquery-ui-progressbar', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.progressbar.min.js', array('jquery-ui-widget') );
-		self::register_script( 'jquery-ui-resizable', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.resizable.min.js', array('jquery-ui-core', 'jquery-ui-mouse') );
-		self::register_script( 'jquery-ui-selectable', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.selectable.min.js', array('jquery-ui-core', 'jquery-ui-mouse') );
-		self::register_script( 'jquery-ui-slider', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.slider.min.js', array('jquery-ui-core', 'jquery-ui-mouse') );
-		self::register_script( 'jquery-ui-sortable', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.sortable.min.js', array('jquery-ui-core', 'jquery-ui-mouse') );
-		self::register_script( 'jquery-ui-spinner', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.spinner.min.js', array( 'jquery-ui-core', 'jquery-ui-widget', 'jquery-ui-button' ) );
-		self::register_script( 'jquery-ui-tabs', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.tabs.min.js', array('jquery-ui-core', 'jquery-ui-widget') );
-		self::register_script( 'jquery-ui-tooltip', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.tooltip.min.js', array( 'jquery-ui-core', 'jquery-ui-widget', 'jquery-ui-position' ) );
-		self::register_script( 'jquery-ui-widget', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.widget.min.js', array('jquery') );
-		
+	protected function load_global_scripts(){		
 		self::register_script( 'jquery-ui-timepicker-addon', self::get_folder_url() . '/__inc/jquery-ui-timepicker-addon/jquery-ui-timepicker-addon.js', array( 'jquery', 'bootstrap') );
 		self::register_script( 'bootstrap-timepicker', self::get_folder_url() . '/__inc/bootstrap_timepicker/bootstrap-timepicker.min.js', array( 'jquery') ); 
 		
@@ -117,14 +77,6 @@ abstract class Cloud_Forms {
 		self::enqueue_script( 'Cloud_Field', self::get_folder_url() .'/_js/Cloud_Field.js', array( 'jquery' ) ); 		
 	}
 	protected function load_global_styles(){	
-		self::register_style( 'reset' , self::get_folder_url() .'/_css/reset.css' );
-		self::register_style( 'bootstrap', self::get_folder_url() .'/__inc/bootstrap/css/bootstrap.min.css' ); 
-		self::register_style( 'bootstrap-responsive', self::get_folder_url() .'/__inc/bootstrap/css/bootstrap-responsive.min.css', array( 'bootstrap' ) ); 
-		
-		self::register_style( 'bootstrap-timepicker', self::get_folder_url(). '/__inc/bootstrap_timepicker/bootstrap-timepicker.min.css');
-		
-		self::register_style( 'jquery-ui-lightness', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/css/ui-lightness/jquery-ui-1.10.1.custom.min.css' ); 
-		
 		self::enqueue_style( 'reset' ); 		
 		self::enqueue_style( __CLASS__ .'-global', self::get_folder_url() .'/_css/Cloud_Forms_Global.css' ); 		
 		self::enqueue_style( __CLASS__, self::get_folder_url() .'/_css/Cloud_Forms.css' ); 
@@ -133,105 +85,23 @@ abstract class Cloud_Forms {
 		$this->global_js_vars = false; 
 	}
 	public static function enqueue_script( $handle, $path = false , $dependencies = false ){
-		if ( $path ){
-			$item_to_enqueue = array(
-				'handle' => $handle, 
-				'path' 		=> $path,
-				'dependencies' => $dependencies
-			);	
-		} else {
-			if ( isset( self::$registered_scripts[ $handle ] ) ){
-				$item_to_enqueue = self::$registered_scripts[ $handle ] ;
-			}
-		}
-		if( isset( $item_to_enqueue ) ){
-			self::$scripts[ $handle ] = $item_to_enqueue ;
-		} 
+		self::$loader->enqueue_script( $handle, $path, $dependencies ); 
 	}
 	public static function enqueue_style( $handle, $path = false, $dependencies = false ){
-		if ( $path ){
-			$item_to_enqueue = array(
-				'handle' => $handle, 
-				'path' 		=> $path,
-				'dependencies' => $dependencies
-			);	
-		} else {
-			if ( isset( self::$registered_styles[ $handle ] ) ){
-				$item_to_enqueue = self::$registered_styles[ $handle ] ;
-			}
-		}
-		if( isset( $item_to_enqueue ) ){
-			self::$styles[ $handle ] = $item_to_enqueue ;
-		} 
+		self::$loader->enqueue_style( $handle, $path, $dependencies ); 
 	}
 	public static function register_script( $handle, $path, $dependencies = false ){
-		$item_to_enqueue = array(
-			'handle' => $handle, 
-			'path' 		=> $path,
-			'dependencies' => $dependencies
-		);	
-		
-		self::$registered_scripts[ $handle ] = $item_to_enqueue ;	
+		self::$loader->register_script( $handle, $path, $dependencies ); 
 	}
 	public static function register_style( $handle, $path, $dependencies = false ){
-		$item_to_enqueue = array(
-			'handle' => $handle, 
-			'path' 		=> $path,
-			'dependencies' => $dependencies
-		);	
-		self::$registered_styles[ $handle ] = $item_to_enqueue ;
+		self::$loader->register_style( $handle, $path, $dependencies ); 
 	}
-	protected function sort_array_by_dependencies( $array_to_sort ){
-		$sorted_array = array();
-		while ( sizeof( $array_to_sort ) > 0 ){ 
-			foreach( $array_to_sort as $handle => $item ){
-				$all_dependencies_present = true; 
-		
-				if ( is_array( $item['dependencies'] ) && sizeof( $item['dependencies'] ) > 0 ){
-					foreach( $item['dependencies'] as $dependency_handle ){
-						if ( ! isset( $sorted_array[$dependency_handle] ) ){
-							$all_dependencies_present = false ;
-							break;
-						}
-					}
-				}
-				if ( $all_dependencies_present ){
-					$sorted_array[ $handle ] = $item ;
-					unset( $array_to_sort[ $handle ] );					
-				}
-			}
-		}
-		return $sorted_array ;
+	
+	public function print_styles(){
+		self::$loader->print_styles(); 
 	}
-	protected function filter_out_styles_without_needed_dependencies( &$item, $key, &$array ){
-		if ( is_array( $item['dependencies'] ) ){
-			foreach( $item['dependencies'] as $dependency ){
-				if ( ! isset( $array[ $dependency ] ) ){
-					if ( isset( self::$registered_styles[ $dependency ] ) ){
-						$array[ $dependency ] = self::$registered_styles[ $dependency ] ;
-					} else {
-						unset( $array[ $key ] );
-						break;
-					}
-				} 
-			}
-		}
-	}		
-	protected function filter_out_scripts_without_needed_dependencies( &$item, $key, &$array ){
-
-		if ( is_array( $item['dependencies'] ) ){
-			foreach( $item['dependencies'] as $dependency ){
-				$dependency_found = false;
-				if ( ! isset( $array[ $dependency ] ) ){				
-					if ( isset( self::$registered_scripts[ $dependency ] ) ){
-						$array[ $dependency ] = self::$registered_scripts[ $dependency ] ;
-					} else {
-						unset( $array[ $key ] );
-						break;						
-					}
-				} 
-			}
-		}
+	public function print_scripts(){ 
+		self::$loader->print_scripts(); 
 	}		
 	/***====================================================================================================================================
 			HANDLE DEFAULTS
@@ -241,7 +111,7 @@ abstract class Cloud_Forms {
 		global $cloud_form_defaults; 
 		return $cloud_form_defaults;
 	}			
-	protected function merge_with_defaults(){
+	protected function merge_with_defaults( $form_slug, $form ){
 		// implemented by children ( note, can use 'finish_merge_with_defaults' to finish it out )
 	}
 	protected function finish_merge_with_defaults( $section = array(), $subpage = array(), $top_level_page = array() ){
@@ -403,37 +273,42 @@ abstract class Cloud_Forms {
 	/***====================================================================================================================================
 			FORM VALIDATION
 		==================================================================================================================================== ***/
+
 	
 	// all this does is add a 'validation_error' item to the field specs of those fields that failed to validate, and return a general success or failure message	
 	protected function validate_form( $form_slug ){
-		$form_spec = $this->forms[ $form_slug ] ; 
+		$form_spec = $this->spec[ $form_slug ] ; 
 		if ( $this->validation_enabled && isset( $_POST['form_id'] ) && $_POST['form_id'] == $form_slug ){
 			$validation_results = Validator::validate( $_POST, $form_spec )  ;			
 			$this->has_validation_errors = $validation_results['success'] ? false : true ;
+    		if ( $this->has_validation_errors ){
 
-			if ( isset( $this->forms[ $form_slug][ 'sections' ] ) ){
-				$this->forms[ $form_slug ][ 'sections' ] = $validation_results['updated_form_spec']; 
-				
-				if ( $this->has_validation_errors ){
-					$this->forms[ $form_slug ][ 'validation_error' ] = true; 		
+    			if ( isset( $this->spec[ $form_slug][ 'sections' ] ) ){
+    				$this->spec[ $form_slug ][ 'sections' ] = $validation_results['updated_form_spec']; 
+    				
+					$this->spec[ $form_slug ][ 'validation_error' ] = true; 		
 					$error_found = false; 
 					function check_for_error( $item, $key, &$error_found){
 						if ( isset( $item['validation_error'] ) ){
 							$error_found = true; 
 						}
 					}			
-					foreach( $this->forms[ $form_slug ]['sections' ]	as &$section ){
+					foreach( $this->spec[ $form_slug ]['sections' ]	as &$section ){
 						array_walk_recursive( $section, 'check_for_error', &$error_found );
 					}
 					if ( $error_found ){
 						$section['validation_error'] = true; 
 					}
-				}
-				
-			} else {
-				$this->forms[ $form_slug ][ 'fields' ]  = $validation_results['updated_form_spec']; 				
-				$this->forms[ $form_slug ][ 'validation_error' ] = true; 
-			}
+    			} else {
+    				$this->spec[ $form_slug ][ 'fields' ]  = $validation_results['updated_form_spec']; 				
+	    			$this->spec[ $form_slug ][ 'validation_error' ] = true; 
+                }
+		    } else {
+                if ( $this->spec[ $form_slug ][ 'success_function'] ){
+                    call_user_func_array( $this->spec[ $form_slug ][ 'success_function'], array( $validation_results['to_save'] ) ); 
+		        }
+                $this->spec[ $form_slug ]['validation_error'] = false;    	    
+		    }
 		}		
 	
 	}

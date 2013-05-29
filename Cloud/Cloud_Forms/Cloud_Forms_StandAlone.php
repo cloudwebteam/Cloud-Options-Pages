@@ -1,7 +1,6 @@
 <?php 
 class Cloud_Forms_StandAlone extends Cloud_Forms {
 	protected $forms = array(); 
-	protected $directories_to_load = array('Field', 'Layout' );	
 	protected $validation_enabled = true; 
 	protected $has_validation_errors = false;
 	// singleton get method
@@ -64,37 +63,18 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 			LOAD SCRIPTS AND STYLES
 		==================================================================================================================================== ***/
 	protected function set_local_javascript_vars(){
-		$this->global_js_vars = array( 
+		self::$loader->add_global_js_var( 'cloud', array(
 			'cloud_ajax' => self::$dir . '/ajax/standAlone.php',
 			'cloud_url' => self::$dir
-		); 
+		) ); 
 	}
-	protected function order_styles_and_scripts(){
-		array_walk( self::$styles, array( $this, 'filter_out_styles_without_needed_dependencies'), &self::$styles );
-		self::$styles = $this->sort_array_by_dependencies( self::$styles );	
-		
-		array_walk( self::$scripts, array( $this, 'filter_out_scripts_without_needed_dependencies'), &self::$scripts );
-		self::$scripts = $this->sort_array_by_dependencies( self::$scripts );	
-			
-	} 
-	public function print_styles(){
-		foreach( self::$styles as $style ){ ?>
-		<link rel="stylesheet" href="<?php echo $style['path']; ?>" />
-		<?php }
-	}
-	public function print_scripts(){ 
-		if ( $this->global_js_vars ){ ?>
-		<script>
-			/* <! [CDATA[ */
-			var cloud = <?php echo json_encode( $this->global_js_vars ) ; ?>;
-			/* []> */			
-		</script>
-		<?php }
-		
-		foreach( self::$scripts as $script ){ ?>
-		<script src="<?php echo $script['path']; ?>" ></script>
-		<?php }
-	}
+
+	protected function validate_spec(){
+		foreach( $this->spec as $form_slug => $form ){
+			$this->validate_form( $form_slug ); 
+		}
+	}	
+
 	/***====================================================================================================================================
 			HANDLE ADDING FORMS
 		==================================================================================================================================== ***/
@@ -102,7 +82,6 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 	protected function construct_forms(){
 		$forms = array();
 		foreach( $this->spec as $form_slug => $form_spec ){
-			
 			if ( isset( $form_spec['sections'] ) ){
 				$layout = Layout_Form::get_layout_function( $form_spec['layout'] );
 				$forms[ $form_slug ] = Layout_Form::$layout( $form_slug, $form_spec ); 
@@ -114,6 +93,7 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 		return $forms; 
 	}
 	public function add_forms( $arg1, $arg2 = false ){
+
 		if ( is_array( $arg1 ) ){
 			foreach( $arg1 as $form_slug => $form ){
 				$this->passed_in[ $form_slug ] = $form;
@@ -125,15 +105,14 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 			$this->passed_in[ $form_slug ] = $arg2;
 			$this->spec[ $form_slug ] = $this->merge_with_defaults( $form_slug, $form );
 		}
+        $this->validate_form( $form_slug ) ; // checks if this form has been submitted, adds validation properties
 	}	
 	public function head(){
 		if ( $this->spec ){
-			$this->validate_forms() ;	
 			$this->forms = $this->construct_forms();
-			$this->order_styles_and_scripts();
-			$this->print_styles();
-			$this->print_scripts(); 
-		}
+			//$this->print_styles();
+			//$this->print_scripts(); 
+		} 
 	}
 	public function display( $form_slug ){
 		if ( isset( $this->forms[ $form_slug ] ) ){
@@ -151,4 +130,3 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 	}
 
 }
-
