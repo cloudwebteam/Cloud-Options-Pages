@@ -15,12 +15,6 @@ abstract class Cloud_Forms {
 	protected $passed_in = array() ;
 	// the data after it is merged with defaults;
 	protected $spec;
-	// the list of scripts to enqueue
-	protected static $registered_scripts ;
-	protected static $scripts; 
-	// the list of styles to enqueue
-	protected static $registered_styles ;
-	protected static $styles; 
 	
 	protected $directories_to_load = array( 'Layout', 'Field' ); 
 	protected $validation_enabled = true ;
@@ -33,6 +27,8 @@ abstract class Cloud_Forms {
 		// loads folder with this class's name	
 		$this->load_directories( ); 	
 		// load global scripts and styles	
+		$this->register_common_scripts();
+		$this->register_common_styles();				
 		$this->load_global_scripts(); 
 		$this->load_global_styles();
 		
@@ -68,7 +64,61 @@ abstract class Cloud_Forms {
 	/***====================================================================================================================================
 			HANDLE LOADING OF SCRIPTS AND STYLES
 		==================================================================================================================================== ***/
-	protected function load_global_scripts(){		
+	protected function register_common_scripts(){
+		self::register_script( 'jquery', 'http://code.jquery.com/jquery-1.9.1.min.js' ); 
+		self::register_script( 'bootstrap', self::get_folder_url() .'/__inc/bootstrap/js/bootstrap.min.js', array( 'jquery' ) );  
+		self::register_script( 'scrollTo', self::get_folder_url() .'/__inc/jquery.scrollTo.min.js', array( 'jquery' ) );  
+		
+		// full jQuery UI
+		self::register_script( 'jquery-ui-core', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.core.min.js', array('jquery') );
+		self::register_script( 'jquery-effects-core', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect.min.js', array('jquery') );
+		self::register_script( 'jquery-effects-blind', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-blind.min.js', array('jquery-effects-core') );
+		self::register_script( 'jquery-effects-bounce', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-bounce.min.js', array('jquery-effects-core') );
+		self::register_script( 'jquery-effects-clip', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-clip.min.js', array('jquery-effects-core') );
+		self::register_script( 'jquery-effects-drop', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-drop.min.js', array('jquery-effects-core') );
+		self::register_script( 'jquery-effects-explode', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-explode.min.js', array('jquery-effects-core') );
+		self::register_script( 'jquery-effects-fade', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-fade.min.js', array('jquery-effects-core') );
+		self::register_script( 'jquery-effects-fold', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-fold.min.js', array('jquery-effects-core') );
+		self::register_script( 'jquery-effects-highlight', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-highlight.min.js', array('jquery-effects-core') );
+		self::register_script( 'jquery-effects-pulsate', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-pulsate.min.js', array('jquery-effects-core') );
+		self::register_script( 'jquery-effects-scale', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-scale.min.js', array('jquery-effects-core') );
+		self::register_script( 'jquery-effects-shake', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-shake.min.js', array('jquery-effects-core') );
+		self::register_script( 'jquery-effects-slide', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-slide.min.js', array('jquery-effects-core') );
+		self::register_script( 'jquery-effects-transfer', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-transfer.min.js', array('jquery-effects-core') );
+	
+		self::register_script( 'jquery-ui-accordion', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.accordion.min.js', array('jquery-ui-core', 'jquery-ui-widget') );
+		self::register_script( 'jquery-ui-autocomplete', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.autocomplete.min.js', array('jquery-ui-core', 'jquery-ui-widget', 'jquery-ui-position', 'jquery-ui-menu') );
+		self::register_script( 'jquery-ui-button', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.button.min.js', array('jquery-ui-core', 'jquery-ui-widget') );
+		self::register_script( 'jquery-ui-datepicker', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.datepicker.min.js', array('jquery-ui-core') );
+		self::register_script( 'jquery-ui-dialog', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.dialog.min.js', array('jquery-ui-resizable', 'jquery-ui-draggable', 'jquery-ui-button', 'jquery-ui-position') );
+		self::register_script( 'jquery-ui-draggable', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.draggable.min.js', array('jquery-ui-core', 'jquery-ui-mouse') );
+		self::register_script( 'jquery-ui-droppable', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.droppable.min.js', array('jquery-ui-draggable') );
+		self::register_script( 'jquery-ui-menu', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.menu.min.js', array( 'jquery-ui-core', 'jquery-ui-widget', 'jquery-ui-position' ) );
+		self::register_script( 'jquery-ui-mouse', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.mouse.min.js', array('jquery-ui-widget') );
+		self::register_script( 'jquery-ui-position', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.position.min.js', array('jquery') );
+		self::register_script( 'jquery-ui-progressbar', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.progressbar.min.js', array('jquery-ui-widget') );
+		self::register_script( 'jquery-ui-resizable', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.resizable.min.js', array('jquery-ui-core', 'jquery-ui-mouse') );
+		self::register_script( 'jquery-ui-selectable', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.selectable.min.js', array('jquery-ui-core', 'jquery-ui-mouse') );
+		self::register_script( 'jquery-ui-slider', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.slider.min.js', array('jquery-ui-core', 'jquery-ui-mouse') );
+		self::register_script( 'jquery-ui-sortable', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.sortable.min.js', array('jquery-ui-core', 'jquery-ui-mouse') );
+		self::register_script( 'jquery-ui-spinner', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.spinner.min.js', array( 'jquery-ui-core', 'jquery-ui-widget', 'jquery-ui-button' ) );
+		self::register_script( 'jquery-ui-tabs', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.tabs.min.js', array('jquery-ui-core', 'jquery-ui-widget') );
+		self::register_script( 'jquery-ui-tooltip', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.tooltip.min.js', array( 'jquery-ui-core', 'jquery-ui-widget', 'jquery-ui-position' ) );
+		self::register_script( 'jquery-ui-widget', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.widget.min.js', array('jquery') );
+
+	}
+	protected function register_common_styles(){	
+		self::register_style( 'reset' , self::get_folder_url() .'/__inc/reset.css' );
+		self::register_style( 'bootstrap', self::get_folder_url() .'/__inc/bootstrap/css/bootstrap.min.css' ); 
+		self::register_style( 'bootstrap-responsive', self::get_folder_url() .'/__inc/bootstrap/css/bootstrap-responsive.min.css', array( 'bootstrap' ) ); 
+		
+		self::register_style( 'bootstrap-timepicker', self::get_folder_url(). '/__inc/bootstrap_timepicker/bootstrap-timepicker.min.css');
+		self::register_style( 'jquery-ui-lightness', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/css/ui-lightness/jquery-ui-1.10.1.custom.min.css' ); 
+	
+	}	
+	
+	protected function load_global_scripts(){	
+		
 		self::register_script( 'jquery-ui-timepicker-addon', self::get_folder_url() . '/__inc/jquery-ui-timepicker-addon/jquery-ui-timepicker-addon.js', array( 'jquery', 'bootstrap') );
 		self::register_script( 'bootstrap-timepicker', self::get_folder_url() . '/__inc/bootstrap_timepicker/bootstrap-timepicker.min.js', array( 'jquery') ); 
 		

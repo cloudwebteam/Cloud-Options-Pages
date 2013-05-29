@@ -12,6 +12,7 @@ class Cloud_Forms_WP extends Cloud_Forms {
 	
 	protected $passed_in_forms = array() ; 
 	protected $forms = array() ; 
+	
 	// singleton get method
 	public static function get_instance(){
 		if ( !self::$instance ){
@@ -206,18 +207,24 @@ class Cloud_Forms_WP extends Cloud_Forms {
 		}
 
 	}
+	
 	public function enqueue_scripts_and_styles(){
 		$this->get_needed_field_scripts_and_styles(); 
-		foreach( self::$registered_scripts as $script ){
+		$registered_scripts = self::$loader->get_registered_scripts(); 
+		foreach( $registered_scripts as $script ){
 			wp_register_script( $script['handle'], $script['path'], $script['dependencies'] ); 
 		}
-		foreach( self::$scripts as $script ){		
+		$enqueued_scripts = self::$loader->get_scripts(); 
+		foreach( $enqueued_scripts as $script ){		
 			wp_enqueue_script( $script['handle'], $script['path'], $script['dependencies'] ); 
 		}
-		foreach( self::$registered_styles as $style ){
+		
+		$registered_styles = self::$loader->get_registered_styles(); 
+		foreach( $registered_styles as $style ){
 			wp_register_style( $style['handle'], $style['path'], $style['dependencies'] ); 
 		}
-		foreach( self::$styles as $style ){
+		$enqueued_styles = self::$loader->get_styles(); 
+		foreach( $enqueued_styles as $style ){
 			if ($style['handle'] !== 'reset' ){
 				wp_enqueue_style( $style['handle'], $style['path'], $style['dependencies'] ); 
 			}
@@ -673,10 +680,10 @@ class Cloud_Forms_WP extends Cloud_Forms {
 	}	
 	
 	public static function get_folder_url(){
-		return self::$dir .'/'. basename( __FILE__, '.php' )  ; 	
+		return self::$dir .'/WP'; 	
 	}	
 	public static function get_include_path(){
-		return self::$ABS .'/'. basename( __FILE__, '.php' ) ; 	
+		return self::$ABS .'/WP' ; 	
 	}
 
 }

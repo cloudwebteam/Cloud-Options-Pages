@@ -1,6 +1,6 @@
 <?php 
 // ERROR REPORTING
-define( 'Cloud_dir', SITE_URL . '/Cloud' ); 
+define( 'Cloud_dir', get_bloginfo('template_directory') . '/Cloud' ); 
 define( 'Cloud_ABS', dirname( __FILE__ ) . '/Cloud' ); 
 define( 'Cloud_prefix' , 'CC_' );
 class Cloud_Loader {
@@ -16,14 +16,13 @@ class Cloud_Loader {
 	// what directories, in addition to the one with this class name, would you like to load?
 	protected $directories_to_load = array('Cloud_Forms', 'DB');	
 
-	protected $styles; 
-	protected $scripts; 
+	protected $registered_styles ; 
+	protected $styles ; 
+	protected $registered_scripts ; 
+	protected $scripts ; 
 	protected $global_js_vars ; 
 	private function __construct(){
 		// loads folder with this class's name	
-		$this->register_common_scripts();
-		$this->register_common_styles();		
-		
 		$this->load_directory(); 	
 		$this->load_directories();
  	}
@@ -215,57 +214,20 @@ class Cloud_Loader {
 	/***====================================================================================================================================
 			REGISTER SOME COMMON SCRIPTS AND STYLES 
 		==================================================================================================================================== ***/
-	protected function register_common_scripts(){
-		self::register_script( 'jquery', 'http://code.jquery.com/jquery-1.9.1.min.js' ); 
-		self::register_script( 'bootstrap', $this->dir .'/__inc/bootstrap/js/bootstrap.min.js', array( 'jquery' ) );  
-		self::register_script( 'scrollTo', $this->dir .'/__inc/jquery.scrollTo.min.js', array( 'jquery' ) );  
-		
-		// full jQuery UI
-		self::register_script( 'jquery-ui-core', $this->dir . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.core.min.js', array('jquery') );
-		self::register_script( 'jquery-effects-core', $this->dir . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect.min.js', array('jquery') );
-		self::register_script( 'jquery-effects-blind', $this->dir . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-blind.min.js', array('jquery-effects-core') );
-		self::register_script( 'jquery-effects-bounce', $this->dir . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-bounce.min.js', array('jquery-effects-core') );
-		self::register_script( 'jquery-effects-clip', $this->dir . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-clip.min.js', array('jquery-effects-core') );
-		self::register_script( 'jquery-effects-drop', $this->dir . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-drop.min.js', array('jquery-effects-core') );
-		self::register_script( 'jquery-effects-explode', $this->dir . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-explode.min.js', array('jquery-effects-core') );
-		self::register_script( 'jquery-effects-fade', $this->dir . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-fade.min.js', array('jquery-effects-core') );
-		self::register_script( 'jquery-effects-fold', $this->dir . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-fold.min.js', array('jquery-effects-core') );
-		self::register_script( 'jquery-effects-highlight', $this->dir . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-highlight.min.js', array('jquery-effects-core') );
-		self::register_script( 'jquery-effects-pulsate', $this->dir . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-pulsate.min.js', array('jquery-effects-core') );
-		self::register_script( 'jquery-effects-scale', $this->dir . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-scale.min.js', array('jquery-effects-core') );
-		self::register_script( 'jquery-effects-shake', $this->dir . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-shake.min.js', array('jquery-effects-core') );
-		self::register_script( 'jquery-effects-slide', $this->dir . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-slide.min.js', array('jquery-effects-core') );
-		self::register_script( 'jquery-effects-transfer', $this->dir . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect-transfer.min.js', array('jquery-effects-core') );
-	
-		self::register_script( 'jquery-ui-accordion', $this->dir . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.accordion.min.js', array('jquery-ui-core', 'jquery-ui-widget') );
-		self::register_script( 'jquery-ui-autocomplete', $this->dir . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.autocomplete.min.js', array('jquery-ui-core', 'jquery-ui-widget', 'jquery-ui-position', 'jquery-ui-menu') );
-		self::register_script( 'jquery-ui-button', $this->dir . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.button.min.js', array('jquery-ui-core', 'jquery-ui-widget') );
-		self::register_script( 'jquery-ui-datepicker', $this->dir . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.datepicker.min.js', array('jquery-ui-core') );
-		self::register_script( 'jquery-ui-dialog', $this->dir . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.dialog.min.js', array('jquery-ui-resizable', 'jquery-ui-draggable', 'jquery-ui-button', 'jquery-ui-position') );
-		self::register_script( 'jquery-ui-draggable', $this->dir . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.draggable.min.js', array('jquery-ui-core', 'jquery-ui-mouse') );
-		self::register_script( 'jquery-ui-droppable', $this->dir . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.droppable.min.js', array('jquery-ui-draggable') );
-		self::register_script( 'jquery-ui-menu', $this->dir . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.menu.min.js', array( 'jquery-ui-core', 'jquery-ui-widget', 'jquery-ui-position' ) );
-		self::register_script( 'jquery-ui-mouse', $this->dir . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.mouse.min.js', array('jquery-ui-widget') );
-		self::register_script( 'jquery-ui-position', $this->dir . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.position.min.js', array('jquery') );
-		self::register_script( 'jquery-ui-progressbar', $this->dir . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.progressbar.min.js', array('jquery-ui-widget') );
-		self::register_script( 'jquery-ui-resizable', $this->dir . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.resizable.min.js', array('jquery-ui-core', 'jquery-ui-mouse') );
-		self::register_script( 'jquery-ui-selectable', $this->dir . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.selectable.min.js', array('jquery-ui-core', 'jquery-ui-mouse') );
-		self::register_script( 'jquery-ui-slider', $this->dir . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.slider.min.js', array('jquery-ui-core', 'jquery-ui-mouse') );
-		self::register_script( 'jquery-ui-sortable', $this->dir . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.sortable.min.js', array('jquery-ui-core', 'jquery-ui-mouse') );
-		self::register_script( 'jquery-ui-spinner', $this->dir . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.spinner.min.js', array( 'jquery-ui-core', 'jquery-ui-widget', 'jquery-ui-button' ) );
-		self::register_script( 'jquery-ui-tabs', $this->dir . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.tabs.min.js', array('jquery-ui-core', 'jquery-ui-widget') );
-		self::register_script( 'jquery-ui-tooltip', $this->dir . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.tooltip.min.js', array( 'jquery-ui-core', 'jquery-ui-widget', 'jquery-ui-position' ) );
-		self::register_script( 'jquery-ui-widget', $this->dir . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.widget.min.js', array('jquery') );
 
-	}
-	protected function register_common_styles(){	
-		self::register_style( 'reset' , $this->dir .'/__inc/reset.css' );
-		self::register_style( 'bootstrap', $this->dir .'/__inc/bootstrap/css/bootstrap.min.css' ); 
-		self::register_style( 'bootstrap-responsive', $this->dir .'/__inc/bootstrap/css/bootstrap-responsive.min.css', array( 'bootstrap' ) ); 
-		
-		self::register_style( 'bootstrap-timepicker', $this->dir. '/__inc/bootstrap_timepicker/bootstrap-timepicker.min.css');
-		self::register_style( 'jquery-ui-lightness', $this->dir . '/__inc/jquery-ui-1.10.1.custom/css/ui-lightness/jquery-ui-1.10.1.custom.min.css' ); 
 	
-	}		
+	public function get_registered_styles(){
+		return $this->registered_styles; 
+	}
+	public function get_styles(){
+		return $this->styles;
+	}
+	public function get_registered_scripts(){
+		return $this->registered_scripts; 
+	}
+	public function get_scripts(){	
+		return $this->scripts;	
+	}	
+	
 }
 Cloud_Loader::get_instance();
