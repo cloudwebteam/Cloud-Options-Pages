@@ -9,7 +9,7 @@
 			$name = $metabox_slug . '['.$field_slug.']' ;
 			$value = self::get_metabox_value( $_GET['post'], $metabox_slug, $field_slug );
 		 
-			$to_retrieve = array( $_GET['post'], '"'.$metabox_slug.'"', '"'.$field_slug.'"' ); 			
+			$to_retrieve = array( '"' . $_GET['post'] .'"' , '"'.$metabox_slug.'"', '"'.$field_slug.'"' ); 			
 		} else {
 			$top_level_slug = $spec['top_level_slug'] ; 
 			$subpage_slug = $spec['subpage_slug'];
@@ -36,10 +36,9 @@
 			$input_id = $input_id . '_' . $subfield_slug . '-' .$group_number ;				
 
 			$cloneable = false;
-			$to_retrieve[] = '"'.$group_number.'"' ;
+			$to_retrieve[] = ''.$group_number.'' ;
 			$to_retrieve[] = '"'.$subfield_slug.'"' ; 			
 		}
-
 		$info = array(); 		
 		$info['title'] = $spec['title'];
 		$info['cloneable'] = $cloneable ;

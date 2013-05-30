@@ -56,10 +56,10 @@ jQuery( function($){
 			// copy an existing group 
 			var new_input = group.clone(true).hide();
 			//get rid of the values
-			new_input.find('input, textarea').not('[type="button"], .copy, [type="checkbox"], [type="radio"]').val('');
+			new_input.find('input, textarea').not('[type="button"], .copy_to_use input, [type="checkbox"], [type="radio"]').val('');
 			// specific changes for specific fields
 			new_input.find('.error').remove();			
-			new_input.find('.media-url img').addClass('hidden');
+			new_input.find('.type-media .preview-image').hide().addClass('hidden').attr('src', '' );
 			group.after( new_input );
 			new_input.fadeIn(); 
 			
@@ -94,9 +94,9 @@ jQuery( function($){
 			});
 
 			// change the "code" link
-			if ( $(this).find('input.copy').size() > 0 ){
-				var prev_copy_to_use = $(this).find('input.copy').attr('value') ;
-				$(this).find('input.copy').val( prev_copy_to_use.replace(/ \d+/g, ' ' + counter ) );
+			if ( $(this).find('.copy_to_use input').size() > 0 ){
+				var prev_copy_to_use = $(this).find('.copy_to_use input').attr('value') ;
+				$(this).find('.copy_to_use input').val( prev_copy_to_use.replace(/ \d+/g, ' ' + counter ) );
 			}
 			counter++;
 		});
