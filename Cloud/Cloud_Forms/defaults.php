@@ -11,6 +11,9 @@ $cloud_form_defaults = array (
 		'description' 	=> null,
 		'ajax' 			=> false,
 		'submit_text' 	=> 'Save',
+        'hide_on_success' => false, // show the form once successfully submissi
+		'success'       => 'Form successfully validated and sent',
+		'success_function' => false,
 		'sections'		=> array (
 		)	
 	), 
