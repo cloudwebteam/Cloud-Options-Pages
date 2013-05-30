@@ -217,4 +217,6 @@ class Cloud_Field_post extends Cloud_Field {
 	*/
 	
 }
-add_action('wp_ajax_options-page-link-popup', array( 'Cloud_Field_post' , 'ajax_options_internal_search' ) );
+if ( is_callable( 'add_action' ) ){
+	add_action('wp_ajax_options-page-link-popup', array( 'Cloud_Field_post' , 'ajax_options_internal_search' ) );
+}
