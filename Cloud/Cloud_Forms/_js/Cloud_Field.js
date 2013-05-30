@@ -59,7 +59,7 @@ jQuery( function($){
 			// get rid of error messages 
 			new_input.find( '.error' ).remove(); 
 			// specific changes for specific fields
-			new_input.find('.media-url img').addClass('hidden');
+			new_input.find('.preview-image').attr('src', '').addClass('hidden' ).hide(); 
 			
 			clone.after( new_input );
 			new_input.fadeIn(); 
