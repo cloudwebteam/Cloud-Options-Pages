@@ -1,6 +1,6 @@
 <?php
 // Prevent loading this file directly
-defined( 'ABSPATH' ) || exit;
+defined( 'Cloud_ABS' ) || exit;
 
 class Cloud_Field_post extends Cloud_Field {
     public static $wp_link_dialog_id = 'wp_link_popup' ; 
