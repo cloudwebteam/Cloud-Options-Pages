@@ -14,7 +14,7 @@ abstract class Cloud_Forms {
 	// the data the user provides
 	protected $passed_in = array() ;
 	// the data after it is merged with defaults;
-	protected $spec;
+	protected $forms;
 	
 	protected $directories_to_load = array( 'Layout', 'Field' ); 
 	protected $validation_enabled = true ;
@@ -327,37 +327,37 @@ abstract class Cloud_Forms {
 	
 	// all this does is add a 'validation_error' item to the field specs of those fields that failed to validate, and return a general success or failure message	
 	protected function validate_form( $form_slug ){
-		$form_spec = $this->spec[ $form_slug ] ; 
+		$form_spec = $this->forms[ $form_slug ] ; 
 		if ( $this->validation_enabled && isset( $_POST['form_id'] ) && $_POST['form_id'] == $form_slug ){
 			$validation_results = Validator::validate( $_POST, $form_spec )  ;			
 			$this->has_validation_errors = $validation_results['success'] ? false : true ;
     		if ( $this->has_validation_errors ){
 
-    			if ( isset( $this->spec[ $form_slug][ 'sections' ] ) ){
-    				$this->spec[ $form_slug ][ 'sections' ] = $validation_results['updated_form_spec']; 
+    			if ( isset( $this->forms[ $form_slug][ 'sections' ] ) ){
+    				$this->forms[ $form_slug ][ 'sections' ] = $validation_results['updated_form_spec']; 
     				
-					$this->spec[ $form_slug ][ 'validation_error' ] = true; 		
+					$this->forms[ $form_slug ][ 'validation_error' ] = true; 		
 					$error_found = false; 
 					function check_for_error( $item, $key, &$error_found){
 						if ( isset( $item['validation_error'] ) ){
 							$error_found = true; 
 						}
 					}			
-					foreach( $this->spec[ $form_slug ]['sections' ]	as &$section ){
+					foreach( $this->forms[ $form_slug ]['sections' ]	as &$section ){
 						array_walk_recursive( $section, 'check_for_error', &$error_found );
 					}
 					if ( $error_found ){
 						$section['validation_error'] = true; 
 					}
     			} else {
-    				$this->spec[ $form_slug ][ 'fields' ]  = $validation_results['updated_form_spec']; 				
-	    			$this->spec[ $form_slug ][ 'validation_error' ] = true; 
+    				$this->forms[ $form_slug ][ 'fields' ]  = $validation_results['updated_form_spec']; 				
+	    			$this->forms[ $form_slug ][ 'validation_error' ] = true; 
                 }
 		    } else {
-                if ( $this->spec[ $form_slug ][ 'success_function'] ){
-                    call_user_func_array( $this->spec[ $form_slug ][ 'success_function'], array( $validation_results['to_save'] ) ); 
+                if ( $this->forms[ $form_slug ][ 'success_function'] ){
+                    call_user_func_array( $this->forms[ $form_slug ][ 'success_function'], array( $validation_results['to_save'] ) ); 
 		        }
-                $this->spec[ $form_slug ]['validation_error'] = false;    	    
+                $this->forms[ $form_slug ]['validation_error'] = false;    	    
 		    }
 		}		
 	
@@ -383,7 +383,7 @@ abstract class Cloud_Forms {
 			PUBLIC FUNCTIONS
 		==================================================================================================================================== ***/
 	public function get_spec( $form_slug ){
-		return !empty( $this->spec[$form_slug] ) ? $this->spec[ $form_slug ] : false ;
+		return !empty( $this->forms[$form_slug] ) ? $this->forms[ $form_slug ] : false ;
 	}
 	
 	/***====================================================================================================================================
