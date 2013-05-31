@@ -9,7 +9,7 @@ jQuery( function($){
 	
    function handleFieldError( $input, validation_error ){
 		$field = $input.parents('.field' ).first(); 		
-		$error = $field.find( '.cloud-error' ).hide().html( validation_error ) ; 
+		$error = $field.find( '.cloud-error' ).hide().html( '<span class="error-inner">' + validation_error + '</span>') ; 
 		$field.addClass('has-error'); 
 		$error.show('fast'); 		
 	
