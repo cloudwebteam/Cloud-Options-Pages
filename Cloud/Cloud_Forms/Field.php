@@ -214,7 +214,7 @@ class Cloud_Field {
 		return $description;
 	}
 	protected function get_error(){
-		return isset( $this->spec['validation_error'] ) && ! is_array( $this->spec['validation_error'] ) ? $this->spec['validation_error'] : false ;
+		return isset( $this->spec['validation_error'] ) && ! is_array( $this->spec['validation_error'] ) ? '<span class="error-inner">' . $this->spec['validation_error'] .'</span>': false ;
 	}	
 	protected function get_attributes( ){
 
