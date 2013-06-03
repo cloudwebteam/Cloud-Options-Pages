@@ -608,7 +608,6 @@ class Cloud_Forms_WP extends Cloud_Forms {
 		return (json_last_error() == JSON_ERROR_NONE);
 	}
 	public function convert_dynamic_data( $value , $path_to_option, $is_metabox = false ){	
-	
 		if ($this->has_dynamic_values( $value ) ){
 			if ( is_string( $value ) ){
 				
@@ -631,8 +630,7 @@ class Cloud_Forms_WP extends Cloud_Forms {
 							}
 						}
 						$spec_key_names = array( 'sections', 'fields', 'subfields' ); 											
-					}
-					
+					}                   
 					foreach( $path_to_option as $spec_key => $key_name ){
 						if ( ! is_numeric( $spec_key ) ){
 							if ( $spec_key ){
@@ -646,17 +644,17 @@ class Cloud_Forms_WP extends Cloud_Forms {
 								while ( $still_looking && sizeof( $spec_key_names ) > 0 ){
 									$spec_key = array_shift( $spec_key_names ) ;
 									if ( isset( $array_spec[$spec_key] ) &&  is_array( $array_spec[$spec_key] ) && isset( $array_spec[$spec_key][$key_name] ) ){
-										$array_spec =  $array_spec[$spec_key][$key_name] ;	
-									}						
+                                        $array_spec =  $array_spec[$spec_key][$key_name] ; 
+                                        $still_looking = false; 
+									}
 								}
 							}
-						}										
+						}	                      
 					}
 			
-
 					
 					foreach( $json_array as $field_type => $data ){
-						$value = $field_type ;
+						$value = $field_type ;                         
 						if ( class_exists( Cloud_Field::get_class_name( $field_type ) ) ){
 							$field_class = Cloud_Field::get_class_name( $field_type ) ;
 
@@ -671,6 +669,7 @@ class Cloud_Forms_WP extends Cloud_Forms {
 				foreach ( $value as $index => &$item ){
 					$path_to_nested_option = $path_to_option ;
 					$path_to_nested_option[] = $index ;
+
 					$item = $this->convert_dynamic_data( $item , $path_to_nested_option, $is_metabox ) ;
 				}
 			}
@@ -728,8 +727,12 @@ function get_metabox_options( $post_id, $metabox_slug = false , $field_slug = fa
 	$Forms = Cloud_Forms_WP::get_instance(); 
 	
 	$path_to_option = array( 
-		$metabox_slug, $field_slug, $group_number, $subfield_slug
+		$metabox_slug
 	); 
+    if ( $field_slug ){ $path_to_option[] = $field_slug ; }
+    if ( $group_number ){ $path_to_option[] = $group_number ; }
+    if ( $subfield_slug ){ $path_to_option[] = $subfield_slug ; }
+
 	return $Forms->convert_dynamic_data( $Forms->get_metabox_data( $post_id, $metabox_slug, $field_slug, $group_number, $subfield_slug ), $path_to_option, true ); 
 	
 	
