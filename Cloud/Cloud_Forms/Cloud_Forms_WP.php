@@ -439,6 +439,8 @@ class Cloud_Forms_WP extends Cloud_Forms {
                     } else {
                         unset( $add_to[ 'template'] ) ;
                     }
+                } else {
+                    return false; 
                 }
             }
             
