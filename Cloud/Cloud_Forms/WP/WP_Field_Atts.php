@@ -7,9 +7,13 @@
 			
 			$input_id = $metabox_slug . '_' . $field_slug ;			
 			$name = $metabox_slug . '['.$field_slug.']' ;
-			$value = self::get_metabox_value( $_GET['post'], $metabox_slug, $field_slug );
-		 
-			$to_retrieve = array( '"' . $_GET['post'] .'"' , '"'.$metabox_slug.'"', '"'.$field_slug.'"' ); 			
+            if( isset( $_GET['post'])){       
+	    		$value = self::get_metabox_value( $_GET['post'], $metabox_slug, $field_slug );
+			    $to_retrieve = array( '"' . $_GET['post'] .'"' , '"'.$metabox_slug.'"', '"'.$field_slug.'"' ); 			
+		    } else {
+                $value = false;
+    		    $to_retrieve = array( '"POST_ID"' , '"'.$metabox_slug.'"', '"'.$field_slug.'"' ); 			                
+		    }
 		} else {
 			$top_level_slug = $spec['top_level_slug'] ; 
 			$subpage_slug = $spec['subpage_slug'];

@@ -163,7 +163,8 @@ class Cloud_Field_post extends Cloud_Field {
 		wp_die();
 	}
 	public static function get_option( $post_id, $spec ){
-		$post_id = intval( $post_id );
+
+        $post_id = intval( $post_id );
 		if ( is_string( $spec ) ){
 			$prop_to_get = $spec ;
 		} else {

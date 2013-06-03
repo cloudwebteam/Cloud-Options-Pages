@@ -201,7 +201,7 @@
 	transition: all .2s ease-out;	
 }
 .copy_to_use.active > input {
-	width: 250px; 	
+	width: 400px; 	
 	border: 1px solid #aaa;
 	background: #efefec;
 	box-shadow: 0 0 3px #24B2FF;
