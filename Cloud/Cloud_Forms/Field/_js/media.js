@@ -2,6 +2,16 @@
 jQuery(document).ready(function($){
 	var fields = $('.field.type-media'); 
 	fields.each( function(){
+		var $targetfield = $(this).find('input.url_field');
+		var $image_container = $(this).find( '.image' ); 
+		var $preview_image = $image_container.find('img'); 	        
+		$(this).find( '.remove-media').on( 'click', function(){
+			$targetfield.val('');
+			$preview_image.slideUp('fast', function(){
+		     	$(this).addClass('hidden'); 
+		     	$(this).attr('src', '');
+		    }); 	
+		});        
 		$(this).find( '.upload_button' ).click(function(e) {
 			var $button = $(this); 
 			// gotta reinit on click...because it might be in a group or cloneable and still be bound to cloned item
@@ -19,13 +29,6 @@ jQuery(document).ready(function($){
 			var $preview_image = $image_container.find('img'); 		
 			var to_insert = $targetfield.data('to_insert') ;		
 			
-			$field.find( '.remove-media').click( function(){
-				$targetfield.val('');
-				$preview_image.slideUp('fast', function(){
-			     	$(this).addClass('hidden'); 
-			     	$(this).attr('src', '');
-			    }); 	
-			});
 			$('.add_media').on('click', function(){
 				_custom_media = false;
 			});	
