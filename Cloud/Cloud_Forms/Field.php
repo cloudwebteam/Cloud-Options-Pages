@@ -51,7 +51,7 @@ class Cloud_Field {
 			$components['label'] = '<div class="label">' .$label.'</div>' ; 
 		}
 		if ( $this->info['cloneable'] ){
-			$components['field'] = $this->make_cloneable( );
+			$components['field'] = $this->make_cloneable( ) .$this->copy_to_use();
 		} else {
 			if ( $field = $this->get_field_html( ) ){
 				$components['field'] = '<div class="input cf">'.$field. $this->copy_to_use() .'</div>'; 		
