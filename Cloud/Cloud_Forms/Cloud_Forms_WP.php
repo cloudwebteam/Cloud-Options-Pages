@@ -430,19 +430,56 @@ class Cloud_Forms_WP extends Cloud_Forms {
 			$posts = array( $post ); 
 		} else if ( is_array( $add_to ) ){ 
             // check if it includes a template parameter, and return false if the current page doesn't use that template
-    		if ( isset( $add_to['template'] ) && isset( $_GET['post'] ) ) {
-    		    $template = get_post_meta( $_GET['post'], '_wp_page_template', true );
-                if ( $template ){
-                    $all_templates = wp_get_theme()->get_page_templates(); 
-                    if ( ! isset( $all_templates[ $template ] ) || ( $all_templates[ $template ] !== $add_to['template'] )){
-                        return false;
+    		if ( ( isset( $add_to['template'] ) || isset( $add_to['exclude_template'] ) )  && isset( $_GET['post'] ) ) {
+    		    $template_file = get_post_meta( $_GET['post'], '_wp_page_template', true );
+                $all_templates = wp_get_theme()->get_page_templates();                         
+                $template_name = isset( $all_templates[ $template_file ] ) ? $all_templates[ $template_file ] : false ;
+                if ( isset( $add_to['template'] ) ){
+                    if ( $template_name ){
+                        if ( is_array( $add_to['template'])){
+                            $allowed = false; 
+                            foreach( $add_to['template'] as $allowed_template ){
+                                if ( $template_name == $allowed_template ){
+                                    $allowed = true; 
+                                    break;
+                                }
+                            }
+                            if ( ! $allowed ){
+                                return false; 
+                            } else {
+                                unset( $add_to[ 'template'] ) ;                                
+                            }
+                        } else {
+                            if ( $template_name !== $add_to['template'] ){
+                                return false;
+                            } else {
+                                unset( $add_to[ 'template'] ) ;
+                            }
+                        }
                     } else {
-                        unset( $add_to[ 'template'] ) ;
+                        return false; 
                     }
-                } else {
-                    return false; 
+                } else if ( isset( $add_to['exclude_template']) ){
+                    if ( $template_name ){
+                        if ( is_array( $add_to['exclude_template'])){
+                            $allowed = false;                             
+                            foreach( $add_to['exclude_template'] as $excluded_template ){
+                                if (  $template_name == $excluded_template ){
+                                    return false ;
+                                }
+                            }                        
+                            unset( $add_to[ 'exclude_template'] ) ;                                                            
+                        } else {
+                            if ( $template_name == $add_to['exclude_template'] ){
+                                return false;
+                            } else {
+                                unset( $add_to[ 'exclude_template'] ) ;
+                            }
+                        }                        
+                    }
                 }
             }
+        
             
 			// check if its just a declaration of post_types
 			if ( sizeof( $add_to ) > 0 && isset( $add_to['post_type'] ) ) {
@@ -659,7 +696,6 @@ class Cloud_Forms_WP extends Cloud_Forms {
 						$value = $field_type ;                         
 						if ( class_exists( Cloud_Field::get_class_name( $field_type ) ) ){
 							$field_class = Cloud_Field::get_class_name( $field_type ) ;
-
 							$value = $field_class::get_option( $data, $array_spec ) ;						
 						} else {
 							echo 'no class by that name' ;
@@ -734,7 +770,6 @@ function get_metabox_options( $post_id, $metabox_slug = false , $field_slug = fa
     if ( $field_slug ){ $path_to_option[] = $field_slug ; }
     if ( $group_number ){ $path_to_option[] = $group_number ; }
     if ( $subfield_slug ){ $path_to_option[] = $subfield_slug ; }
-
 	return $Forms->convert_dynamic_data( $Forms->get_metabox_data( $post_id, $metabox_slug, $field_slug, $group_number, $subfield_slug ), $path_to_option, true ); 
 	
 	
