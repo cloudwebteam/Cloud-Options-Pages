@@ -225,7 +225,7 @@ $cloud_form_defaults = array (
 		),
 		'toggle' => array(
 			'title'				=> 'Toggle',
-			'layout'			=> array(array( 'field' , 'error','label' ), 'description'),
+			'layout'			=> array(array( 'field' ,'label', 'error' ), 'description'),
 			'checkbox_value' 	=> 1,
 			'size'				=> null,
 			'width' 			=> 6,
