@@ -77,7 +77,7 @@ class Cloud_Forms_WP extends Cloud_Forms {
 				$section['top_level_slug'] = $top_level_slug ; 
 				$section['subpage_slug'] = $subpage_slug;
 				$section['section_slug'] = $section_slug;
-				$_section = $this->finish_merge_with_defaults( $section, $subpage ); 
+				$_section = $this->finish_merge_with_defaults( $section, $subpage, $top_level_page ); 
 			}
 				
 		}
@@ -356,6 +356,7 @@ class Cloud_Forms_WP extends Cloud_Forms {
 				}
 			}
 		}
+
 		return $combined_defaults;
 	}	
 	

@@ -62,7 +62,11 @@
 		$info['is_subfield'] =  isset( $spec['subfield_slug'] ) && $spec['subfield_slug'] ? true: false ;
 		$info['in_metabox'] = $is_metabox ; 
 		
-		$info['to_retrieve'] = $is_metabox ? 'get_metabox_options( '.implode(', ',$to_retrieve ) .'); ' : 'get_theme_options('.implode( ', ', $to_retrieve ).');'; 
+		if ( $spec['code_link'] ){ 
+			$info['to_retrieve'] = $is_metabox ? 'get_metabox_options( '.implode(', ',$to_retrieve ) .'); ' : 'get_theme_options('.implode( ', ', $to_retrieve ).');'; 
+		} else {
+			$info['to_retrieve'] = false; 
+		}
 		return $info;	
 	}
 	protected static function get_page_value( $subpage_slug, $section_slug, $field_slug ){
