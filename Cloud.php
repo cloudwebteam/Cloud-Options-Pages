@@ -16,8 +16,10 @@ class Cloud_Loader {
 	protected $directories_to_load = array();	
 	protected $registered_styles ; 
 	protected $styles ; 
+	protected $styles_have_been_printed	; 
 	protected $registered_scripts ; 
 	protected $scripts ; 
+	protected $scripts_have_been_printed ; 
 	protected $global_js_vars ; 
 	private function __construct(){
 		// loads folder with this class's name	
@@ -134,14 +136,19 @@ class Cloud_Loader {
 		$this->global_js_vars[ $name ] = $value; 
 	}
 	public function print_styles(){
+		if ( $this->styles_have_been_printed ) return ; 	
+		
 		array_walk( $this->styles, array( $this, 'filter_out_styles_without_needed_dependencies'), &$this->styles );
 		$this->styles = $this->sort_array_by_dependencies( $this->styles );	
 			
 		foreach( $this->styles as $style ){ ?>
 		<link rel="stylesheet" href="<?php echo $style['path']; ?>" />
 		<?php }
+		$this->styles_have_been_printed = true; 		
 	}
 	public function print_scripts(){ 
+		if ( $this->scripts_have_been_printed ) return ; 
+		
 		if ( $this->global_js_vars ){ ?>
 		<script>
 			/* <! [CDATA[ */
@@ -158,6 +165,7 @@ class Cloud_Loader {
 		foreach( $this->scripts as $script ){ ?>
 		<script src="<?php echo $script['path']; ?>" ></script>
 		<?php }
+		$this->scripts_have_been_printed = true; 
 	}	
 	protected function sort_array_by_dependencies( $array_to_sort ){
 		$sorted_array = array();
