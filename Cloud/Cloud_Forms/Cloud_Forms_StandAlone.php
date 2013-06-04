@@ -1,6 +1,7 @@
 <?php 
 class Cloud_Forms_StandAlone extends Cloud_Forms {
 	protected $forms = array(); 
+	protected $forms_html = array(); 
 	protected $validation_enabled = true; 
 	protected $has_validation_errors = false;
 	// singleton get method
@@ -70,7 +71,7 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 	}
 
 	protected function validate_spec(){
-		foreach( $this->spec as $form_slug => $form ){
+		foreach( $this->forms as $form_slug => $form ){
 			$this->validate_form( $form_slug ); 
 		}
 	}	
@@ -81,7 +82,7 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 
 	protected function construct_forms(){
 		$forms = array();
-		foreach( $this->spec as $form_slug => $form_spec ){
+		foreach( $this->forms as $form_slug => $form_spec ){
 			if ( isset( $form_spec['sections'] ) ){
 				$layout = Layout_Form::get_layout_function( $form_spec['layout'] );
 				$forms[ $form_slug ] = Layout_Form::$layout( $form_slug, $form_spec ); 
@@ -97,26 +98,26 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 		if ( is_array( $arg1 ) ){
 			foreach( $arg1 as $form_slug => $form ){
 				$this->passed_in[ $form_slug ] = $form;
-				$this->spec[ $form_slug ] = $this->merge_with_defaults( $form_slug, $form );
+				$this->forms[ $form_slug ] = $this->merge_with_defaults( $form_slug, $form );
 			}
 		} else {
 			$form_slug = $arg1; 
 			$form = $arg2; 
 			$this->passed_in[ $form_slug ] = $arg2;
-			$this->spec[ $form_slug ] = $this->merge_with_defaults( $form_slug, $form );
+			$this->forms[ $form_slug ] = $this->merge_with_defaults( $form_slug, $form );
 		}
         $this->validate_form( $form_slug ) ; // checks if this form has been submitted, adds validation properties
 	}	
 	public function head(){
-		if ( $this->spec ){
-			$this->forms = $this->construct_forms();
+		if ( $this->forms ){
+			$this->forms_html = $this->construct_forms();
 			//$this->print_styles();
 			//$this->print_scripts(); 
 		} 
 	}
 	public function display( $form_slug ){
-		if ( isset( $this->forms[ $form_slug ] ) ){
-			echo $this->forms[ $form_slug ] ;
+		if ( isset( $this->forms_html[ $form_slug ] ) ){
+			echo $this->forms_html[ $form_slug ] ;
 		} else { ?>
 			<div class="cloud cloud-form form-not-found">Form "<?php echo $form_slug; ?>" has not been registered</div>
 		<?php }
