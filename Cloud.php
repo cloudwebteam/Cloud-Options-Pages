@@ -1,7 +1,6 @@
 <?php 
-// ERROR REPORTING
-define( 'Cloud_dir', get_bloginfo('template_directory') . '/Cloud' ); 
-define( 'Cloud_ABS', dirname( __FILE__ ) . '/Cloud' ); 
+define( 'Cloud_dir', SITE_URL . '/Cloud'  ); 
+define( 'Cloud_ABS', dirname( __FILE__ ) . '/Cloud'  ); 
 define( 'Cloud_prefix' , 'CC_' );
 class Cloud_Loader {
 	protected static $instance; 
@@ -14,8 +13,7 @@ class Cloud_Loader {
 		return $this->dir; 
 	}	
 	// what directories, in addition to the one with this class name, would you like to load?
-	protected $directories_to_load = array('Cloud_Forms', 'DB');	
-
+	protected $directories_to_load = array();	
 	protected $registered_styles ; 
 	protected $styles ; 
 	protected $registered_scripts ; 
@@ -39,23 +37,26 @@ class Cloud_Loader {
 		HANDLE LOADING OF FILES in DIRECTORIES
 	==================================================================================================================================== ***/
 	public function load_directories( $directories = array() ){
-		foreach( $this->directories_to_load as $directory_name ){
+		$directories = $directories ? $directories : $this->directories_to_load ; 
+		foreach( $directories as $directory_name ){
 			$this->load_directory( $directory_name );
 		}
 	}
 	public function load_directory( $folder = false ){ 
 		$load_folder = $folder ?  $this->ABS . '/' . $folder : $this->ABS ;
 		$load_list = array( ) ;
+
 		$load_list = array_merge( $load_list , $this->get_folder_files( $load_folder ) );		
 		
 		$main_file = $load_folder . '/'.basename( $folder ) . '.php' ;
-	
-		if ( file_exists( $main_file ) ){		
-			include_once ( $main_file );
-		}
-		foreach ( $load_list as $file ){
-			if ( $file !== $main_file ){
-				include_once $file;	
+		if ( sizeof( $load_list ) > 0 ){
+			if ( file_exists( $main_file ) ){		
+				include_once ( $main_file );
+			}
+			foreach ( $load_list as $file ){
+				if ( $file !== $main_file ){
+					include_once $file;	
+				}
 			}
 		}
 	}
