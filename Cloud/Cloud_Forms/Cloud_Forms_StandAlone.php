@@ -111,8 +111,8 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 	public function head(){
 		if ( $this->forms ){
 			$this->forms_html = $this->construct_forms();
-			//$this->print_styles();
-			//$this->print_scripts(); 
+			$this->print_styles();
+			$this->print_scripts(); 
 		} 
 	}
 	public function display( $form_slug ){
