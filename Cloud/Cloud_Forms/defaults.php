@@ -140,6 +140,19 @@ $cloud_form_defaults = array (
 			'description'	=> null,
 			'width' 		=> 6,	
 		),
+		'password' => array(
+			'title' 			=> 'Password', 
+			'layout'			=> array('label', 'field' , 'error', 'description'),
+			'password_label' 	=> 'Password',			
+			'confirm_label' 	=> 'Confirm', 
+			'size' 				=> 50,
+			'cloneable'			=> false,
+			'description'		=> null,
+			'size'				=> 55,	
+			'required' 			=> false,
+			'validate' 			=> '/[a-zA-Z0-9]+/',
+			'error'				=> false
+		),
 		'select'	=> array(
 			'title'			=> 'Select Menu',				
 			'multiple'		=> false,

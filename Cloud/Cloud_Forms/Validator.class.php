@@ -10,16 +10,19 @@
 		'phone' 	=> 'Please enter a valid phone number',
 		'pin'		=> 'Four numbers, please',
 		'required' 	=> 'Required', 		
+		'regex' 	=> 'Improper format',
 		'url'		=> 'Must be a full url ( http://... )',
 		'zip'		=> 'Invalid ZIP code',
+		'unknown' 	=> 'Unregistered validation type: ',
 		'wtf'		=> 'Not registered in class, how here?'
 	); 
 	public static function validate( $form_submission_data = '' , $form_fields = '' ){
 		$validation = new self( $form_submission_data, $form_fields ); 
-
+				
 		return array( 
 			'success' => $validation->success,
-			'to_save' => $validation->form_data,			
+			'form_data' => $validation->form_data,
+			'to_save' => $validation->to_save,			
 			'updated_form_spec' => $validation->form_spec_with_errors ,
 		); 
 	}
@@ -30,7 +33,11 @@
 		$this->form_spec = $form_spec ; 
 
 		$this->form_data =  $this->remove_excluded_fields( $form_data ) ;
+
+		// ->to_save gets changed in the same loop that adds errors to form_spec
+		$this->to_save = false ;
 		$this->form_spec_with_errors = $this->add_errors_to_form_spec(); 	
+
 	}
 	protected function remove_excluded_fields( $form_data ){
 		foreach( $this->excluded_fields as $field_name ){
@@ -51,13 +58,17 @@
 		foreach( $validation_spec as $slug => $spec ){			
 
 			$post_data = isset( $this->form_data[ $slug ] ) ? $this->form_data[ $slug ] : array() ;
-			$validation_spec[ $slug ] = $this->get_field_validation_spec( $post_data , &$spec, $this->array_hierarchy  ); 			
+			
+			// both post data and spec are changed in this massive loop to prevent doing it twice
+			$validation_spec[ $slug ] = $this->get_field_validation_spec( &$post_data , &$spec, $this->array_hierarchy  ); 			
 		}
-
-		
+		if ( $this->success ){
+			$this->to_save = $post_data; 		
+		}
 		return $validation_spec ; 		
 	}
-	protected function get_field_validation_spec( $post_data, &$spec, $array_hierarchy, $errors = array() ){
+	protected function get_field_validation_spec( &$post_data, &$spec, $array_hierarchy, $errors = array() ){
+
 		$array_level = array_shift( $array_hierarchy );	
 		if ( is_array( $post_data ) ){
 			$fields_to_check = isset( $spec[ $array_level ] ) ? $spec[ $array_level ] : array() ;
@@ -65,9 +76,32 @@
 
 				if ( ! is_numeric( $slug ) ){
 					if ( isset( $spec[ $array_level ][ $slug ] ) ){
-						$child_spec = $spec[ $array_level ][ $slug ] ;
+						$field_spec =& $spec[ $array_level ][ $slug ] ;
 						unset( $fields_to_check[ $slug ] );
-						$spec[ $array_level ][ $slug ] = $this->get_field_validation_spec( $slug_post_data, &$child_spec, $array_hierarchy, $errors ) ; 
+						
+						// check fields that require special treatment....
+						// @todo MAKE BETTER
+						if ( isset( $field_spec['type'] ) && $field_spec['type'] === 'password' ){
+							$pw_errors = array();
+							// checks whatever validation they passed in
+							$error_message = isset( $field_spec['error'][ 'password'] ) ? $field_spec['error'][ 'password'] : false  ; 
+							if ( $error = $this->call_validation_function( $field_spec['validate'], $slug_post_data['password'], $error_message ) ){
+								$pw_errors['password'] = $error ;
+							}  	
+							// checks the confirmation field
+							$error_message = isset( $field_spec['error'][ 'confirm'] ) ? $field_spec['error'][ 'confirm'] : false  ; 							
+							if ( $error = $this->call_validation_function( 'password', $slug_post_data, $error_message ) ){
+								$pw_errors['confirm'] = $error ;
+							}
+							if ( $pw_errors ){
+								$spec[ $array_level ][ $slug ]['validation_error'] = $pw_errors; 
+								$this->success = false ;
+							} else {
+								$post_data[$slug] = $this->prepare_to_save( $field_spec, $slug_post_data ); 
+							}
+						} else {
+							$spec[ $array_level ][ $slug ] = $this->get_field_validation_spec( &$slug_post_data, &$field_spec, $array_hierarchy, $errors ) ; 
+						}
 					} 
 				} else {
 					// is group 
@@ -79,6 +113,8 @@
 								if ( $field_error = $this->validate_field( $field_spec, $subfield_value ) ){
 									$spec['validation_error'][ $slug ][ $subfield_slug ] = $field_error ; 
 									$this->success = false ;
+								} else {
+									$slug_post_data[$subfield_slug] = $this->prepare_to_save( $field_spec, $subfield_value ); 
 								}
 							} 
 						}
@@ -87,7 +123,11 @@
 						if ( $field_error = $this->validate_field( $spec, $slug_post_data ) ){
 							$spec['validation_error'][$slug] = $field_error ;
 							$this->success = false ;
-						}								
+						} else {
+							foreach( $slug_post_data as $index => $clone_value ){
+								$slug_post_data[$subfield_slug][ $index ] = $this->prepare_to_save( $field_spec, $clone_value );
+							}	
+						}
 					}
 				}
 			}			
@@ -95,7 +135,6 @@
 				// no value was submitted 
 				$subfield_value = '' ;
 				if ( $field_error = $this->validate_field( $subfield_spec, $subfield_value ) ){
-
 					$spec[ $array_level ][ $subfield_slug ]['validation_error'] = $field_error ;
 					$this->success = false ;
 				}
@@ -104,26 +143,55 @@
 			if ( $field_error = $this->validate_field( $spec, $post_data ) ){
 				$spec['validation_error'] = $field_error ;
 				$this->success = false ;
+			} else {
+				$post_data = $this->prepare_to_save( $spec, $post_data );
 			}
-		
 		}
 		return $spec; 
 	}
 	protected function validate_field( $field_spec , $field_value = '' ){
-		
+
 		if ( isset( $field_spec['required'] ) && $field_spec['required'] && ! $this->value_has_been_input( $field_value ) ){
 			return is_string( $field_spec['required'] ) ? $field_spec['required'] : self::$messages['required'] ; 
 		} else if ( $this->value_has_been_input( $field_value ) ){
-			if ( isset( $field_spec['validate'] ) && is_callable( array( $this, $field_spec['validate'] ) ) ){
-				// returns the validator-generated error, if there is an error
-				$validator_error = $this->{ $field_spec['validate'] }( $field_value ); 
-				if ( $validator_error ){
-					// if there is a custom error message specified, use that, otherwise the normal validator one.					
-					return !empty( $field_spec['error'] ) ? $field_spec['error'] : self::get_error_message( $field_spec['validate'] ) ; 
+			if ( isset( $field_spec['validate'] ) && $field_spec['validate'] ){
+				if( is_array( $field_spec['validate'] ) ){
+					foreach( $field_spec['validate'] as $validation_method ){
+						$error_message = isset( $field_spec['error'][ $field_spec['validate'] ] ) ? $field_spec['error'][ $field_spec['validate'] ] : $field_spec['error']  ; 
+						if ( $error = $this->call_validation_function( $field_spec['validate'], $field_value, $error_message ) ){
+							return $error; 
+						} 
+					}
+				} else {
+					$error_message = $field_spec['error']  ; 
+					return $this->call_validation_function( $field_spec['validate'], $field_value, $error_message ); 	
 				}
-			}		
+			}
 		}
 		return false ;
+	}
+	protected function call_validation_function( $validation_type, $value, $error_message = false ){
+	
+		if( is_callable( array( $this, $validation_type ) ) ){
+			// returns the validator-generated error, if there is an error
+			$validator_error = $this->{ $validation_type }( $value ); 
+			if ( $validator_error ){
+				// if there is a custom error message specified, use that, otherwise the normal validator one.					
+				return $error_message ? $error_message : self::get_error_message( $validation_type ) ; 
+			} else {
+				return false; 
+			}				
+		// did they provide a regex? Starts and ends with forward slash? ( ex. /[A-Z]+/ ); 
+		} else if ( strpos( $validation_type, '/' ) === 0 && substr( $validation_type, -1 ) === '/' ){
+			$pattern = $validation_type ; 
+			$validator_error = $this->regex( $pattern, $value ); 
+			if ( $validator_error ){
+				return $error_message ? $error_message : self::get_error_message( 'regex' ) ; 
+			} else {
+				return false; 
+			}
+		}
+		return self::get_error_message( 'unknown' ) . ' ' . $validation_type ; 
 	}
 	protected function get_error_message( $validation_type ){
 		if ( isset( self::$messages[$validation_type] ) ) { 
@@ -150,14 +218,13 @@
 			return false; 
 		}
 	}
-	protected function prepared_to_save(){
-		foreach( $this->form_data as $col_name => $col_value ){
-			// phone number preparation
-			if ( is_array( $col_value ) ){
-				$this->form_data[$col_name] = implode('-', $col_value);
-			}
+	protected function prepare_to_save( $spec, $value ){
+		switch( $spec['type'] ){
+			case 'password' : 
+				return $value['password']; 
+			 	break;
 		}
-		return $this->form_data ;
+		return $value;
 	}
 
 	
@@ -180,11 +247,13 @@
 		}
 	}	
 	protected function password( $field_value = '' ){
-		if ( strlen( $field_value ) < 6 || ! preg_match( '/\d/', $field_value )) {
-			return true ;
-		} else {
-			return false ;
+		if ( is_array( $field_value ) && !empty( $field_value['password'] ) ){
+			if ( empty( $field_value['confirm'] ) || (  $field_value['confirm'] !== $field_value['password'] ) ){
+				return true;
+			}
 		}
+		return false; 
+	
 	}	
 	protected function phone( $field_value = '' ){
 		if ( is_array( $field_value ) ){
@@ -209,7 +278,14 @@
 		}
 		
 	}	
-
+	protected function regex( $pattern , $field_value = '' ){
+		if ( ! preg_match( $pattern, $field_value) ){
+			return true ;
+		} else { 
+			return false ;
+		}	
+		
+	}
 	protected function url( $field_value = '' ){
 		if ( ! preg_match( '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/', $field_value) ){
 			return true ;

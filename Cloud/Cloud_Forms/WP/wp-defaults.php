@@ -79,6 +79,8 @@ $cloud_form_defaults_wp = array (
 			'image_size' 	=> 'full',
 			'_lock'			=> false											
 		),	
+		'password' 	=>  array(
+		),
 		'post' => array(
 			'title'			=> 'Post Info',						
 			'layout'		=> array('label', 'field' , 'error', 'description'),
