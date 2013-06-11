@@ -8,7 +8,10 @@ jQuery( function($){
    
 	
    function handleFieldError( $input, validation_error ){
-		$field = $input.parents('.field' ).first(); 		
+		$field = $input.parents('.field' ).first(); 	
+		if ( $field.find( ':focus' ).size() > 0 ){
+			return ;
+		}	
 		$error = $field.find( '.cloud-error' ).hide().html( '<span class="error-inner">' + validation_error + '</span>') ; 
 		$field.addClass('has-error'); 
 		$error.show('fast'); 		
@@ -68,14 +71,70 @@ jQuery( function($){
    		}
 
    		$form.find( 'input, textarea, select' ).on( 'click focus', function(){
+ 			if ( $(this).is( '.special-field' )){
+ 				return;
+ 			}
    			$field = $(this).parents('.field' ).removeClass('has-error' ); 
    			$field.find( '.cloud-error' ).hide('fast'); 
+
    		}); 
    		if ( $container.hasClass('ajax') ){
+   		
+   			var $fields = $form.find( '.field' ); 
+   			$fields.each( function(){
+	   			var $field = $(this);
+	   			var $input = $field.find( '.input textarea, .input input, .input select' );  
+	   			var is_check_type = $input.is('[type="checkbox"], [type="radio"]') ; 
+	   			var action = $input.is('[type="checkbox"], [type="radio"]') ? 'change' : 'blur';
+	   			$input.not( '.special-field' ).on( action, function(e){
+	   				if ( $field.hasClass('required') ){
+	   					if ( is_check_type ){
+		   					if ( ! $input.is(':checked') ){
+								$field.find( '.error-message[data-validation="required"]').show(); 
+								$field.addClass('has-error'); 
+								$field.find( '.cloud-error' ).slideDown(); 	 		   					
+			   				}
+	   					} else {
+		   					if ( ! $input.val() ){
+								$field.find( '.error-message[data-validation="required"]').show(); 
+								$field.addClass('has-error'); 
+								$field.find( '.cloud-error' ).slideDown(); 	   					
+		   					}
+		   				}
+	   				} else { 
+		   				var validation = $field.data('validate') ; 
+	   					if ( typeof validation !== 'undefined' ){
+	   						var data = {
+	   							action : 'input_validate',
+	   							validation : validation, 
+	   							value : $input.val()
+	   						}				
+					   		$.ajax({
+						   		// cloud houses global variables like paths, etc
+								url : cloud.cloud_ajax,
+								data : data, 
+								type : 'POST', 
+								dataType : 'json', 
+								success : function(response){   		
+									if ( response ){
+										for ( i in response ){
+											var validation_type = response[i]; 
+											$field.find( '.error-message[data-validation="'+validation_type+'"]').show(); 
+										}
+										$field.addClass('has-error'); 
+										$field.find( '.cloud-error' ).slideDown(); 
+									}
+								}		
+							}); 
+						}
+					}
+				});
+   			});
 	   		$form.submit( function(e){
 		   		if ( !$form.hasClass( 'validated' ) ){
 			   		e.preventDefault(); 
 			   		var data = {
+			   			action : 'form_validate',
 			   			form_id : $form.data('id'), 
 			   			form_data : $form.serialize(), 
 			   			form_spec : $.parseJSON( $form.find( '#json_spec_'+ $form.data('id') ).html( ) )

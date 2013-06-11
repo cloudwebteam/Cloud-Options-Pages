@@ -16,8 +16,17 @@
 		'unknown' 	=> 'Unregistered validation type: ',
 		'wtf'		=> 'Not registered in class, how here?'
 	); 
+	public static function get_error_message( $validation_type ){
+		if ( isset( self::$messages[$validation_type] ) ) { 
+			return self::$messages[$validation_type] ; 
+		} else {
+			return self::$messages['default'];
+		}
+	}
 	public static function validate( $form_submission_data = '' , $form_fields = '' ){
-		$validation = new self( $form_submission_data, $form_fields ); 
+		$validation = new self();
+		
+		$validation->validate_form( $form_submission_data, $form_fields ); 
 				
 		return array( 
 			'success' => $validation->success,
@@ -26,10 +35,26 @@
 			'updated_form_spec' => $validation->form_spec_with_errors ,
 		); 
 	}
+	public static function validate_value( $type, $value ){
+		$validation = new self();
+		$results = array();
+		if ( is_array( $type ) ){
+			foreach( $type as $validation_type ){
+				if ( $has_error = $validation->call_validation_function( $validation_type, $value ) ){
+					$results[] = $validation_type ;
+				}
+			}
+		} else {
+			if ( $has_error = $validation->call_validation_function( $type, $value ) ){
+				$results[] = $type ;
+			}		
+		}
+		return $results; 
+	}
 	protected $excluded_fields = array(
 		'form_id', 'submit', 'MAX_FILE_SIZE'
 	);
-	protected function __construct( $form_data, $form_spec ){		
+	protected function validate_form( $form_data, $form_spec ){		
 		$this->form_spec = $form_spec ; 
 
 		$this->form_data =  $this->remove_excluded_fields( $form_data ) ;
@@ -79,29 +104,32 @@
 						$field_spec =& $spec[ $array_level ][ $slug ] ;
 						unset( $fields_to_check[ $slug ] );
 						
+						if ( isset( $field_spec['type'] ) && $field_spec['type'] === 'password' ){
+					
 						// check fields that require special treatment....
 						// @todo MAKE BETTER
-						if ( isset( $field_spec['type'] ) && $field_spec['type'] === 'password' ){
-							$pw_errors = array();
-							// checks whatever validation they passed in
-							$error_message = isset( $field_spec['error'] ) ? $field_spec['error'] : false  ; 
-							if ( $error = $this->call_validation_function( $field_spec['validate'], $slug_post_data['password'], $error_message ) ){
-								$pw_errors['password'] = $error ;
+							$errors = array();
+							// check password
+							if ( $field_spec['required'] && !$this->value_has_been_input( $slug_post_data['password'] ) ){
+								$errors[] = 'required' ; 
+							} else if ( $error = $this->call_validation_function( $field_spec['validate'], $slug_post_data['password'] ) ){
+								$errors[] = $field_spec['validate'] ; 
 							}  	
+							
 							// checks the confirmation field
-							if ( $this->value_has_been_input( $slug_post_data['password'] ) ){
-								$error_message = isset( $field_spec['confirm_error'] ) ? $field_spec['confirm_error'] : false  ; 			
-								
-								if ( ! $this->value_has_been_input( $slug_post_data['confirm'] ) ){
-									$pw_errors['confirm'] = $error_message['empty']; 
-								} else {													
-									if ( $error = $this->call_validation_function( 'password_confirmation', $slug_post_data, $error_message ) ){
-										$pw_errors['confirm'] = $error_message['error'] ;
+							if ( $field_spec['confirm'] ){
+								if(  $this->value_has_been_input( $slug_post_data['password'] ) ){									
+									if ( ! $this->value_has_been_input( $slug_post_data['confirm'] ) ){
+										$errors[] = 'confirm-empty'; 
+									} else {													
+										if ( $error = $this->call_validation_function( 'password_confirmation', $slug_post_data ) ){
+											$errors[] = 'confirm-error'; 
+										}
 									}
 								}
 							}
-							if ( $pw_errors ){
-								$spec[ $array_level ][ $slug ]['validation_error'] = $pw_errors; 
+							if ( $errors ){
+								$spec[ $array_level ][ $slug ]['validation_error'] = $errors; 
 								$this->success = false ;
 							} else {
 								$post_data[$slug] = $this->prepare_to_save( $field_spec, $slug_post_data ); 
@@ -114,11 +142,12 @@
 					// is group 
 					if ( is_array( $slug_post_data ) ){
 						foreach( $slug_post_data as $subfield_slug => $subfield_value ){
+							$spec['validation_error'][ $slug ][ $subfield_slug ] = array();
 							if ( isset( $spec[ $array_level ][ $subfield_slug ] ) ){
 								$field_spec = $spec[ $array_level ][ $subfield_slug ] ;
 								unset( $fields_to_check[ $subfield_slug ] );
-								if ( $field_error = $this->validate_field( $field_spec, $subfield_value ) ){
-									$spec['validation_error'][ $slug ][ $subfield_slug ] = $field_error ; 
+								if ( $errors = $this->validate_field( $field_spec, $subfield_value ) ){
+									$spec['validation_error'][ $slug ][ $subfield_slug ][] = $errors ; 
 									$this->success = false ;
 								} else {
 									$slug_post_data[$subfield_slug] = $this->prepare_to_save( $field_spec, $subfield_value ); 
@@ -157,56 +186,52 @@
 		return $spec; 
 	}
 	protected function validate_field( $field_spec , $field_value = '' ){
-
+		$errors = array(); 
 		if ( isset( $field_spec['required'] ) && $field_spec['required'] && ! $this->value_has_been_input( $field_value ) ){
-			return is_string( $field_spec['required'] ) ? $field_spec['required'] : self::$messages['required'] ; 
+			$errors[] = 'required'  ; 
 		} else if ( $this->value_has_been_input( $field_value ) ){
 			if ( isset( $field_spec['validate'] ) && $field_spec['validate'] ){
 				if( is_array( $field_spec['validate'] ) ){
 					foreach( $field_spec['validate'] as $validation_method ){
-						$error_message = isset( $field_spec['error'][ $field_spec['validate'] ] ) ? $field_spec['error'][ $field_spec['validate'] ] : $field_spec['error']  ; 
-						if ( $error = $this->call_validation_function( $field_spec['validate'], $field_value, $error_message ) ){
-							return $error; 
+						if ( $has_error = $this->call_validation_function( $field_spec['validate'], $field_value ) ){	
+							$errors[] = $field_spec['validate'] ;  
 						} 
 					}
 				} else {
-					$error_message = $field_spec['error']  ; 
-					return $this->call_validation_function( $field_spec['validate'], $field_value, $error_message ); 	
+					if ( $has_error = $this->call_validation_function( $field_spec['validate'], $field_value ) ){ 	
+						$errors[] = $field_spec['validate'] ; 					
+					}
 				}
 			}
 		}
-		return false ;
+		return $errors ;
 	}
-	protected function call_validation_function( $validation_type, $value, $error_message = false ){
-	
+	protected function call_validation_function( $validation_type, $value ){
 		if( is_callable( array( $this, $validation_type ) ) ){
 			// returns the validator-generated error, if there is an error
 			$validator_error = $this->{ $validation_type }( $value ); 
 			if ( $validator_error ){
 				// if there is a custom error message specified, use that, otherwise the normal validator one.					
-				return $error_message ? $error_message : self::get_error_message( $validation_type ) ; 
+				return true ; 
 			} else {
 				return false; 
 			}				
 		// did they provide a regex? Starts and ends with forward slash? ( ex. /[A-Z]+/ ); 
-		} else if ( strpos( $validation_type, '/' ) === 0 && substr( $validation_type, -1 ) === '/' ){
-			$pattern = $validation_type ; 
-			$validator_error = $this->regex( $pattern, $value ); 
-			if ( $validator_error ){
-				return $error_message ? $error_message : self::get_error_message( 'regex' ) ; 
-			} else {
-				return false; 
+		} else {
+			if( strpos( $validation_type, '/' ) === 0 && substr( $validation_type, -1 ) === '/' ){
+				$pattern = $validation_type ; 
+				$validator_error = $this->regex( $pattern, $value ); 
+				return $validator_error; 
+				if ( $validator_error ){
+					return true; 
+				} else {
+					return false; 
+				}
 			}
 		}
 		return self::get_error_message( 'unknown' ) . ' ' . $validation_type ; 
 	}
-	protected function get_error_message( $validation_type ){
-		if ( isset( self::$messages[$validation_type] ) ) { 
-			return self::$messages[$validation_type] ; 
-		} else {
-			return self::$messages['default'];
-		}
-	}
+
 	//checks both arrays and strings
 	protected function value_has_been_input( $field_value = null ){
 		if ( $field_value !== null && $field_value !== '' ){
@@ -239,19 +264,21 @@
 		VALIDATION METHODS 
 	==================================================================================================================================== ***/	
 	protected function email( $field_value = '' ){
-		if ( ! filter_var($field_value, FILTER_VALIDATE_EMAIL) ) {
-			return true ;
-		} else {
-			return false ;
-		}
+		if ( $field_value ){
+			if ( ! filter_var($field_value, FILTER_VALIDATE_EMAIL) ) {
+				return true ;
+			}
+		} 
+		return false; 
 	}	
 	
 	protected function number( $field_value = '' ){
-		if ( !is_numeric( $field_value ) ){
-			return true ;
-		} else {
-			return false ;
+		if ( $field_value ){
+			if ( !is_numeric( $field_value ) ){
+				return true ;
+			}
 		}
+		return false ;		
 	}	
 	protected function password_confirmation( $field_value = '' ){
 	
@@ -264,48 +291,51 @@
 	
 	}	
 	protected function phone( $field_value = '' ){
-		if ( is_array( $field_value ) ){
-			if ( preg_match( '/\d{3}/', $field_value[0] ) && preg_match( '/\d{3}/', $field_value[1] ) &&  preg_match( '/\d{4}/', $field_value[2] ) ){
-				return false; 
+		if ( $field_value ){
+			if ( is_array( $field_value ) ){
+				if ( preg_match( '/\d{3}/', $field_value[0] ) && preg_match( '/\d{3}/', $field_value[1] ) &&  preg_match( '/\d{4}/', $field_value[2] ) ){
+					return false; 
+				} else {
+					return true; 
+				}
 			} else {
-				return true; 
-			}
-		} else {
-			if ( strlen( $field_value ) < 9 || ! preg_match( '/^[\d\.\-\(\)x]+$/' , $field_value ) ){
-				return true;
-			}
-		}	
+				if ( strlen( $field_value ) < 9 || ! preg_match( '/^[\d\.\-\(\)x]+$/' , $field_value ) ){
+					return true;
+				}
+			}	
+		}
 		return false; 
 	}
 	protected function pin( $field_value = '' ){
-
-		if ( ! preg_match( '/^\d{4}$/', $field_value ) ){	
-			return true ;
-		} else {
-			return false ;
+		if ( $field_value ){
+			if ( ! preg_match( '/^\d{4}$/', $field_value ) ){	
+				return true ;
+			}
 		}
-		
+		return false ;				
 	}	
-	protected function regex( $pattern , $field_value = '' ){
-		if ( ! preg_match( $pattern, $field_value) ){
-			return true ;
-		} else { 
-			return false ;
+	protected function regex( $pattern , $field_value = '' ){	
+		if ( $field_value ){
+			if ( ! preg_match( $pattern, $field_value) ){			
+				return true ;
+			}
 		}	
-		
+		return false ;
 	}
 	protected function url( $field_value = '' ){
-		if ( ! preg_match( '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/', $field_value) ){
-			return true ;
-		} else { 
-			return false ;
+		if ( $field_value ){
+			if ( ! preg_match( '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/', $field_value) ){
+				return true ;
+			}
 		}
+		return false ;		
 	}
 	protected function zip( $field_value = '' ){
-		if ( ! preg_match( '/^[\d]{5}$/', $field_value) ){
-			return true ;
-		} else { 
-			return false ;
+		if ( $field_value ){
+			if ( ! preg_match( '/^[\d]{5}$/', $field_value) ){
+				return true ;
+			}
 		}
+		return false ;		
 	}	
 }

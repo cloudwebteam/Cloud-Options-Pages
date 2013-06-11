@@ -142,7 +142,7 @@ $cloud_form_defaults = array (
 		),
 		'password' => array(
 			'title' 			=> 'Password', 
-			'layout'			=> array('label', 'field' , 'error', 'description'),
+			'layout'			=> array('label', 'field', 'description', 'error' ),
 			'password_label' 	=> 'Password',			
 			'confirm_label' 	=> 'Confirm', 
 			'size' 				=> 50,

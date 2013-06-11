@@ -4,15 +4,25 @@ jQuery( function($){
 	
 		var $password = $field.find( 'input.password-field' ); 
 		var $confirm = $field.find( 'input.password-confirm-field' ); 		
-		$confirm.blur( function(){
+		$confirm.unbind('blur').on( 'blur', function(){
+   			if ( $field.find( ':focus' ).size() > 0 ){
+   				console.log( 'it is' ); 
+				return ;
+			} 		
+			$field.find('.input .error-message-special').slideUp(); 
 			var confirm_value = $confirm.val(); 
 			var password_value = $password.val(); 
+			var $focused = $(':focus');
+
 			if ( confirm_value || password_value ){
-				if ( confirm_value !== password_value ){
-					$confirm.siblings('.cloud-error').slideDown('fast'); 
+				if ( ! confirm_value ){
+					$field.find('.error-message-special[data-validation="confirm_empty"]').slideDown(); 
 					$field.addClass('has-error');
 				} else {
-					$field.removeClass('has-error');					
+					if ( confirm_value !== password_value ){
+						$field.find('.error-message-special[data-validation="confirm_error"]').slideDown(); 
+						$field.addClass('has-error');
+					}
 				}
 			}
 		}); 

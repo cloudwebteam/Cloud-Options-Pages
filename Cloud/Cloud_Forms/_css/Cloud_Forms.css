@@ -253,8 +253,23 @@
 	font-size: .875em;
 	border: none; 
 }
+.field .cloud-error .error-message {
+	display: none; 
+}
+.field .cloud-error .error-message.active {
+	display: block; 
+}
 .field .input + .cloud-error {
 	padding-top: 8px; 
+}
+.field .error-message-special {
+	color: #cc0000; 
+	font-size: .875em;
+	border: none; 
+	display: none; 
+}
+.field .error-message-special.active {
+	display: block; 
 }
 /***====================================================================================================================================
 		CLONEABLE FIELDS

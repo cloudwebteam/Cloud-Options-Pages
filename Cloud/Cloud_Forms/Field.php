@@ -18,6 +18,7 @@ class Cloud_Field {
 		$this->info = $this->setup_information(); 
 		$this->attributes = $this->get_attributes() ;
 		$this->layout = $this->get_layout();
+		$this->validation_error = isset( $this->spec['validation_error'] ) ? $this->spec['validation_error'] : false;
 		$this->components = $this->construct_field();	
 		
 		// arrange the title, field, description, and components
@@ -61,10 +62,10 @@ class Cloud_Field {
 		if ( $description = $this->get_description() ) {
 			$components['description'] = $description ; 
 		}
-		if ( $error = $this->get_error() ){
-			$components['error'] =  '<div class="cloud-error">'.$error.'</div>';		
+		if ( $error_messages = $this->get_error_messages_html() ){
+			$components['error'] =  '<div class="cloud-error">'.$error_messages.'</div>';		
 		} else {
-			$components['error'] =  '<div class="cloud-error"></div>' ; 
+			$components['error'] =  false ; 
 		}
 		$extra_components = $this->make_extra_components( );		
 		if ( is_array($extra_components) && sizeof( $extra_components ) > 0 ){
@@ -213,8 +214,46 @@ class Cloud_Field {
 		}
 		return $description;
 	}
-	protected function get_error(){
-		return isset( $this->spec['validation_error'] ) && ! is_array( $this->spec['validation_error'] ) ? '<span class="error-inner">' . $this->spec['validation_error'] .'</span>': false ;
+	protected function get_error_messages(){
+		$error_messages = array(); 
+		if ( $this->spec['required'] ){
+			$error_messages[ 'required' ] = $this->spec['required'] ; 
+		}
+		if ( $this->spec['validate'] ){
+			if ( is_string( $this->spec['validate'] ) ){
+				if ( is_array( $this->spec['error'] ) && isset( $this->spec['error'][ $this->spec['validate'] ] ) ){				
+					$error_messages[ $this->spec['validate'] ] = $this->spec['error'][ $this->spec['validate'] ]; 
+				} else {
+					$error_messages[ $this->spec['validate'] ] = $this->spec['error']; 					
+				}
+			} else if ( is_array( $this->spec['validate'] ) ){
+				foreach( $this->spec['validate'] as $type ){
+					if ( is_array( $this->spec['error'] ) && isset( $this->spec['error'][ $type ] ) ){
+						$error_messages[ $type ] = $this->spec['error'][ $type ]; 
+					} else {
+						$error_messages[ $type ] = $this->spec['error']; 					
+					}
+				}
+			}	
+		}
+		return $error_messages;
+	}
+	protected function get_error_messages_html(){
+		$error_messages = $this->get_error_messages(); 
+		$error_html = ''; 
+		foreach( $error_messages as $type => $error ){
+			if ( ! ( $error && is_string( $error ) && $error !== '1' ) ){
+				$error = Validator::get_error_message( $type ); 
+			}
+			$classes = array( 'error-message' ); 
+			// should it be visible?
+			if ( is_array( $this->validation_error ) && in_array( $type, $this->validation_error ) ){
+				$classes[] = 'active' ; 
+			} 	
+			$data = ' data-validation=\''.$type.'\' ' ; 			
+			$error_html .= '<div class="'.implode( ' ', $classes ) .'"'. $data . '>'.$error.'</div>'; 	
+		}
+		return $error_html; 
 	}	
 	protected function get_attributes( ){
 
@@ -231,12 +270,24 @@ class Cloud_Field {
 		if ( isset( $this->info['parent_layout'] ) && $this->info['parent_layout'] === 'grid' ){
 			$classes[] = isset( $this->info['width'] ) ? 'span' . $this->info['width'] : 'span6';
 		}
+		if ( $this->spec['required'] ){
+			$classes[] = 'required' ; 
+		}
 		if ( isset( $this->spec['validation_error'] ) && $this->spec['validation_error'] ){
 			$classes[] = 'has-error' ; 
 		}
 		$classes[] = isset( $this->info['style'] ) ? $this->info['style'] :  '' ;
 		
-		return  ' class="'.implode( ' ' , $classes ) .'" '; 
+		$data = array(); 
+		if ( isset( $this->spec['validate'] )){
+			$data['validate'] = $this->spec['validate'] ; 
+		}
+		$data_str = ''; 
+		foreach( $data as $data_att => $data ){
+			$data_str .= 'data-'.$data_att .'=\''.json_encode($data).'\''; 
+		}
+		
+		return  ' class="'.implode( ' ' , $classes ) .'" '.$data_str; 
 	}
 	public static function get_layout_function( $layout = null , $field_type = null , $section_layout_type ){
 		self::$default_type = 'text'; // fallback field type
