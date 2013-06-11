@@ -47,7 +47,7 @@ class Cloud_Field_media extends Cloud_Field {
 				break; 
 		} 
 	}
-	public static function enqueue_scripts_and_styles( $field_type = false ){
+	public static function enqueue_scripts_and_styles( $field_type ){
 		// if they exist, enqueues css and js files with this fields name
 		parent::enqueue_scripts_and_styles( $field_type ); 				
 		

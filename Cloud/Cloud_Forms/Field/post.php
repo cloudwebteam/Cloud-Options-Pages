@@ -103,7 +103,7 @@ class Cloud_Field_post extends Cloud_Field {
 		}	
 		return $current_data ;
 	}
-	public static function enqueue_scripts_and_styles( $field_type = false ){
+	public static function enqueue_scripts_and_styles( $field_type ){
 		self::enqueue_style( 'fancybox' , Cloud_Forms::get_folder_url() .'/__inc/fancybox2.1.3/jquery.fancybox.css' );		
 		self::enqueue_script( 'fancybox' , Cloud_Forms::get_folder_url() .'/__inc/fancybox2.1.3/jquery.fancybox.js', array( 'jquery' ) );
 		

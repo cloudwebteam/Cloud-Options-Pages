@@ -57,7 +57,7 @@ class Cloud_Field_group extends Cloud_Field {
 		}
 		return $subfields;
 	}
-	public static function enqueue_scripts_and_styles( $field_type = false ){
+	public static function enqueue_scripts_and_styles( $field_type ){
 		self::enqueue_script( 'jquery-ui-core' );
 		self::enqueue_script( 'jquery-ui-sortable' ); 		
 		// if they exist, enqueues css and js files with this fields name
