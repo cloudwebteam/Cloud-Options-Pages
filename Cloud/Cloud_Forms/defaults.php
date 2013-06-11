@@ -151,7 +151,12 @@ $cloud_form_defaults = array (
 			'size'				=> 55,	
 			'required' 			=> false,
 			'validate' 			=> '/[a-zA-Z0-9]+/',
-			'error'				=> false
+			'error'				=> false,
+			'confirm' 			=> false, 
+			'confirm_error' 	=> array(
+				'empty' 		=> 'Please confirm', 
+				'error'			=> 'Does not match'
+			)
 		),
 		'select'	=> array(
 			'title'			=> 'Select Menu',				

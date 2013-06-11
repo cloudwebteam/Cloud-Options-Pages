@@ -84,14 +84,21 @@
 						if ( isset( $field_spec['type'] ) && $field_spec['type'] === 'password' ){
 							$pw_errors = array();
 							// checks whatever validation they passed in
-							$error_message = isset( $field_spec['error'][ 'password'] ) ? $field_spec['error'][ 'password'] : false  ; 
+							$error_message = isset( $field_spec['error'] ) ? $field_spec['error'] : false  ; 
 							if ( $error = $this->call_validation_function( $field_spec['validate'], $slug_post_data['password'], $error_message ) ){
 								$pw_errors['password'] = $error ;
 							}  	
 							// checks the confirmation field
-							$error_message = isset( $field_spec['error'][ 'confirm'] ) ? $field_spec['error'][ 'confirm'] : false  ; 							
-							if ( $error = $this->call_validation_function( 'password', $slug_post_data, $error_message ) ){
-								$pw_errors['confirm'] = $error ;
+							if ( $this->value_has_been_input( $slug_post_data['password'] ) ){
+								$error_message = isset( $field_spec['confirm_error'] ) ? $field_spec['confirm_error'] : false  ; 			
+								
+								if ( ! $this->value_has_been_input( $slug_post_data['confirm'] ) ){
+									$pw_errors['confirm'] = $error_message['empty']; 
+								} else {													
+									if ( $error = $this->call_validation_function( 'password_confirmation', $slug_post_data, $error_message ) ){
+										$pw_errors['confirm'] = $error_message['error'] ;
+									}
+								}
 							}
 							if ( $pw_errors ){
 								$spec[ $array_level ][ $slug ]['validation_error'] = $pw_errors; 
@@ -246,9 +253,10 @@
 			return false ;
 		}
 	}	
-	protected function password( $field_value = '' ){
+	protected function password_confirmation( $field_value = '' ){
+	
 		if ( is_array( $field_value ) && !empty( $field_value['password'] ) ){
-			if ( empty( $field_value['confirm'] ) || (  $field_value['confirm'] !== $field_value['password'] ) ){
+			if ( (  $field_value['confirm'] !== $field_value['password'] ) ){
 				return true;
 			}
 		}
