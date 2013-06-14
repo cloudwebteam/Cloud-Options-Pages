@@ -11,7 +11,7 @@ class Cloud_Field_text extends Cloud_Field {
 
 	protected function get_field_html( ){
 		$this->size = isset( $args['info']['size'] ) ? $args['info']['size'] : $this->size; 	
-		$field = '<input type="text" id="' . $this->info['id'] . '" name="'.$this->info['name'] . '" size="'.$this->size.'" type="text" value="' . $this->info['value'] . '" />';	
+		$field = '<input type="text" id="' . $this->info['id'] . '" name="'.$this->info['name'] . '" size="'.$this->size.'" '. $this->info['disabled'] .' value="' . $this->info['value'] . '" />';	
 		return $field;
 	}
 	

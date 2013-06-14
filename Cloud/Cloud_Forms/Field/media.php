@@ -12,7 +12,7 @@ class Cloud_Field_media extends Cloud_Field {
 		$data_to_display = self::property_to_get( $this->spec ); 
 	
 		$url_button = '<div class="selector">';
-		$url_button .= '<input class="upload_button btn btn-mini" type="button" name="upload_button" value="Find Media" />';
+		$url_button .= '<input class="upload_button btn btn-mini" type="button" name="upload_button" value="Find Media" '.$this->info['disabled'] .' />';
 		$url_button .= $this->spec['code_link'] ? '<span class="storing">Retrieves: '.$data_to_display.'</span>' : '' ;
 		$url_button .= '</div>' ;
 		

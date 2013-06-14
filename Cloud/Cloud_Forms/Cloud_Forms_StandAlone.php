@@ -69,6 +69,19 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 			'cloud_url' => self::$dir
 		) ); 
 	}
+	protected function get_needed_field_scripts_and_styles(){
+		function run_field_enqueue_function( $item, $key ){
+			if ( $key === 'type' ){
+				$field_type = $item ; 
+				$field_classname = Cloud_Field::get_class_name( $field_type );
+				$field_classname::enqueue_scripts_and_styles( $field_type ) ;	// only this early to get them in Wordpress's queue early enough
+			}
+		}
+		if ( $this->forms ) {
+			array_walk_recursive( $this->forms, 'run_field_enqueue_function' ); 
+		}
+
+	}		
 
 	protected function validate_spec(){
 		foreach( $this->forms as $form_slug => $form ){
@@ -108,8 +121,10 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 		}
         $this->validate_form( $form_slug ) ; // checks if this form has been submitted, adds validation properties
 	}	
-	public function head(){
+	public function head(){	
 		if ( $this->forms ){
+			$this->get_needed_field_scripts_and_styles();
+		
 			$this->forms_html = $this->construct_forms();
 			$this->print_styles();
 			$this->print_scripts(); 

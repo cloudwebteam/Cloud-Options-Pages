@@ -17,7 +17,7 @@ class Cloud_Field_select extends Cloud_Field {
 			$multiple = '';
 		}
 		if ( $this->options_list ){
-			$field = '<select id="'. $this->info['id'] . '" name="'.$this->info['name'] . '" '.$multiple.' value="' . $this->info['value'] . '">'. $this->options_list.'</select>';
+			$field = '<select id="'. $this->info['id'] . '" name="'.$this->info['name'] . '" '.$multiple.' value="' . $this->info['value'] . '" '.$this->info['disabled'] .' >'. $this->options_list.'</select>';
 		} else {
 			$field = 'No options available.';
 		}

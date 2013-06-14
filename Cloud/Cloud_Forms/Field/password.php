@@ -27,21 +27,23 @@ class Cloud_Field_password extends Cloud_Field {
 		if ( empty( $error_messages['confirm'] ) ){
 			$error_messages['confirm'] = 'Fields do not match.'; 
 		} 		
-		$field = '<div class="password-container">' ; 
-		$field .= '<label for="'.$this->info['id'] . '">'. $this->spec['password_label'] .'</label>' ; 
-		$field .= '<input class="password-field" type="password" id="' . $this->info['id'] . '" name="'.$this->info['name'] . '[password]" size="'.$this->spec['size'].'" value="' . $password . '" />';	
-		$field .= '</div>'; 
-		$field .= '<div class="password-confirm-container">' ; 		
-		$field .= '<label for="'.$this->info['id'] . '">'. $this->spec['confirm_label'] .'</label>' ; 
-		$field .= '<input class="password-confirm-field special-field" type="password" id="' . $this->info['id'] . '-confirm" name="'.$this->info['name'] . '[confirm]" size="'.$this->spec['size'].'" value="' . $confirm . '" />';	
-
 		if ( $this->spec['confirm'] ){
+			$field = '<div class="password-container">' ; 
+			$field .= '<label for="'.$this->info['id'] . '">'. $this->spec['password_label'] .'</label>' ; 
+			$field .= '<input class="password-field" type="password" id="' . $this->info['id'] . '" name="'.$this->info['name'] . '[password]" size="'.$this->spec['size'].'" value="' . $password . '" '.$this->info['disabled'] .' />';	
+			$field .= '</div>'; 		
+			$field .= '<div class="password-confirm-container">' ; 		
+			$field .= '<label for="'.$this->info['id'] . '">'. $this->spec['confirm_label'] .'</label>' ; 
+			$field .= '<input class="password-confirm-field special-field" type="password" id="' . $this->info['id'] . '-confirm" name="'.$this->info['name'] . '[confirm]" size="'.$this->spec['size'].'" value="' . $confirm . '" '.$this->info['disabled'] .' />';	
 			$active_class = in_array( 'confirm-empty', $error ) ? 'active' : false;
 			$field .= '<div class="error-message-special '.$active_class. '" data-validation="confirm_empty">'. $this->spec['confirm_error']['empty'].'</div>'; 			
 			$active_class = in_array( 'confirm-error', $error ) ? 'active' : false;
-			$field .= '<div class="error-message-special" data-validation="confirm_error">'. $this->spec['confirm_error']['error'].'</div>'; 			
+			$field .= '<div class="error-message-special '.$active_class.'" data-validation="confirm_error">'. $this->spec['confirm_error']['error'].'</div>'; 			
+			$field .= '</div>'; 
+		} else {
+			$field = '<input class="password-field" type="password" id="' . $this->info['id'] . '" name="'.$this->info['name'] . '" size="'.$this->spec['size'].'" value="' . $password . '" '.$this->info['disabled'] .' />';	
+		
 		}
-		$field .= '</div>'; 
 		
 		return $field;
 	}

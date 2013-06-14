@@ -25,7 +25,7 @@ class Cloud_Field_checkbox extends Cloud_Field {
 				$option_name = $this->info['name'].'['.$option_key.']' ;
 				
 				$checked = isset( $this->info['value'][ $option_key ] ) &&   $this->info['value'][ $option_key ] == $option_value  ? 'checked' : '';				
-				$field = '<input type="checkbox" id="'.$option_id. '" name="'.$option_name . '" value="'.$option_value.'"' . $checked . '/>';	
+				$field = '<input type="checkbox" id="'.$option_id. '" name="'.$option_name . '" value="'.$option_value.'"' . $checked . ' '.$this->info['disabled'] .' />';	
 				$fields .= '<label for="'.$option_id.'">'.$field. $option_title.'</label>' ;
 
 			}
@@ -33,7 +33,7 @@ class Cloud_Field_checkbox extends Cloud_Field {
 			$field = $fields ;
 		} else {
 			$checked = $this->info['value'] == $this->spec['checkbox_value'] ? 'checked' : '';
-			$field = '<input type="checkbox" id="'. $this->info['id'] . '" name="'.$this->info['name'] . '" value="'.$this->spec['checkbox_value'].'"' . $checked . '/>';	
+			$field = '<input type="checkbox" id="'. $this->info['id'] . '" name="'.$this->info['name'] . '" value="'.$this->spec['checkbox_value'].'"' . $checked . ' '.$this->info['disabled'] .' />';	
 		}
 		return $field;
 	}

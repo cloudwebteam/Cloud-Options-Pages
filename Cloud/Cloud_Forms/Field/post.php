@@ -15,7 +15,7 @@ class Cloud_Field_post extends Cloud_Field {
 		$this->property_to_get = isset( $this->spec['get'] ) ? $this->property_to_get( $this->spec['get'] ) : 'ID' ; 
 		$image_size = isset( $this->spec['image_size'] ) ? $this->spec['image_size'] : 'thumbnail' ; 
 		
-		$field = '<input class="target-field" data-image_size="'.$image_size.'" data-to_get="'.$this->property_to_get. '" type="hidden" id="'. $this->info['id'] . '" name="'.$this->info['name'] . '" size="'.$this->spec['size'].'" type="text" value=\'' . $this->info['value'] . '\' />';	
+		$field = '<input class="target-field" data-image_size="'.$image_size.'" data-to_get="'.$this->property_to_get. '" type="hidden" id="'. $this->info['id'] . '" name="'.$this->info['name'] . '" size="'.$this->spec['size'].'" type="text" value=\'' . $this->info['value'] . '\' '.$this->info['disabled'] .' />';	
 		$current_data = $this->get_current_data( ) ;
 
 		return $field . $current_data;

@@ -19,7 +19,7 @@ class Cloud_Field_toggle extends Cloud_Field {
 		if ( $fields_to_hide ){
 			$data .= ' data-hide=\''.json_encode($fields_to_hide).'\' ' ;
 		}		
-		$field = '<input type="checkbox" id="'.$this->info['id'] . '" name="'.$this->info['name'] . '" value="'.$this->spec['checkbox_value'].'"' . $checked . $data . '/>';	
+		$field = '<input type="checkbox" id="'.$this->info['id'] . '" name="'.$this->info['name'] . '" value="'.$this->spec['checkbox_value'].'"' . $checked . $data . ' '.$this->info['disabled'] .' />';	
 		return $field;
 	}	
    /**

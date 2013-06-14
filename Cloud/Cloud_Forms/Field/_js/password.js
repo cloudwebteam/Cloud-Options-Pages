@@ -6,7 +6,6 @@ jQuery( function($){
 		var $confirm = $field.find( 'input.password-confirm-field' ); 		
 		$confirm.unbind('blur').on( 'blur', function(){
    			if ( $field.find( ':focus' ).size() > 0 ){
-   				console.log( 'it is' ); 
 				return ;
 			} 		
 			$field.find('.input .error-message-special').slideUp(); 

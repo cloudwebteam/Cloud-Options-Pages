@@ -64,14 +64,14 @@ class Cloud_Field_startend extends Cloud_Field {
 	protected function get_date_field( $start_or_end ){
 		$name = $this->info['save_json'] ? '' : 'name="'.$this->info['name'].'['.$start_or_end.']"' ;
 	
-		$field = '<input data-dateformat="'.$this->date_format.'" '.$name.' type="text" id="' . $this->info['id'] . '-'.$start_or_end . '" class="datepicker '.$start_or_end.'" size="'.$this->size.'" value="' .  $this->start_utc. '" />' ;
+		$field = '<input data-dateformat="'.$this->date_format.'" '.$name.' type="text" id="' . $this->info['id'] . '-'.$start_or_end . '" class="datepicker '.$start_or_end.'" size="'.$this->size.'" value="' .  $this->start_utc. '" '.$this->info['disabled'] .' />' ;
 		return $field ;
 	}
 	protected function get_time_field( $start_or_end ){
 		$name = $this->info['save_json'] ? '' : 'name="'.$this->info['name'].'['.$start_or_end.']"' ;
 		
 		$field = '<div class="input input-append bootstrap-timepicker">' ; 
-        $field .= '<input name="'.$this->info['name'] . '['.$start_or_end.']" type="text" '.$name.' value="'.$this->start_value.'" class="timepicker '.$start_or_end.' input-small">' ;
+        $field .= '<input name="'.$this->info['name'] . '['.$start_or_end.']" type="text" '.$name.' value="'.$this->start_value.'" class="timepicker '.$start_or_end.' input-small" '.$this->info['disabled'] .' >' ;
         $field .= '<span class="add-on"><i class="icon-time"></i></span>' ;
         $field .= '</div>' ;	
         return $field ;

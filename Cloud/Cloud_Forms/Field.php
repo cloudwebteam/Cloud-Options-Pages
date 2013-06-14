@@ -250,7 +250,8 @@ class Cloud_Field {
 			if ( is_array( $this->validation_error ) && in_array( $type, $this->validation_error ) ){
 				$classes[] = 'active' ; 
 			} 	
-			$data = ' data-validation=\''.$type.'\' ' ; 			
+		
+			$data = ' data-validation=\'' . $type . '\' ' ; 			
 			$error_html .= '<div class="'.implode( ' ', $classes ) .'"'. $data . '>'.$error.'</div>'; 	
 		}
 		return $error_html; 
@@ -283,8 +284,12 @@ class Cloud_Field {
 			$data['validate'] = $this->spec['validate'] ; 
 		}
 		$data_str = ''; 
-		foreach( $data as $data_att => $data ){
-			$data_str .= 'data-'.$data_att .'=\''.json_encode($data).'\''; 
+		foreach( $data as $data_att => $values ){
+			if ( is_string($values ) ){
+				$values = array( $values ); 
+			}
+			$data_str .= 'data-'.$data_att .'='.json_encode( $values ).' ' ; 
+			
 		}
 		
 		return  ' class="'.implode( ' ' , $classes ) .'" '.$data_str; 

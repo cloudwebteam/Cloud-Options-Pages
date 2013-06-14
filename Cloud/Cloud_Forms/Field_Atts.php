@@ -39,6 +39,7 @@
 		$info['id']   = Cloud_prefix . $input_id;
 		$info['value'] = $value !== false && $value !== null ? $value : $default_value;
 		$info['default'] = $default_value; 
+		$info['disabled'] = $spec['disabled'] ? 'disabled' : '' ; 
 		
 		$info['layout'] = isset ($spec['layout'] ) ? $spec['layout'] : 'default';
 		$info['width'] = isset( $spec['width'] ) ? $spec['width'] : 6; 

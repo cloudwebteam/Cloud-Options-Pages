@@ -4,12 +4,11 @@ ini_set('display_errors',1);
 error_reporting(E_ALL);
 $action = isset( $_REQUEST['action'] ) ? $_REQUEST['action'] : false; 
 switch( $action ){
-	case 'form_validate' : 
+	case 'form_validate' :
+
 		$form_id = isset( $_REQUEST['form_id'] ) ? $_REQUEST['form_id'] : false; 
 		$form_data = isset( $_REQUEST['form_data'] ) ? $_REQUEST['form_data']  : false; 
-		parse_str( $form_data, $form_data );
-		$form_spec = isset( $_REQUEST['form_spec'] ) ? $_REQUEST['form_spec'] : false ;
-		
+			
 		function convert_true_false_to_booleans( &$item, $key ){
 			if ( $item === 'true' ){
 				$item = true; 
@@ -18,17 +17,28 @@ switch( $action ){
 				$item = false; 
 			}
 		}
-		array_walk_recursive( $form_spec, 'convert_true_false_to_booleans' ); 
-		
-		if ( $form_id ){
-			$validation_results = Validator::validate( $form_data, $form_spec ); 
-			$response = $validation_results; 
-		
+		array_walk_recursive( $form_data, 'convert_true_false_to_booleans' ); 
+		$response = array() ; 
+			
+		if ( $form_id && $form_data ){
+			foreach( $form_data as $index => $field_data ){
+			
+				if ( $field_data['required'] && ! $field_data['value'] ){
+					$response[ $field_data['name'] ] = 'required' ;
+				} else {
+					if ( $has_error = Validator::validate_value( $field_data['validation'], $field_data['value'] )  ){
+						$response[ $field_data['name'] ] = $field_data['validation'] ; 
+					}
+				}
+			}
 		} else {
 			$response = 'No form by that ID';
 		}	
-		echo json_encode($response); 
-		die; 
+		if ( $response ){
+			echo json_encode($response); 
+		} else {
+			echo json_encode( 'success' );
+		}
 		break; 
 	case 'input_validate' : 
 		$validation_type = isset( $_REQUEST['validation'] ) ? $_REQUEST['validation'] : false;
@@ -40,6 +50,5 @@ switch( $action ){
 			echo json_encode( 0 ); 
 			die; 
 		} 
-		
 		break; 
 }

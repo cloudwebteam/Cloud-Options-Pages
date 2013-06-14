@@ -13,7 +13,7 @@ class Cloud_Field_textarea extends Cloud_Field {
 		$this->rows = isset( $this->spec['rows'] ) ? $this->spec['rows'] : 3 ; 
 		$this->cols = isset( $this->spec['cols'] ) ? $this->spec['cols'] : '' ; 
 
-		$field = '<textarea id="' . $this->info['id'] . '" name="'.$this->info['name'] . '" rows="'.$this->rows.'" cols="'.$this->cols.'" >' . $this->info['value'] . '</textarea>';
+		$field = '<textarea id="' . $this->info['id'] . '" name="'.$this->info['name'] . '" rows="'.$this->rows.'" cols="'.$this->cols.'" '.$this->info['disabled'] .' >' . $this->info['value'] . '</textarea>';
 		return $field;
 	}
 	

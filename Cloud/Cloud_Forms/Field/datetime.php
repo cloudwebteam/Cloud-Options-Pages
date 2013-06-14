@@ -23,7 +23,7 @@ class Cloud_Field_datetime extends Cloud_Field {
 		$utc_field = '<input class="timestamp" type="hidden" name="'.$this->info['name'] . '" value=\'' . $this->info['value'] . '\' />';
 		$value_array = json_decode($this->info['value'], true) ;
 		$value = isset( $value_array['datetime'] ) ? $value_array['datetime'] : false ;
-		$field = '<input data-dateformat="'.$date_format.'" data-timeformat="'.$time_format.'" type="text" id="'. $this->info['id'] . '" class="datetimepicker" size="'.$this->size.'" value="' . $value . '" />';	
+		$field = '<input data-dateformat="'.$date_format.'" data-timeformat="'.$time_format.'" type="text" id="'. $this->info['id'] . '" class="datetimepicker" size="'.$this->size.'" value="' . $value . '"'.$this->info['disabled'] .'  />';	
 		return $utc_field.$field;
 	}		
 	protected function get_regular_field(){
@@ -40,7 +40,7 @@ class Cloud_Field_datetime extends Cloud_Field {
 		$value = isset( $this->info['value']['time'] ) ? $this->info['value']['time'] : false; 
 		
         $field = '<div class="input-append bootstrap-timepicker">' ; 
-        $field .= '<input id="'. $this->info['id'].'" value="'.$value.'" type="text" class="timepicker input-small">' ;
+        $field .= '<input id="'. $this->info['id'].'" value="'.$value.'" type="text" class="timepicker input-small" '.$this->info['disabled'] .' >' ;
         $field .= '<span class="add-on"><i class="icon-time"></i></span>' ;
         $field .= '</div>' ;	
         return $field; 

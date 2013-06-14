@@ -14,8 +14,7 @@ class Cloud_Field_color extends Cloud_Field {
 		$this->enabler = '';
 		$hidden = '';
 
-		$field = '<div class="option">'.$default_swab.'<div class="color-toggle" '.$hidden.' ><input size="5" class="color-picker-input miniColors" id="'. $this->info['id'] . '" name="'.$this->info['name'].'" type="text" value="'.$this->info['value'].'" /></div></div>';
-
+		$field = '<div class="option">'.$default_swab.'<div class="color-toggle" '.$hidden.' ><input size="5" class="color-picker-input miniColors" id="'. $this->info['id'] . '" name="'.$this->info['name'].'" type="text" value="'.$this->info['value'].'" '.$this->info['disabled'] .' /></div></div>';
 
 		return $field . $this->enabler;
 	}
