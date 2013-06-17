@@ -271,7 +271,7 @@
 					    return true; 
 				    }
 				}
-			} else if ( !$field_value ){
+			} else if ( !$field_value && $field_value !== 0 && $field_value !== '0' ){
 				return false; 
 			} else {
 				return true; 
