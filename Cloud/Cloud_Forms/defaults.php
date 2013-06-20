@@ -148,6 +148,21 @@ $cloud_form_defaults = array (
 			'description'	=> null,
 			'width' 		=> 6,	
 		),
+		'number' => array(
+			'title'				=> 'Number',						
+			'layout'			=> array('label', 'field' , 'error', 'description'),
+			'cloneable'			=> false,
+			'description'		=> null,
+			'size'				=> 8,	
+			'width' 			=> 6,	
+			'disabled' 			=> false,
+			'default' 			=> '',					
+			'clone_controls'	=> true, 
+			'sort'				=> true, 
+			'required' 			=> false,
+			'validate' 			=> false,
+			'error'				=> false			
+		),		
 		'password' => array(
 			'title' 			=> 'Password', 
 			'layout'			=> array('label', 'field', 'description', 'error' ),
@@ -177,7 +192,11 @@ $cloud_form_defaults = array (
 			'size'			=> 30,
 			'width' 		=> 6,			
 			'description'	=> null,
-			'disabled' 			=> false,
+			'disabled' 		=> false,
+			'first_option'  => array(
+				'value' => '', 
+				'text' => 'Please select one...'
+			),
 			'default' 		=> '',			
 			'clone_controls'=> true	,
 			'sort'			=> true, 

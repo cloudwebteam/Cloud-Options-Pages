@@ -32,6 +32,7 @@ jQuery( function($){
 				} else {
 					input.siblings( '.timestamp' ).val( '' ) ;
 				}	
+				input.blur();
 			}			
 		}); 
 		if ( typeof minDate !== 'undefined' ){

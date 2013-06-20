@@ -125,6 +125,7 @@ jQuery( function($){
 								}
 								$field.addClass('has-error'); 
 								$field.find( '.cloud-error' ).slideDown(); 
+								
 								if ( typeof callback === 'function' ){
 									callback( validation ); 
 								}										
@@ -183,7 +184,6 @@ jQuery( function($){
 		   			
 			   		function handle_validation_response( response ){		   		
 			   			responses_recieved.push( response ); 
-			   			console.log( responses_recieved.length, inputs_to_validate.length );
 			   			if (responses_recieved.length == inputs_to_validate.length ){
 			   				attempt_submit(); 
 			   			}
@@ -197,11 +197,11 @@ jQuery( function($){
 		   					}
 		   				}	
 		   				if ( passed_validation ){
-		   					console.log( 'passed' ); 
 		   					$form.addClass('validated' ); 
 		   					$form.submit(); 
 		   					return true; 
 		   				} else {
+		   					
 				   			var $form_sections = $form.find( '.section' ); 
 			   						   			
 			   				if ( $form_sections.size() > 0 ){
@@ -216,6 +216,7 @@ jQuery( function($){
 			   						$form.addClass( 'has-error' ); 
 			   					}
 			   				}
+			   				$.scrollTo( $form.find( '.has-error' ) , 300 ) ; 
 			   			}
 			   		}
 		   		 }
