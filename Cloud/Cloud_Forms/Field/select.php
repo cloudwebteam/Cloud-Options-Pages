@@ -25,6 +25,16 @@ class Cloud_Field_select extends Cloud_Field {
 	}
 	private function get_options_list( ){
 		$html = '';
+		if ( $this->spec['first_option'] ){
+			if ( is_array( $this->spec['first_option'] ) ){
+				$value = isset( $this->spec['first_option']['value'] ) ?  $this->spec['first_option']['value'] : false ;
+				$text = isset( $this->spec['first_option']['text'] ) ?  $this->spec['first_option']['text'] : false ;
+			} else {
+				$value = false; 
+				$text = $this->spec['first_option'] ; 
+			}
+			$html .= '<option value="'.$value.'">'.$text.'</option>' ; 
+		}
 		if ( $this->spec['use_query'] == true ){
 			$query_args = wp_parse_args( array( 
 				'numberposts' => -1
@@ -45,7 +55,6 @@ class Cloud_Field_select extends Cloud_Field {
 						$html .= '<option '.$selected .' value="'.$post->ID.'">'.$post->post_title.'</option>' ; 
 					}
 				} else {
-					$html .= $this->multiple ? '' : '<option value="">Please select one...</option>'; 
 					foreach( $posts as $post ){ 
 						if ( $this->info['value'] == $post->ID ){
 							$selected = 'selected';
@@ -61,7 +70,7 @@ class Cloud_Field_select extends Cloud_Field {
 			return $html; 
 		}
 		if ( isset( $this->spec[ 'options' ] ) ){
-			$options =$this->spec[ 'options' ] ; 
+			$options = $this->spec[ 'options' ] ; 
 
 			if ( is_array( $options ) ){
 				if ( sizeof( $options ) == 0 ){
@@ -80,8 +89,7 @@ class Cloud_Field_select extends Cloud_Field {
 						}					
 						$html .= '<option '.$selected .' value="'.$value.'">'.$option.'</option>' ; 
 					}				
-				} else {
-					$html .= $this->multiple ? '' : '<option value="">Please select one...</option>'; 
+				} else { 					
 					$is_associative_array = $this->is_assoc( $options ) ;
 					$selected_found = false;					
 					$selected = '';
@@ -124,7 +132,6 @@ class Cloud_Field_select extends Cloud_Field {
 								$html .= '<option '.$selected .' value="'.$post->ID.'">'.$post->post_title.'</option>' ; 
 							}
 						} else {
-							$html .= $this->multiple ? '' : '<option value="">Please select one...</option>'; 
 							foreach( $posts as $post ){ 
 								if ( $this->info['value'] == $post->ID ){
 									$selected = 'selected';
