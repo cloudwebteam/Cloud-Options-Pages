@@ -87,21 +87,26 @@
 		$form_data = $this->form_data;
 
 		foreach( $validation_spec as $slug => $spec ){			
+			if ( $spec['disabled'] ) {
+				unset( $validation_spec[ $slug ] );
+				continue; 
+			}
 
 			if ( isset( $this->form_data[ $slug ] ) ){
-				$post_data = &$form_data[$slug] ;
+				$post_data = $form_data[$slug] ;
 			} else {
 				$post_data = array() ;
 			}
 			
 			// both post data and spec are changed in this massive loop to prevent doing it twice
 			$validation_spec[ $slug ] = $this->get_field_validation_spec( &$post_data , &$spec, $this->array_hierarchy  ); 			
+			$form_data[$slug] = $post_data ? $post_data : null; 			
 		}
 
 		if ( $this->success ){
-
 			$this->to_save = $form_data; 		
 		}
+
 		return $validation_spec ; 		
 	}
 	protected function get_field_validation_spec( &$post_data, &$spec, $array_hierarchy, $errors = array() ){
@@ -271,7 +276,7 @@
 					    return true; 
 				    }
 				}
-			} else if ( !$field_value && $field_value !== 0 && $field_value !== '0' ){
+			} else if ( !$field_value ){
 				return false; 
 			} else {
 				return true; 
