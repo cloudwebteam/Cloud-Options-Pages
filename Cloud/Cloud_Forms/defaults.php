@@ -286,6 +286,7 @@ $cloud_form_defaults = array (
 			'field' 			=> 'checkbox', // checkbox or radio
 			'options' 			=> false,
 			'disabled' 			=> false,
+			'toggle_type' 		=> 'checkbox',
 			'default' 			=> '',			
 			'subfields'			=> null,
 			'clone_controls'	=> true,
