@@ -68,7 +68,7 @@ class Cloud_Field_toggle extends Cloud_Field {
 	}
 	protected function get_multiple_select( ){
 	
-		$field = '<select id="'.$this->info['id'] . '" name="'.$this->info['name'] . '" value="'.$this->info['value'].'"' . $data . ' '.$this->info['disabled'] .' />';		
+		$field = '<select id="'.$this->info['id'] . '" name="'.$this->info['name'] . '" value="'.$this->info['value'].'" '.$this->info['disabled'] .' />';		
 		$i = 0; 
 		foreach( $this->spec['options'] as $value => $text ){
 			$data = isset( $this->spec['show'][ $value ] ) ? $this->get_show_data( $this->spec['show'][ $value ] ) : '';
