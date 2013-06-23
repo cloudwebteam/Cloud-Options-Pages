@@ -150,6 +150,19 @@ class Cloud_Field {
 	}
 	// wraps the field/fields in html that makes it cloneable
 	protected function make_cloneable( ){
+		$data = '' ; 
+		if ( is_array( $this->info['cloneable'] ) ){
+			if ( isset( $this->info['cloneable']['min'] )){
+				$min_number = abs( intval( $this->info['cloneable']['min'] ) ) ;
+				$data .= ' data-min="'.$min_number.'"' ; 
+				
+			}					
+			if ( isset( $this->info['cloneable'] ['max'] )){
+				$max_number = abs( intval( $this->info['cloneable']['max'] ) ) ;
+				$data .= ' data-max="'.$max_number.'"' ; 
+			}	
+		}
+		
 		$this->enqueue_script( 'jquery-ui-sortable' ); 
 		$name = $this->info['name']; 
 		$values = $this->info['value'] ;
@@ -161,13 +174,20 @@ class Cloud_Field {
 				$clones[$clone_number][ 'error' ] = isset( $this->spec['validation_error'][ $clone_number ] ) ? '<span class="error">'.$this->spec['validation_error'][ $clone_number ] .'</span>' : '' ;
 			}
 		} else {
-			$clones[0]['clone'] = $this->make_clone( 0, '', $name ); 
-			$clones[0]['error'] = false; 
+			if ( $min_number ){
+				for( $i = 0 ; $i < $min_number; $i++ ){
+					$clones[$i]['clone'] = $this->make_clone( 0, '', $name ); 
+					$clones[$i]['error'] = false; 				
+				}
+			} else {
+				$clones[0]['clone'] = $this->make_clone( 0, '', $name ); 
+				$clones[0]['error'] = false; 
+			}
 		}
 
 		ob_start(); ?>
 		<div class="input">
-			<ul class="cloneable cf">
+			<ul class="cloneable cf" <?php echo $data; ?>>
 			<?php foreach( $clones as $clone_number => $clone ){ ?>
 				<li class="clone cf">
 					<div class="number"><?php echo $clone_number + 1 ; ?></div>

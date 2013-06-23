@@ -314,7 +314,8 @@
 	cursor: pointer;
 	z-index: 20;
 }
-.clone .remove.disabled {
+.clone .remove.disabled,
+.clone .add.disabled {
 	color: #ccc;
 	background: #fafafa;
 	cursor: default;
