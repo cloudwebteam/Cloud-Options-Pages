@@ -34,10 +34,8 @@
 			$form_id_field = '<input type="hidden" name="form_id" value="' . $form_slug . '" />' ;
 			// set up submit button html 
 			$submit_button = '<p class="submit"><input type="submit" class="button-primary" value="'.$spec['submit_text'].'" /></p>';
-			// if ajax is enabled, include spec in a hidden div
-			$json_spec = $spec['ajax'] ? '<div id="json_spec_'.$form_slug.'" style="display:none !important;">'.json_encode( $spec ).'</div>' : '' ;
-			
-			return '<footer class="form">'.$form_id_field . $json_spec . $submit_button .'</footer>' ; 
+			// if ajax is enabled, include spec in a hidden div			
+			return '<footer class="form">'.$form_id_field  . $submit_button .'</footer>' ; 
 		}		
 		protected static function get_form_header( $form_slug, $spec ){
 			// setup title and description
