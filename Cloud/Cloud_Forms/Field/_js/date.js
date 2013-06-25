@@ -1,5 +1,8 @@
-jQuery( function($){
-	$('.field.type-date .datepicker').each( function(){
+CloudField.on( 'init', function( $context ){
+	var selector = '.field.type-date .datepicker'; 
+	var $fields = $( selector, $context ).add( $context.filter( selector ) ); 
+	
+	$fields.each( function(){
 		var dateFormat = $(this).data('dateformat'); 	
 		var minDate = $(this).data( 'mindate' ); 
 		var maxDate = $(this).data( 'maxdate' ); 

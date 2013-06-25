@@ -1,6 +1,9 @@
-jQuery( function($){
+CloudField.on( 'init', function( $context ){
+	var selector = '.field.type-datetime'; 
+	var $fields = $( selector, $context ).add( $context.filter( selector ) ); 
+	
 
-	$('.field.type-datetime').each( function(){
+	$fields.each( function(){
 		var dateFormat = $(this).data('dateformat'); 	
 		var timeFormat = $(this).data('timeformat'); 
 		var $field = $(this) ;

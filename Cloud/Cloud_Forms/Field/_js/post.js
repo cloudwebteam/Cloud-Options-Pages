@@ -1,5 +1,7 @@
-jQuery( function($){
-
+CloudField.on( 'init', function( $context ){
+	var selector = '.field.type-post'; 
+	var $fields = $( selector, $context ).add( $context.filter( selector ) ); 
+	
 	var $popup = $( '#wp_link_popup #wp-link-dialog' ) ; 
 	var $popup_nonce = $popup.find('#_ajax_linking_nonce').val() ; 
 	var $popup_search = $popup.find( '.link-search-field' );	
@@ -10,7 +12,7 @@ jQuery( function($){
 	
 
 		
-	$('.field.type-post').each( function(){
+	$fields.each( function(){
 		var $field = $(this); 
 		var $button = $field.find( '.select-post' ); 
 		var $targetfield = $field.find( '.target-field' ); 

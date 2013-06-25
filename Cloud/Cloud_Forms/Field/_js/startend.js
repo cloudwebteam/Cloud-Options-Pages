@@ -1,6 +1,8 @@
-jQuery( function($){
-
-	$('.field.type-startend').each( function(){
+CloudField.on( 'init', function( $context ){
+	var selector = '.field.type-startend'; 
+	var $fields = $( selector, $context ).add( $context.filter( selector ) ); 
+	
+	$fields.each( function(){
 		var field = $(this) ;	
 		
 		var picker_type = field.find( '.selector' ).data('field_type' ); 

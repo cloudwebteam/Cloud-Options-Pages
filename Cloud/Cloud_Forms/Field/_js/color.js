@@ -1,7 +1,6 @@
-jQuery(document).ready(function($) {
-	
+CloudField.on( 'init', function( $context ){
 	// miniColors
-	$(".color-picker-input").minicolors({
+	$(".color-picker-input", $context ).minicolors({
 		letterCase: 'uppercase',
 	});
 	/*
@@ -18,5 +17,4 @@ $('.option_enabler.color').click( function(){
 	    }
     }); 
 */
-     
 });

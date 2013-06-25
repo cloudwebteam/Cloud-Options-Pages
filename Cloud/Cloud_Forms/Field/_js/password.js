@@ -1,5 +1,8 @@
-jQuery( function($){
-	$('.field.type-password').each( function(){
+CloudField.on( 'init', function( $context ){
+	var selector = '.field.type-password'; 
+	var $fields = $( selector, $context ).add( $context.filter( selector ) ); 
+	
+	$fields.each( function(){
 		var $field = $(this); 
 	
 		var $password = $field.find( 'input.password-field' ); 

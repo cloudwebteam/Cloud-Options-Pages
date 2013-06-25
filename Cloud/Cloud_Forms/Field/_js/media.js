@@ -1,6 +1,7 @@
-
-jQuery(document).ready(function($){
-	var fields = $('.field.type-media'); 
+CloudField.on( 'init', function( $context ){
+	var selector = '.field.type-media'; 
+	var $fields = $( selector, $context ).add( $context.filter( selector ) ); 
+	
 	fields.each( function(){
 		var $targetfield = $(this).find('input.url_field');
 		var $image_container = $(this).find( '.image' ); 
