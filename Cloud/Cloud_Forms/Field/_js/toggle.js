@@ -122,7 +122,6 @@ CloudField.on( 'init', function( $context ){
 			 	show_fields( $fields_to_show, animate ) ;
 			}
 			if ( $fields_to_hide.size() > 0 ){
-				console.log( 'here' ); 
 			 	hide_fields( $fields_to_hide, animate ) ;
 			}				
 		}
