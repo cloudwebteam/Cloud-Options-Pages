@@ -24,7 +24,6 @@
 			$value = $value && isset( $value[$group_number][$subfield_slug] ) ? $value[$group_number][$subfield_slug] : ''; 
 			$name = $name . '['.$group_number.']['.$subfield_slug.']'; 	
 			$input_id = $input_id . '_' . $subfield_slug . '-' .$group_number ;				
-			$cloneable = false;
 		}
 
 		$info = array(); 		

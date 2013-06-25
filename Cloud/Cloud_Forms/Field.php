@@ -151,6 +151,8 @@ class Cloud_Field {
 	// wraps the field/fields in html that makes it cloneable
 	protected function make_cloneable( ){
 		$data = '' ; 
+		$min_number = 0;
+		$max_number = false; 
 		if ( is_array( $this->info['cloneable'] ) ){
 			if ( isset( $this->info['cloneable']['min'] )){
 				$min_number = abs( intval( $this->info['cloneable']['min'] ) ) ;
