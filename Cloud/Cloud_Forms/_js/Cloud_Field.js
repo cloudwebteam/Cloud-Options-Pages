@@ -27,8 +27,8 @@ jQuery( function($){
 		var $add_buttons = $cloneable.find( '.add' );
 		var $remove_buttons = $cloneable.find( '.remove' ); 
 		
-		var min_size = typeof $cloneable.data('min') !== 'undefined' ? $cloneable.data('min') : 1; 
-		var max_size = typeof $cloneable.data('max') !== 'undefined' ? $cloneable.data('max') : 1; 
+		var min_size = typeof $cloneable.data('min') !== 'undefined' ? $cloneable.data('min') : 0; 
+		var max_size = typeof $cloneable.data('max') !== 'undefined' ? $cloneable.data('max') : false; 
 		
 		function reset_value_keys(){
 			var $clones = $cloneable.find( '.clone' );
@@ -93,17 +93,16 @@ jQuery( function($){
 		function update_cloneable(){
 			//update all the value keys
 			reset_value_keys( );
-		
 			$remove_buttons = $cloneable.find( '.remove' ); 
 			$add_buttons = $cloneable.find('.add' );
 			$clones = $cloneable.find( '.clone' ); 
 									
-			if ( $clones.size() == min_size ){
+			if ( $clones.size() === min_size ){
 				$remove_buttons.addClass('disabled' ); 
 			} else {
 				$remove_buttons.removeClass('disabled' ); 						
 			}
-			if ( $clones.size() == max_size ){
+			if ( $clones.size() === max_size ){
 				$add_buttons.addClass('disabled' ); 
 			} else {
 				$add_buttons.removeClass('disabled' ); 			
@@ -124,7 +123,6 @@ jQuery( function($){
 				update: reset_value_keys	
 			}); 
 		}		
-
 		update_cloneable(); 		
 		
 	});		

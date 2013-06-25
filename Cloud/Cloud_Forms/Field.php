@@ -51,7 +51,7 @@ class Cloud_Field {
 		if ( $label = $this->get_label() ){
 			$components['label'] = '<div class="label">' .$label.'</div>' ; 
 		}
-		if ( $this->info['cloneable'] ){
+		if ( $this->info['cloneable'] && $this->spec['type'] !== 'group' ){
 			$components['field'] = $this->make_cloneable( ) .$this->copy_to_use();
 		} else {
 			if ( $field = $this->get_field_html( ) ){
@@ -157,7 +157,7 @@ class Cloud_Field {
 				$data .= ' data-min="'.$min_number.'"' ; 
 				
 			}					
-			if ( isset( $this->info['cloneable'] ['max'] )){
+			if ( isset( $this->info['cloneable']['max'] ) && $this->info['cloneable']['max'] ){
 				$max_number = abs( intval( $this->info['cloneable']['max'] ) ) ;
 				$data .= ' data-max="'.$max_number.'"' ; 
 			}	
