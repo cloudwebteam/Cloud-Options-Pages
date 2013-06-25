@@ -105,7 +105,6 @@ jQuery( function($){
 						fields_to_show.push( prev_to_hide[ i ] ); 
 					}
 				}
-				console.log( fields_to_show );
 				
 			}		
 			var $fields_to_show = parse_data( fields_to_show ) ;

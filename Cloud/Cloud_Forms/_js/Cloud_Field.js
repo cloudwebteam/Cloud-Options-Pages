@@ -20,12 +20,15 @@ jQuery( function($){
 
 	$('.cloneable').each( function(){
 		var $cloneable = $(this); 
+		var $to_clone = $cloneable.find( '.to-clone' ).clone( true, true ).removeClass('to-clone'); 	
+		$cloneable.find( '.to-clone' ).remove(); 		
+		
 		var $clones = $cloneable.find( '.clone' ); 
 		var $add_buttons = $cloneable.find( '.add' );
 		var $remove_buttons = $cloneable.find( '.remove' ); 
 		
-		var min_size = $cloneable.data('min') ? $cloneable.data('min') : 1; 
-		var max_size = $cloneable.data('max') ? $cloneable.data('max') : false; 
+		var min_size = typeof $cloneable.data('min') !== 'undefined' ? $cloneable.data('min') : 1; 
+		var max_size = typeof $cloneable.data('max') !== 'undefined' ? $cloneable.data('max') : 1; 
 		
 		function reset_value_keys(){
 			var $clones = $cloneable.find( '.clone' );
@@ -51,12 +54,11 @@ jQuery( function($){
 			});
 		}		
 		function add_clone( $button ){
-			if ( ! $button.hasClass('disabled') ){
-			
+			if ( ! $button.hasClass('disabled') ){				
 				var counter = $clones.size();
 				var $parent_clone = $button.parents('.clone'); 
 				// copy an existing clone 
-				var $new_clone = $clones.first().clone(true).hide();
+				var $new_clone = $to_clone.clone(true, true).hide();
 				//get rid of the values
 				$new_clone.find('input, textarea').not('[type="button"],[type="checkbox"][type="radio"], .copy').val('');
 				
@@ -65,19 +67,13 @@ jQuery( function($){
 				// specific changes for specific fields
 				$new_clone.find('.preview-image').attr('src', '').addClass('hidden' ).hide(); 
 				
-				$new_clone.insertAfter( $parent_clone ).fadeIn(); 
-	
-				//update all the value keys
-				reset_value_keys( );
-			
-				$remove_buttons = $cloneable.find( '.remove' ); 
-				$add_buttons = $cloneable.find('.add' );
-				$clones = $cloneable.find( '.clone' ); 
+				if ( $parent_clone.size() > 0 ){
+					$new_clone.insertAfter( $parent_clone ).fadeIn(); 
+				} else {
+					$new_clone.prependTo( $cloneable ).fadeIn(); 				
+				}
 				
-				$clones.find( '.remove' ).removeClass('disabled' ) ; 				
-				if ( $clones.size() == max_size ){
-					$clones.find('.add').addClass('disabled');
-				}					
+				update_cloneable(); 
 			}
 		}
 		function remove_clone( $button ){
@@ -87,18 +83,39 @@ jQuery( function($){
 				
 				$clone.slideUp('fast', function(){ 
 					$clone.remove();
+					
 					reset_value_keys();
 					
-					$remove_buttons = $cloneable.find( '.remove' ); 
-					$add_buttons = $cloneable.find('.add' );
-					$clones = $cloneable.find( '.clone' );
-					 			
-					$clones.find( '.add' ).removeClass('disabled' ) ; 									 							
-					if ( $clones.size() == min_size ){
-						$clones.find('.remove').addClass('disabled');
-					}
+					update_cloneable(); 
 				});
 			}		
+		}
+		function update_cloneable(){
+			//update all the value keys
+			reset_value_keys( );
+		
+			$remove_buttons = $cloneable.find( '.remove' ); 
+			$add_buttons = $cloneable.find('.add' );
+			$clones = $cloneable.find( '.clone' ); 
+									
+			if ( $clones.size() == min_size ){
+				$remove_buttons.addClass('disabled' ); 
+			} else {
+				$remove_buttons.removeClass('disabled' ); 						
+			}
+			if ( $clones.size() == max_size ){
+				$add_buttons.addClass('disabled' ); 
+			} else {
+				$add_buttons.removeClass('disabled' ); 			
+			}
+			
+			$add_buttons.unbind('click.cloneable').on( 'click.cloneable' , function ( ){
+				add_clone( $(this) );
+			});			
+			$remove_buttons.unbind('click.cloneable').on( 'click.cloneable' , function ( ){
+				remove_clone( $(this) ); 
+			}); 
+						
 		}
 	
 		
@@ -106,22 +123,9 @@ jQuery( function($){
 			$cloneable.sortable({
 				update: reset_value_keys	
 			}); 
-		}
-		console.log( 'min '+ min_size ); 
-		
-		if ( $clones.size() == min_size ){
-			$remove_buttons.addClass('disabled' ); 
-		}
-		if ( $clones.size() == max_size ){
-			$add_buttons.addClass('disabled' ); 
-		}
-		
-		$add_buttons.click( function ( ){
-			add_clone( $(this) );
-		});			
-		$remove_buttons.click( function(){
-			remove_clone( $(this) ); 
-		}); 
+		}		
+
+		update_cloneable(); 		
 		
 	});		
 	

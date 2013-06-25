@@ -174,20 +174,25 @@ class Cloud_Field {
 				$clones[$clone_number][ 'error' ] = isset( $this->spec['validation_error'][ $clone_number ] ) ? '<span class="error">'.$this->spec['validation_error'][ $clone_number ] .'</span>' : '' ;
 			}
 		} else {
+			$to_clone = $this->make_clone( 0, '', $name ); 
 			if ( $min_number ){
 				for( $i = 0 ; $i < $min_number; $i++ ){
 					$clones[$i]['clone'] = $this->make_clone( 0, '', $name ); 
-					$clones[$i]['error'] = false; 				
+					$clones[$i]['error'] = false; 	
+					$clones[0]['is_zero'] = false; 
+								
 				}
-			} else {
-				$clones[0]['clone'] = $this->make_clone( 0, '', $name ); 
-				$clones[0]['error'] = false; 
 			}
 		}
 
 		ob_start(); ?>
 		<div class="input">
 			<ul class="cloneable cf" <?php echo $data; ?>>
+				<li class="to-clone clone cf">
+					<div class="number">0</div>
+					<?php echo $to_clone; ?>
+					<div class="add-remove"><a class="remove">-</a><a class="add">+</a></div>
+				</li>
 			<?php foreach( $clones as $clone_number => $clone ){ ?>
 				<li class="clone cf">
 					<div class="number"><?php echo $clone_number + 1 ; ?></div>
@@ -196,6 +201,11 @@ class Cloud_Field {
 					<div class="add-remove"><a class="remove">-</a><a class="add">+</a></div>
 				</li>
 			<?php } ?>
+				<div class="no-clones cf">
+					<?php $empty_text = isset( $this->info['cloneable']['zero_text'] ) ? $this->info['cloneable']['zero_text'] : 'None created. Add the first.' ; ?>
+					<div class="empty-text"><?php echo $empty_text; ?></div>					
+					<div class="add-remove"><a class="add">+</a></div>
+				</div>						
 			</ul>
 		</div>
 		<?php $output = ob_get_clean(); 

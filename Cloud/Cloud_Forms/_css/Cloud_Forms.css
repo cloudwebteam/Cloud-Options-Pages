@@ -357,6 +357,22 @@
 	text-align: center;
 	border-radius: 3px;
 }
+.no-clones {
+	border-top: 1px solid #ccc; 
+	padding: .5em 0; 
+}
+.cloneable .no-clones .empty-text {
+	font-style: italic; 
+	font-size: .875em; 
+	float: left; 
+}
+
+.cloneable .no-clones .add-remove {
+	float: right; 
+}
+.clone + .no-clones {
+	display: none; 
+}
 #ui-datepicker-div {
 	display: none; 
 }
