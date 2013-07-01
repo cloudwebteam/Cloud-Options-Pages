@@ -145,7 +145,7 @@ var CloudField = ( function( window, $ ){
 					}); 
 				}		
 				
-				var $to_clone = $cloneable.getClonePart( '.to-clone' ).clone( true ).removeClass('to-clone');
+				var $to_clone = $cloneable.getClonePart( '.to-clone' ).clone( false ).removeClass('to-clone');
 				$cloneable.getClonePart( '.to-clone' ).remove(); 							
 	
 				update_cloneable(); 							
