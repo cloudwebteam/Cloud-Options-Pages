@@ -40,7 +40,7 @@ CloudField.on( 'init', function( $context ){
 				} else {
 					var $fields_to_add = $section.find( '.field_slug-'+data ); 						
 				}	
-				$fields = fields.add( $fields_to_add );
+				$fields = $fields.add( $fields_to_add );
 						
 			}
 			return $fields ;
