@@ -158,6 +158,8 @@ $cloud_form_defaults = array (
 			'cloneable'			=> false,
 			'description'		=> null,
 			'size'				=> 8,	
+			'min' 				=> 0, 
+			'max' 				=> false,
 			'width' 			=> 6,	
 			'disabled' 			=> false,
 			'default' 			=> '',					
@@ -185,6 +187,43 @@ $cloud_form_defaults = array (
 				'error'			=> 'Does not match'
 			)
 		),
+		'radio'	=> array(
+			'title'			=> 'Radio Group',				
+			'multiple'		=> false,
+			'use_query' 	=> false, 
+			'options'		=> 'page',
+			'layout'		=> array('label', 'field' , 'error', 'description'),
+			'cloneable'		=> false,
+			'size'			=> 30,
+			'width' 		=> 6,			
+			'description'	=> null,
+			'disabled' 		=> false,
+			'default' 		=> '',			
+			'clone_controls'=> true	,
+			'sort'			=> true, 
+			'required' 		=> false,
+			'validate' 		=> false,
+			'error'			=> false			
+		),		
+		'range_slider' => array( 
+			'title'				=> 'Text Input',						
+			'layout'			=> array('label', 'field' , 'error', 'description'),
+			'cloneable'			=> false,
+			'description'		=> null,
+			'size'				=> 55,	
+			'width' 			=> 6,	
+			'disabled' 			=> false,
+			'default' 			=> '',	
+			'min' 				=> 0, 
+			'max'				=> 100,
+			'step' 				=> 1,				
+			'clone_controls'	=> true, 
+			'sort'				=> true, 
+			'required' 			=> false,
+			'validate' 			=> false,
+			'error'				=> false			
+			
+		), 
 		'select'	=> array(
 			'title'			=> 'Select Menu',				
 			'multiple'		=> false,
