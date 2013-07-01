@@ -134,7 +134,7 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 		if ( isset( $this->forms_html[ $form_slug ] ) ){
 			echo $this->forms_html[ $form_slug ] ;
 		} else { ?>
-			<div class="cloud cloud-form form-not-found">Form "<?php echo $form_slug; ?>" has not been registered</div>
+			<div class="cloud cloud-form form-not-found" id="form-<?php echo $form_slug; ?>" >Form "<?php echo $form_slug; ?>" has not been registered</div>
 		<?php }
 	}
 
