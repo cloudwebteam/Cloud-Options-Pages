@@ -68,7 +68,7 @@ abstract class Cloud_Forms {
 		self::register_script( 'jquery', 'http://code.jquery.com/jquery-1.9.1.min.js' ); 
 		self::register_script( 'bootstrap', self::get_folder_url() .'/__inc/bootstrap/js/bootstrap.min.js', array( 'jquery' ) );  
 		self::register_script( 'scrollTo', self::get_folder_url() .'/__inc/jquery.scrollTo.min.js', array( 'jquery' ) );  
-		
+		self::register_script( 'fancybox', self::get_folder_url() .'/__inc/fancybox/jquery.fancybox.js', array( 'jquery' ) );  
 		// full jQuery UI
 		self::register_script( 'jquery-ui-core', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.core.min.js', array('jquery') );
 		self::register_script( 'jquery-effects-core', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect.min.js', array('jquery') );
@@ -111,6 +111,8 @@ abstract class Cloud_Forms {
 		self::register_style( 'reset' , self::get_folder_url() .'/__inc/reset.css' );
 		self::register_style( 'bootstrap', self::get_folder_url() .'/__inc/bootstrap/css/bootstrap.min.css' ); 
 		self::register_style( 'bootstrap-responsive', self::get_folder_url() .'/__inc/bootstrap/css/bootstrap-responsive.min.css', array( 'bootstrap' ) ); 
+		self::register_style( 'fancybox', self::get_folder_url() .'/__inc/fancybox/jquery.fancybox.css' );  
+
 		
 		self::register_style( 'bootstrap-timepicker', self::get_folder_url(). '/__inc/bootstrap_timepicker/bootstrap-timepicker.min.css');
 		self::register_style( 'jquery-ui-lightness', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/css/ui-lightness/jquery-ui-1.10.1.custom.min.css' ); 
