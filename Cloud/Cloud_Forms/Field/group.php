@@ -80,7 +80,7 @@ class Cloud_Field_group extends Cloud_Field {
 		return $subfields;
 	}
 	private function get_model_group(){
-		return $this->make_group( 0, ''); 								
+		return $this->make_group( 1000, ''); 								
 	}
 	public static function enqueue_scripts_and_styles( $field_type ){
 		self::enqueue_script( 'jquery-ui-core' );
