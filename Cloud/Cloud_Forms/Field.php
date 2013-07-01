@@ -176,7 +176,7 @@ class Cloud_Field {
 				$clones[$clone_number][ 'error' ] = isset( $this->spec['validation_error'][ $clone_number ] ) ? '<span class="error">'.$this->spec['validation_error'][ $clone_number ] .'</span>' : '' ;
 			}
 		} else {
-			$to_clone = $this->make_clone( 0, '', $name ); 
+			$to_clone = $this->make_clone( 1000, '', $name ); 
 			if ( $min_number ){
 				for( $i = 0 ; $i < $min_number; $i++ ){
 					$clones[$i]['clone'] = $this->make_clone( 0, '', $name ); 
@@ -223,7 +223,11 @@ class Cloud_Field {
 		return $clone ;
 	}
 	protected function get_label(){
-		$label = "<label class='title' for='". $this->info['id'] . "' >" . $this->info['title'] . "</label>";
+		if ( $this->info['title'] ){
+			$label = "<label class='title' for='". $this->info['id'] . "' >" . $this->info['title'] . "</label>";
+		} else {
+			$label = false; 
+		}
 		return $label;
 	}
 	protected function copy_to_use(){
