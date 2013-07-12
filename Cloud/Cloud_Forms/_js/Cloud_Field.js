@@ -1,4 +1,4 @@
-var CloudField = ( function( window, $ ){
+var CloudField = ( function($){
 	
 	var actions = {
 		init : []
@@ -171,21 +171,21 @@ var CloudField = ( function( window, $ ){
 	}
 	
    
-   	$(window).ready( function(){
+   	$( function(){
 		$('.cloud-form').each( function(){		
 			var $form = $(this);
 			on_action( 'init', setup_copy_to_use );
 			on_action( 'init', setup_cloneables );			
-			trigger( 'init', $form ); 					
+			trigger( 'init', $form ); 			
 		}); 
 	}); 
 	return {
 		on : on_action
 	}
-}( window, jQuery) );
+}( jQuery ) );
 
 // for cloneable, avoids selecting parts of children clones
-$.fn.getClonePart = function( selector ){
+jQuery.fn.getClonePart = function( selector ){
 	if ( this.hasClass('cloneable') && this.parents( '.cloneable' ).size() > 0 ){
 		var $found = this.find( selector ); 
 		return $found ; 
@@ -196,7 +196,7 @@ $.fn.getClonePart = function( selector ){
 		var $found = this.find( selector ).not( '.clone .cloneable ' + selector );; 
 		return $found;
 	}
-}		
+}	
 var replaceNthMatch = function (original, pattern, n, replace) {
 	var parts, tempParts;
 	
@@ -261,5 +261,5 @@ var replaceNthMatch = function (original, pattern, n, replace) {
 	
 	// Put it back together and return
 	return parts.join('');
-}
+} 
 

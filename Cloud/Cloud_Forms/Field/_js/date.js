@@ -1,22 +1,22 @@
 CloudField.on( 'init', function( $context ){
+	var $ = jQuery ; 
 	var selector = '.field.type-date .datepicker'; 
 	var $inputs = $( selector, $context ).add( $context.filter( selector ) ); 
 	
 	$inputs.each( function(){
 	
 		if ( $(this).parents('.to-clone').size() == 0 ){
-			
 			var $input = $(this) ;
-	
+
 			var dateFormat = $(this).data('dateformat'); 	
 			var minDate = $(this).data( 'mindate' ); 
 			var maxDate = $(this).data( 'maxdate' ); 
 				
 	
-			if ( $input.hasClass( 'saves-json') && input.val() ){
-				var startingValue = new Date( input.val()*1000 ) ;
+			if ( $input.hasClass( 'saves-json') && $input.val() ){
+				var startingValue = new Date( $input.val()*1000 ) ;
 			} else if( $input.val() ){
-				var startingValue = new Date( input.val() ) ;
+				var startingValue = new Date( $input.val() ) ;
 			} else {
 				var startingValue = '' ;
 			}

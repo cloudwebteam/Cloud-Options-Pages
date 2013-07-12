@@ -285,8 +285,8 @@ class Cloud_Forms_WP extends Cloud_Forms {
 		}
 	}
 	public function form( $form_slug ){
-		$this->validate_form( $form_slug ); 
 		if ( isset( $this->forms[$form_slug] ) ){
+			$this->validate_form( $form_slug ); 	
 			$form_spec = $this->forms[ $form_slug ] ; 
 			if ( isset( $form_spec['sections'] ) ){
 				$layout = Layout_Form::get_layout_function( $form_spec['layout'] );
@@ -300,6 +300,9 @@ class Cloud_Forms_WP extends Cloud_Forms {
 	
 		echo $form_html; 		
 	}
+	public function display( $form_slug ){
+		$this->form( $form_slug ); 
+	}	
 	public function save_metaboxes( $post_id ){
 
 		// Now can save the value to the database
@@ -533,13 +536,7 @@ class Cloud_Forms_WP extends Cloud_Forms {
 			return false;
 		}	
 	}
-	public function display( $form_slug ){
-		if ( isset( $this->forms[ $form_slug ] ) ){
-			echo $this->forms[ $form_slug ] ;
-		} else { ?>
-			<div class="cloud cloud-form form-not-found">Form "<?php echo $form_slug; ?>" has not been registered</div>
-		<?php }
-	}
+
 	public function get_page_spec( $top_slug, $sub_slug = false ){
 		if ( $sub_slug ){
 			return !empty( $this->pages[$top_slug]['subpages'][$sub_slug] ) ? $this->pages[ $top_slug ]['subpages'][$sub_slug] : false ;

@@ -98,7 +98,12 @@ $cloud_form_defaults_wp = array (
 			'clone_controls'=> true, 
 			'sort'			=> true,
 			'_lock'			=> false				
-		),			
+		),	
+		'radio'	=> array(
+			'editor_list'		=> false,
+			'code_link' 		=> true, 
+			'_lock'				=> false, 											
+		),				
 		'select'	=> array(
 			'editor_list'		=> false,
 			'code_link' 		=> true, 
