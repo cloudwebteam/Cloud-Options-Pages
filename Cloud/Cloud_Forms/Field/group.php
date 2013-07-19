@@ -10,9 +10,7 @@ class Cloud_Field_group extends Cloud_Field {
 
 		$this->min_clones = isset( $this->info['cloneable']['min'] ) ? $this->info['cloneable']['min'] : 0; 
 		$this->max_clones = isset( $this->info['cloneable']['max'] ) && $this->info['cloneable']['max'] ? $this->info['cloneable']['max'] : 1000; 
-
-	
-
+		
 		$this->subfields = isset( $this->spec['subfields'] ) && is_array( $this->spec['subfields'] ) ? $this->spec['subfields'] : false ;
 
 		$this->field_groups = $this->get_subfields( );
@@ -28,16 +26,17 @@ class Cloud_Field_group extends Cloud_Field {
 	}
 	private function get_subfields( ){
 
-
-
 		$groups = array();
-		if ( $this->subfields ){				
+		if ( $this->subfields ){			
+	
 			if ( is_array( $this->info['value'] ) ){
 				for( $i = 0; $i < $this->max_clones; $i++ ){
 					if ( isset( $this->info['value'][$i] ) ){
+						$group = $this->info['value'][$i] ;
+
 						$groups[$i] = $this->make_group( $i, $group); 					
 					} else {
-						if ( $i == ( $this->min_clones ) ){
+						if ( $i >= ( $this->min_clones ) ){
 							break;
 						} else {
 							$groups[$i] = $this->make_group( $i, '' ); 
@@ -70,7 +69,6 @@ class Cloud_Field_group extends Cloud_Field {
 			$subfield_args = $subfield_spec ; 
 			$subfield_args['subfield_slug']	= $subfield_slug;
 			$subfield_args['group_number'] = $group_number; 
-			$subfield_args['group_values'] = $group ; 		
 			$subfield_args['validation_error'] = isset( $this->spec['validation_error'][ $group_number ][ $subfield_slug ] ) ? $this->spec['validation_error'][ $group_number ][ $subfield_slug ] : '' ; 	
 			$subfield_args['layout'] = array( array( 'label', 'field', 'error' ), 'description' );
 			ob_start();

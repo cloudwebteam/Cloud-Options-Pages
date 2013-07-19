@@ -1,4 +1,4 @@
-CloudField.on( 'init', function( $context ){
+CloudField.on( 'init', function( $, $context ){
 	var selector = '.field.type-datetime'; 
 	var $fields = $( selector, $context ).add( $context.filter( selector ) ); 
 	

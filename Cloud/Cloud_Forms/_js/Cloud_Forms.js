@@ -145,18 +145,18 @@ jQuery( function($){
 			}		
    			var $fields = $form.find( '.field' ); 
    			setTimeout( function(){
-   			$fields.each( function(){
-	   			var $input = $(this).find( '.input textarea, .input input, .input select' );  
-	   			var is_check_type = $input.is('[type="checkbox"], [type="radio"]') ; 
-	   			var action = $input.is('[type="checkbox"], [type="radio"]') ? 'change' : 'blur';
-
-		   			$input.not( '.special-field' ).on( action, function(){
-			   			// if the submit button was hit, then let the form do all the validation, otherwise validate it.
-			   			if ( $form.find( '.submit input:focus').size() === 0 ){ 
-		   					validate_field( $input ); 
-		   				}
-		   			}); 
-   			});
+	   			$fields.each( function(){
+		   			var $input = $(this).find( '.input textarea, .input input, .input select' );  
+		   			var is_check_type = $input.is('[type="checkbox"], [type="radio"]') ; 
+		   			var action = $input.is('[type="checkbox"], [type="radio"]') ? 'change' : 'blur';
+	
+			   			$input.not( '.special-field' ).on( action, function(){
+				   			// if the submit button was hit, then let the form do all the validation, otherwise validate it.
+				   			if ( $form.find( '.submit input:focus').size() === 0 ){ 
+			   					validate_field( $input ); 
+			   				}
+			   			}); 
+	   			});
    			}, 100 ); 
    			var responses_recieved = []; 
    			
@@ -165,61 +165,80 @@ jQuery( function($){
 	   			$form.find( '.has-error' ).removeClass('has-error' ); 
 			   	$form.find( '.cloud-error' ).hide(); 
 			   	$form.find( '.error-message' ).hide();	   		
-		   		if ( ! $form.hasClass( 'validated' ) ){
-			   		responses_recieved = []; 
-			   		e.stopPropagation(); 
-				   	e.preventDefault();		   		
+		   		if ( $form.hasClass( 'validated' ) ){
+		   			var success_function = $form.find( 'input[type="submit"]' ).data( 'on_success' ); 
+		   			if ( success_function ){
+			   			function_parts = success_function.split( '.' ); 
+						if (typeof( window[ function_parts[0] ] ) !== 'undefined' ) {
+							var global = window[ function_parts[0] ] ; 
+							if ( typeof( global ) === 'function' ){
+								global( $form );
+							} else {
+								if ( global.hasOwnProperty( function_parts[1] ) ){
+									global[ function_parts[1] ]( $form );							
+								}
+							}
+						} else {
+							throw("Error.  Function " + success_function + " does not exist.");
+						}
+			   			e.preventDefault();  
+			   			return false; 
+			   		} else {
+			   			return true; 
+			   		}
+			   	}
+		   		responses_recieved = []; 
+		   		e.stopPropagation(); 
+			   	e.preventDefault();		   		
 
-			   		var $fields = $form.find( '.field' ); 
-			   		var inputs_to_validate = []; 
-		   			$fields.each( function(){		   			
-			   			var $input = $(this).find( '.input textarea, .input input, .input select' );
-			   			if ( $input.size() > 0 ){
-				   			inputs_to_validate.push( $input ); 
-				   		}				   		
-		   			});		   
-		   			for( i = 0 ; i < inputs_to_validate.length ; i++ ){
-		  		   		validate_field( inputs_to_validate[i], handle_validation_response ) ; 
-		   			} 
-		   			
-			   		function handle_validation_response( response ){		   		
-			   			responses_recieved.push( response ); 
-			   			if (responses_recieved.length == inputs_to_validate.length ){
-			   				attempt_submit(); 
-			   			}
-			   		}
-			   		function attempt_submit(){
-				   		var passed_validation = true ; 
-				   		console.log( responses_recieved ); 
-		   				for( i in responses_recieved ){
-		   					if ( responses_recieved[i] !== true ){
-		   						passed_validation = false; 
-		   					}
-		   				}	
-		   				if ( passed_validation ){
-		   					$form.addClass('validated' ); 
-		   					$form.submit(); 
-		   					return true; 
+		   		var $fields = $form.find( '.field' ); 
+		   		var inputs_to_validate = []; 
+	   			$fields.each( function(){		   			
+		   			var $input = $(this).find( '.input textarea, .input input, .input select' );
+		   			if ( $input.size() > 0 ){
+			   			inputs_to_validate.push( $input ); 
+			   		}				   		
+	   			});		   
+	   			for( i = 0 ; i < inputs_to_validate.length ; i++ ){
+	  		   		validate_field( inputs_to_validate[i], handle_validation_response ) ; 
+	   			} 
+	   			
+		   		function handle_validation_response( response ){		   		
+		   			responses_recieved.push( response ); 
+		   			if (responses_recieved.length == inputs_to_validate.length ){
+		   				attempt_submit(); 
+		   			}
+		   		}
+		   		function attempt_submit(){
+			   		var passed_validation = true ; 
+	   				for( i in responses_recieved ){
+	   					if ( responses_recieved[i] !== true ){
+	   						passed_validation = false; 
+	   					}
+	   				}	
+	   				if ( passed_validation ){
+	   					$form.addClass('validated' ); 
+	   					$form.submit(); 
+	   					return true; 
+	   				} else {
+	   					
+			   			var $form_sections = $form.find( '.section' ); 
+		   						   			
+		   				if ( $form_sections.size() > 0 ){
+		   					$form_sections.each( function(){
+		   						if ( $(this).find( '.has-error' ) ){
+		   							$(this).addClass('has-error' ); 
+		   							$form.addClass( 'has-error' ); 
+		   						}
+		   					}); 
 		   				} else {
-		   					
-				   			var $form_sections = $form.find( '.section' ); 
-			   						   			
-			   				if ( $form_sections.size() > 0 ){
-			   					$form_sections.each( function(){
-			   						if ( $(this).find( '.has-error' ) ){
-			   							$(this).addClass('has-error' ); 
-			   							$form.addClass( 'has-error' ); 
-			   						}
-			   					}); 
-			   				} else {
-			   					if ( $form.find( '.has-error' ).size() ){
-			   						$form.addClass( 'has-error' ); 
-			   					}
-			   				}
-			   				$.scrollTo( $form.find( '.has-error' ) , 300 ) ; 
-			   			}
-			   		}
-		   		 }
+		   					if ( $form.find( '.has-error' ).size() ){
+		   						$form.addClass( 'has-error' ); 
+		   					}
+		   				}
+		   				$.scrollTo( $form.find( '.has-error' ) , 300 ) ; 
+		   			}
+		   		}
 		   	}); 
 	   	}
    }); // end .cloud-form.each()

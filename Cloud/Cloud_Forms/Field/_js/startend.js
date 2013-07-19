@@ -1,9 +1,12 @@
-CloudField.on( 'init', function( $context ){
+CloudField.on( 'init', function( $, $context ){
 	var selector = '.field.type-startend'; 
 	var $fields = $( selector, $context ).add( $context.filter( selector ) ); 
-	
+
 	$fields.each( function(){
 		var field = $(this) ;	
+		if ( field.parents('.to-clone').size() > 0 ){
+			return false;
+		}
 		
 		var picker_type = field.find( '.selector' ).data('field_type' ); 
 		
@@ -50,10 +53,11 @@ CloudField.on( 'init', function( $context ){
 			var dateFormat = input.data('dateformat'); 	
 		
 			if( input.val() ){
-				var startingValue = new Date( input.val()*1000 ) ;
+				var startingValue = new Date( input.val() ) ;
 			} else {
 				var startingValue = false ;
 			}
+			var start = field.find( 'input.datepicker.start' ); 
 			var end = field.find( 'input.datepicker.end' ); 
 			var timestamp_input = input.siblings( '.timestamp' );		
 			var onClose = function( time, instance ){
@@ -70,7 +74,6 @@ CloudField.on( 'init', function( $context ){
 					
 					timestamp_input.val( JSON.stringify( value_to_save ) ) ;			
 					if ( is_start ){
-						console.log( input.datepicker( 'getDate' ) );
 						end.datepicker('option', 'minDate', input.datepicker( 'getDate' ) );
 					
 						if ( end.val() == '' ){
@@ -86,8 +89,13 @@ CloudField.on( 'init', function( $context ){
 				onClose : onClose
 			}); 	
 			if ( startingValue ){
-				input.datepicker('setDate', startingValue )  ;
-			}				
+				input.datepicker('setDate', startingValue )  ;			
+			}
+			if ( ! is_start ){
+				end.datepicker('option', 'minDate', start.datepicker('getDate' ) );				
+			}
+			
+					
 		}); 
 			
 		timepickers.each( function( e ){

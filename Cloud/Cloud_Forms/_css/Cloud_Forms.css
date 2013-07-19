@@ -279,7 +279,8 @@
 }
 
 .cloud-form .input .cloneable {
-    margin-right: 60px;
+    padding-right: 25px;
+    width: auto;
 }
 .clone {
 	cursor: move;
@@ -340,7 +341,6 @@
 .clone .copy_to_use {
 	position: absolute;
 	top: 1em;
-	left: -60px;
 }
 .clone .number {
 	position: absolute;
@@ -357,6 +357,7 @@
 .no-clones {
 	border-top: 1px solid #ccc; 
 	padding: .5em 0; 
+	position: relative; 
 }
 .cloneable .no-clones .empty-text {
 	font-style: italic; 

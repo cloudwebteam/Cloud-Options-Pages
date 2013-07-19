@@ -14,6 +14,7 @@ $cloud_form_defaults = array (
         'hide_on_success' => false, // show the form once successfully submissi
 		'success'       => 'Form successfully validated and sent',
 		'success_function' => false,
+		'success_function_js' => false, // the name of a javascript function to call on successful submit
 		'sections'		=> array (
 		)	
 	), 

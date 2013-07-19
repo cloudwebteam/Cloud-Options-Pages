@@ -1,8 +1,8 @@
-CloudField.on( 'init', function( $context ){
+CloudField.on( 'init', function( $, $context ){
 	var selector = '.field.type-media'; 
 	var $fields = $( selector, $context ).add( $context.filter( selector ) ); 
 	
-	fields.each( function(){
+	$fields.each( function(){
 		var $targetfield = $(this).find('input.url_field');
 		var $image_container = $(this).find( '.image' ); 
 		var $preview_image = $image_container.find('img'); 	        

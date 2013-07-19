@@ -24,6 +24,9 @@ class Cloud_Forms_WP extends Cloud_Forms {
 		add_action( 'init', array( $this, 'wp_init' ) ); 	
 	}
 	public function wp_init(){
+		if ( is_admin() ){
+			$this->enqueue_style( 'jquery-ui-lightness' ); 
+		}
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts_and_styles' ) ); 	
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts_and_styles' ) ); 	
 		
@@ -416,9 +419,14 @@ class Cloud_Forms_WP extends Cloud_Forms {
 	protected function is_valid_on_current_page( $add_to ){
 		if ( is_string( $add_to ) ){
 			// slug or title provided
-			if ( $post = get_page_by_title( $add_to ) ){
-				$posts = array( $post ); 
-			} else {
+			$registered_post_types = get_post_types( array(), 'objects' );
+			$posts = array(); 
+			foreach( $registered_post_types as $slug => $post_type ){
+				if ( $post = get_page_by_title( $add_to, 'OBJECT', $post_type->name ) ){
+					$posts[] = $post; 
+				}
+			}
+			if ( sizeof( $posts ) == 0 ){
 				$registered_post_types = get_post_types( array(), 'objects' );
 				foreach( $registered_post_types as $slug => $post_type ){
 					$post_types[] = $slug; 
