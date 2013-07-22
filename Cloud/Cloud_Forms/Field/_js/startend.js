@@ -121,6 +121,7 @@ CloudField.on( 'init', function( $, $context ){
 				} ;
 			}
 			$(this).timepicker({
+				defaultTime : false,
 				showInputs : false			
 			}).on( 'changeTime.timepicker' , onChange ) ; 
 		}); 	

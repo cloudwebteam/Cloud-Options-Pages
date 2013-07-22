@@ -72,9 +72,10 @@ class Cloud_Field_startend extends Cloud_Field {
 	}
 	protected function get_time_field( $start_or_end ){
 		$name = $this->info['save_json'] ? '' : 'name="'.$this->info['name'].'['.$start_or_end.']"' ;
+		$value = $start_or_end === 'start' ? $this->start_value : $this->end_value ; 
 		
 		$field = '<div class="input input-append bootstrap-timepicker">' ; 
-        $field .= '<input name="'.$this->info['name'] . '['.$start_or_end.']" type="text" '.$name.' value="'.$this->start_value.'" class="timepicker '.$start_or_end.' input-small" '.$this->info['disabled'] .' >' ;
+        $field .= '<input name="'.$this->info['name'] . '['.$start_or_end.']" type="text" '.$name.' value="'.$value.'" class="timepicker '.$start_or_end.' input-small" '.$this->info['disabled'] .' >' ;
         $field .= '<span class="add-on"><i class="icon-time"></i></span>' ;
         $field .= '</div>' ;	
         return $field ;
