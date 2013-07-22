@@ -155,19 +155,16 @@ var CloudField = ( function($){
 	}
 	var setup_copy_to_use = function( $context ){
 			// popup useful code snippets
-		$('.copy_to_use input', $context ).click( function(e){
+		$('.copy_to_use', $context ).click( function(e){
+			$('.copy_to_use.active' ).removeClass('active' ); 
 			e.preventDefault();
-			var $input = $(this); 
-			var $container = $input.parent(); 
+			var $input = $(this).find( 'input'); 
+			var $container = $(this); 
 			$input.select();
 			$container.addClass('active'); 
 		
 		});    
-		$('.copy_to_use input', $context ).blur( function(e){
-			var $input = $(this); 
-			var $container = $input.parent(); 
-			$container.removeClass('active');
-		});		
+
 	}
 	
    
