@@ -20,19 +20,22 @@ CloudField.on( 'init', function( $, $context ){
 			e.stopPropagation(); 
 		}); 
 					
-		var latitude = $latitude.val();
-		var longitude = $longitude.val(); 
-		var zoom = $zoom.val(); 
-		
-		var settings = {}; 
-		if ( latitude ) settings.latitude = latitude ; 
-		if ( longitude ) settings.longitude = longitude ; 
-		if ( zoom && parseInt( zoom ) > 6 && parseInt( zoom ) < 20 ) settings.zoom = parseInt( zoom ) ; 	
-		
-		var settings = $.extend( defaults, settings ); 			
-		
 		var map = false ; 
+		var marker = false; 
+		var addMarkerWindow = false;
+		var mapZoom ; 											
+		
 		function initialize(){
+			var latitude = $latitude.val();
+			var longitude = $longitude.val(); 
+			var zoom = $zoom.val(); 		
+		
+			var settings = {}; 
+			if ( latitude ) settings.latitude = latitude ; 
+			if ( longitude ) settings.longitude = longitude ; 
+			if ( zoom && parseInt( zoom ) > 6 && parseInt( zoom ) < 20 ) settings.zoom = parseInt( zoom ) ; 	
+			
+			var settings = $.extend( defaults, settings ); 					
 
 			var mapOptions = {
 				zoom : settings.zoom, 
@@ -41,15 +44,45 @@ CloudField.on( 'init', function( $, $context ){
 			}
 			map = new google.maps.Map($map[0], mapOptions );
 			
+			
+			var updateMarker = function( latitude, longitude ){
+				var position = typeof( latitude ) === 'object' ? latitude : new google.maps.LatLng( latitude, longitude ) ; 		
+				if ( marker ){
+					marker.setPosition( position );
+				} else {
+					marker = new google.maps.Marker({
+						position: position,
+						map: map,
+						draggable : true,
+						title: "Latitude: " + position.lat() + ', ' +  "Longitude: " + position.lng() 
+					});		
+					google.maps.event.addListener( marker, 'click', function(){
+						addMarkerWindow = new google.maps.InfoWindow({
+							content : "<b>Latitude:</b> " + position.lat() + '<br />' +  "<b>Longitude:</b> " + position.lng() , 
+							position : position, 
+							map : map
+						}); 			
+					}); 
+					google.maps.event.clearListeners(map, 'click' );
+					google.maps.event.addListener(map, 'zoom_changed', function(){
+						$zoom.val( map.getZoom() ); 
+					}); 
+				}
+				map.setCenter( position ) ;
+				saveMarkerPosition(); 
+				
+				return marker ; 
+						
+			}	
+						
+			
+			
 			// if there is a saved lat and long
-			var marker = false; 
 			if ( latitude && longitude ){
-				marker = addMarker( latitude, longitude ); 		
+				marker = updateMarker( latitude, longitude ); 		
 			}
 			
-			var addMarkerWindow = false;						
 	
-			var mapZoom ; 			
 	
 			google.maps.event.addListener(map, 'click', function( e) {
 				mapZoom = map.getZoom();
@@ -62,7 +95,7 @@ CloudField.on( 'init', function( $, $context ){
 			function handleAddMarkerWindow( latLng ){
 				if ( mapZoom == map.getZoom()  ){
 					$( '.place-marker', $field ).live( 'click.gmap', function(){
-						marker = addMarker( latLng ); 
+						marker = updateMarker( latLng ); 
 						addMarkerWindow.close();
 						$( '.place-marker', $field ).die( 'click.gmap' ); 
 						addMarkerWindow = false; 
@@ -84,46 +117,31 @@ CloudField.on( 'init', function( $, $context ){
 					}				
 				}
 			}
-			
-			
+			$latitude.add( $longitude ).on( 'change', function(){
+				updateMarker( $latitude.val(), $longitude.val() );
+			}); 
+					
 		}
 		var checkIfVisible = setInterval( function(){
 			if ( $map.is(':visible') ){
 				clearInterval( checkIfVisible ); 
 				initialize(); 
 			}
-		}, 30 ); 
+		}, 100 ); 
 		function saveMarkerPosition(){
 			var position = marker.getPosition();
 			$latitude.val( position.lat() ); 
 			$longitude.val( position.lng() ); 		
 		}
-		var addMarker = function( latitude, longitude ){
-			var position = typeof( latitude ) === 'object' ? latitude : new google.maps.LatLng( latitude, longitude ) ; 		
-			marker = new google.maps.Marker({
-				position: position,
-				map: map,
-				draggable : true,
-				title: "Latitude: " + position.lat() + ', ' +  "Longitude: " + position.lng() 
-			});		
-			google.maps.event.addListener( marker, 'click', function(){
-				addMarkerWindow = new google.maps.InfoWindow({
-					content : "<b>Latitude:</b> " + position.lat() + '<br />' +  "<b>Longitude:</b> " + position.lng() , 
-					position : position, 
-					map : map
-				}); 			
-			}); 
-			google.maps.event.clearListeners(map, 'click' );
-			google.maps.event.addListener(map, 'zoom_changed', function(){
-				$zoom.val( map.getZoom() ); 
-			}); 
-			saveMarkerPosition(); 
-			
-			return marker ; 
-					
+
+		var updatePosition  = function( latitude, longitude ){
+			$latitude.val( latitude ); 
+			$longitude.val( longitude ).change(); 				
 		}
+	
+		
 		$map.data( 'map', {
-			addMarker: addMarker
-		}); 
+			updateMarker: updatePosition
+		}); 	
 	}); 
 });
