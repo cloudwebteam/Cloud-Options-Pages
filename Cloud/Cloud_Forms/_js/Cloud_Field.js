@@ -42,10 +42,9 @@ var CloudField = ( function($){
 				
 				$clones.each( function(){ 
 					var $clone = $(this);
-					var $inputs = $clone.getClonePart( 'input, textarea' ).not('[type="button"], .copy'); 
+					var $inputs = $clone.getClonePart( 'input, textarea' ).not('[type="button"], .copy_to_use input'); 
 					//increment the inputs' name attributes so that it is saved as a unique value
 					$inputs.each( function(){
-					
 						var prev_name = $(this).attr('name');
 						
 						if ( prev_name !== undefined ){
@@ -61,9 +60,10 @@ var CloudField = ( function($){
 						}
 					});
 					// change the "code" link
-					if ( $(this).getClonePart('input.copy').size() > 0 ){
-						var prev_copy_to_use = $(this).getClonePart('input.copy').attr('value') ;			
-						$(this).getClonePart('input.copy').val( replaceNthMatch( prev_copy_to_use, /( \d+)/g, 'last', ' ' + counter ));
+					var $copy_to_use = $(this).getClonePart('.copy_to_use').find( 'input' );
+					if ( $copy_to_use.size() > 0 ){
+						var prev_copy_to_use = $copy_to_use.attr('value') ;		
+						$copy_to_use.val( replaceNthMatch( prev_copy_to_use, /( \d+)/g, 'last', ' ' + counter ));
 					}
 					counter++;
 					
@@ -84,7 +84,7 @@ var CloudField = ( function($){
 					// copy an existing clone 
 					var $new_clone = $to_clone.clone( false ).hide();
 					//get rid of the values
-					$new_clone.getClonePart('input, textarea').not('[type="button"],[type="checkbox"][type="radio"], .copy').val('');
+					$new_clone.getClonePart('input, textarea').not('[type="button"],[type="checkbox"][type="radio"], .copy_to_use input').val('');
 					
 					// get rid of error messages 
 					$new_clone.getClonePart( '.error' ).remove(); 
@@ -97,6 +97,7 @@ var CloudField = ( function($){
 						$new_clone.prependTo( $cloneable ).fadeIn(); 				
 					}
 					update_cloneable(); 
+					setup_copy_to_use( $new_clone );
 					trigger( 'init', $new_clone ); 
 				}
 			}

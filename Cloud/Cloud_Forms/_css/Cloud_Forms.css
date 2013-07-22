@@ -333,6 +333,10 @@
 	clear: both;	
 	min-height: 2em;
 }
+.cloneable .clone.to-clone {
+	display: none; 
+}
+
 .cloneable .clone:hover .copy_to_use {
 	display: block;
 }
