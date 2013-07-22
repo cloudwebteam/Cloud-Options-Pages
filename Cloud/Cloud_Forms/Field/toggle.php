@@ -82,9 +82,9 @@ class Cloud_Field_toggle extends Cloud_Field {
 	}
 	protected function get_multiple_checkbox( ){
 		$field = '' ; 
+
 		foreach( $this->spec['options'] as $value => $text ){
-			$checked = in_array( $value, $this->info['value'] ) ? ' checked ' : '';		
-			$data = 
+			$checked = is_array( $this->info['value'] ) && in_array( $value, $this->info['value'] ) ? ' checked ' : '';		
 			$field .= '<div class="checkbox-group">'; 
 			$field .= '<input type="checkbox" id="'.$this->info['id'] . '-'.$value.'" name="'.$this->info['name'] . '[]" value="'.$value.'"' . $checked .' />';		
 			$field .= '<label for="'.$this->info['id'] . '-' . $value .'">'.$text.'</label>' ; 
