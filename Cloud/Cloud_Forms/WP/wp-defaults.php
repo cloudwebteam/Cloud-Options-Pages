@@ -62,6 +62,11 @@ $cloud_form_defaults_wp = array (
 			'code_link' 		=> true, 
 			'_lock'				=> false, 													
 		),
+		'map'		=> array(
+			'editor_list'		=> false,
+			'code_link' 		=> true, 
+			'_lock'				=> false, 													
+		),		
 		'media' => array(
 			'title'			=> 'Media',		
 			'layout'		=> array('label', 'field' , 'error', 'description'),

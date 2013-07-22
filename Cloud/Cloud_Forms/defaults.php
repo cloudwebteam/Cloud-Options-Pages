@@ -153,6 +153,22 @@ $cloud_form_defaults = array (
 			'description'	=> null,
 			'width' 		=> 6,	
 		),
+		'map' => array(
+			'title'				=> 'Map Input',						
+			'layout'			=> array('label', 'field' , 'error', 'description'),
+			'cloneable'			=> false,
+			'description'		=> null,
+			'size'				=> 55,	
+			'width' 			=> 400,
+			'height'			=> 300,	
+			'disabled' 			=> false,
+			'default' 			=> '',					
+			'clone_controls'	=> true, 
+			'sort'				=> true, 
+			'required' 			=> false,
+			'validate' 			=> false,
+			'error'				=> false			
+		),		
 		'number' => array(
 			'title'				=> 'Number',						
 			'layout'			=> array('label', 'field' , 'error', 'description'),
