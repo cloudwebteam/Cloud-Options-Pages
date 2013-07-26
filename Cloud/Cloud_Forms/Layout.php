@@ -33,7 +33,8 @@
 			// set up a hidden input that identifies the form in the $_POST request
 			$form_id_field = '<input type="hidden" name="form_id" value="' . $form_slug . '" />' ;
 			// set up submit button html 
-			$submit_button = '<p class="submit"><input type="submit" class="button-primary" value="'.$spec['submit_text'].'" /></p>';
+			$success_function_js = isset( $spec['success_function_js'] ) ? ' data-on_success="'.$spec['success_function_js'].'"' : ''; 
+			$submit_button = '<p class="submit"><input type="submit" class="button-primary" '. $success_function_js . ' value="'.$spec['submit_text'].'" /></p>';
 			// if ajax is enabled, include spec in a hidden div			
 			return '<footer class="form">'.$form_id_field  . $submit_button .'</footer>' ; 
 		}		

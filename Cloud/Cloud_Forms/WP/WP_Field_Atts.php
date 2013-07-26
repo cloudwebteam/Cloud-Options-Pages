@@ -23,7 +23,6 @@
 			$input_id = $subpage_slug . '_' . $section_slug . '_' . $field_slug ;			
 			$name = $subpage_slug . '['.$section_slug.']['.$field_slug.']' ;
 			$value = self::get_page_value( $subpage_slug, $section_slug, $field_slug );
-		 
 			$to_retrieve = array( '"'.$subpage_slug .'"', '"'.$section_slug.'"', '"'.$field_slug.'"' ); 				
 		}
 
@@ -38,7 +37,6 @@
 			$value = $value && isset( $value[$group_number][$subfield_slug] ) ? $value[$group_number][$subfield_slug] : ''; 
 			$name = $name . '['.$group_number.']['.$subfield_slug.']'; 	
 			$input_id = $input_id . '_' . $subfield_slug . '-' .$group_number ;				
-
 			$cloneable = false;
 			$to_retrieve[] = ''.$group_number.'' ;
 			$to_retrieve[] = '"'.$subfield_slug.'"' ; 			
@@ -55,8 +53,7 @@
 		$info['id']   = Cloud_prefix . $input_id;
 		$info['value'] = $value !== false && $value !== null ? $value : $default_value;
 		$info['default'] = $default_value; 
-		$info['disabled'] = !empty( $spec['disabled'] ) ? 'disabled' : '' ; 
-		
+		$info['disabled'] = isset( $spec['disabled'] ) && $spec['disabled'] ? 'disabled' : '' ; 		
 		
 		$info['layout'] = isset ($spec['layout'] ) ? $spec['layout'] : 'default';
 		$info['width'] = isset( $spec['width'] ) ? $spec['width'] : 6; 

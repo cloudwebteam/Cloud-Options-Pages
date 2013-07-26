@@ -1,4 +1,4 @@
-CloudField.on( 'init', function( $context ){
+CloudField.on( 'init', function( $, $context ){
 	var $ = jQuery ; 
 	var selector = '.field.type-date .datepicker'; 
 	var $inputs = $( selector, $context ).add( $context.filter( selector ) ); 

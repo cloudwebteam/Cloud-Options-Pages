@@ -234,7 +234,7 @@ class Cloud_Field {
 		if ( !empty( $this->info['to_retrieve'] ) ){
 			ob_start();?>
 			<span class="copy_to_use">
-				<span class="copy-label">Use:</span> <input type="text" value='<?php echo $this->info['to_retrieve'] ; ?>' />
+				<span class="copy-label">Use:</span> <input type="text" value='<?php echo $this->info['to_retrieve'] ; ?>' disabled />
 			</span>
 		<?php 
 			return ob_get_clean();

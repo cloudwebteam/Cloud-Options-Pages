@@ -1,7 +1,7 @@
 <?php 
-define( 'Cloud_dir', SITE_URL . '/Cloud'  ); 
+define( 'Cloud_dir', get_bloginfo( 'template_directory' ) . '/Cloud'  ); 
 define( 'Cloud_ABS', dirname( __FILE__ ) . '/Cloud'  ); 
-define( 'Cloud_prefix' , 'CC_' );
+define( 'Cloud_prefix' , 'Cloud_' );
 class Cloud_Loader {
 	protected static $instance; 
 	protected $ABS = Cloud_ABS ;
@@ -13,7 +13,7 @@ class Cloud_Loader {
 		return $this->dir; 
 	}	
 	// what directories, in addition to the one with this class name, would you like to load?
-	protected $directories_to_load = array();	
+	protected $directories_to_load = array(  'Cloud_Forms');	
 	protected $registered_styles ; 
 	protected $styles ; 
 	protected $styles_have_been_printed	; 

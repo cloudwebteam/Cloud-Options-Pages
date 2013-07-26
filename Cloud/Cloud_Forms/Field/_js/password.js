@@ -1,4 +1,4 @@
-CloudField.on( 'init', function( $context ){
+CloudField.on( 'init', function( $, $context ){
 	var selector = '.field.type-password'; 
 	var $fields = jQuery( selector, $context ).add( $context.filter( selector ) ); 
 	

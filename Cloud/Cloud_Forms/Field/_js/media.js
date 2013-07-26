@@ -1,5 +1,4 @@
-CloudField.on( 'init', function( $context ){
-	$ = jQuery;
+CloudField.on( 'init', function( $, $context ){
 	var selector = '.field.type-media'; 
 	var $fields = $( selector, $context ).add( $context.filter( selector ) ); 
 	

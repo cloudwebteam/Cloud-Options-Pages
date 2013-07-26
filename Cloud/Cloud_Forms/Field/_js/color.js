@@ -1,4 +1,4 @@
-CloudField.on( 'init', function( $context ){
+CloudField.on( 'init', function( $, $context ){
 	// miniColors
 	$(".color-picker-input", $context ).minicolors({
 		letterCase: 'uppercase',

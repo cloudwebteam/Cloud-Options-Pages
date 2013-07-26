@@ -1,4 +1,4 @@
-CloudField.on( 'init', function( $context ){
+CloudField.on( 'init', function( $, $context ){
 	var selector = '.field.type-toggle'; 
 	var $fields = $( selector, $context ).add( $context.filter( selector ) ); 
 	
@@ -8,10 +8,10 @@ CloudField.on( 'init', function( $context ){
 		var is_subfield = $field.parents( '.field' ).size() > 0 ; 
 		var in_table_based_layout = $section.hasClass('.table-layout') ;
 				
-		var $inputs = $(this).find( 'input' ); 
-		var $select = $(this).find( 'select' ); 
+		var $inputs = $field.find( 'input[name]' ); 
+		var $select = $field.find( 'select' ); 
 		var $prev_item = false; 		
-		
+
 		function parse_data( data, parent_key ){
 			var $fields = $();
 			if ( typeof data === 'object' ){
@@ -148,7 +148,7 @@ CloudField.on( 'init', function( $context ){
 
 			}); 
 		// dropdown
-		} else if ( $select.size() > 0 ){
+		} else if ( $select.size() > 0 ){		
 			$select.on( 'change', function(){
 				var $selected = $select.find('option:selected' ); 
 				toggle_fields( $selected , true ); 

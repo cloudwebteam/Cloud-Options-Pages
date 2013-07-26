@@ -10,6 +10,7 @@ class Cloud_Field_startend extends Cloud_Field {
 	protected function get_field_html( ){
 		$this->size = isset( $this->spec['size'] ) ? $this->spec['size'] : ''; 	
 
+
 		$this->field_type = isset( $this->spec['field_type'] ) ? $this->spec['field_type'] : 'date' ;
 		$this->date_format = isset( $this->spec['date_format'] ) ?  $this->spec['date_format'] : 'mm/dd/yy'  ;
 		$this->time_format = isset( $this->spec['time_format'] ) ?  $this->spec['time_format'] : 'hh:mm tt' ; 
@@ -18,7 +19,7 @@ class Cloud_Field_startend extends Cloud_Field {
 		$this->start_utc = $this->parse_dynamic_value( $this->start_value );
 		$this->end_value = isset( $this->info['value']['end'] ) ? $this->info['value']['end'] : '' ;	
 		$this->end_utc = $this->parse_dynamic_value( $this->end_value ) ;	
-		
+			
 		$this->start_utc_field = $this->info['save_json'] ? '<input class="timestamp" type="hidden" name="'.$this->info['name'] . '[start]" value=\'' . $this->start_value . '\' />' : '' ;
 		$this->end_utc_field = $this->info['save_json'] ? '<input class="timestamp" type="hidden" name="'.$this->info['name'] . '[end]" value=\'' . $this->end_value . '\' />' : '' ;	
 
@@ -64,14 +65,17 @@ class Cloud_Field_startend extends Cloud_Field {
 	protected function get_date_field( $start_or_end ){
 		$name = $this->info['save_json'] ? '' : 'name="'.$this->info['name'].'['.$start_or_end.']"' ;
 	
-		$field = '<input data-dateformat="'.$this->date_format.'" '.$name.' type="text" id="' . $this->info['id'] . '-'.$start_or_end . '" class="datepicker '.$start_or_end.'" size="'.$this->size.'" value="' .  $this->start_utc. '" '.$this->info['disabled'] .' />' ;
+		$value = $start_or_end === 'start' ? $this->start_value : $this->end_value ; 
+
+		$field = '<input data-dateformat="'.$this->date_format.'" '.$name.' type="text" id="' . $this->info['id'] . '-'.$start_or_end . '" class="datepicker '.$start_or_end.'" size="'.$this->size.'" value="' .  $value. '" '.$this->info['disabled'] .' />' ;
 		return $field ;
 	}
 	protected function get_time_field( $start_or_end ){
 		$name = $this->info['save_json'] ? '' : 'name="'.$this->info['name'].'['.$start_or_end.']"' ;
+		$value = $start_or_end === 'start' ? $this->start_value : $this->end_value ; 
 		
 		$field = '<div class="input input-append bootstrap-timepicker">' ; 
-        $field .= '<input name="'.$this->info['name'] . '['.$start_or_end.']" type="text" '.$name.' value="'.$this->start_value.'" class="timepicker '.$start_or_end.' input-small" '.$this->info['disabled'] .' >' ;
+        $field .= '<input name="'.$this->info['name'] . '['.$start_or_end.']" type="text" '.$name.' value="'.$value.'" class="timepicker '.$start_or_end.' input-small" '.$this->info['disabled'] .' >' ;
         $field .= '<span class="add-on"><i class="icon-time"></i></span>' ;
         $field .= '</div>' ;	
         return $field ;

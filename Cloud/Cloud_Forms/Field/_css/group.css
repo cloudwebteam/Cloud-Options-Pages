@@ -7,14 +7,12 @@
 	width: 100%; 
 }
 .type-group .groups {
-	margin: 0;
 	max-width: 100%;	
-	width: 100%;
 	line-height: normal;
 }
 .type-group .group,
 .type-group .group.ui-sortable-placeholder {
-	margin: .25em 25px .25em 0;
+	margin: .25em 0;
 	padding:  .5em 3px .5em 0;
 	border: 1px dotted #ccc;
 	background: #fff; 
@@ -119,6 +117,7 @@
 .field.type-group:hover .group .field:hover .copy_to_use {
 	display: block;
 }
+
 
 /* side positioned metabox */
 #side-sortables .cloud.metabox .group {

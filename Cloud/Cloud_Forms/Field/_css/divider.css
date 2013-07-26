@@ -2,11 +2,13 @@
 	padding: .5em 0 1em;
 }
 .field.type-divider .label {	
-	color: #efefef; 
+	color: #333; 
 	text-transform: uppercase;
-	padding: .5em 15px .5em ;	
+	padding: .5em 15px .25em ;	
 	display: block; 
-	background: #444; 
+	background: #ddd; 
+	box-shadow: 0 0 3px #333; 
+	border-bottom: 3px solid #666; 
 }
 .field.type-divider .label label,
 .field.type-group .group .field.type-divider .label label {
