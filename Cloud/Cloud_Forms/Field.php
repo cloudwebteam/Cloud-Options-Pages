@@ -252,10 +252,10 @@ class Cloud_Field {
 	}
 	protected function get_error_messages(){
 		$error_messages = array(); 
-		if ( $this->spec['required'] ){
+		if ( isset( $this->spec['required'] ) && $this->spec['required'] ){
 			$error_messages[ 'required' ] = $this->spec['required'] ; 
 		}
-		if ( $this->spec['validate'] ){
+		if ( isset( $this->spec['validate'] ) && $this->spec['validate'] ){
 			if ( is_string( $this->spec['validate'] ) ){
 				if ( is_array( $this->spec['error'] ) && isset( $this->spec['error'][ $this->spec['validate'] ] ) ){				
 					$error_messages[ $this->spec['validate'] ] = $this->spec['error'][ $this->spec['validate'] ]; 
@@ -307,7 +307,7 @@ class Cloud_Field {
 		if ( isset( $this->info['parent_layout'] ) && $this->info['parent_layout'] === 'grid' ){
 			$classes[] = isset( $this->info['width'] ) ? 'span' . $this->info['width'] : 'span6';
 		}
-		if ( $this->spec['required'] ){
+		if ( isset( $this->spec['required'] ) && $this->spec['required'] ){
 			$classes[] = 'required' ; 
 		}
 		if ( isset( $this->spec['validation_error'] ) && $this->spec['validation_error'] ){
