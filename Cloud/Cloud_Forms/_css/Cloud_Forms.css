@@ -122,9 +122,6 @@
 	display: inline-block; 
 	position: static; 
 }
-.cloud-form .field-row .input input[type="text"] {
-	padding: .125em 3px 0;
-}
 .cloud-form .label { 
 	/* reset...collides with a bootstrap class */
 	width: auto; 

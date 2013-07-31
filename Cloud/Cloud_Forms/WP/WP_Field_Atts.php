@@ -4,7 +4,7 @@
 		if ( $is_metabox ){
 			$metabox_slug = $spec['metabox_slug'] ; 
 			$field_slug = $spec['field_slug']; 			
-			
+
 			$input_id = $metabox_slug . '_' . $field_slug ;			
 			$name = $metabox_slug . '['.$field_slug.']' ;
             if( isset( $_GET['post'])){       
@@ -28,19 +28,23 @@
 
 		$cloneable =  isset( $spec['cloneable'] ) ? $spec['cloneable'] : false;
 		$default_value =  isset( $spec['default'] ) ? $spec['default'] : ''; 
-			
+		
+	
 
 		// part of a group?
 		if ( isset( $spec['subfield_slug'] ) && $spec['subfield_slug']){
 			$subfield_slug = $spec['subfield_slug'] ; 
+	
             $group_number = isset( $spec['group_number'] ) ? $spec['group_number'] : 0 ;		
 			$value = $value && isset( $value[$group_number][$subfield_slug] ) ? $value[$group_number][$subfield_slug] : ''; 
 			$name = $name . '['.$group_number.']['.$subfield_slug.']'; 	
 			$input_id = $input_id . '_' . $subfield_slug . '-' .$group_number ;				
 			$cloneable = false;
 			$to_retrieve[] = ''.$group_number.'' ;
-			$to_retrieve[] = '"'.$subfield_slug.'"' ; 			
+			$to_retrieve[] = '"'.$subfield_slug.'"' ; 	
+						
 		}
+		
 		$info = array(); 		
 		$info['title'] = $spec['title'];
 		$info['cloneable'] = $cloneable ;
@@ -63,7 +67,7 @@
 		$info['in_metabox'] = $is_metabox ; 
 		
 		if ( $spec['code_link'] ){ 
-			$info['to_retrieve'] = $is_metabox ? 'get_metabox_options( '.implode(', ',$to_retrieve ) .'); ' : 'get_theme_options('.implode( ', ', $to_retrieve ).');'; 
+			$info['to_retrieve'] = $is_metabox ? 'get_metabox_options( '.implode(', ',$to_retrieve ) .'); ' : 'get_theme_options('.implode( ', ', $to_retrieve ).');'; 			
 		} else {
 			$info['to_retrieve'] = false; 
 		}

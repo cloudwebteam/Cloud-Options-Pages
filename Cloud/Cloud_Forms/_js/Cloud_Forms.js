@@ -72,7 +72,11 @@ jQuery( function($){
    			}   				
    			
    		}
-
+   	
+   		$container.find( 'input, textarea, select' ).on( 'focus', function(){
+		   	var $field = $(this).parents( '.clone, .group, .field').first();
+		   	$field.find( '.error-message' ).fadeOut('fast');
+   		}); 
    		if ( $container.hasClass('ajax') ){
    		
 		   	function validate_field( $input, callback ){

@@ -61,10 +61,10 @@ var CloudField = ( function($){
 					});
 					// change the "code" link
 					var $copy_to_use = $(this).getClonePart('.copy_to_use').find( 'input' );
-					if ( $copy_to_use.size() > 0 ){
-						var prev_copy_to_use = $copy_to_use.attr('value') ;		
-						$copy_to_use.val( replaceNthMatch( prev_copy_to_use, /( \d+)/g, 'last', ' ' + counter ));
-					}
+					$copy_to_use.each( function(){
+						var prev_copy_to_use = $(this).attr('value') ;		
+						$(this).val( replaceNthMatch( prev_copy_to_use, /( \d+)/g, 'last', ' ' + counter ));
+					});
 					counter++;
 					
 					// change the clone number

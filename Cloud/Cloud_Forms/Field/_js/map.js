@@ -4,12 +4,12 @@ CloudField.on( 'init', function( $, $context ){
 	var $fields = $( selector, $context ).add( $context.filter( selector ) ); 
 	
 	var defaults = {
-		zoom : 7, 
+		zoom : 9,
+		markerZoom : 15, 
 		mapType : 'ROADMAP',
 		latitude : 35.469618,
 		longitude : -97.514648
 	} ; 
-	https://maps.google.com/?ll=35.469618,-97.514648&spn=4.200281,4.790039&t=m&z=8
 	$fields.each( function(){
 		var $field = $(this) ;
 		var $latitude = $(this).find( 'input.latitude' );
@@ -28,12 +28,17 @@ CloudField.on( 'init', function( $, $context ){
 		function initialize(){
 			var latitude = $latitude.val();
 			var longitude = $longitude.val(); 
-			var zoom = $zoom.val(); 		
+			var setZoom = $zoom.val();
 		
 			var settings = {}; 
 			if ( latitude ) settings.latitude = latitude ; 
 			if ( longitude ) settings.longitude = longitude ; 
-			if ( zoom && parseInt( zoom ) > 6 && parseInt( zoom ) < 20 ) settings.zoom = parseInt( zoom ) ; 	
+			
+			console.log( setZoom );
+			if (( ! setZoom ) || ( parseInt( setZoom ) < 6 || parseInt( setZoom ) > 20  )){
+				setZoom = defaults.markerZoom ; 			
+			} 
+			console.log( setZoom, defaults.markerZoom );
 			
 			var settings = $.extend( defaults, settings ); 					
 
@@ -43,7 +48,6 @@ CloudField.on( 'init', function( $, $context ){
 				center : new google.maps.LatLng( settings.latitude, settings.longitude ),
 			}
 			map = new google.maps.Map($map[0], mapOptions );
-			
 			
 			var updateMarker = function( latitude, longitude ){
 				var position = typeof( latitude ) === 'object' ? latitude : new google.maps.LatLng( latitude, longitude ) ; 		
@@ -80,12 +84,12 @@ CloudField.on( 'init', function( $, $context ){
 			// if there is a saved lat and long
 			if ( latitude && longitude ){
 				marker = updateMarker( latitude, longitude ); 		
+				map.setZoom( setZoom );										
 			}
 			
 	
 	
 			google.maps.event.addListener(map, 'click', function( e) {
-				mapZoom = map.getZoom();
 				if ( ! marker ){ 
 					setTimeout( function(){
 						handleAddMarkerWindow( e.latLng );
@@ -118,6 +122,7 @@ CloudField.on( 'init', function( $, $context ){
 				}
 			}
 			$latitude.add( $longitude ).on( 'change', function(){
+				map.setZoom( defaults.markerZoom );
 				updateMarker( $latitude.val(), $longitude.val() );
 			}); 
 					
