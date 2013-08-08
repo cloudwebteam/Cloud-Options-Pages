@@ -13,7 +13,6 @@ class Cloud_Loader {
 		return $this->dir; 
 	}	
 	// what directories, in addition to the one with this class name, would you like to load?
-	protected $directories_to_load = array(  'Cloud_Forms');	
 	protected $registered_styles ; 
 	protected $styles ; 
 	protected $styles_have_been_printed	; 
@@ -21,25 +20,32 @@ class Cloud_Loader {
 	protected $scripts ; 
 	protected $scripts_have_been_printed ; 
 	protected $global_js_vars ; 
-	private function __construct(){
+	private function __construct( $directories = false ){
 		// loads folder with this class's name	
 		$this->load_directory(); 	
-		$this->load_directories();
+		$this->load_directories( $directories );
  	}
-	public static function init(){
-		return self::get_instance();
-	}
-	public static function get_instance(){
+ 	
+	public static function init( $directories = array() ){
+		if ( $directories && is_string( $directories ) ){
+			$directories = array( $directories ); 
+		}
+
 		if ( !self::$instance ){
-			self::$instance = new self();
+			self::$instance = new self( $directories );
 		}
 		return self::$instance; 	
 	}
+	public static function get_instance(){
+		return self::init();
+	}	
 	/***====================================================================================================================================
 		HANDLE LOADING OF FILES in DIRECTORIES
 	==================================================================================================================================== ***/
 	public function load_directories( $directories = array() ){
-		$directories = $directories ? $directories : $this->directories_to_load ; 
+		if ( ! $directories ){
+			return ;
+		}
 		foreach( $directories as $directory_name ){
 			$this->load_directory( $directory_name );
 		}
@@ -239,4 +245,3 @@ class Cloud_Loader {
 	}	
 	
 }
-Cloud_Loader::get_instance();
