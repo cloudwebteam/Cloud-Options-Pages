@@ -42,9 +42,12 @@ var CloudField = ( function($){
 				
 				$clones.each( function(){ 
 					var $clone = $(this);
-					var $inputs = $clone.getClonePart( 'input, textarea' ).not('[type="button"], .copy_to_use input'); 
+					var $inputs = $clone.getClonePart( 'input, textarea, select' ).not('[type="button"], .copy_to_use input'); 
 					//increment the inputs' name attributes so that it is saved as a unique value
+						console.log( 'resetting...', $inputs.size() );
+					
 					$inputs.each( function(){
+						console.log( 'updating...', $(this).attr('name' ) );
 						var prev_name = $(this).attr('name');
 						
 						if ( prev_name !== undefined ){
@@ -84,7 +87,7 @@ var CloudField = ( function($){
 					// copy an existing clone 
 					var $new_clone = $to_clone.clone( false ).hide();
 					//get rid of the values
-					$new_clone.getClonePart('input, textarea').not('[type="button"],[type="checkbox"][type="radio"], .copy_to_use input').val('');
+					$new_clone.getClonePart('input, textarea, select').not('[type="button"],[type="checkbox"][type="radio"], .copy_to_use input').val('');
 					
 					// get rid of error messages 
 					$new_clone.getClonePart( '.error' ).remove(); 
@@ -186,11 +189,18 @@ jQuery.fn.getClonePart = function( selector ){
 	if ( this.hasClass('cloneable') && this.parents( '.cloneable' ).size() > 0 ){
 		var $found = this.find( selector ); 
 		return $found ; 
-	} else if ( this.hasClass('clone' ) && this.parents('.cloneable').size() == 2 ){
+	} else if ( this.hasClass('clone' ) && this.parents('.cloneable').size() == 2 ){	
 		var $found = this.find( selector ); 
 		return $found ; 	
 	} else {
-		var $found = this.find( selector ).not( '.clone .cloneable ' + selector );; 
+		var selectors = selector.split( ',' );
+		var $found = this.find( selector ); 
+		for ( i in selectors ){
+			selectors[i] = '.clone .cloneable ' + selectors[i] ; 
+		}
+		
+		$found = $found.not( selectors.join(', ') ); 
+		console.log( selectors.join(', ') ); 
 		return $found;
 	}
 }	
