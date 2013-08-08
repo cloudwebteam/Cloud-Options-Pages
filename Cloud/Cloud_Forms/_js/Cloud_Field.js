@@ -43,11 +43,8 @@ var CloudField = ( function($){
 				$clones.each( function(){ 
 					var $clone = $(this);
 					var $inputs = $clone.getClonePart( 'input, textarea, select' ).not('[type="button"], .copy_to_use input'); 
-					//increment the inputs' name attributes so that it is saved as a unique value
-						console.log( 'resetting...', $inputs.size() );
-					
+					//increment the inputs' name attributes so that it is saved as a unique value					
 					$inputs.each( function(){
-						console.log( 'updating...', $(this).attr('name' ) );
 						var prev_name = $(this).attr('name');
 						
 						if ( prev_name !== undefined ){
