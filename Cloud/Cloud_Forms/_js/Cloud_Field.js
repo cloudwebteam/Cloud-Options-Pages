@@ -197,7 +197,6 @@ jQuery.fn.getClonePart = function( selector ){
 		}
 		
 		$found = $found.not( selectors.join(', ') ); 
-		console.log( selectors.join(', ') ); 
 		return $found;
 	}
 }	
