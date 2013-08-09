@@ -34,8 +34,15 @@ class Cloud_Field_toggle extends Cloud_Field {
 				$data .= ' data-hide=\''.json_encode($this->spec['hide']).'\' ' ;
 			}
 		
-			$checked = $this->info['value'] == $this->spec['checkbox_value'] ? ' checked ' : '';
-			$field = '<input type="checkbox" id="'.$this->info['id'] . '" name="'.$this->info['name'] . '" value="'.$this->spec['checkbox_value'].'"' . $checked . $data . ' '.$this->info['disabled'] .' />';		
+			switch( $this->spec['toggle_type'] ){
+				case 'text' : 
+					$field = $this->get_single_text( ); 
+					break;  
+				case 'checkbox' : 
+				default: 
+					$field = $this->get_single_checkbox( ); 
+					break; 
+			}		
 		}
 		return $field;
 	}
@@ -92,6 +99,29 @@ class Cloud_Field_toggle extends Cloud_Field {
 		}
 		return $field; 	
 	}		
+	protected function get_single_checkbox(){
+		$data = '';
+		if ( $this->spec['show'] ){
+			$data .= ' data-show=\''.json_encode($this->spec['show']).'\' ' ;
+		}
+		if ( $this->spec['hide'] ){
+			$data .= ' data-hide=\''.json_encode($this->spec['hide']).'\' ' ;
+		}	
+		$checked = $this->info['value'] == $this->spec['checkbox_value'] ? ' checked ' : '';
+		$field = '<input type="checkbox" id="'.$this->info['id'] . '" name="'.$this->info['name'] . '" value="'.$this->spec['checkbox_value'].'"' . $checked . $data . ' '.$this->info['disabled'] .' />';		
+		return $field; 
+	}
+	protected function get_single_text(){
+		$data = '';
+		if ( $this->spec['show'] ){
+			$data .= ' data-show=\''.json_encode($this->spec['show']).'\' ' ;
+		}
+		if ( $this->spec['hide'] ){
+			$data .= ' data-hide=\''.json_encode($this->spec['hide']).'\' ' ;
+		}	
+		$field = '<input type="text" id="'.$this->info['id'] . '" name="'.$this->info['name'] . '" value="'.$this->info['value'].'"' . $data . ' '.$this->info['disabled'] .' />';		
+		return $field;	
+	}
    /**
 	* LAYOUTS FOR THIS FIELD
 	*/

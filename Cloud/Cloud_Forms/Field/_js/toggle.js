@@ -26,7 +26,7 @@ CloudField.on( 'init', function( $, $context ){
 							if ( is_subfield ){
 								var $fields_to_add = $field.parents( '.group' ).find( '.subfield_slug-'+data[key] ); 
 							} else {
-								var $fields_to_add = $section.find( '.field_slug-'+data[key] ); 						
+								var $fields_to_add = $section.find( '.field_slug-'+data[key] ); 														
 							}
 						}
 					}
@@ -117,7 +117,6 @@ CloudField.on( 'init', function( $, $context ){
 
 			var $fields_to_show = parse_data( fields_to_show ) ;
 			var $fields_to_hide = parse_data( fields_to_hide ) ;
-
 			if ( $fields_to_show.size() > 0 ){
 			 	show_fields( $fields_to_show, animate ) ;
 			}
@@ -125,17 +124,21 @@ CloudField.on( 'init', function( $, $context ){
 			 	hide_fields( $fields_to_hide, animate ) ;
 			}				
 		}
-		// radio or checkboxes
+		// anything not a dropdown
+		
 		if ( $inputs.size() > 0 ){
-
-			$inputs.on( 'change', function(){
-				var $selected = $inputs.filter(':checked' ); 
-				if ( $selected.size() > 0 ){
-					toggle_fields( $selected , true ); 
-				} else {
-					deactivate_item( $(this), false, false, true); 
-				}
-			}); 
+			var type = $inputs.attr('type');			 
+			// radios and checkboxes
+			if ( type == 'checkbox' || type == 'radio' ){
+			
+				$inputs.on( 'change', function(){
+					var $selected = $inputs.filter(':checked' ); 
+					if ( $selected.size() > 0 ){
+						toggle_fields( $selected , true ); 
+					} else {
+						deactivate_item( $(this), false, false, true); 
+					}
+				}); 
 				$inputs.each( function(){
 					if ( $(this).is(':checked') ){
 						toggle_fields( $(this) , true ); 
@@ -143,10 +146,27 @@ CloudField.on( 'init', function( $, $context ){
 						deactivate_item( $(this), false, false, false); 
 					}
 				}); 
-			$inputs.filter( ':checked' ).each( function(){
-				toggle_fields( $(this) , false ); 			
-
-			}); 
+				$inputs.filter( ':checked' ).each( function(){
+					toggle_fields( $(this) , false ); 			
+				}); 
+			} else {
+				// single input of any other type
+				if( $inputs.size() == 1 ){
+					var $input = $inputs;
+					$input.on( 'change', function(){
+						if ( $input.val() !== '' ){
+							toggle_fields( $input , true ); 
+						} else {
+							deactivate_item( $input, false, false, true); 
+						}
+					}); 
+					if ( $input.val() ){
+						toggle_fields( $input , true ); 
+					} else {
+						deactivate_item( $input , false, false, true); 
+					}
+				}		
+			}
 		// dropdown
 		} else if ( $select.size() > 0 ){		
 			$select.on( 'change', function(){
