@@ -469,8 +469,11 @@ class Cloud_Forms_WP extends Cloud_Forms {
                             }
                         }
                     } else {
-                        return false; 
-                    }
+                    	if ( ! $add_to['template'] || $add_to['template'] === 'default' ){
+	                        return true;
+	                    }
+	                    return false; 
+					}
                 } else if ( isset( $add_to['exclude_template']) ){
                     if ( $template_name ){
                         if ( is_array( $add_to['exclude_template'])){
