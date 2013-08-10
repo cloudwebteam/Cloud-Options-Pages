@@ -22,17 +22,27 @@ var CloudField = ( function($){
 	}
 	
 	
-	var setup_cloneables = function( $context ){
+	var setup_cloneables = function( jQuery, $context ){
 		$('.cloneable', $context ).each( function(){
+		
 			if ( $(this).parents('.to-clone').size() > 0 ){
 				return false; 
 			}
+			// has the thing already been initialized? then stop
+			if ( $(this).data( 'cloneable' ) == true ){
+				return false; 
+			}
+			$(this).data( 'cloneable', true );
 			var $cloneable = $(this); 
-			var $clones, $add_buttons, $remove_buttons ; 
+			var $clones, $add_buttons, $remove_buttons, $to_clone ; 
 								
 			var min_size = typeof $cloneable.data('min') !== 'undefined' ? $cloneable.data('min') : 0; 
 			var max_size = typeof $cloneable.data('max') !== 'undefined' ? $cloneable.data('max') : false; 
 			
+			
+			$to_clone = $cloneable.getClonePart( '.to-clone' ).clone( false ).removeClass('to-clone');
+			$cloneable.getClonePart( '.to-clone' ).remove(); 	
+						
 			function reset_value_keys(){
 				$clones = $cloneable.getClonePart( '.clone' ); 
 				$add_buttons = $cloneable.getClonePart( '.add' );
@@ -42,13 +52,24 @@ var CloudField = ( function($){
 				
 				$clones.each( function(){ 
 					var $clone = $(this);
-					var $inputs = $clone.getClonePart( 'input, textarea, select' ).not('[type="button"], .copy_to_use input'); 
+					var $inputs = $clone.find( 'input, textarea, select' ).not('[type="button"], .copy_to_use input'); 
 					//increment the inputs' name attributes so that it is saved as a unique value					
 					$inputs.each( function(){
+						var $parentField = $(this).parents( '.field' );
 						var prev_name = $(this).attr('name');
 						
 						if ( prev_name !== undefined ){
-							$(this).attr('name', replaceNthMatch( $(this).attr('name' ), /(\[\d+\])/g, 'last', '['+ counter+']' ) ); 
+							var is_grandparent_clone = false; 
+							if ( $(this).parents( '.clone' ).size() == 2 ){
+								if ( $(this).parents( '.clone' ).first()[0] !== $clone[0] ){
+									is_grandparent_clone = true; 
+								}
+							}
+							if ( is_grandparent_clone ){
+								$(this).attr('name', replaceNthMatch( $(this).attr('name' ), /(\[\d+\])/g, 'first', '['+ counter+']' ) ); 
+							} else {
+								$(this).attr('name', replaceNthMatch( $(this).attr('name' ), /(\[\d+\])/g, 'last', '['+ counter+']' ) ); 							
+							}
 						}
 						var prev_id = $(this).attr('id');
 						if ( typeof( prev_id ) !== 'undefined' ){
@@ -62,8 +83,19 @@ var CloudField = ( function($){
 					// change the "code" link
 					var $copy_to_use = $(this).getClonePart('.copy_to_use').find( 'input' );
 					$copy_to_use.each( function(){
+						var is_grandparent_clone = false; 
+						if ( $(this).parents( '.clone' ).size() == 2 ){
+							if ( $(this).parents( '.clone' ).first()[0] !== $clone[0] ){
+								is_grandparent_clone = true; 
+							}
+						}
 						var prev_copy_to_use = $(this).attr('value') ;		
-						$(this).val( replaceNthMatch( prev_copy_to_use, /( \d+)/g, 'last', ' ' + counter ));
+						if ( is_grandparent_clone ){
+							$(this).val( replaceNthMatch( prev_copy_to_use, /( \d+)/g, 'first', ' ' + counter ));
+						} else {
+							$(this).val( replaceNthMatch( prev_copy_to_use, /( \d+)/g, 'last', ' ' + counter ));
+						}					
+
 					});
 					counter++;
 					
@@ -90,8 +122,9 @@ var CloudField = ( function($){
 					$new_clone.getClonePart( '.error' ).remove(); 
 					// specific changes for specific fields
 					$new_clone.getClonePart('.preview-image').attr('src', '').addClass('hidden' ).hide(); 
-					
+
 					if ( $parent_clone.size() > 0 ){
+
 						$new_clone.insertAfter( $parent_clone ).fadeIn(); 
 					} else {
 						$new_clone.prependTo( $cloneable ).fadeIn(); 				
@@ -144,17 +177,15 @@ var CloudField = ( function($){
 				$cloneable.sortable({	
 					update: reset_value_keys
 				}); 
-			}		
-			
-			var $to_clone = $cloneable.getClonePart( '.to-clone' ).clone( false ).removeClass('to-clone');
-			$cloneable.getClonePart( '.to-clone' ).remove(); 							
-
+			}								
 			update_cloneable();
+			trigger( 'init', $cloneable ); 
+			
 		}); 
 	
 	}
-	var setup_copy_to_use = function( $context ){
-			// popup useful code snippets
+	var setup_copy_to_use = function( jQuery, $context ){
+		// popup useful code snippets
 		$('.copy_to_use', $context ).click( function(e){
 			$('.copy_to_use.active' ).removeClass('active' ); 
 			e.preventDefault();
@@ -171,10 +202,11 @@ var CloudField = ( function($){
    	$( function(){
 		$('.cloud-form').each( function(){		
 			var $form = $(this);
-			setup_copy_to_use($form);
-			setup_cloneables( $form );
+			on_action( 'init', setup_copy_to_use );
+			on_action( 'init', setup_cloneables );
+			trigger('init', $form ); 
+			
 		}); 
-		trigger('init', $('body' ) ); 
 	}); 
 	return {
 		on : on_action
@@ -195,7 +227,6 @@ jQuery.fn.getClonePart = function( selector ){
 		for ( i in selectors ){
 			selectors[i] = '.clone .cloneable ' + selectors[i] ; 
 		}
-		
 		$found = $found.not( selectors.join(', ') ); 
 		return $found;
 	}
