@@ -51,6 +51,8 @@ class Cloud_Field {
 		if ( $label = $this->get_label() ){
 			$components['label'] = '<div class="label">' .$label.'</div>' ; 
 		}
+
+		
 		if ( $this->info['cloneable'] && $this->spec['type'] !== 'group' ){
 			$components['field'] = $this->make_cloneable( ) .$this->copy_to_use();
 		} else {
@@ -170,13 +172,14 @@ class Cloud_Field {
 		$values = $this->info['value'] ;
 		
 		$clones = array(); 
+		$to_clone = $this->make_clone( 1000, '', $name ); 
+		
 		if ( is_array( $values ) ){
 			foreach ( $values as $clone_number => $clone_value ){
 				$clones[$clone_number][ 'clone' ] = $this->make_clone( $clone_number, $clone_value, $name ); 
 				$clones[$clone_number][ 'error' ] = isset( $this->spec['validation_error'][ $clone_number ] ) ? '<span class="error">'.$this->spec['validation_error'][ $clone_number ] .'</span>' : '' ;
 			}
 		} else {
-			$to_clone = $this->make_clone( 1000, '', $name ); 
 			if ( $min_number ){
 				for( $i = 0 ; $i < $min_number; $i++ ){
 					$clones[$i]['clone'] = $this->make_clone( 0, '', $name ); 
