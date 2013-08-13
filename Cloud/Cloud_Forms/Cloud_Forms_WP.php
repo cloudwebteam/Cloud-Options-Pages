@@ -528,7 +528,9 @@ class Cloud_Forms_WP extends Cloud_Forms {
 		if ( is_array( $posts ) ){
 			$valid_post_IDs = array();
 			foreach( $posts as $valid_post ){
-				$valid_post_IDs[] = $valid_post->ID ;
+				if ( $valid_post ){
+					$valid_post_IDs[] = $valid_post->ID ;
+				}
 			}
 			if ( isset( $_GET['post'] )){
 				$current_post = get_post( $_GET['post'] );
