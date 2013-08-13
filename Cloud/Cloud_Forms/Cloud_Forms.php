@@ -253,73 +253,78 @@ abstract class Cloud_Forms {
 			if ( isset( $_field['subfields'] ) ){
 				foreach ( $field['subfields'] as $subfield_slug => $subfield ){
 					$_field['subfields'][$subfield_slug]= array();  
-					$_subfield =& $_field['subfields'][$subfield_slug]; 
-					if ( isset( $section['metabox_slug'] ) ){
-						$_subfield['metabox_slug'] = $section['metabox_slug'] ; 
-					} else {
-						$_subfield['top_level_slug'] = isset( $section[ 'top_level_slug' ] ) ? $section['top_level_slug'] : false ; 			
-						$_subfield['form_slug'] = isset( $section[ 'form_slug' ] ) ? $section['form_slug'] : false ; 
-						$_subfield['subpage_slug'] = isset( $section[ 'subpage_slug' ] ) ? $section['subpage_slug'] : false ; 
-						$_subfield['section_slug'] = isset( $section[ 'section_slug' ] ) ? $section['section_slug'] : false ; 
-					}
-					$_subfield['field_slug'] = $field_slug ;		
-					$_subfield['subfield_slug'] = $subfield_slug ;
-
-					// establish type ( if it is specificied by user anywhere and is a valid type , else default )						
-					$subfield_type = '' ;
-					if ( isset( $subfield['type'] ) ){
-						$subfield_type = $subfield['type'];  							
-					} else {
-						if ( isset ( $section['defaults']['fields']['type'] ) ) {
-							$subfield_type = $section['defaults']['fields']['type'];
-						} else if ( isset ( $subpage['defaults']['fields']['type'] ) ) {
-							$subfield_type = $subpage['defaults']['fields']['type'];
-						} else if ( isset ( $top_level_page['defaults']['fields']['type'] ) ) {
-							$subfield_type = $top_level_page['defaults']['fields']['type'];
-						}
-					}
-					// valid type?						
-					if ( !isset( $subfield_type ) || !class_exists( Cloud_Field::get_class_name( $subfield_type ) ) ) { 						
-						$subfield_type = Cloud_Field::$default_type ; 
-					}
-					
-					// set type
-					$_subfield['type'] = $subfield_type ;
-					// go through defaults for that type
-					if ( isset(  $defaults['fields'][$subfield_type] ) ) {
-						$subfield_defaults =  $defaults['fields'][$subfield_type] ; 
-					} else {
-						$subfield_defaults = $defaults['fields']['general'] ;
-					}
-
-					foreach ( $subfield_defaults as $key => $subfield_default_value ) {
-						if ( isset( $subfield[$key] ) ){
-							$set_value = $subfield[$key];  
-						} else {
-							if ( isset ( $field['defaults']['subfields'][$key] ) ) {
-								$set_value = $field['defaults']['subfields'][$key];
-							} else if ( isset ( $section['defaults']['subfields'][$key] ) ) {
-								$set_value = $section['defaults']['subfields'][$key];
-							} else if ( isset ( $subpage['defaults']['subfields'][$key] ) ) {
-								$set_value = $subpage['defaults']['subfields'][$key];
-							} else if ( isset ( $top_level_page['defaults']['subfields'][$key] ) ) {
-								$set_value = $top_level_page['defaults']['subfields'][$key];
-							} else {
-								$set_value = $subfield_default_value; 
-							}
-						}
-						if ( $key === 'settable_defaults' && isset( $_subfield[$key] ) && $_subfield[$key] == true ){
-							$_section['_has_settable_defaults'] = $_section['_has_settable_defaults'] ? $_section['_has_settable_defaults'] + 1 : 1 ;
-							$_subpage['_has_settable_defaults'] = $_subpage['_has_settable_defaults'] ? $_subpage['_has_settable_defaults'] + 1 : 1 ;
-						}										
-						$_subfield[$key] = $set_value ;
-					}
+					$_subfield =& $_field['subfields'][$subfield_slug]; 				
+					$this->merge_subfield( &$_subfield, $section, $defaults, $subfield_slug, $subfield, $field_slug, $subfield_slug );
 				}
 			}
 
 					
 		}		
 		return $_section ;
+
+	}
+	protected function merge_subfield( &$_subfield, $section, $defaults, $subfield_slug, $subfield, $field_slug, $subfield_slug ){
+
+		if ( isset( $section['metabox_slug'] ) ){
+			$_subfield['metabox_slug'] = $section['metabox_slug'] ; 
+		} else {
+			$_subfield['top_level_slug'] = isset( $section[ 'top_level_slug' ] ) ? $section['top_level_slug'] : false ; 			
+			$_subfield['form_slug'] = isset( $section[ 'form_slug' ] ) ? $section['form_slug'] : false ; 
+			$_subfield['subpage_slug'] = isset( $section[ 'subpage_slug' ] ) ? $section['subpage_slug'] : false ; 
+			$_subfield['section_slug'] = isset( $section[ 'section_slug' ] ) ? $section['section_slug'] : false ; 
+		}
+		$_subfield['field_slug'] = $field_slug ;		
+		$_subfield['subfield_slug'] = $subfield_slug ;
+
+		// establish type ( if it is specificied by user anywhere and is a valid type , else default )						
+		$subfield_type = '' ;
+		if ( isset( $subfield['type'] ) ){
+			$subfield_type = $subfield['type'];  							
+		} else {
+			if ( isset ( $section['defaults']['fields']['type'] ) ) {
+				$subfield_type = $section['defaults']['fields']['type'];
+			} else if ( isset ( $subpage['defaults']['fields']['type'] ) ) {
+				$subfield_type = $subpage['defaults']['fields']['type'];
+			} else if ( isset ( $top_level_page['defaults']['fields']['type'] ) ) {
+				$subfield_type = $top_level_page['defaults']['fields']['type'];
+			}
+		}
+		// valid type?						
+		if ( !isset( $subfield_type ) || !class_exists( Cloud_Field::get_class_name( $subfield_type ) ) ) { 						
+			$subfield_type = Cloud_Field::$default_type ; 
+		}
+		
+		// set type
+		$_subfield['type'] = $subfield_type ;
+		// go through defaults for that type
+		if ( isset(  $defaults['fields'][$subfield_type] ) ) {
+			$subfield_defaults =  $defaults['fields'][$subfield_type] ; 
+		} else {
+			$subfield_defaults = $defaults['fields']['general'] ;
+		}
+
+		foreach ( $subfield_defaults as $key => $subfield_default_value ) {
+			if ( isset( $subfield[$key] ) ){
+				$set_value = $subfield[$key];  
+			} else {
+				if ( isset ( $field['defaults']['subfields'][$key] ) ) {
+					$set_value = $field['defaults']['subfields'][$key];
+				} else if ( isset ( $section['defaults']['subfields'][$key] ) ) {
+					$set_value = $section['defaults']['subfields'][$key];
+				} else if ( isset ( $subpage['defaults']['subfields'][$key] ) ) {
+					$set_value = $subpage['defaults']['subfields'][$key];
+				} else if ( isset ( $top_level_page['defaults']['subfields'][$key] ) ) {
+					$set_value = $top_level_page['defaults']['subfields'][$key];
+				} else {
+					$set_value = $subfield_default_value; 
+				}
+			}
+			if ( $key === 'settable_defaults' && isset( $_subfield[$key] ) && $_subfield[$key] == true ){
+				$_section['_has_settable_defaults'] = $_section['_has_settable_defaults'] ? $_section['_has_settable_defaults'] + 1 : 1 ;
+				$_subpage['_has_settable_defaults'] = $_subpage['_has_settable_defaults'] ? $_subpage['_has_settable_defaults'] + 1 : 1 ;
+			}							
+			$_subfield[$key] = $set_value ;
+		}
 
 	}
 	/***====================================================================================================================================
