@@ -97,7 +97,7 @@ jQuery( function($){
 							return false;		   					
 						}
 					} else {
-						if ( ! $input.val() ){
+						if ( ! $input.val() || $input.val() === $input.data( 'placeholder' ) ){
 							$field.find( '.error-message[data-validation="required"]').show(); 
 							$field.addClass('has-error'); 
 							$field.find( '.cloud-error' ).slideDown(); 
@@ -128,7 +128,7 @@ jQuery( function($){
 									$field.find( '.error-message[data-validation="'+validation_type+'"]').show(); 
 								}
 								$field.addClass('has-error'); 
-								$field.find( '.cloud-error' ).slideDown(); 
+								$field.find( '.cloud-error' ).slideDown( 'fast' ); 
 								
 								if ( typeof callback === 'function' ){
 									callback( validation ); 
