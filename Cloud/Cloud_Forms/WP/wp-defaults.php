@@ -85,6 +85,11 @@ $cloud_form_defaults_wp = array (
 			'image_size' 	=> 'full',
 			'_lock'			=> false											
 		),	
+		'number' => array( 
+			'editor_list'		=> false,
+			'code_link' 		=> true, 
+			'_lock'				=> false, 			
+		), 
 		'password' 	=>  array(
 		),
 		'post' => array(
