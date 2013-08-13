@@ -433,7 +433,8 @@ class Cloud_Forms_WP extends Cloud_Forms {
 				}
 				$posts = get_posts( array(
 					'name' => $add_to, 
-					'post_type' => $post_types
+					'post_type' => $post_types, 
+					'post_status' => 'any'
 				) );
 			}
 		} else if ( is_numeric( $add_to ) ){
@@ -518,6 +519,8 @@ class Cloud_Forms_WP extends Cloud_Forms {
 				}
 			} 
 			$add_to['numberposts'] = -1; 
+			$add_to['post_status'] = 'any';
+
             if ( ! isset( $add_to['post_type'])){
                 $add_to['post_type'] = array( 'page') ;
             }
