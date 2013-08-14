@@ -11,6 +11,8 @@
 			self::$default_layout = 'standard'; 		
 			if ( $layout && get_called_class() && method_exists( get_called_class() , $layout) ){
 				return $layout;
+			} else if ( preg_match( '/\[[^\]]+\]/', $layout ) ){
+				return 'custom' ; 
 			} else {
 				return self::$default_layout;
 			}		
