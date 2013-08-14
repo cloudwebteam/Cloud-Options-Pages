@@ -75,7 +75,11 @@ jQuery( function($){
    	
    		$container.find( 'input, textarea, select' ).on( 'focus', function(){
 		   	var $field = $(this).parents( '.clone, .group, .field').first();
-		   	$field.find( '.error-message' ).fadeOut('fast');
+		   	$field.removeClass('has-error').find( '.error-message' ).fadeOut('fast');   		
+   		}); 
+   		$container.find( 'input[type="radio"], input[type="checkbox"]' ).on( 'change', function(){
+		   	var $field = $(this).parents( '.clone, .group, .field').first();
+		   	$field.removeClass('has-error').find( '.error-message' ).fadeOut('fast');   		
    		}); 
    		if ( $container.hasClass('ajax') ){
    		
