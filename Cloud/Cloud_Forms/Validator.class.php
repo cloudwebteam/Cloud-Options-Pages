@@ -87,7 +87,7 @@
 		$form_data = $this->form_data;
 
 		foreach( $validation_spec as $slug => $spec ){			
-			if ( $spec['disabled'] ) {
+			if ( isset( $spec['disabled'] ) && $spec['disabled'] ) {
 				unset( $validation_spec[ $slug ] );
 				continue; 
 			}
@@ -128,7 +128,7 @@
 							$field_spec =& $spec[ $array_level ][ $slug ] ;
 							unset( $fields_to_check[ $slug ] );
 							
-							if ( $errors = $this->check_if_password() ){
+							if ( $errors = $this->check_if_password( $field_spec, $slug_post_data ) ){
 							
 								if ( $errors ){
 									$spec[ $array_level ][ $slug ]['validation_error'] = $errors; 
