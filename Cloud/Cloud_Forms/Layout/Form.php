@@ -79,6 +79,9 @@
 		public static function tabs_animated( $form_slug = '' , $spec = '' ){
 			return self::tabs( $form_slug , $spec ); 
 		}
+		public static function custom( $form_slug = '' , $spec = '' ){		
+			return 'CUSTOM LAYOUT';
+		}
 		
 	}
 ?>
