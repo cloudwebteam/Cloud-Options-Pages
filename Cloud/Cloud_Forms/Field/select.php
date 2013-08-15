@@ -116,7 +116,7 @@ class Cloud_Field_select extends Cloud_Field {
 						$html .= '<option '.$selected.' value="'.$value.'">'.$option.'</option>' ; 
 					}
 				}
-			} else {
+			} else { // is string
 				if ( post_type_exists( $options ) ){
 					$posts = get_posts( array(
 						'numberposts' => -1, 
@@ -148,6 +148,33 @@ class Cloud_Field_select extends Cloud_Field {
 								$html .= '<option '.$selected .' value="'.$post->ID.'">'.$post->post_title.'</option>' ; 
 							}						
 						}
+					}
+				} elseif ( taxonomy_exists( $options ) ){
+					$terms = get_terms( $options );
+					if ( $this->multiple ){
+						foreach( $terms as $term ){
+							if ( is_array( $this->info['value'] ) && in_array( $term->term_id, $this->info['value'] )){
+								$selected = 'selected';								
+							} else if ( is_array( $this->info['default'] ) && in_array( $term->term_id, $this->info['default'] ) ) {
+								$selected = 'selected';			
+							} else if ( $this->info['default'] == $term->term_id ){			
+								$selected = 'selected';										
+							} else {
+								$selected = '';
+							}					
+							$html .= '<option '.$selected .' value="'.$term->term_id.'">'.$term->name.'</option>' ; 
+						}
+					} else {
+						foreach( $terms as $term ){
+							if ( $this->info['value'] == $term->term_id ){
+								$selected = 'selected';
+							} else if (  $this->info['default'] == $term->term_id ){			
+								$selected = 'selected';									
+							} else {
+								$selected = '';
+							}					
+							$html .= '<option '.$selected .' value="'.$term->term_id.'">'.$term->name.'</option>' ; 
+						}						
 					}
 				} else {
 					switch( $options) {
