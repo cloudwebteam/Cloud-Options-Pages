@@ -74,5 +74,24 @@
 			return true; 
 			
 		}				
+		public static function custom( $slug, $spec, $page_spec = false ){
+			// make variables available and easy to use by extracting them
+			extract( self::get_layout_info( $slug, $spec, $page_spec ) );
+			$layout = $spec['layout']; 
+			foreach ( $fields as $slug => $field ) {
+				$layout = preg_replace( '/\[ ?'.$slug.' ?\]/', $field, $layout );
+			} 						
+			ob_start();	?>
+			<div class='<?php echo $classes; ?>'>
+				<?php echo $header; ?>
+			    <div class="form-fields">
+			    	<?php echo $layout; ?>				    
+				</div>
+				<?php echo $footer; ?>
+			</div>
+			<?php 
+			$output = ob_get_clean();
+			return $output;		
+		}		
 	}
 ?>
