@@ -180,15 +180,16 @@ Automatically added to WP's menus.
 ### Adding Metaboxes
 To add a metabox, call `->add_metaboxes( $to_what, $array [, $context][, $priority ] )`
 
-**$to_what**: The first argument specifies which posts to add the metabox to.
+The `$to_what`: The first argument specifies which posts to add the metabox to.
 
 It can be 
-1) A post ID
-2) A post title (NOTE: *all* posts that match will get the metabox)
-3) A post slug (NOTE: *all* posts that match will get the metabox)
-4) The same arguments accepted by Wordpress's `get_posts()`, with the following additions
-	- `'template' => A registered page template name. eg. 'Photo Gallery', or 'Left Sidebar'`
-	- `'exclude_template' => A registered page template name. eg. 'Photo Gallery', or 'Left Sidebar'`
+
+1. A post ID
+2. A post title (NOTE: *all* posts that match will get the metabox)
+3. A post slug (NOTE: *all* posts that match will get the metabox)
+4. The same arguments accepted by Wordpress's `get_posts()`, with the following additions
+	- `'template' => 'template name'`, A registered page template name. eg. 'Photo Gallery', or 'Left Sidebar'
+	- `'exclude_template' => 'template name'` A registered page template name. eg. 'Photo Gallery', or 'Left Sidebar'
 
 The array should have this form
 
@@ -204,4 +205,7 @@ The array should have this form
 	)
 )
 ```
+#### Displaying Metaboxes
+
+Automatically added to all posts matching the `$to_what`
 
