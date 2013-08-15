@@ -68,14 +68,69 @@ Otherwise, StandAlone is a good choice.
 	$Forms = Cloud_Forms_WP::get_instance()
 	```
 	
-### Creating Forms
-To add a form, call `->add_forms()` in one of two styles
+### Adding Forms
+To add a form, call either `->add_forms( $array_of_forms )` **OR** `->add_forms( 'form_slug', $args )`
+
+**Simple, one section form**
 
 ```php 
-->add_forms( $array ); 
+'form_slug' => array(
+	// form options
+	'title'			=> 'Default Form Title',
+	'layout'		=> 'standard', // 'table', '<custom html (see docs)>'
+	'description'		=> null,
+	'ajax'			=> false, // if enabled, will do real-time ajax validation
+	'submit_text' 		=> 'Save', // text of submit button
+	'hide_on_success' 	=> false, // show the form once successfully submitted?
+	'success'       	=> 'Form successfully validated and sent', // success message
+	'success_function' 	=> false, // php function to call on successful submit. (Passed to call_user_fnct())
+	'success_function_js' 	=> false, // global javascript function to call on successful submit
+	'fields' 		=> array(
+		'field1' 	=> array( 
+			// field options (see docs)
+		)
+	)
+)
 ```
 
-### Creating Options Pages
+**Multi-section form**
+
+```php 
+'form_slug' => array(
+	// form options
+	'title'			=> 'Default Form Title',
+	'layout'		=> 'standard', // 'standard', 'tabs', 'tabs_animated'
+	'description' 		=> null,
+	'ajax' 			=> false, // if enabled, will do real-time ajax validation
+	'submit_text' 		=> 'Save', // text of submit button
+	'hide_on_success' 	=> false, // show the form once successfully submitted?
+	'success'       	=> 'Form successfully validated and sent', // success message
+	'success_function' 	=> false, // php function to call on successful submit. (Passed to call_user_fnct())
+	'success_function_js' 	=> false, // the name of a javascript function to call on successful submit(must be global, clearly)
+	'sections'		=> array (
+		'section1' 	=> array(
+			'title'		=> 'Default Section Title',
+			'layout'	=> 'standard', // 'table', '<custom html (see docs)>'
+			'description'	=> false,
+			'fields' 	=> array(
+				'field1'	=> array( 
+					// field options (see docs)
+				),
+			)
+		)
+	)
+)
+```
+
+#### Displaying Forms
+
+1. use `->add_forms( $array )` to add your forms
+2. call `->head()` in the header of your site
+3. call `->display( 'form_slug' )` to display the desired form
+
+**Note:** It is wise to only add a form on pages where you will need it, otherwise you'll be doing a bunch of processing and script loading for a form you don't need.
+
+### Adding Options Pages
 To add an options page, call `->add_pages( $array )`
 The array should have this form
 
@@ -96,7 +151,6 @@ array(
 					'section1' => array(
 						'title'		=> 'Default Section Title',
 						'layout'	=> 'standard', // 'table', '<custom html (see docs)>'
-						'width'		=> 6,
 						'description'	=> null,
 						'fields' 	=> array(
 							'field1' => array( 
@@ -119,3 +173,35 @@ array(
 	)
 );
 ```
+#### Displaying Pages
+
+Automatically added to WP's menus.
+
+### Adding Metaboxes
+To add a metabox, call `->add_metaboxes( $to_what, $array [, $context][, $priority ] )`
+
+**$to_what**: The first argument specifies which posts to add the metabox to.
+
+It can be 
+1) A post ID
+2) A post title (NOTE: *all* posts that match will get the metabox)
+3) A post slug (NOTE: *all* posts that match will get the metabox)
+4) The same arguments accepted by Wordpress's `get_posts()`, with the following additions
+	- `'template' => A registered page template name. eg. 'Photo Gallery', or 'Left Sidebar'`
+	- `'exclude_template' => A registered page template name. eg. 'Photo Gallery', or 'Left Sidebar'`
+
+The array should have this form
+
+```php 
+'metabox_slug' => array(
+	'title'		=> 'Default Metabox Title',
+	'layout'	=> 'standard', // 'table', '<custom html (see docs)>'
+	'description'	=> null,
+	'fields' 	=> array(
+		'field1' => array( 
+			// field options (see docs)
+		),
+	)
+)
+```
+
