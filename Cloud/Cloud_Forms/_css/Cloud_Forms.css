@@ -286,8 +286,9 @@
 .clone {
 	cursor: move;
 }
-.no-sort .clone {
+.no-sort .cloneable .clone {
 	cursor: default;
+	border-style: solid;
 }
 .clone input {
 	margin-bottom: 0;
