@@ -134,6 +134,7 @@
 			</div>
 			<?php 
 			$output = ob_get_clean();
-			return $output;		}
+			return $output;		
+		}
 	}
 ?>
