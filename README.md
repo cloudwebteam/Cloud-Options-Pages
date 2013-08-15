@@ -40,9 +40,21 @@ The loader follows Wordpress's model for registering and enqueuing scripts. It f
 Cloud_Forms
 ===========
 
-To use:
+	
+Differences between Cloud_Forms_StandAlone (SA) and Cloud_Forms_WP (WP):
+- SA has no Wordpress specific fields, eg. media, post, wysiwyg
+- SA fields have no 'code_link', 'editor_list', or '_lock' options
+- SA uses the Cloud_Loader's enqueueing functions, WP uses Wordpress's
+- SA has `->add_forms()`
+- WP has `->add_pages()` and `->add_metaboxes()` and `add_forms()`
+- SA requires calling `->head()` to print form styles and scripts
 
-1. Use Cloud Loader to include Cloud_Forms
+Basically, WP is for when you are using Wordpress, and need metaboxes/options pages. 
+Otherwise, StandAlone is a good choice.
+
+**To Use** 
+
+1. Include Cloud_Forms using Cloud_Loader
 
 	```php 
 	include 'Cloud.php';
@@ -56,13 +68,54 @@ To use:
 	$Forms = Cloud_Forms_WP::get_instance()
 	```
 	
-Differences between Cloud_Forms_StandAlone (SA) and Cloud_Forms_WP (WP):
-- SA has no Wordpress specific fields, eg. media, post, wysiwyg
-- SA fields have no 'code_link', 'editor_list', or '_lock' options
-- SA uses the Cloud_Loader's enqueueing functions, WP uses Wordpress's
-- SA has `->add_forms()`
-- WP has `->add_pages()` and `->add_metaboxes()` and `add_forms()`
-- SA requires calling `->head()` to print form styles and scripts
+### Creating Forms
+To add a form, call `->add_forms()` in one of two styles
 
-Basically, WP is for when you are using Wordpress, and need metaboxes/options pages. 
-Otherwise, StandAlone is a good choice.
+```php 
+->add_forms( $array ); 
+```
+
+### Creating Options Pages
+To add an options page, call `->add_pages( $array )`
+The array should have this form
+
+```php 
+array(
+	'first_page' => array( // top level slug
+		'image' 	=> 'IMAGE_URL', // Full path to the menu icon
+		'priority'  	=> 52, // Where in the menu it is located ( 0 = top )
+		'subpages' => array(
+			'first_page' => array( // first subpage slug must match top level slug
+				// page options
+				'title'		=> 'Page Title',
+				'menu_title' 	=> 'Menu title of page', 
+				'capability'	=> 'create_users', // limit to users with capability (optional)
+				'layout'	=> 'standard', // tabs, tabs_animated, standard (optional)
+				'description'	=> false, // (optional)
+				'sections' 	=> array(
+					'section1' => array(
+						'title'		=> 'Default Section Title',
+						'layout'	=> 'standard', // 'table', '<custom html (see docs)>'
+						'width'		=> 6,
+						'description'	=> null,
+						'fields' 	=> array(
+							'field1' => array( 
+								// field options (see docs)
+							),
+						)
+					),
+					'section2' => array(
+						// ... same as above
+					)
+				)
+			),
+			'subpage2' => array( // slug can be whatever
+				// ... same as above
+			)
+		)
+	),
+	'page2' => array(
+		// ... same as above
+	)
+);
+```
