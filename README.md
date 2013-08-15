@@ -19,7 +19,7 @@ On init, it will autoload
 **To use**
 
 1. `include 'Cloud.php'`
-2. call `Cloud_Loader::init( [FOLDERS] )` where FOLDERS can be empty, a string, or an array of folders
+2. call `Cloud_Loader::init( [FOLDERS] )` where FOLDERS can be empty, a string (single folder), or an array of folders
 
 **Manual loading methods**
 
@@ -36,3 +36,33 @@ The loader follows Wordpress's model for registering and enqueuing scripts. It f
 5. `->add_global_js_var( NAME, VALUE )` similar to wp_localize_script, but prints before ALL scripts.
 6. `->print_scripts()` will print all the scripts in the appropriate order. Typically in head or footer.
 7. `->print_styles()` will print all the styles in the appropriate order. Typically in head.
+
+Cloud_Forms
+===========
+
+To use:
+
+1. Use Cloud Loader to include Cloud_Forms
+
+	```php 
+	include 'Cloud.php';
+	Cloud_Loader::init( 'Cloud_Forms' );
+	```
+2. Initialize the appropriate class (need WP metaboxes/pages?), and store in a global variable
+
+	```php
+	$Forms = Cloud_Forms_StandAlone::get_instance()
+	// or 
+	$Forms = Cloud_Forms_WP::get_instance()
+	```
+	
+Differences between Cloud_Forms_StandAlone (SA) and Cloud_Forms_WP (WP):
+- SA has no Wordpress specific fields, eg. media, post, wysiwyg
+- SA fields have no 'code_link', 'editor_list', or '_lock' options
+- SA uses the Cloud_Loader's enqueueing functions, WP uses Wordpress's
+- SA has `->add_forms()`
+- WP has `->add_pages()` and `->add_metaboxes()` and `add_forms()`
+- SA requires calling `->head()` to print form styles and scripts
+
+Basically, WP is for when you are using Wordpress, and need metaboxes/options pages. 
+Otherwise, StandAlone is a good choice.
