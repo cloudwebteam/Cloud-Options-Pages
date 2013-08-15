@@ -288,7 +288,7 @@
 }
 .no-sort .cloneable .clone {
 	cursor: default;
-	border-style: solid;
+	border-top-style: solid;
 }
 .clone input {
 	margin-bottom: 0;
