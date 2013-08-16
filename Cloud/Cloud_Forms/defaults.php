@@ -5,46 +5,57 @@
 global $cloud_form_defaults; 
 $cloud_form_defaults = array (
 	'forms'				=> array (
-		'title'				=> 'Default Page Title',
-		'layout'			=> 'standard',
+		'title'				=> 'Default Form Title',
+		'layout'			=> 'standard', // tabs, tabs_animated, standard
 		'description' 		=> null,
-		'ajax' 				=> false,
-		'submit_text' 		=> 'Save',
-        'hide_on_success' 	=> false, // show the form once successfully submissi
-		'success'       	=> 'Form successfully validated and sent',
-		'success_function' 	=> false,
-		'success_function_js' => false, // the name of a javascript function to call on successful submit
-		'sections'			=> array (
-		)	
+		'ajax' 				=> false, // if true, real-time validation and submission is enabled
+		'submit_text' 		=> 'Save', // submit button text
+        'hide_on_success' 	=> false, // show the form once successfully submission
+		'success'       	=> 'Form successfully validated and sent', // success message (on submit)
+		'success_function' 	=> false, // PHP function called on succes, receives $form_data as arg, eg. 'my_fnct', or ( 'CLASS', 'my_fnct' )
+		'success_function_js' => false, // 'my_fnct', a global javascript function to call on successful submit
+		// if a multi-section form
+		'sections'			=> array(),
+		// if a simple form		
+		'fields'			=> array()
 	), 
 	
 	'sections'			=> array(
 		'title'				=> 'Default Section Title',
-		'layout'			=> 'standard',
+		'layout'			=> 'standard',  // tabs, tabs_animated, standard, <custom HTML>
 		'description'		=> null,
-		'fields'			=> array ( 
-		)
+		'fields'			=> array()
 	),
 	
 	'fields'			=> array (
+		// these fields are used on most fields, and function similarly everywhere.
 		'general' 			=> array(
 			'title'				=> 'Default Field Title',
-			'layout'			=> array('label', 'field' , 'error', 'description'),
-			'cloneable'			=> false,
+			'layout'			=> array('label', 'input' , 'error', 'description'), 
+				// the layout and order of the field elements
+				// one '.field-row' per array element
+				// nest arrays to add multiple items per row. 
+					// eg. array( 'label', array( 'input', 'description', 'error' ) ) 
+						// will put the label on its own line, and input, description, & error on the second.
+				// NOTE unused elements will be appended to the field if the element exists and isn't specificied here. 
+			'cloneable'			=> false, // array( 'clone
+			// options 
+			// 'min' => 0, // 0+
+			// 'max' => false, // 1+
+			// 'controls' => true, // user can add/subtract?
+			// 'sort => true  // user can drag-and-drop to re-order?
 			'size'				=> null,
 			'description'		=> null,
 			'disabled' 			=> false,
 			'default' 			=> '',			
-			'subfields'			=> null,
-			'clone_controls'	=> true,
-			'sort'				=> true, 
+			'subfields'			=> null, 
 			'required' 			=> false,
 			'validate' 			=> false,
 			'error'				=> false			
 		), 
 		'checkbox' 			=> array(
 			'title'				=> 'Checkbox',
-			'layout'			=> array(array( 'field' , 'error','label' ), 'description'),
+			'layout'			=> array(array( 'input' , 'error','label' ), 'description'),
 			'cloneable'			=> false,
 			'checkbox_value' 	=> 1,
 			'multiple' 			=> false,
@@ -54,30 +65,26 @@ $cloud_form_defaults = array (
 			'disabled' 			=> false,
 			'default' 			=> '',			
 			'subfields'			=> null,
-			'clone_controls'	=> true,
-			'sort'				=> true, 
 			'required' 			=> false,
 			'validate' 			=> false,
 			'error'				=> false			
 		),
 		'color'				=> array(
 			'title'				=> 'Color',					
-			'layout'			=> array('label', 'field' , 'error', 'description'),
+			'layout'			=> array('label', 'input' , 'error', 'description'),
 			'cloneable'			=> false,
 			'size'				=> null,
 			'description'		=> null,
 			'subfields'			=> null,
 			'disabled' 			=> false,
 			'default'			=> '#FFFFFF',									
-			'clone_controls'	=> true, 
-			'sort'				=> true, 
 			'required' 			=> false,
 			'validate' 			=> false,
 			'error'				=> false			
 		),	
 		'date'				=> array(
 			'title'				=> 'Date',		
-			'layout'			=> array('label', 'field' , 'error', 'description'),
+			'layout'			=> array('label', 'input' , 'error', 'description'),
 			'cloneable'			=> false,
 			'description'		=> null,
 			'subfields'			=> null,
@@ -88,15 +95,13 @@ $cloud_form_defaults = array (
 			'max_date' 			=> false,
 			'disabled' 			=> false,
 			'default' 			=> '',			
-			'clone_controls'	=> true	, 
-			'sort'				=> true, 
 			'required' 			=> false,
 			'validate' 			=> false,
 			'error'				=> false			
 		),		
 		'datetime'			=> array(
 			'title'				=> 'Date/Time',		
-			'layout'			=> array('label', 'field' , 'error', 'description'),
+			'layout'			=> array('label', 'input' , 'error', 'description'),
 			'cloneable'			=> false,
 			'description'		=> null,
 			'subfields'			=> null,
@@ -106,21 +111,19 @@ $cloud_form_defaults = array (
 			'date_format_php'	=> 'D, M jS g:i a',
 			'disabled' 			=> false,
 			'default' 			=> '',		
-			'clone_controls'	=> true	 , 
-			'sort'				=> true	, 
 			'required' 			=> false,
 			'validate' 			=> false,
 			'error'				=> false			
 		),
 		'divider' 			=> array(
 			'title'				=> 'Divider',
-			'layout'			=> array('label', 'field', 'description'),
+			'layout'			=> array('label', 'input', 'description'),
 			'size'				=> null,
 			'description'		=> null,
 		),		
 		'group'				=> array(
 			'title'				=> 'Group',		
-			'layout'			=> array('label', 'description', 'field' , 'error' ),
+			'layout'			=> array('label', 'description', 'input' , 'error' ),
 			'cloneable'			=> array(	
 				'min' 				=> 0,
 				'max' 				=> false, 
@@ -130,20 +133,18 @@ $cloud_form_defaults = array (
 			'description'		=> null,
 			'subfields'			=> null,
 			'default' 			=> '',			
-			'clone_controls'	=> true	,
-			'sort'				=> true, 
 			'required' 			=> false,
 			'validate' 			=> false,
 			'error'				=> false			
 		),
 		'info'				=> array(
 			'title'				=> 'Info',
-			'layout'			=> array('label', 'field' , 'description'),
+			'layout'			=> array('label', 'input' , 'description'),
 			'description'		=> null,
 		),
 		'map' 				=> array(
 			'title'				=> 'Map Input',						
-			'layout'			=> array('label', 'field' , 'error', 'description'),
+			'layout'			=> array('label', 'input' , 'error', 'description'),
 			'cloneable'			=> false,
 			'description'		=> null,
 			'size'				=> 55,	
@@ -151,15 +152,13 @@ $cloud_form_defaults = array (
 			'height'			=> 300,	
 			'api_key' 			=> false,
 			'default' 			=> '',					
-			'clone_controls'	=> true, 
-			'sort'				=> true, 
 			'required' 			=> false,
 			'validate' 			=> false,
 			'error'				=> false			
 		),		
 		'number' 			=> array(
 			'title'				=> 'Number',						
-			'layout'			=> array('label', 'field' , 'error', 'description'),
+			'layout'			=> array('label', 'input' , 'error', 'description'),
 			'cloneable'			=> false,
 			'description'		=> null,
 			'size'				=> 8,	
@@ -167,15 +166,13 @@ $cloud_form_defaults = array (
 			'max' 				=> false,
 			'disabled' 			=> false,
 			'default' 			=> '',					
-			'clone_controls'	=> true, 
-			'sort'				=> true, 
 			'required' 			=> false,
 			'validate' 			=> false,
 			'error'				=> false			
 		),		
 		'password' 			=> array(
 			'title' 			=> 'Password', 
-			'layout'			=> array('label', 'field', 'description', 'error' ),
+			'layout'			=> array('label', 'input', 'description', 'error' ),
 			'password_label' 	=> 'Password',			
 			'confirm_label' 	=> 'Confirm', 
 			'size' 				=> 50,
@@ -196,21 +193,19 @@ $cloud_form_defaults = array (
 			'multiple'			=> false,
 			'use_query' 		=> false, 
 			'options'			=> 'page',
-			'layout'			=> array('label', 'field' , 'error', 'description'),
+			'layout'			=> array('label', 'input' , 'error', 'description'),
 			'cloneable'			=> false,
 			'size'				=> 30,
 			'description'		=> null,
 			'disabled' 			=> false,
 			'default' 			=> '',			
-			'clone_controls'	=> true	,
-			'sort'				=> true, 
 			'required' 			=> false,
 			'validate' 			=> false,
 			'error'				=> false			
 		),		
 		'range_slider' 		=> array( 
 			'title'				=> 'Text Input',						
-			'layout'			=> array('label', 'field' , 'error', 'description'),
+			'layout'			=> array('label', 'input' , 'error', 'description'),
 			'cloneable'			=> false,
 			'description'		=> null,
 			'size'				=> 55,	
@@ -219,8 +214,6 @@ $cloud_form_defaults = array (
 			'min' 				=> 0, 
 			'max'				=> 100,
 			'step' 				=> 1,				
-			'clone_controls'	=> true, 
-			'sort'				=> true, 
 			'required' 			=> false,
 			'validate' 			=> false,
 			'error'				=> false			
@@ -231,7 +224,7 @@ $cloud_form_defaults = array (
 			'multiple'			=> false,
 			'use_query' 		=> false, 
 			'options'			=> 'page',
-			'layout'			=> array('label', 'field' , 'error', 'description'),
+			'layout'			=> array('label', 'input' , 'error', 'description'),
 			'cloneable'			=> false,
 			'size'				=> 30,
 			'description'		=> null,
@@ -241,15 +234,13 @@ $cloud_form_defaults = array (
 				'text' 				=> 'Please select one...'
 			),
 			'default' 			=> '',			
-			'clone_controls'	=> true	,
-			'sort'				=> true, 
 			'required' 			=> false,
 			'validate' 			=> false,
 			'error'				=> false			
 		),
 		'startend'			=> array(
 			'title'				=> 'Start/End',		
-			'layout'			=> array('label', 'field' , 'error', 'description'),
+			'layout'			=> array('label', 'input' , 'error', 'description'),
 			'cloneable'			=> false,
 			'description'		=> null,
 			'size'				=> 19,
@@ -261,37 +252,31 @@ $cloud_form_defaults = array (
 			'end_label' 		=> 'End',
 			'disabled' 			=> false,
 			'default' 			=> '',		
-			'clone_controls'	=> true	 , 
-			'sort'				=> true	, 
 			'required' 			=> false,
 			'validate' 			=> false,
 			'error'				=> false			
 		),		
 		'text' 				=> array(
 			'title'				=> 'Text Input',						
-			'layout'			=> array('label', 'field' , 'error', 'description'),
+			'layout'			=> array('label', 'input' , 'error', 'description'),
 			'cloneable'			=> false,
 			'description'		=> null,
 			'size'				=> 55,	
 			'disabled' 			=> false,
 			'default' 			=> '',					
-			'clone_controls'	=> true, 
-			'sort'				=> true, 
 			'required' 			=> false,
 			'validate' 			=> false,
 			'error'				=> false			
 		),
 		'textarea' 			=> array(
 			'title'				=> 'Textarea',
-			'layout'			=> array('label', 'field' , 'error', 'description'),
+			'layout'			=> array('label', 'input' , 'error', 'description'),
 			'cloneable'			=> false,
 			'description'		=> null,
 			'rows'				=> 3,
 			'cols'				=> 57,
 			'disabled' 			=> false,
 			'default' 			=> '',							
-			'clone_controls'	=> true, 
-			'sort'				=> true, 
 			'required' 			=> false,
 			'validate' 			=> false,
 			'error'				=> false			
@@ -299,7 +284,7 @@ $cloud_form_defaults = array (
 		
 		'time' 				=> array(
 			'title'				=> 'Time',						
-			'layout'			=> array('label', 'field' , 'error', 'description'),
+			'layout'			=> array('label', 'input' , 'error', 'description'),
 			'cloneable'			=> false,
 			'description'		=> null,
 			'size'				=> 6,	
@@ -307,28 +292,24 @@ $cloud_form_defaults = array (
 			'date_format_php'	=> 'D, M jS g:i a',			
 			'disabled' 			=> false,
 			'default' 			=> '',			
-			'clone_controls'	=> true, 
-			'sort'				=> true, 
 			'required' 			=> false,
 			'validate' 			=> false,
 			'error'				=> false			
 		),
 		'toggle' 			=> array(
 			'title'				=> 'Toggle',
-			'layout'			=> array( 'label', array( 'field', 'error' ), 'description'),
+			'layout'			=> array( 'label', array( 'input', 'error' ), 'description'),
 			'checkbox_value' 	=> 1,
 			'size'				=> null,
 			'description'		=> null,
 			'show' 				=> false,
 			'hide'				=> false,
-			'field' 			=> 'checkbox', // checkbox or radio
+			'input' 			=> 'checkbox', // checkbox or radio
 			'options' 			=> false,
 			'disabled' 			=> false,
 			'toggle_type' 		=> 'checkbox',
 			'default' 			=> '',			
 			'subfields'			=> null,
-			'clone_controls'	=> true,
-			'sort'				=> true, 
 			'required' 			=> false,
 			'validate' 			=> false,
 			'error'				=> false			

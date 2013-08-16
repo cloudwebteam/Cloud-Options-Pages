@@ -171,8 +171,9 @@ class Cloud_Field {
 				$data .= ' data-max="'.$max_number.'"' ; 
 			}	
 		}
-		
-		$this->enqueue_script( 'jquery-ui-sortable' ); 
+		if ( isset( $this->info['cloneable']['sort'] ) && $this->info['cloneable']['sort'] ){
+			$this->enqueue_script( 'jquery-ui-sortable' ); 
+		}
 		$name = $this->info['name']; 
 		$values = $this->info['value'] ;
 		
@@ -195,26 +196,27 @@ class Cloud_Field {
 			}
 		}
 
+		$add_remove = isset( $this->info['cloneable']['controls'] ) && ! $this->info['cloneable']['controls'] ? '' : '<div class="add-remove"><a class="remove">-</a><a class="add">+</a></div>' ; 
 		ob_start(); ?>
 		<div class="input">
 			<ul class="cloneable cf" <?php echo $data; ?>>
 				<li class="to-clone clone cf">
 					<div class="number">0</div>
 					<?php echo $to_clone; ?>
-					<div class="add-remove"><a class="remove">-</a><a class="add">+</a></div>
+					<?php echo $add_remove; ?>
 				</li>
 			<?php foreach( $clones as $clone_number => $clone ){ ?>
 				<li class="clone cf">
 					<div class="number"><?php echo $clone_number + 1 ; ?></div>
 					<?php echo $clone['clone']; ?>
 					<?php echo $clone['error']; ?>
-					<div class="add-remove"><a class="remove">-</a><a class="add">+</a></div>
+					<?php echo $add_remove; ?>
 				</li>
 			<?php } ?>
 				<div class="no-clones cf">
 					<?php $empty_text = isset( $this->info['cloneable']['zero_text'] ) ? $this->info['cloneable']['zero_text'] : 'None created. Add the first.' ; ?>
 					<div class="empty-text"><?php echo $empty_text; ?></div>					
-					<div class="add-remove"><a class="add">+</a></div>
+					<?php echo $add_remove; ?>
 				</div>						
 			</ul>
 		</div>
@@ -309,12 +311,9 @@ class Cloud_Field {
 		$classes[] = 'cf' ;
 		$classes[] = 'type-'.$this->spec['type'] ;
  
-		$classes[] = $this->info['sort'] ? '' : 'no-sort';
+		$classes[] = isset( $this->info['cloneable']['sort'] ) && ! $this->info['cloneable']['sort'] ? 'no-sort' : '';
 		if (  $this->info['cloneable'] ){
 			$classes[] = 'has-cloneable' ;
-		}
-		if ( isset( $this->info['parent_layout'] ) && $this->info['parent_layout'] === 'grid' ){
-			$classes[] = isset( $this->info['width'] ) ? 'span' . $this->info['width'] : 'span6';
 		}
 		if ( isset( $this->spec['required'] ) && $this->spec['required'] ){
 			$classes[] = 'required' ; 
@@ -322,7 +321,6 @@ class Cloud_Field {
 		if ( isset( $this->spec['validation_error'] ) && $this->spec['validation_error'] ){
 			$classes[] = 'has-error' ; 
 		}
-		$classes[] = isset( $this->info['style'] ) ? $this->info['style'] :  '' ;
 		
 		$data = array(); 
 		if ( isset( $this->spec['validate'] )){

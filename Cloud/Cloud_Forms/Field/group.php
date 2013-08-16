@@ -14,10 +14,10 @@ class Cloud_Field_group extends Cloud_Field {
 		$this->subfields = isset( $this->spec['subfields'] ) && is_array( $this->spec['subfields'] ) ? $this->spec['subfields'] : false ;
 
 		$this->field_groups = $this->get_subfields( );
-		if ( $this->info['clone_controls'] ){
-			$this->add_and_remove = '<div class="add-remove"><a class="remove">-</a><a class="add">+</a></div>';		
-		} else {
+		if ( isset( $this->info['cloneable']['controls'] ) &&  ! $this->info['cloneable']['controls'] ){
 			$this->add_and_remove = '' ; 
+		} else {
+			$this->add_and_remove = '<div class="add-remove"><a class="remove">-</a><a class="add">+</a></div>';		
 		}
 				
 		$field = $this->get_groups_html(); 
@@ -70,7 +70,7 @@ class Cloud_Field_group extends Cloud_Field {
 			$subfield_args['subfield_slug']	= $subfield_slug;
 			$subfield_args['group_number'] = $group_number; 
 			$subfield_args['validation_error'] = isset( $this->spec['validation_error'][ $group_number ][ $subfield_slug ] ) ? $this->spec['validation_error'][ $group_number ][ $subfield_slug ] : '' ; 	
-			$subfield_args['layout'] = array( array( 'label', 'field', 'error' ), 'description' );
+			$subfield_args['layout'] = array( array( 'label', 'input', 'error' ), 'description' );
 			ob_start();
 				$subfield_class_name::create_field( $subfield_args ); 
 			$subfields .= ob_get_clean();
@@ -107,7 +107,7 @@ class Cloud_Field_group extends Cloud_Field {
 			<div class="no-clones cf">
 				<?php $empty_text = isset( $this->info['cloneable']['zero_text'] ) ? $this->info['cloneable']['zero_text'] : 'None created. Add the first.' ; ?>
 				<div class="empty-text"><?php echo $empty_text; ?></div>					
-				<div class="add-remove"><a class="add">+</a></div>
+				<?php echo $this->add_and_remove ; ?>
 			</div>	
 		</ul>
 	<?php
