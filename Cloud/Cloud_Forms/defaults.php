@@ -6,7 +6,10 @@ global $cloud_form_defaults;
 $cloud_form_defaults = array (
 	'forms'				=> array (
 		'title'				=> 'Default Form Title',
-		'layout'			=> 'standard', // tabs, tabs_animated, standard
+		'layout'			=> 'standard', // tabs, tabs_animated, standard, <custom html> 
+										// depending if form is simple or multi-section, insert fields as [field_slug] or sections as [section_slug] 
+		'header_layout'		=> false, // <custom html> (insert [title] and [description] where desired )
+		'footer_layout' 	=> false, // <custom html> (insert [submit] and [description] where desired )
 		'description' 		=> null,
 		'ajax' 				=> false, // if true, real-time validation and submission is enabled
 		'submit_text' 		=> 'Save', // submit button text
@@ -23,7 +26,8 @@ $cloud_form_defaults = array (
 	
 	'sections'			=> array(
 		'title'				=> 'Default Section Title',
-		'layout'			=> 'standard',  // tabs, tabs_animated, standard, <custom HTML>
+		'layout'			=> 'standard',  // tabs, tabs_animated, standard, <custom HTML> ( insert fields as [field_slug] ); 
+		'header_layout'		=> false, // <custom html> (insert [title] and [description] where desired )
 		'description'		=> null,
 		'fields'			=> array()
 	),

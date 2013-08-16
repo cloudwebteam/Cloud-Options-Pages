@@ -20,7 +20,7 @@
 			ob_start(); 
 				submit_button(); 
 			$submit_button = ob_get_clean(); 
-			$layout_vars['footer'] = '<footer class="cloud-form-footer">'.$submit_button.'</footer>'; 
+			$layout_vars['footer'] = self::get_form_footer( $form_slug, $spec );
 			
 			
 			// get sections' html 
@@ -97,6 +97,25 @@
 		public static function tabs_animated( ){
 			self::tabs( ); 
 		}
+		public static function custom( $form_slug = '' , $spec = '' ){		
+			// make variables available and easy to use by extracting them			
+			extract( self::get_layout_info( $form_slug, $spec ), EXTR_OVERWRITE );		
+		
+			$layout = $spec['layout']; 
+			
+			foreach ( $sections as $slug => $section ) {
+				$layout = preg_replace( '/\[ ?'.$slug.' ?\]/', $section['html'], $layout );
+			} 			
+			?>
+			<div id="form-<?php echo $form_slug; ?>" class="<?php echo $classes; ?>">
+				<form data-id="<?php echo $form_slug; ?>" action="options.php" method="post">
+					<?php echo $header ; ?>
+					<?php echo $layout; ?>	
+				    <?php echo $footer; ?>
+			    </form>
+			</div>
+			<?php
+		}		
 		
 	}
 ?>

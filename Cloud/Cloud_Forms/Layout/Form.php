@@ -28,6 +28,7 @@
 				?>
 					<li class="section-<?php echo $section_slug; ?>-tab <?php echo $has_error_class ; ?>" ><a title="<?php echo $section_spec['description']; ?>" href="#<?php echo $form_slug; ?>_<?php echo $section_slug; ?>"><?php echo $section_spec['title']; ?></a></li>				
 				<?php $layout_vars['tabs'][] = ob_get_clean(); 
+				
 
 			}
 			return $layout_vars; 		
@@ -80,7 +81,25 @@
 			return self::tabs( $form_slug , $spec ); 
 		}
 		public static function custom( $form_slug = '' , $spec = '' ){		
-			return 'CUSTOM LAYOUT';
+			// make variables available and easy to use by extracting them			
+			extract( self::get_layout_info( $form_slug, $spec ), EXTR_OVERWRITE );		
+		
+			$layout = $spec['layout']; 
+			foreach ( $sections as $slug => $section ) {
+				$layout = preg_replace( '/\[ ?'.$slug.' ?\]/', $section['html'], $layout );
+			} 						
+
+			ob_start(); 
+			?>
+			<div id="form-<?php echo $form_slug; ?>" class="<?php echo $classes; ?>">
+				<form data-id="<?php echo $form_slug; ?>" action="" method="post">
+					<?php echo $header ; ?>
+					<?php echo $layout; ?>	
+				    <?php echo $footer; ?>
+			    </form>
+			</div>
+			<?php
+			return ob_get_clean();	
 		}
 		
 	}

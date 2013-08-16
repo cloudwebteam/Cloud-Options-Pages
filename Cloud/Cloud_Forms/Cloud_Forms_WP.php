@@ -283,7 +283,7 @@ class Cloud_Forms_WP extends Cloud_Forms {
 			$context = $metabox['context']  ; 
 			$priority = $metabox['priority'] ; 
 			$callback_args = array( 'metabox_slug' => $metabox_slug, 'spec' => $metabox ); 
-			
+ 
 			add_meta_box( $id, $title, $callback, $post_type, $context, $priority, $callback_args );
 		}
 	}
