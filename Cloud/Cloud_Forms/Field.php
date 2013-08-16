@@ -54,10 +54,10 @@ class Cloud_Field {
 
 		
 		if ( $this->info['cloneable'] && $this->spec['type'] !== 'group' ){
-			$components['field'] = $this->make_cloneable( ) .$this->copy_to_use();
+			$components['input'] = $this->make_cloneable( ) .$this->copy_to_use();
 		} else {
 			if ( $field = $this->get_field_html( ) ){
-				$components['field'] = '<div class="input cf">'.$field. $this->copy_to_use() .'</div>'; 		
+				$components['input'] = '<div class="input cf">'.$field. $this->copy_to_use() .'</div>'; 		
 			}
 		}			
 			
@@ -96,6 +96,11 @@ class Cloud_Field {
 	// arranges the parts inside the field, using the 'layout' parameter, if provided. Otherwise, it uses default
 	protected function arrange_field_components( ){
 		$layout_array = $this->info['layout'] ; 
+		$field_used = array_search( 'field', $layout_array ) ; 
+		if (  $field_used !== false ){
+			$layout_array[ $field_used ] = 'input' ; 
+		}
+		
 		$label_in_left_column = $this->layout === 'standard' ; 
 		ob_start(); 
 	
