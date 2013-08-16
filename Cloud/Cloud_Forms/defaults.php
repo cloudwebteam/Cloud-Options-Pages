@@ -14,6 +14,7 @@ $cloud_form_defaults = array (
 		'success'       	=> 'Form successfully validated and sent', // success message (on submit)
 		'success_function' 	=> false, // PHP function called on succes, receives $form_data as arg, eg. 'my_fnct', or ( 'CLASS', 'my_fnct' )
 		'success_function_js' => false, // 'my_fnct', a global javascript function to call on successful submit
+		'maps_api_key' 			=> false, // a google maps API key (if using maps)
 		// if a multi-section form
 		'sections'			=> array(),
 		// if a simple form		
@@ -44,27 +45,26 @@ $cloud_form_defaults = array (
 			// 'max' => false, // 1+
 			// 'controls' => true, // user can add/subtract?
 			// 'sort => true  // user can drag-and-drop to re-order?
-			'size'				=> null,
+			'size'				=> null, // set the size attribute on the input (text, textarea, etc )
 			'description'		=> null,
-			'disabled' 			=> false,
-			'default' 			=> '',			
-			'subfields'			=> null, 
-			'required' 			=> false,
-			'validate' 			=> false,
-			'error'				=> false			
+			'disabled' 			=> false, // disable the input 
+			'default' 			=> '', // set a default value, if no data has been saved (and is not set in $_POST after submit )
+			//VALIDATION OPTIONS
+			'required' 			=> false, // bool or string, A string will be used as the error message that shows up.
+			'validate' 			=> false, // string. Validation type. EG. 'email', 'zip', 'phone', 'pin', OR a regex pattern ( '/[A-Z]{3,}/' )
+			'error'				=> false, // string. Error to show on validation error. A falsy value will show the default message.
 		), 
 		'checkbox' 			=> array(
 			'title'				=> 'Checkbox',
 			'layout'			=> array(array( 'input' , 'error','label' ), 'description'),
 			'cloneable'			=> false,
-			'checkbox_value' 	=> 1,
-			'multiple' 			=> false,
-			'options' 			=> false,
-			'size'				=> null,
+			'checkbox_value' 	=> 1, // string, int, bool. what value is sent when the checkbox is checked
+			'multiple' 			=> false, // bool. if true, provide an array to 'options'
+			'options' 			=> false, 	// array. Required 'multiple' to be set to true. 
+											// NOTE: array keys will be used as value
 			'description'		=> null,
 			'disabled' 			=> false,
-			'default' 			=> '',			
-			'subfields'			=> null,
+			'default' 			=> '',
 			'required' 			=> false,
 			'validate' 			=> false,
 			'error'				=> false			
@@ -72,12 +72,11 @@ $cloud_form_defaults = array (
 		'color'				=> array(
 			'title'				=> 'Color',					
 			'layout'			=> array('label', 'input' , 'error', 'description'),
-			'cloneable'			=> false,
+			'cloneable'			=> false, 
 			'size'				=> null,
 			'description'		=> null,
-			'subfields'			=> null,
 			'disabled' 			=> false,
-			'default'			=> '#FFFFFF',									
+			'default'			=> '#FFFFFF', // should be a hex color code
 			'required' 			=> false,
 			'validate' 			=> false,
 			'error'				=> false			
@@ -87,14 +86,16 @@ $cloud_form_defaults = array (
 			'layout'			=> array('label', 'input' , 'error', 'description'),
 			'cloneable'			=> false,
 			'description'		=> null,
-			'subfields'			=> null,
 			'size'				=> 8,	
-			'date_format'		=> 'mm/dd/yy', // see http://docs.jquery.com/UI/Datepicker/formatDate for options		
-			'date_format_php'	=> 'D, M jS',
+			'default' 			=> '',		
+			'disabled' 			=> false,				
+			// see http://docs.jquery.com/UI/Datepicker/formatDate for options
+			'date_format'		=> 'mm/dd/yy',
 			'min_date' 			=> false,
-			'max_date' 			=> false,
-			'disabled' 			=> false,
-			'default' 			=> '',			
+			'max_date' 			=> false,			
+			// what format to retrieve when using get_theme_options or get_metabox_options
+			// see http://php.net/manual/en/function.date.php for options
+			'date_format_php'	=> 'D, M jS', 
 			'required' 			=> false,
 			'validate' 			=> false,
 			'error'				=> false			
@@ -106,15 +107,18 @@ $cloud_form_defaults = array (
 			'description'		=> null,
 			'subfields'			=> null,
 			'size'				=> 19,
-			'date_format'		=> 'yy/mm/dd', // see http://docs.jquery.com/UI/Datepicker/formatDate for options
-			'time_format' 		=> 'h:mm tt',	// see http://trentrichardson.com/examples/timepicker/ for options
-			'date_format_php'	=> 'D, M jS g:i a',
 			'disabled' 			=> false,
-			'default' 			=> '',		
+			'default' 			=> '',			
+			'date_format'		=> 'yy/mm/dd',	// see http://docs.jquery.com/UI/Datepicker/formatDate for options
+			'time_format' 		=> 'h:mm tt',	// see http://trentrichardson.com/examples/timepicker/ for options
+			// what format to retrieve when using get_theme_options or get_metabox_options
+			// see http://php.net/manual/en/function.date.php for options
+			'date_format_php'	=> 'D, M jS g:i a', 
 			'required' 			=> false,
 			'validate' 			=> false,
 			'error'				=> false			
 		),
+		// a text heading to divide sections of the form (no input)
 		'divider' 			=> array(
 			'title'				=> 'Divider',
 			'layout'			=> array('label', 'input', 'description'),
@@ -131,12 +135,13 @@ $cloud_form_defaults = array (
 			),
 			'size'				=> null,
 			'description'		=> null,
-			'subfields'			=> null,
+			'subfields'			=> array(), // an array of fields identical to what 'fields' accepts.
 			'default' 			=> '',			
 			'required' 			=> false,
 			'validate' 			=> false,
 			'error'				=> false			
 		),
+		// text block helper text (no input)
 		'info'				=> array(
 			'title'				=> 'Info',
 			'layout'			=> array('label', 'input' , 'description'),
@@ -145,13 +150,10 @@ $cloud_form_defaults = array (
 		'map' 				=> array(
 			'title'				=> 'Map Input',						
 			'layout'			=> array('label', 'input' , 'error', 'description'),
-			'cloneable'			=> false,
 			'description'		=> null,
-			'size'				=> 55,	
-			'width' 			=> 400,
-			'height'			=> 300,	
-			'api_key' 			=> false,
-			'default' 			=> '',					
+			'width' 			=> 400, // int. in pixels
+			'height'			=> 300,	// int. in pixels
+			'default' 			=> '',		
 			'required' 			=> false,
 			'validate' 			=> false,
 			'error'				=> false			
@@ -173,26 +175,28 @@ $cloud_form_defaults = array (
 		'password' 			=> array(
 			'title' 			=> 'Password', 
 			'layout'			=> array('label', 'input', 'description', 'error' ),
-			'password_label' 	=> 'Password',			
-			'confirm_label' 	=> 'Confirm', 
+			'password_label' 	=> 'Password',
 			'size' 				=> 50,
 			'description'		=> null,
 			'disabled' 			=> false,			
 			'size'				=> 55,	
 			'required' 			=> false,
-			'validate' 			=> '/[a-zA-Z0-9]+/',
-			'error'				=> false,
-			'confirm' 			=> false, 
-			'confirm_error' 	=> array(
-				'empty' 		=> 'Please confirm', 
-				'error'			=> 'Does not match'
+			'validate' 			=> '/[a-zA-Z0-9]+/', // regex to check password against
+			'error'				=> false, // error message to show
+			'confirm' 			=> false, // require a password confirmation (and obviously show the confirmation field and validate it)						
+			'confirm_label' 	=> 'Confirm', // if 'confirm' is true			
+			'confirm_error' 	=> array( // errors if confirmation fails
+				'empty' 		=> 'Please confirm', // if no confirmation provided
+				'error'			=> 'Does not match' // if 
 			)
 		),
 		'radio'				=> array(
 			'title'				=> 'Radio Group',				
-			'multiple'			=> false,
-			'use_query' 		=> false, 
-			'options'			=> 'page',
+			'multiple'			=> false, // bool.
+			'use_query' 		=> false, // bool. If true, pass a WP query array (same as get_posts( $query ) ) to options
+			'options'			=> 'page', // array. Requires multiple to be true.
+											// array of options (keys as value to save)
+											// OR a WP query array, if 'use_query' => true
 			'layout'			=> array('label', 'input' , 'error', 'description'),
 			'cloneable'			=> false,
 			'size'				=> 30,
@@ -203,7 +207,8 @@ $cloud_form_defaults = array (
 			'validate' 			=> false,
 			'error'				=> false			
 		),		
-		'range_slider' 		=> array( 
+		// a jquery-UI slider
+		'range_slider' 		=> array(
 			'title'				=> 'Text Input',						
 			'layout'			=> array('label', 'input' , 'error', 'description'),
 			'cloneable'			=> false,
@@ -217,19 +222,23 @@ $cloud_form_defaults = array (
 			'required' 			=> false,
 			'validate' 			=> false,
 			'error'				=> false			
-			
 		), 
+		// a dropdown menu
 		'select'			=> array(
 			'title'				=> 'Select Menu',				
-			'multiple'			=> false,
-			'use_query' 		=> false, 
-			'options'			=> 'page',
+			'multiple'			=> false, // bool. allow multiple items to be selected
+			'use_query' 		=> false, // bool. If true, pass a WP query array (same as get_posts( $query ) ) to options
+			'options'			=> 'page', // string, array. 
+											// if string, options : POST_TYPE, TAXONOMY_SLUG, or 'states'
+											// if array:  
+												// array of options (keys as value to save)
+												// OR a WP query array, if 'use_query' => true											
 			'layout'			=> array('label', 'input' , 'error', 'description'),
 			'cloneable'			=> false,
 			'size'				=> 30,
 			'description'		=> null,
 			'disabled' 			=> false,
-			'first_option' 		=> array(
+			'first_option' 		=> array( // bool, array. false for no extra first option
 				'value' 			=> '', 
 				'text' 				=> 'Please select one...'
 			),
@@ -244,10 +253,12 @@ $cloud_form_defaults = array (
 			'cloneable'			=> false,
 			'description'		=> null,
 			'size'				=> 19,
-			'field_type' 		=> 'date', // date,time, datetime
-			'date_format'		=> 'mm-dd-yy', // see http://docs.jquery.com/UI/Datepicker/formatDate for options
+			'field_type' 		=> 'date', // date, time, datetime
+			'date_format'		=> 'yy/mm/dd',	// see http://docs.jquery.com/UI/Datepicker/formatDate for options
 			'time_format' 		=> 'h:mm tt',	// see http://trentrichardson.com/examples/timepicker/ for options
-			'date_format_php'	=> 'D, M jS g:i a',
+			// what format to retrieve when using get_theme_options or get_metabox_options
+			// see http://php.net/manual/en/function.date.php for options
+			'date_format_php'	=> 'D, M jS g:i a', 
 			'start_label' 		=> 'Start',
 			'end_label' 		=> 'End',
 			'disabled' 			=> false,
@@ -273,8 +284,8 @@ $cloud_form_defaults = array (
 			'layout'			=> array('label', 'input' , 'error', 'description'),
 			'cloneable'			=> false,
 			'description'		=> null,
-			'rows'				=> 3,
-			'cols'				=> 57,
+			'rows'				=> 3, // rows attr of textarea
+			'cols'				=> 57, // cols attr of textarea
 			'disabled' 			=> false,
 			'default' 			=> '',							
 			'required' 			=> false,
@@ -289,27 +300,35 @@ $cloud_form_defaults = array (
 			'description'		=> null,
 			'size'				=> 6,	
 			'time_format' 		=> 'h:mm tt',	// see http://trentrichardson.com/examples/timepicker/ for options
-			'date_format_php'	=> 'D, M jS g:i a',			
+			// what format to retrieve when using get_theme_options or get_metabox_options
+			// see http://php.net/manual/en/function.date.php for options
+			'date_format_php'	=> 'D, M jS g:i a', 
 			'disabled' 			=> false,
 			'default' 			=> '',			
 			'required' 			=> false,
 			'validate' 			=> false,
 			'error'				=> false			
 		),
+		// show/hide other fields based on one field
 		'toggle' 			=> array(
 			'title'				=> 'Toggle',
 			'layout'			=> array( 'label', array( 'input', 'error' ), 'description'),
-			'checkbox_value' 	=> 1,
-			'size'				=> null,
+			'checkbox_value' 	=> 1, // value to save to DB on check, only if options is string
+			'size'				=> null, 
 			'description'		=> null,
-			'show' 				=> false,
-			'hide'				=> false,
-			'input' 			=> 'checkbox', // checkbox or radio
-			'options' 			=> false,
-			'disabled' 			=> false,
-			'toggle_type' 		=> 'checkbox',
-			'default' 			=> '',			
-			'subfields'			=> null,
+			'disabled' 			=> false, 
+			'default' 			=> '',	
+						
+			'toggle_type' 		=> 'checkbox', // checkbox, radio, select, or text (can't be multiple)												
+			'options' 			=> false, // array, string. Array if multiple is desired. Can't be used with input => 'text'			
+			'show' 				=> false, // array. If selected, show these fields. Otherwise hide them. 
+			'hide'				=> false, // array. If selected, hide these fields. Otherwise show them.
+											// eg array( 'next_field_slug' )
+											// NOTE, if multiple options
+												// array( 
+												//	'option_slug1' => array( 'next_field_slug'),
+												//	'option_slug2' => array( 'another_field_slug'),
+												// )
 			'required' 			=> false,
 			'validate' 			=> false,
 			'error'				=> false			
