@@ -15,14 +15,12 @@ $cloud_form_defaults_wp = array (
 		'title' 		=> 'Default Title',
 		'capability'	=> 'create_users',
 		'layout' 		=> 'tabs',
-		'_has_settable_defaults' => false,
 	), 	
 	'forms' => array(
 	),
 	'sections'	=> array (
 		'context' => 'normal', 
 		'priority' => 'low' , 
-		'_has_settable_defaults' => false,			
 	),
 	
 	'fields'	=> array (
@@ -38,7 +36,6 @@ $cloud_form_defaults_wp = array (
 		),
 		'color'		=> array(
 			'editor_list'		=> false,
-			'settable_defaults' => false,
 			'code_link' 		=> true, 
 			'_lock'				=> false, 				
 		),	

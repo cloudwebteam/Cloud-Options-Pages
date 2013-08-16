@@ -28,10 +28,7 @@
 				$layout_vars['header'] = self::get_form_header( $form_slug, $spec ); 			
 				$layout_vars['footer'] = self::get_form_footer( $form_slug, $spec ); 
 			} else {
-			// if the page is a grid layout, give section a width (specified 1-12, default 12) 
-				if(  $page_spec['layout'] === 'grid' ){
-					$classes[] =  isset( $spec['width'] ) ? 'span'.$spec['width'] : 'span12';
-				}	
+
 				if ( isset( $spec['validation_error'] ) && $spec['validation_error'] ){
 					$classes[] = 'has-error' ; 
 				}								

@@ -318,11 +318,7 @@ abstract class Cloud_Forms {
 				} else {
 					$set_value = $subfield_default_value; 
 				}
-			}
-			if ( $key === 'settable_defaults' && isset( $_subfield[$key] ) && $_subfield[$key] == true ){
-				$_section['_has_settable_defaults'] = $_section['_has_settable_defaults'] ? $_section['_has_settable_defaults'] + 1 : 1 ;
-				$_subpage['_has_settable_defaults'] = $_subpage['_has_settable_defaults'] ? $_subpage['_has_settable_defaults'] + 1 : 1 ;
-			}							
+			}						
 			$_subfield[$key] = $set_value ;
 		}
 
