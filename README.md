@@ -1,3 +1,4 @@
+[fields]: https://github.com/cloudwebteam/Cloud-Options-Pages/blob/master/Cloud/Cloud_Forms/defaults.php "Field Defaults. Cloud_Forms/defaults.php"
 #### Cloud Forms consists of: 
 - the **Cloud Loader**
 - the **Cloud Forms** framework
@@ -93,6 +94,8 @@ To add a form, call either `->add_forms( $array_of_forms )` **OR** `->add_forms(
 )
 ```
 
+[See field options and explanation][fields]
+
 **Multi-section form**
 
 ```php 
@@ -121,6 +124,7 @@ To add a form, call either `->add_forms( $array_of_forms )` **OR** `->add_forms(
 	)
 )
 ```
+[See field options and explanation][fields]
 
 #### Displaying Forms
 
@@ -173,6 +177,9 @@ array(
 	)
 );
 ```
+
+[See field options and explanation][fields]
+
 #### Displaying Pages
 
 Automatically added to WP's menus.
@@ -205,7 +212,12 @@ The array should have this form
 	)
 )
 ```
+
+[See field options and explanation][fields]
+
 #### Displaying Metaboxes
 
 Automatically added to all posts matching the `$to_what`
+
+
 
