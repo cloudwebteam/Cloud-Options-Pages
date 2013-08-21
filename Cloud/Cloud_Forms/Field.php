@@ -200,7 +200,7 @@ class Cloud_Field {
 		ob_start(); ?>
 		<div class="input">
 			<ul class="cloneable cf" <?php echo $data; ?>>
-				<li class="to-clone clone cf">
+				<li class="to-clone clone cf type-<?php echo $this->spec['type']; ?>">
 					<div class="number">0</div>
 					<?php echo $to_clone; ?>
 					<?php echo $add_remove; ?>

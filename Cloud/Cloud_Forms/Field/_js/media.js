@@ -1,5 +1,5 @@
 CloudField.on( 'init', function( $, $context ){
-	var selector = '.field.type-media'; 
+	var selector = '.type-media'; 
 	var $fields = $( selector, $context ).add( $context.filter( selector ) ); 
 	
 	$fields.each( function(){
@@ -16,11 +16,7 @@ CloudField.on( 'init', function( $, $context ){
 		$(this).find( '.upload_button' ).click(function(e) {
 			var $button = $(this); 
 			// gotta reinit on click...because it might be in a group or cloneable and still be bound to cloned item
-			if ( $button.parents('.clone' ).size() !== 0 ){
-				var $field = $button.parents('.clone' ) ; 
-			} else {
-				var $field = $button.parents('.field.type-media' ) ; 			
-			}
+			var $field = $button.parents('.type-media' ) ; 
 			var _custom_media = true;
 			var _orig_send_attachment = wp.media.editor.send.attachment;
 			var _custom_media = true ;	
