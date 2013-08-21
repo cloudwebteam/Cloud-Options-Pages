@@ -462,7 +462,14 @@ class Cloud_Forms_WP extends Cloud_Forms {
 		}
 	}	
 	public function add_remove_supports(){
-		$current_post = get_post( $_GET['post'] );
+
+		if ( isset( $_GET['post'] ) ){
+			$current_post = get_post( $_GET['post'] );
+			$post_type = $current_post->post_type;
+		} else if ( isset( $_GET['post_type'])){
+			$post_type = $_GET['post_type']; 
+		}
+		if ( empty( $post_type ) ) return; 
 		foreach( $this->supports_to_remove as $support ){
 			remove_post_type_support( $current_post->post_type, $support );
 		}
