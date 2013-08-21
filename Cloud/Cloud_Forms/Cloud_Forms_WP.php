@@ -12,7 +12,9 @@ class Cloud_Forms_WP extends Cloud_Forms {
 	
 	protected $passed_in_forms = array() ; 
 	protected $forms = array() ; 
-	
+
+	protected $supports_to_remove = array();
+	protected $supports_to_add = array(); 
 	// singleton get method
 	public static function get_instance(){
 		if ( !self::$instance ){
@@ -39,6 +41,8 @@ class Cloud_Forms_WP extends Cloud_Forms {
 		add_action( 'add_meta_boxes', array( $this, 'construct_metaboxes' ) ); 
 		add_action( 'save_post', array( $this, 'save_metaboxes' ) );		
 		
+		//removing supports
+		add_action( 'admin_init', array( $this, 'add_remove_supports') ); 
 		Cloud_Field::$is_WP = true; 
 		
 	}	
@@ -414,7 +418,58 @@ class Cloud_Forms_WP extends Cloud_Forms {
 			$this->forms[ $form_slug ] = $this->merge_form_with_defaults( $form_slug, $form );
 		}
 	} 
+	public function remove_supports( $from_what, $supports ){
 
+		if ( $this->is_valid_on_current_page( $from_what ) ){
+			if ( is_array( $supports )){
+				foreach( $supports as $support){
+					$this->supports_to_remove[] = $support ; 
+					if ( in_array( $support, $this->supports_to_add ) ){
+						$index = array_search( $support, $this->supports_to_add ); 
+						unset( $this->supports_to_add[$index]);
+					}					
+				}
+			} else {
+				$support = $supports;				
+				$this->supports_to_remove[] = $support ; 
+				if ( in_array( $support, $this->supports_to_add ) ){
+					$index = array_search( $support, $this->supports_to_add ); 
+					unset( $this->supports_to_add[$index]);
+				}					
+			}
+		}
+	}
+	public function add_supports( $from_what, $supports ){
+
+		if ( $this->is_valid_on_current_page( $from_what ) ){
+			if ( is_array( $supports )){
+				foreach( $supports as $support){
+					$this->supports_to_add[] = $support ; 
+					if ( in_array( $support, $this->supports_to_remove ) ){
+						$index = array_search( $support, $this->supports_to_remove ); 
+						unset( $this->supports_to_remove[$index]);
+					}
+
+				}
+			} else {
+				$support = $supports;
+				$this->supports_to_add[] = $support ; 
+				if ( in_array( $support, $this->supports_to_remove ) ){
+					$index = array_search( $support, $this->supports_to_remove ); 
+					unset( $this->supports_to_remove[$index]);
+				}				
+			}
+		}
+	}	
+	public function add_remove_supports(){
+		$current_post = get_post( $_GET['post'] );
+		foreach( $this->supports_to_remove as $support ){
+			remove_post_type_support( $current_post->post_type, $support );
+		}
+		foreach( $this->supports_to_add as $support ){
+			add_post_type_support( $current_post->post_type, $support );
+		}		
+	}
 	
 	protected function is_valid_on_current_page( $add_to ){
 		if ( is_string( $add_to ) ){
@@ -445,9 +500,14 @@ class Cloud_Forms_WP extends Cloud_Forms {
             // check if it includes a template parameter, and return false if the current page doesn't use that template
     		if ( ( isset( $add_to['template'] ) || isset( $add_to['exclude_template'] ) )  && isset( $_GET['post'] ) ) {
     		    $template_file = get_post_meta( $_GET['post'], '_wp_page_template', true );
-                $all_templates = wp_get_theme()->get_page_templates();                         
-                $template_name = isset( $all_templates[ $template_file ] ) ? $all_templates[ $template_file ] : false ;
+
                 if ( isset( $add_to['template'] ) ){
+	    		    if ( $template_file === $add_to['template'] || $template_file === $add_to['template'] . '.php' ){
+	    		    	return true; 
+	    		    }                	
+
+		            $all_templates = wp_get_theme()->get_page_templates();                         
+		            $template_name = isset( $all_templates[ $template_file ] ) ? $all_templates[ $template_file ] : false ;	    		    
                     if ( $template_name ){
                         if ( is_array( $add_to['template'])){
                             $allowed = false; 
@@ -476,6 +536,12 @@ class Cloud_Forms_WP extends Cloud_Forms {
 	                    return false; 
 					}
                 } else if ( isset( $add_to['exclude_template']) ){
+	    		    if ( $template_file === $add_to['exclude_template'] || $template_file === $add_to['exclude_template'] . '.php' ){
+	    		    	return false; 
+	    		    }                	
+
+		            $all_templates = wp_get_theme()->get_page_templates();                         
+		            $template_name = isset( $all_templates[ $template_file ] ) ? $all_templates[ $template_file ] : false ;                	
                     if ( $template_name ){
                         if ( is_array( $add_to['exclude_template'])){
                             $allowed = false;                             
