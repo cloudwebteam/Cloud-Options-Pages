@@ -1,436 +1,80 @@
-/***====================================================================================================================================
-		TYPOGRAPHY
-	==================================================================================================================================== ***/
-.cloud-form {	
-	font-size: 1em; 
-}
-.cloud-form h1 {
-	font-size: 2em;
-}
-.cloud-form h2 {
-	font-size: 1.5em;
-}
-.cloud-form h3 {
-	font-size: 1.125em;
-}
-.cloud-form h4 {
-	font-size: 1em;
-}
-.cloud-form h5 {
-	font-size: .875em;
-}
-.cloud-form h6 {
-	font-size: .75em;
-}
-.cloud-form .title {
-	padding: .25em 0; 
-	line-height: 1.125em;
-}
-.cloud-form .description {
-	color: #777; 
-	font-style: italic; 
-	font-weight: light; 
-	font-size: .875em;
-	padding: .25em 0;
-}
-/***====================================================================================================================================
-		GENERAL PAGE 
-	==================================================================================================================================== ***/
-.cloud-form {
-	max-width: 100%;
-	font-family: sans-serif ;
-}
-.cloud-form .form-fields,
-.cloud-form footer {
-	padding-top: 1em; 
-	padding-bottom: 1em;  
-
-}
-.cloud-form.form-not-found {
-	padding: 1em 15px; 
-	font-style: italic; 
-	border: 1px solid #ccc; 
-	margin: 1em 0; 
-}
-
-/***====================================================================================================================================
-		GENERAL SECTION 
-	==================================================================================================================================== ***/
-.cloud-form .section > header {
-	padding: 1em 0 ;
-	border-bottom: 1px dashed #ccc;
-}
-
-/***====================================================================================================================================
-		GENERAL INPUT STYLES
-	==================================================================================================================================== ***/
-.cloud-form input,
-.cloud-form textarea, 
-.cloud-form select {
-	max-width: 98%; 
-	padding: 0 5px; 
-	width: auto; 
-}
-.cloud-form .input ul {
-	margin: 0;
-}
-.cloud-form .input input,
-.cloud-form textarea, 
-.cloud-form select {
-	margin-bottom: 0; 
-}
-.cloud-form select {
-	height: 1.5em; 
-	line-height: 1.5em;
-}
-/***====================================================================================================================================
-		GENERAL FIELD STYLES
-	==================================================================================================================================== ***/
-.cloud-form .field {
-	position: relative;
-	padding: .25em 0; 	
-	line-height: 1em; 
-}
-
-.cloud-form .field-row {
-	padding: .25em 0 0;
-	width: 100%;
-	position: relative; 
-}
-.cloud-form .field-row:first-child {
-	padding: 0;
-}
-/* clearfix */
-.cloud-form .field-row:before,
-.cloud-form .field-row:after {
-    content: " "; /* 1 */
-    display: table; /* 2 */
-}
-.cloud-form .field-row:after {
-    clear: both;
-}
-
-.cloud-form .field-row .label,
-.cloud-form .field-row .input,
-.cloud-form .field-row .description {
-	display: block; 
-	position: relative; 
-}
-.cloud-form .field-row.inline-field-elements .label,
-.cloud-form .field-row.inline-field-elements .input,
-.cloud-form .field-row.inline-field-elements .description {
-	display: inline-block; 
-	position: static; 
-}
-.cloud-form .label { 
-	/* reset...collides with a bootstrap class */
-	width: auto; 
-	height: auto; 
-	margin: 0;
-	padding: 0; 
-	position: relative; 
-	top: 0; 
-	left: 0; 
-	color: #333;
-	background: none;
-	border: none;
-	/* end reset */
-	font-weight: bold;
-	font-size: .875em;
-	padding-top: 3px ;
-	max-width: 100%; 
-	white-space: normal ;
-}	
-
-.cloud-form .label label {
-	margin-bottom: 0;
-	line-height: 1em;
-}
-.cloud-form .field-row > * {
-	margin-left: 15px;
-	max-width: 100%;
-}
-.cloud-form .field-row > *:first-child {
-	margin-left: 0;
-}
-.cloud-form .input + .description {
-	padding: 2px 0 0;
-}
-
-.cloud-form .label + .description {
-	padding-top: 3px; 
-}
-/***====================================================================================================================================
-		COPY-TO-USE
-	==================================================================================================================================== ***/
-.copy_to_use {
-	position: absolute;
-	right: 0; 
-	bottom: 100%; 
-	display: inline-block;
-	padding: 3px;
-	height: auto; 
-	font-size: .75em;
-	color: #21779D;
-	font-family: monospace;	
-	display: none;
-	z-index: 100;
-	text-transform: uppercase;
-	white-space: nowrap;
-}
-.copy_to_use .copy-label {
-	display: inline-block;
-	position: relative; 
-	top: -4px;  
-}
-.copy_to_use > input {
-	background: #fff;
-	width: 100px;	
-	border: 1px solid #ccc;
-	display: inline-block; 	
-	-webkit-transition: all .2s ease-out;
-	-moz-transition: all .2s ease-out;
-    -ms-transition: all .2s ease-out;
-    -o-transition: all .2s ease-out;
-	transition: all .2s ease-out;	
-}
-.copy_to_use.active > input {
-	width: 400px; 	
-	border: 1px solid #aaa;
-	background: #efefec;
-	box-shadow: 0 0 3px #24B2FF;
-	-webkit-transition: all .2s ease-in;
-	-moz-transition: all .2s ease-in;
-    -ms-transition: all .2s ease-in;
-    -o-transition: all .2s ease-in;
-	transition: all .2s ease-in;		
-}
-.inline-field-elements .copy_to_use {
-	left: auto; 
-	right: 0; 
-}
-.field:hover .copy_to_use {
-	display: block;
-}
-.field:hover .clone .copy_to_use {
-	display: none;
-} 
-
-.field .clone .copy_to_use a {
-	float: left;
-}
-.cloud-form .copy_to_use .copy-container {
-	display: none;
-	position: absolute; 
-	top: 0%;
-	left: -50%;
-	z-index: 100;
-	width: 300px;
-}
-.cloud-form .copy_to_use .copy {
-	font-size: 1em;
-	padding: 0 5px;
-	border: 1px solid #08C;
-	max-width: 100%;
-	width: 300px;
-	box-shadow: 0 0 5px rgba(0,0,0, .5); 	
-	text-align: center;	
-}
-/***====================================================================================================================================
-		ERRORS
-	==================================================================================================================================== ***/
-.field.has-error > * > .label {
-	color: #cc0000;
-}
-.field .cloud-error {
-	color: #cc0000; 
-	font-size: .875em;
-	border: none; 
-}
-.field .cloud-error .error-message {
-	display: none; 
-}
-.field .cloud-error .error-message.active {
-	display: block; 
-}
-.field .input + .cloud-error {
-	padding-top: 8px; 
-}
-.field .error-message-special {
-	color: #cc0000; 
-	font-size: .875em;
-	border: none; 
-	display: none; 
-}
-.field .error-message-special.active {
-	display: block; 
-}
-/***====================================================================================================================================
-		CLONEABLE FIELDS
-	==================================================================================================================================== ***/
-.field.has-cloneable {
-	padding-bottom: .5em; 
-}
-.field.has-cloneable .input {
-	padding-top: .5em; 
-}
-
-.cloud-form .input .cloneable {
-    padding-right: 60px;
-    width: auto;
-}
-.cloud-form .input .cloneable.groups {
-	padding-right: 25px; 
-}
-
-.clone {
-	cursor: move;
-}
-.no-sort .cloneable .clone {
-	cursor: default;
-	border-top-style: solid;
-}
-.clone input {
-	margin-bottom: 0;
-}
-.clone .add-remove {
-	position: absolute;
-	top: 1em;
-	left: 103%;
-	white-space: nowrap;
-}
-.cloneable .add-remove > .add,
-.cloneable .add-remove > .remove {
-	background: #efefef;
-	border: 1px solid #ccc;
-	border-radius: 3px;
-	width: 16px;
-	line-height: 1em;
-	height: 1em;
-	padding-bottom: 2px;
-	font-size: 12px;
-	display: inline-block;
-	text-align: center;
-	cursor: pointer;
-	z-index: 20;
-}
-.clone .remove.disabled,
-.clone .add.disabled {
-	color: #ccc;
-	background: #fafafa;
-	cursor: default;
-}
-.cloneable .remove {
-	color: #C05F47;
-}
-.cloneable .add:hover,
-.cloneable .remove:hover {
-	text-decoration: none;
-}
-.cloneable .clone {
-	padding: 1em 10px 1em 10px;
-	margin: 0 0 0 20px;
-	border-top: 1px dashed #ccc;
-	position: relative;
-	clear: both;	
-	min-height: 2em;
-}
-.cloneable .clone.to-clone {
-	display: none; 
-}
-
-.cloneable .clone:hover .copy_to_use {
-	display: block;
-}
-.cloneable .clone:first-child {
-}
-.clone .copy_to_use {
-	position: absolute;
-	top: 1em;
-}
-.clone .number {
-	position: absolute;
-	top: -.25em;
-	right: 100%;
-	background: #fff;
-	border: 1px solid #ccc;
-	width: 20px;
-	height: 1.5em;
-	line-height: 1.5em;
-	text-align: center;
-	border-radius: 3px;
-}
-.no-clones {
-	border-top: 1px solid #ccc; 
-	padding: .5em 0; 
-	position: relative; 
-}
-.cloneable .no-clones .empty-text {
-	font-style: italic; 
-	font-size: .875em; 
-	float: left; 
-}
-
-.cloneable .no-clones .add-remove {
-	float: right; 
-}
-.clone + .no-clones {
-	display: none; 
-}
-#ui-datepicker-div {
-	display: none; 
-}
-/***====================================================================================================================================
-		LAYOUTS
-	==================================================================================================================================== ***/
-.cloud-form .tabs li {
-	float: left; 
-}
-.cloud-form .tabs li:first-child a {
-	padding-left: 0; 
-}
-
-.cloud-form .tabs li a {
-	display: block; 
-	padding: .5em 10px; 
-	color: #999;
-	text-decoration: none; 
-}
-.cloud-form .tabs li.active a {
-	color: #333;
-	font-weight: bold; 
-}
-
-.cloud-form .tabs li.has-error a {
-	color: #cc0000;
-}
-
-/***====================================================================================================================================
-		METABOX SPECIFIC
-	==================================================================================================================================== ***/
-#poststuff .cloud-form.metabox .cloud-form-header .description {
-	margin: 0; 
-	border-bottom: 1px solid #ccc; 
-	padding: .5em 0;
-}
-#poststuff .cloud-form.metabox .cloud-form-header .title {
-	display: none; 
-}
-.cloud-form.metabox .form-fields {
-	padding: 0; 
-}
-/***====================================================================================================================================
-		MISCELLANEOUS
-	==================================================================================================================================== ***/
-.cf:before,
-.cf:after {
-    content: " "; /* 1 */
-    display: table; /* 2 */
-}
-
-.cf:after {
-    clear: both;
-}
-.cf {
-    *zoom: 1;
-}
+.cloud-form{font-size:1em}
+.cloud-form h1{font-size:2em}
+.cloud-form h2{font-size:1.5em}
+.cloud-form h3{font-size:1.125em}
+.cloud-form h4{font-size:1em}
+.cloud-form h5{font-size:.875em}
+.cloud-form h6{font-size:.75em}
+.cloud-form .title{padding:.25em 0;line-height:1.125em}
+.cloud-form .description{color:#777;font-style:italic;font-weight:light;font-size:.875em;padding:.25em 0}
+.cloud-form{max-width:100%;font-family:sans-serif}
+.cloud-form .form-fields,.cloud-form footer{padding-top:1em;padding-bottom:1em}
+.cloud-form.form-not-found{padding:1em 15px;font-style:italic;border:1px solid #ccc;margin:1em 0}
+.cloud-form .section>header{padding:1em 0;border-bottom:1px dashed #ccc}
+.cloud-form input,.cloud-form textarea,.cloud-form select{max-width:98%;padding:0 5px;width:auto}
+.cloud-form .input ul{margin:0}
+.cloud-form .input input,.cloud-form textarea,.cloud-form select{margin-bottom:0}
+.cloud-form select{height:1.5em;line-height:1.5em}
+.cloud-form .field{position:relative;padding:.25em 0;line-height:1em}
+.cloud-form .field-row{padding:.25em 0 0;width:100%;position:relative}
+.cloud-form .field-row:first-child{padding:0}
+.cloud-form .field-row:before,.cloud-form .field-row:after{content:" ";display:table;}
+.cloud-form .field-row:after{clear:both}
+.cloud-form .field-row .label,.cloud-form .field-row .input,.cloud-form .field-row .description{display:block;position:relative}
+.cloud-form .field-row.inline-field-elements .label,.cloud-form .field-row.inline-field-elements .input,.cloud-form .field-row.inline-field-elements .description{display:inline-block;position:static}
+.cloud-form .label{width:auto;height:auto;margin:0;padding:0;position:relative;top:0;left:0;color:#333;background:none;border:none;font-weight:bold;font-size:.875em;padding-top:3px;max-width:100%;white-space:normal}
+.cloud-form .label label{margin-bottom:0;line-height:1em}
+.cloud-form .field-row>*{margin-left:15px;max-width:100%}
+.cloud-form .field-row>*:first-child{margin-left:0}
+.cloud-form .input+.description{padding:2px 0 0}
+.cloud-form .label+.description{padding-top:3px}
+.copy_to_use{position:absolute;right:0;bottom:100%;display:inline-block;padding:3px;height:auto;font-size:.75em;color:#21779d;font-family:monospace;display:none;z-index:100;text-transform:uppercase;white-space:nowrap}
+.copy_to_use .copy-label{display:inline-block;position:relative;top:-4px}
+.copy_to_use>input{background:#fff;width:100px;border:1px solid #ccc;display:inline-block;-webkit-transition:all .2s ease-out;-moz-transition:all .2s ease-out;-ms-transition:all .2s ease-out;-o-transition:all .2s ease-out;transition:all .2s ease-out}
+.copy_to_use.active>input{width:400px;border:1px solid #aaa;background:#efefec;box-shadow:0 0 3px #24b2ff;-webkit-transition:all .2s ease-in;-moz-transition:all .2s ease-in;-ms-transition:all .2s ease-in;-o-transition:all .2s ease-in;transition:all .2s ease-in}
+.inline-field-elements .copy_to_use{left:auto;right:0}
+.field:hover .copy_to_use{display:block}
+.field:hover .clone .copy_to_use{display:none}
+.field .clone .copy_to_use a{float:left}
+.cloud-form .copy_to_use .copy-container{display:none;position:absolute;top:0;left:-50%;z-index:100;width:300px}
+.cloud-form .copy_to_use .copy{font-size:1em;padding:0 5px;border:1px solid #08c;max-width:100%;width:300px;box-shadow:0 0 5px rgba(0,0,0,0.5);text-align:center}
+.field.has-error>*>.label{color:#c00}
+.field .cloud-error{color:#c00;font-size:.875em;border:none}
+.field .cloud-error .error-message{display:none}
+.field .cloud-error .error-message.active{display:block}
+.field .input+.cloud-error{padding-top:8px}
+.field .error-message-special{color:#c00;font-size:.875em;border:none;display:none}
+.field .error-message-special.active{display:block}
+.field.has-cloneable{padding-bottom:.5em}
+.field.has-cloneable .input{padding-top:.5em}
+.cloud-form .input .cloneable{padding-right:60px;width:auto}
+.cloud-form .input .cloneable.groups{padding-right:25px}
+.clone{cursor:move}
+.no-sort .cloneable .clone{cursor:default;border-top-style:solid}
+.clone input{margin-bottom:0}
+.clone .add-remove{position:absolute;top:1em;left:103%;white-space:nowrap}
+.cloneable .add-remove>.add,.cloneable .add-remove>.remove{background:#efefef;border:1px solid #ccc;border-radius:3px;width:16px;line-height:1em;height:1em;padding-bottom:2px;font-size:12px;display:inline-block;text-align:center;cursor:pointer;z-index:20}
+.clone .remove.disabled,.clone .add.disabled{color:#ccc;background:#fafafa;cursor:default}
+.cloneable .remove{color:#c05f47}
+.cloneable .add:hover,.cloneable .remove:hover{text-decoration:none}
+.cloneable .clone{padding:1em 10px 1em 10px;margin:0 0 0 20px;border-top:1px dashed #ccc;position:relative;clear:both;min-height:2em}
+.cloneable .clone.to-clone{display:none}
+.cloneable .clone:hover .copy_to_use{display:block}
+.clone .copy_to_use{position:absolute;top:1em}
+.clone .number{position:absolute;top:-0.25em;right:100%;background:#fff;border:1px solid #ccc;width:20px;height:1.5em;line-height:1.5em;text-align:center;border-radius:3px}
+.no-clones{border-top:1px solid #ccc;padding:.5em 0;position:relative}
+.cloneable .no-clones .empty-text{font-style:italic;font-size:.875em;float:left}
+.cloneable .no-clones .add-remove{float:right}
+.clone+.no-clones{display:none}
+#ui-datepicker-div{display:none}
+.cloud-form .tabs li{float:left}
+.cloud-form .tabs li:first-child a{padding-left:0}
+.cloud-form .tabs li a{display:block;padding:.5em 10px;color:#999;text-decoration:none}
+.cloud-form .tabs li.active a{color:#333;font-weight:bold}
+.cloud-form .tabs li.has-error a{color:#c00}
+#poststuff .cloud-form.metabox .cloud-form-header .description{margin:0;border-bottom:1px solid #ccc;padding:.5em 0}
+#poststuff .cloud-form.metabox .cloud-form-header .title{display:none}
+.cloud-form.metabox .form-fields{padding:0}
+.cf:before,.cf:after{content:" ";display:table;}
+.cf:after{clear:both}
+.cf{*zoom:1}

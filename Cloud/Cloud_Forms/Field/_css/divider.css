@@ -1,31 +1,6 @@
-.field.type-divider {
-	padding: .5em 0 1em;
-}
-.field.type-divider .label {	
-	color: #333; 
-	text-transform: uppercase;
-	padding: .5em 15px .25em ;	
-	display: block; 
-	background: #ddd; 
-	box-shadow: 0 0 3px #333; 
-	border-bottom: 3px solid #666; 
-}
-.field.type-divider .label label,
-.field.type-group .group .field.type-divider .label label {
-	cursor: default;
-	float: none ; 
-	text-align: left; 
-	padding: 0 ;
-}
-
-.field.type-divider > .row ,
-.field.type-divider .divider {
-	border-bottom: 2px solid #ccc;
-}
-.field.type-divider .divider {
-	display: block; 
-	margin-bottom: .5em;
-}
-.field.type-divider .copy_to_use {
-	display: none !important ;
-}
+.field.type-divider{padding:.5em 0 1em}
+.field.type-divider .label{color:#333;text-transform:uppercase;padding:.5em 15px .25em;display:block;background:#ddd;box-shadow:0 0 3px #333;border-bottom:3px solid #666}
+.field.type-divider .label label,.field.type-group .group .field.type-divider .label label{cursor:default;float:none;text-align:left;padding:0}
+.field.type-divider>.row,.field.type-divider .divider{border-bottom:2px solid #ccc}
+.field.type-divider .divider{display:block;margin-bottom:.5em}
+.field.type-divider .copy_to_use{display:none !important}
