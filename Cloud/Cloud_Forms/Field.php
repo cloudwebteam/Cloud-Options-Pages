@@ -424,12 +424,12 @@ class Cloud_Field {
 
 		$class_name = self::get_class_name( $field_type ); 
 		if ( $field_type ){		
-			$js_abs = self::get_include_path() . '/_js/'.$field_type.'.js' ; 
+			$js_abs = self::get_include_path() . '/_js/'.$field_type.'.min.js' ; 
 			$css_abs = self::get_include_path() . '/_css/'.$field_type.'.css' ; 
 			
 			if ( file_exists( $js_abs ) ){
 			
-				$js_path = self::get_folder_url() . '/_js/'.$field_type.'.js' ; 				
+				$js_path = self::get_folder_url() . '/_js/'.$field_type.'.min.js' ; 				
 				self::enqueue_script( $class_name, $js_path, array( 'Cloud_Forms' ));
 			} 
 			if ( file_exists( $css_abs ) ){
