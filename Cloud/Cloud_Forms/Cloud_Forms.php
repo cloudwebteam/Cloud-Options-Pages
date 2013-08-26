@@ -125,8 +125,8 @@ abstract class Cloud_Forms {
 		self::register_script( 'bootstrap-timepicker', self::get_folder_url() . '/__inc/bootstrap_timepicker/bootstrap-timepicker.min.js', array( 'jquery') ); 
 		
 		self::enqueue_script( 'jquery' ); 
-		self::enqueue_script( 'Cloud_Forms', self::get_folder_url() .'/_js/Cloud_Forms.js', array( 'jquery', 'scrollTo' ) ); 
-		self::enqueue_script( 'Cloud_Field', self::get_folder_url() .'/_js/Cloud_Field.js', array( 'jquery' ) ); 		
+		self::enqueue_script( 'Cloud_Forms', self::get_folder_url() .'/_js/Cloud_Forms.min.js', array( 'jquery', 'scrollTo' ) ); 
+		self::enqueue_script( 'Cloud_Field', self::get_folder_url() .'/_js/Cloud_Field.min.js', array( 'jquery' ) ); 		
 	}
 	protected function load_global_styles(){	
 		self::enqueue_style( 'reset' ); 		
