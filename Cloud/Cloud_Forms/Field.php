@@ -206,7 +206,7 @@ class Cloud_Field {
 					<?php echo $add_remove; ?>
 				</li>
 			<?php foreach( $clones as $clone_number => $clone ){ ?>
-				<li class="clone cf">
+				<li class="clone type-<?php echo $this->spec['type']; ?> cf">
 					<div class="number"><?php echo $clone_number + 1 ; ?></div>
 					<?php echo $clone['clone']; ?>
 					<?php echo $clone['error']; ?>

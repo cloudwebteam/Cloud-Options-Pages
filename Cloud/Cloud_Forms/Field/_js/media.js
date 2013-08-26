@@ -3,9 +3,10 @@ CloudField.on( 'init', function( $, $context ){
 	var $fields = $( selector, $context ).add( $context.filter( selector ) ); 
 	
 	$fields.each( function(){
+		if ( $(this).find( '.clone' ).size() > 0 ) return ; // it has clones that each need to be initialized.
 		var $targetfield = $(this).find('input.url_field');
 		var $image_container = $(this).find( '.image' ); 
-		var $preview_image = $image_container.find('img'); 	        
+		var $preview_image = $image_container.find('img'); 	
 		$(this).find( '.remove-media').on( 'click', function(){
 			$targetfield.val('');
 			$preview_image.slideUp('fast', function(){
@@ -16,7 +17,8 @@ CloudField.on( 'init', function( $, $context ){
 		$(this).find( '.upload_button' ).click(function(e) {
 			var $button = $(this); 
 			// gotta reinit on click...because it might be in a group or cloneable and still be bound to cloned item
-			var $field = $button.parents('.type-media' ) ; 
+			var $field = $button.parents('.type-media' ).first() ; 			
+
 			var _custom_media = true;
 			var _orig_send_attachment = wp.media.editor.send.attachment;
 			var _custom_media = true ;	
