@@ -22,6 +22,7 @@
 			$classes = array(); 
 			$classes[] = 'cloud'; //necessary to keep Bootstrap from interfering
 			$classes[] = 'cloud-form';
+			$classes[] = 'form-'.$form_slug; 
 			$classes[] = isset( $spec['layout'] ) && strpos(  $spec['layout'], '[' ) === false ? $spec['layout'] . '-layout' : 'custom-layout';
 			if ( isset( $spec['ajax'] ) && $spec['ajax'] ){
 				$classes[] = 'ajax' ;
@@ -43,14 +44,14 @@
 				$layout = preg_replace( '/\[ ?submit ?\]/', $submit_button, $layout ); 						
 				
 				if ( $layout ){
-					$footer = '<footer class="cloud-form-footer">' ; 
+					$footer = '<footer class="cloud-form-footer cf">' ; 
 					$footer .= $form_id_field; 
 					$footer .= $layout;
 					$footer .= '</footer>' ; 
 					return $footer; 
 				} 	
 			}	
-			return '<footer class="form">'.$form_id_field  . '<p class="submit">'.$submit_button .'</p></footer>' ; 
+			return '<footer class="cloud-form-footer cf">'.$form_id_field  . '<p class="submit">'.$submit_button .'</p></footer>' ; 
 		}		
 		protected static function get_form_header( $form_slug, $spec ){
 		

@@ -38,7 +38,7 @@
 			extract( self::get_layout_info( $form_slug, $spec ), EXTR_OVERWRITE );
 			ob_start(); 
 			?>
-			<div id="form-<?php echo $form_slug; ?>" class="<?php echo $classes; ?>">
+			<div class="<?php echo $classes; ?>">
 				<form data-id="<?php echo $form_slug; ?>" action="" method="post">
 					<?php echo $header ; ?>
 				    <?php foreach ( $sections as $section_slug => $section ) { ?>
@@ -55,7 +55,7 @@
 			extract( self::get_layout_info( $form_slug, $spec ), EXTR_OVERWRITE );
 			ob_start(); 
 			?>
-			<div id="form-<?php echo $form_slug; ?>" class="<?php echo $classes; ?>">
+			<div class="<?php echo $classes; ?>">
 				<form data-id="<?php echo $form_slug; ?>" action="" method="post">
 					<?php echo $header ; ?>			
 			    	<ul class="tabs cf">
@@ -91,7 +91,7 @@
 
 			ob_start(); 
 			?>
-			<div id="form-<?php echo $form_slug; ?>" class="<?php echo $classes; ?>">
+			<div class="<?php echo $classes; ?>">
 				<form data-id="<?php echo $form_slug; ?>" action="" method="post">
 					<?php echo $header ; ?>
 					<?php echo $layout; ?>	

@@ -42,7 +42,6 @@
 				}		
 				$layout_vars['footer'] = false; 
 			}
-
 			$layout_vars['classes'] = implode ( ' ', $classes ); 
 			
 			// get sections' html 
@@ -55,26 +54,39 @@
 			return $layout_vars; 		
 		}
 
-		public static function standAlone( $slug, $spec, $page_spec = false ){
+		public static function standAlone( $form_slug, $spec, $page_spec = false ){
+			$layout = Layout_Form::get_layout_function( $spec['layout'] );	
+			extract( self::get_layout_info( $form_slug, $spec, $page_spec ) );
+			if ( $layout === 'custom' ){
+				$layout = $spec['layout']; 
+				foreach ( $fields as $slug => $field ) {
+					$layout = preg_replace( '/\[ ?'.$slug.' ?\]/', $field, $layout );
+				} 						
+				$fields_layout = $layout ; 
+			} else {
+				$fields_layout = '';
+				foreach ( $fields as $field ) {
+					$fields_layout .= $field;
+				}
+			}
 			// make variables available and easy to use by extracting them
-			extract( self::get_layout_info( $slug, $spec, $page_spec ) );
 			ob_start();	?>
-			<div id="form-<?php echo $slug; ?>" class="<?php echo $classes; ?>">
-				<form data-id="<?php echo $slug; ?>" action="" method="post">
+			<div class="<?php echo $classes; ?>">
+				<form data-id="<?php echo $form_slug; ?>" action="" method="post">
 					<?php echo $header; ?>
-					<div class="fields">
-				    <?php foreach ( $fields as $field ) { ?>
-				    	<?php echo $field; ?>
-				    <?php } ?>
+					<div class="form-fields">
+				    	<?php echo $fields_layout; ?>
 					</div>
 					<?php echo $footer; ?>
 				</form>						
 			</div>
 			<?php 
 			$output = ob_get_clean();
-			return $output;		
+			return $output;						
+			
 		}		
 		public static function standard( $slug, $spec, $page_spec = false ){
+			
 			// make variables available and easy to use by extracting them
 			extract( self::get_layout_info( $slug, $spec, $page_spec ) );
 			ob_start();	?>
