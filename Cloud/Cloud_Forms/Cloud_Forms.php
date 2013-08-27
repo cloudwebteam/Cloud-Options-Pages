@@ -130,8 +130,8 @@ abstract class Cloud_Forms {
 	}
 	protected function load_global_styles(){	
 		self::enqueue_style( 'reset' ); 		
-		self::enqueue_style( __CLASS__ .'-global', self::get_folder_url() .'/_css/Cloud_Forms_Global.css' ); 		
-		self::enqueue_style( __CLASS__, self::get_folder_url() .'/_css/Cloud_Forms.css' ); 
+		self::enqueue_style( __CLASS__ .'-global', self::get_folder_url() .'/_styles/css/Cloud_Forms_Global.css' ); 		
+		self::enqueue_style( __CLASS__, self::get_folder_url() .'/_styles/css/Cloud_Forms.css' ); 
 	}
 	protected function set_local_javascript_vars(){
 		$this->global_js_vars = false; 
