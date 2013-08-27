@@ -52,6 +52,8 @@ $cloud_form_defaults_wp = array (
 			'code_link' 		=> true, 
 			'_lock'				=> false, 																		
 		),
+		'file'		=> array(
+		),		
 		'group'		=> array(
 			'editor_list'		=> false,
 			'code_link' 		=> true, 

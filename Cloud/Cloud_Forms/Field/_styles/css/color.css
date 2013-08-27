@@ -12,8 +12,8 @@
 .field.type-color .input+.description{padding-top:1em}
 #values-from-defaults{display:block;padding:.5em 5px;border:1px solid #ccc;border-radius:3px;float:left;text-decoration:none;font-weight:bold;margin-right:120px}
 #values-from-defaults:hover{background:#fafafa;border-color:#aaa}
-#values-as-defaults{margin:.5em 0;display:inline-block;font-style:italic;color:#999;font-size:.875em;padding-right:22px;line-height:17px;height:17px;background:url(images/exclamation.png) no-repeat right top;position:relative}
-#values-as-defaults:hover{background:url(images/exclamation.png) no-repeat right bottom}
+#values-as-defaults{margin:.5em 0;display:inline-block;font-style:italic;color:#999;font-size:.875em;padding-right:22px;line-height:17px;height:17px;background:url(../images/exclamation.png) no-repeat right top;position:relative}
+#values-as-defaults:hover{background:url(../images/exclamation.png) no-repeat right bottom}
 #values-as-defaults .success{display:none;color:#21759b;position:absolute;top:0;right:105%;border:1px solid #ccc;padding:.5em 5px;border-radius:3px}
 .change-defaults-confirmation{font-size:1em !important}
 #set-default-values-popup{background:#111;display:none}

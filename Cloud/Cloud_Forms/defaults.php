@@ -128,7 +128,21 @@ $cloud_form_defaults = array (
 			'layout'			=> array('label', 'input', 'description'),
 			'size'				=> null,
 			'description'		=> null,
-		),		
+		),	
+		'file' 			=> array(
+			'title'				=> 'File Upload',
+			'layout'			=> array('label', 'input' , 'error', 'description'),
+			'cloneable'			=> false,
+			'description'		=> null,
+			'disabled' 			=> false,
+			'default' 			=> '',							
+			'upload_as_media' 	=> true,
+			'allowed_extensions' => false,
+			'upload_dir'		=> Cloud_ABS .'/uploads', 	
+			'required' 			=> false,
+			'validate' 			=> false,
+			'error'				=> false			
+		), 	
 		'group'				=> array(
 			'title'				=> 'Group',		
 			'layout'			=> array('label', 'description', 'input' , 'error' ),

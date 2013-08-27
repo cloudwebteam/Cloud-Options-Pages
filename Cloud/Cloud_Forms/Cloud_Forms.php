@@ -69,6 +69,7 @@ abstract class Cloud_Forms {
 		self::register_script( 'bootstrap', self::get_folder_url() .'/__inc/bootstrap/js/bootstrap.min.js', array( 'jquery' ) );  
 		self::register_script( 'scrollTo', self::get_folder_url() .'/__inc/jquery.scrollTo.min.js', array( 'jquery' ) );  
 		self::register_script( 'fancybox', self::get_folder_url() .'/__inc/fancybox/jquery.fancybox.js', array( 'jquery' ) );  
+		self::register_script( 'fineuploader', self::get_folder_url() .'/__inc/jquery.fineuploader_3.2/jquery.fineuploader-3.2.min.js', array( 'jquery' ) );  
 		// full jQuery UI
 		self::register_script( 'jquery-ui-core', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.core.min.js', array('jquery') );
 		self::register_script( 'jquery-effects-core', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/development-bundle/ui/minified/jquery.ui.effect.min.js', array('jquery') );
