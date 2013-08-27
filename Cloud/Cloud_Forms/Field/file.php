@@ -47,7 +47,7 @@ class Cloud_Field_file extends Cloud_Field {
 				<span class="name"></span>
 	            <span class="upload-name"></span>
 	            <a class="remove-file">X</a>		
-				<input type="hidden" id="<?php echo $this->info['id']; ?>" name="<?php echo $this->info['name']; ?>" />
+				<input type="hidden" id="<?php echo $this->info['id']; ?>" value="<?php echo $this->info['value']; ?>" name="<?php echo $this->info['name']; ?>" />
 			</div>
 		</div>
 		<?php 
