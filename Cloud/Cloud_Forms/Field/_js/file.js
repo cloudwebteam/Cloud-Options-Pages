@@ -7,61 +7,60 @@ CloudField.on( 'init', function( $, $context ){
 		}
 		
 		var $field = $(this);
-		var $uploader = $field.find( '.uploader' ); 
-		var uploaderData = $uploader.data('uploader'); 		
-		var $remove = $field.find( '.remove-file') ; 
-		var endPoint = uploaderData[ 'isWP' ] ? cloud.wp_ajax : cloud.cloud_ajax ; 
+		var $uploader = $field.find( '.uploader' );
+		var $innerContainer = $field.find( '.inner-container'); 
+		var uploaderData = $uploader.data('uploader');
+		var $remove = $field.find( '.remove-file');
+		var endPoint = uploaderData[ 'isWP' ] ? cloud.wp_ajax : cloud.cloud_ajax;
 
-		var $filePathInput = $field.find( 'input[name="'+uploaderData['name']+ '"]' ); 
-		var $display = $field.find( '.display'); 
-		var $button = $field.find( '.upload-button' ); 
+		var $filePathInput = $field.find( 'input[name="'+uploaderData['name']+ '"]' );
+		var $display = $field.find( '.display');
+		var $button = $field.find( '.upload-button' );
 		$uploader.fineUploader({
-			debug : true,
-			button : $button, 
+			debug : false,
+			button : $button,
 			dragAndDrop : {
 				//extraDropzones : [ $field.find('.drop-zone') ],
 				disableDefaultDropzone : true
-			}, 
+			},
 			mode : 'basic',
 			request : {
-				params : { 
-					action :'cloud_upload_file', 
-					allowedExtensions : uploaderData[ 'allowedExtensions'], 
-					uploadDir : uploaderData['uploadDir'], 
-					wpMedia : uploaderData['wpMedia']
+				params : {
+					action : 'cloud_upload_file',
+					allowedExtensions : uploaderData.allowedExtensions,
+					uploadDir : uploaderData.uploadDir,
+					wpMedia : uploaderData.wpMedia
 				},
 				paramsInBody : true,
-				endpoint: endPoint, 
-				autoUpload: false, 
-			}, 
+				endpoint: endPoint,
+				autoUpload: false,
+			},
 			failedUploadTextDisplay: {
 				mode: 'custom',
 				maxChars: 40,
 				responseProperty: 'error',
 				enableTooltip: true
-			}	, 
-			validation : {
-				itemLimit : 1, 
-				acceptFiles : uploaderData['allowedExtensions'].join( ', '),
-				allowedExtensions : uploaderData[ 'allowedExtensions']
 			}	
 		}).on( 'error', function( event, id, name, reason ){
 		}).on( 'complete', function( event, id, name, response ){
 			if ( response.success ){
-				$button.hide(); 
+				var image_path = uploaderData['uploadDir'] + '/' + response.uploadName; 
+
+				var image_src = get_image_src( image_path ); 
+				console.log( image_src ) ; 
+				$innerContainer.addClass('has-value');
+				$display.find( 'img').attr('src', image_src ); 
 				$display.find( '.name' ).html( name ); 
 				$display.find( '.upload-name' ).html( response.uploadName ); 				
-				$filePathInput.val( uploaderData['uploadDir'] + '/' + response.uploadName ); 
-				$display.show(); 
+				$filePathInput.val( image_path ); 
 			} else {
 				console.log( name, response ); 
 			}
 		});
 
-
 		$remove.on( 'click', function(){
-			$button.show(); 
-			$display.hide(); 
+			$innerContainer.removeClass('has-value');
+			$display.find( 'img').attr('src', '' ); 
 			$display.find( '.name').html(''); 
 			var uploadName = $display.find( '.upload-name' ).html(); 				
 			$display.find( '.upload-name' ).html(''); 
@@ -79,7 +78,30 @@ CloudField.on( 'init', function( $, $context ){
 					console.log( response );
 				}
 			}); 
-		})
+		});
 
 	});
+	function get_image_src( path ){
+		var path_parts = path.split('/'); 
+		var url_parts = cloud.cloud_url.split( '/' ); 
+		var path_index = '';
+		var url_index = ''; 
+		for( i in path_parts ){
+			if ( ! path_index ){
+				if ( path_parts[i]){
+					for ( j in url_parts ){
+						if ( url_parts[j] ){
+							if ( url_parts[j] === path_parts[i] ){
+								path_index = i; 
+								url_index = j;
+							}
+						}
+					}
+				}
+			}
+		}
+		var path = path_parts.slice( path_index ).join('/'); 
+		var url = url_parts.slice( 0, url_index ).join('/');
+		return url + '/' + path ; 
+	}
 });

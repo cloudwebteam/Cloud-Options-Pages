@@ -33,15 +33,22 @@ class Cloud_Field_file extends Cloud_Field {
 			'allowedExtensions' => $allowedExtensions,
 			'uploadDir' => $this->spec['upload_dir'], 
 		); 
+		
+		$image = $this->info['value'] ? '<img src="'.$this->info['value'] .'" />' : '';
+		$has_value = $this->info['value'] ? 'has-value' : ''; 
 		ob_start(); ?>
-		<a class="upload-button">Upload</a>
-
 		<div class="uploader" data-uploader='<?php echo json_encode( $data ); ?>'></div>
-		<div class="display">
-			<span class="name"></span>
-            <span class="upload-name"></span>
-            <a class="remove-file">X</a>		
-			<input type="text" id="<?php echo $this->info['id']; ?>" name="<?php echo $this->info['name']; ?>" />
+		
+		<div class="inner-container <?php echo $has_value; ?>">
+			<a class="upload-button">Upload</a>
+	
+			<div class="display">
+				<span class="image"><?php echo $image; ?></span>
+				<span class="name"></span>
+	            <span class="upload-name"></span>
+	            <a class="remove-file">X</a>		
+				<input type="hidden" id="<?php echo $this->info['id']; ?>" name="<?php echo $this->info['name']; ?>" />
+			</div>
 		</div>
 		<?php 
 		return ob_get_clean();
@@ -82,11 +89,8 @@ class Cloud_Field_file extends Cloud_Field {
   		$response = $_POST ; 
   		$uploader = new qqFileUploader();
   		if ( $_POST['allowedExtensions']){
-	  		if ( is_array(  $_POST['allowedExtensions'] ) ){
-	  			$uploader->allowedExtensions = $_POST['allowedExtensions'];
-	  		} else if ( is_string( $_POST['allowedExtensions'] ) ){
-	  			$uploader->allowedExtensions = array( $_POST['allowedExtensions'] );
-	  		}
+            $extensions = explode( ',', urldecode( $_POST['allowedExtensions'] ) ); 
+	  		$uploader->allowedExtensions = $extensions;
 	  	}
 
   		$uploader->sizeLimit = 10 * 1024 * 1024; 
