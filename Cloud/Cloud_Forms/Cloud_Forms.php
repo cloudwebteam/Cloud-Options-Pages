@@ -199,7 +199,11 @@ abstract class Cloud_Forms {
 				$_field['section_slug'] = isset( $section[ 'section_slug' ] ) ? $section['section_slug'] : false ; 
 			}
 			$_field['field_slug'] = $field_slug; 
-
+			if ( is_string( $field ) ){
+				$field = array( 
+					'title' => $field
+				); 
+			}
 			$type = '';
 			// establish type ( if it is specificied by user anywhere and is a valid type , else default )						
 			if ( isset( $field['type'] ) ){
@@ -276,6 +280,12 @@ abstract class Cloud_Forms {
 		}
 		$_subfield['field_slug'] = $field_slug ;		
 		$_subfield['subfield_slug'] = $subfield_slug ;
+
+		if ( is_string( $subfield ) ){
+			$subfield = array( 
+				'title' => $subfield
+			); 
+		}
 
 		// establish type ( if it is specificied by user anywhere and is a valid type , else default )						
 		$subfield_type = '' ;
