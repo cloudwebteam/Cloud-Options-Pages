@@ -34,7 +34,7 @@ $cloud_form_defaults = array (
 	
 	'fields'			=> array (
 		// these fields are used on most fields, and function similarly everywhere.
-		'general' 			=> array(
+		'general' 			=> array( // NOTE: If string provided, defaults to text input with string as the title.
 			'title'				=> 'Default Field Title',
 			'layout'			=> array('label', 'input' , 'error', 'description'), 
 				// the layout and order of the field elements
