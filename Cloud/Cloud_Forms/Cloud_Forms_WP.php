@@ -479,7 +479,12 @@ class Cloud_Forms_WP extends Cloud_Forms {
 	}
 	
 	protected function is_valid_on_current_page( $add_to ){
-		if ( is_string( $add_to ) ){
+		if ( is_numeric( $add_to ) ){
+			// ID provided
+			$add_to = (int) $add_to ; 
+			$post = get_post( $add_to );
+			$posts = array( $post ); 		
+		} if ( is_string( $add_to ) ){
 			// slug or title provided
 			$registered_post_types = get_post_types( array(), 'objects' );
 			$posts = array(); 
@@ -499,10 +504,6 @@ class Cloud_Forms_WP extends Cloud_Forms {
 					'post_status' => 'any'
 				) );
 			}
-		} else if ( is_numeric( $add_to ) ){
-			// ID provided
-			$post = get_post( $add_to );
-			$posts = array( $post ); 
 		} else if ( is_array( $add_to ) ){ 
             // check if it includes a template parameter, and return false if the current page doesn't use that template
     		if ( ( isset( $add_to['template'] ) || isset( $add_to['exclude_template'] ) )  && isset( $_GET['post'] ) ) {
