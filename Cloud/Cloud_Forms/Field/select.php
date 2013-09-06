@@ -38,7 +38,7 @@ class Cloud_Field_select extends Cloud_Field {
 		if ( $this->spec['use_query'] == true ){
 			$query_args = wp_parse_args( array( 
 				'numberposts' => -1
-			), $args['info']['options'] ); 
+			), $this->spec['options'] ); 
 			$posts = get_posts( $query_args );
 			if ( sizeof( $posts ) > 0 ){
 				if ( $this->multiple ){
