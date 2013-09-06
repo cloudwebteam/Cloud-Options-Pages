@@ -259,7 +259,7 @@ abstract class Cloud_Forms {
 				foreach ( $field['subfields'] as $subfield_slug => $subfield ){
 					$_field['subfields'][$subfield_slug]= array();  
 					$_subfield =& $_field['subfields'][$subfield_slug]; 				
-					$this->merge_subfield( &$_subfield, $section, $defaults, $subfield_slug, $subfield, $field_slug, $subfield_slug );
+					$this->merge_subfield( $_subfield, $section, $defaults, $subfield_slug, $subfield, $field_slug, $subfield_slug );
 				}
 			}
 
@@ -358,7 +358,7 @@ abstract class Cloud_Forms {
 						}
 					}			
 					foreach( $this->forms[ $form_slug ]['sections' ]	as &$section ){
-						array_walk_recursive( $section, 'check_for_error', &$error_found );
+						array_walk_recursive( $section, 'check_for_error', $error_found );
 					}
 					if ( $error_found ){
 						$section['validation_error'] = true; 

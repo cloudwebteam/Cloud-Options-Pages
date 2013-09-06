@@ -25,7 +25,7 @@ class Cloud_Field_map extends Cloud_Field {
 		return $field ;
 		
 	}
-	public static function enqueue_scripts_and_styles( $field_type ){
+	public static function enqueue_scripts_and_styles( $field_type = false ){
 		global $google_maps_key; 
 		self::enqueue_script( 'gmaps-api', 'https://maps.googleapis.com/maps/api/js?key='.$google_maps_key. '&sensor=true' );
 		parent::enqueue_scripts_and_styles( $field_type ); 

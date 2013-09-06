@@ -54,7 +54,7 @@ class Cloud_Field_file extends Cloud_Field {
 		return ob_get_clean();
 	}
 	
-	public static function enqueue_scripts_and_styles( $field_type ){
+	public static function enqueue_scripts_and_styles( $field_type = false ){
 		// if they exist, enqueues css and js files with this fields name
 		parent::enqueue_script( 'fineuploader' );
 		parent::enqueue_scripts_and_styles( $field_type ); 				

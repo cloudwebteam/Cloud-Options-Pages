@@ -99,7 +99,7 @@
 			}
 			
 			// both post data and spec are changed in this massive loop to prevent doing it twice
-			$validation_spec[ $slug ] = $this->get_field_validation_spec( &$post_data , &$spec, $this->array_hierarchy  ); 			
+			$validation_spec[ $slug ] = $this->get_field_validation_spec( $post_data , $spec, $this->array_hierarchy  ); 			
 			$form_data[$slug] = $post_data ? $post_data : null; 			
 		}
 
@@ -137,7 +137,7 @@
 									$post_data[$slug] = $this->prepare_to_save( $field_spec, $slug_post_data ); 
 								}						
 							} else {			
-								$spec[ $array_level ][ $slug ] = $this->get_field_validation_spec( &$slug_post_data, &$field_spec, $array_hierarchy, $errors ) ; 
+								$spec[ $array_level ][ $slug ] = $this->get_field_validation_spec( $slug_post_data, $field_spec, $array_hierarchy, $errors ) ; 
 							}
 						} 
 					} else {

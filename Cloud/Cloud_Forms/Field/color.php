@@ -18,7 +18,7 @@ class Cloud_Field_color extends Cloud_Field {
 
 		return $field . $this->enabler;
 	}
-	public static function enqueue_scripts_and_styles( $field_type ){
+	public static function enqueue_scripts_and_styles( $field_type = false ){
 		// if they exist, enqueues css and js files with this fields name
 		
 		self::enqueue_script( 'miniColors', Cloud_Forms::get_folder_url(). '/__inc/jquery.miniColors/jquery.minicolors.js', array( 'jquery' ) ); 

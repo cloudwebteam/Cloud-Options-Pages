@@ -30,7 +30,7 @@ class Cloud_Field_range_slider extends Cloud_Field {
 		return $field ;
 		
 	}
-	public static function enqueue_scripts_and_styles( $field_type ){
+	public static function enqueue_scripts_and_styles( $field_type = false ){
 
 		self::enqueue_script( 'jquery-ui-slider' );
 		parent::enqueue_scripts_and_styles( $field_type ); 

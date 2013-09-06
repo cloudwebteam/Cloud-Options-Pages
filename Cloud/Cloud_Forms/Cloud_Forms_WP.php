@@ -720,7 +720,7 @@ class Cloud_Forms_WP extends Cloud_Forms {
 			return $this->is_JSON( $value ) ; 
 		} else if ( $value ){
 			$has_dynamic_data = false; 
-			array_walk_recursive( $value , array( $this, 'check_for_json' ), &$has_dynamic_data ); 
+			array_walk_recursive( $value , array( $this, 'check_for_json' ), $has_dynamic_data ); 
 			return $has_dynamic_data ; 
 		} 
 		return false; 

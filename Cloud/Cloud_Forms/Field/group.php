@@ -80,7 +80,7 @@ class Cloud_Field_group extends Cloud_Field {
 	private function get_model_group(){
 		return $this->make_group( 1000, ''); 								
 	}
-	public static function enqueue_scripts_and_styles( $field_type ){
+	public static function enqueue_scripts_and_styles( $field_type = false ){
 		self::enqueue_script( 'jquery-ui-core' );
 		self::enqueue_script( 'jquery-ui-sortable' ); 		
 		// if they exist, enqueues css and js files with this fields name

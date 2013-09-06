@@ -42,7 +42,7 @@ class Cloud_Field_date extends Cloud_Field {
 		$field = '<input data-dateformat="'.$this->date_format.'" name="'.$this->info['name'] . '" '.$data_atts. ' type="text" id="'.$this->info['id'] . '" class="datepicker"  size="'.$this->size.'" value="' . $this->info['value'] . '" '.$this->info['disabled'] .' />';	
 		return $field; 
 	}
-	public static function enqueue_scripts_and_styles( $field_type ){
+	public static function enqueue_scripts_and_styles( $field_type = false ){
 
 		self::enqueue_script( 'jquery-ui-datepicker' );
 
