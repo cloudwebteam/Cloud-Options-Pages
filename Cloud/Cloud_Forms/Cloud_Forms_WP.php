@@ -714,20 +714,20 @@ class Cloud_Forms_WP extends Cloud_Forms {
 		}				
 		return $value; 
 	}		
-
+	protected $has_dynamic_data = false; 
 	protected function has_dynamic_values( $value ){
 		if ( is_string( $value ) ){
 			return $this->is_JSON( $value ) ; 
 		} else if ( $value ){
-			$has_dynamic_data = false; 
-			array_walk_recursive( $value , array( $this, 'check_for_json' ), $has_dynamic_data ); 
-			return $has_dynamic_data ; 
+			$this->has_dynamic_data = false;
+			array_walk_recursive( $value , array( $this, 'check_for_json' ) ); 
+			return $this->has_dynamic_data ; 
 		} 
 		return false; 
 	}
-	protected function check_for_json( $item, $key, &$has_json ){
-		if ( $this->is_JSON( $item ) ){
-			$has_json = true; 
+	protected function check_for_json( $item, $key ){
+		if ( ! $this->has_dynamic_data && $this->is_JSON( $item ) ){
+			$this->has_dynamic_data = true; 
 		}
 	}
 	protected function is_JSON( $string ){
