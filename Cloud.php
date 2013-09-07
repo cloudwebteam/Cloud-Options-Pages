@@ -144,7 +144,7 @@ class Cloud_Loader {
 	public function print_styles(){
 		if ( $this->styles_have_been_printed ) return ; 	
 		
-		array_walk( $this->styles, array( $this, 'filter_out_styles_without_needed_dependencies'), &$this->styles );
+		array_walk( $this->styles, array( $this, 'filter_out_styles_without_needed_dependencies'), $this->styles );
 		$this->styles = $this->sort_array_by_dependencies( $this->styles );	
 			
 		foreach( $this->styles as $style ){ ?>
@@ -165,7 +165,7 @@ class Cloud_Loader {
 		</script>
 		<?php }
 		
-		array_walk( $this->scripts, array( $this, 'filter_out_scripts_without_needed_dependencies'), &$this->scripts );
+		array_walk( $this->scripts, array( $this, 'filter_out_scripts_without_needed_dependencies'), $this->scripts );
 		$this->scripts = $this->sort_array_by_dependencies( $this->scripts );	
 				
 		foreach( $this->scripts as $script ){ ?>
