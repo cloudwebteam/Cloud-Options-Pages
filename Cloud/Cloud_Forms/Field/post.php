@@ -12,7 +12,7 @@ class Cloud_Field_post extends Cloud_Field {
 	}
 
 	protected function get_field_html( ){
-		$this->property_to_get = isset( $this->spec['get'] ) ? $this->property_to_get( $this->spec['get'] ) : 'ID' ; 
+		$this->property_to_get = isset( $this->spec['get'] ) ? self::property_to_get( $this->spec['get'] ) : 'ID' ; 
 		$image_size = isset( $this->spec['image_size'] ) ? $this->spec['image_size'] : 'thumbnail' ; 
 		
 		$field = '<input class="target-field" data-image_size="'.$image_size.'" data-to_get="'.$this->property_to_get. '" type="hidden" id="'. $this->info['id'] . '" name="'.$this->info['name'] . '" size="'.$this->spec['size'].'" type="text" value=\'' . $this->info['value'] . '\' '.$this->info['disabled'] .' />';	
@@ -20,7 +20,7 @@ class Cloud_Field_post extends Cloud_Field {
 
 		return $field . $current_data;
 	}
-	protected function property_to_get( $property = '' ){ 
+	protected static function property_to_get( $property = '' ){ 
 		switch ( $property ){
 			case 'ID' : 
 			case 'id' : 
@@ -132,7 +132,7 @@ class Cloud_Field_post extends Cloud_Field {
 		</div>
 		<?php
 	}
-	public function ajax_options_internal_search(){
+	public static function ajax_options_internal_search(){
 		$args = array();
 		$property_to_retrieve = isset( $_POST['to_get'] ) ? $_POST['to_get'] : 'ID' ; 
 		$image_size = isset( $_POST['image_size'] ) ? $_POST['image_size'] : false ;
