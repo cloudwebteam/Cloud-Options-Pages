@@ -477,7 +477,41 @@ class Cloud_Forms_WP extends Cloud_Forms {
 			add_post_type_support( $current_post->post_type, $support );
 		}		
 	}
-	
+	protected function is_template( $metabox_template ){
+		if ( ! isset( $_GET['post'])){
+			return $metabox_template === 'default'; 
+		}
+    	$template_file = get_post_meta( $_GET['post'], '_wp_page_template', true );
+
+    	// check for filename match. eg. tpl-homepage or tpl-homepage.php
+ 		if ( $template_file === $metabox_template || $template_file === $metabox_template . '.php' ){
+	    	return true; 
+	    }                	
+
+	    // check for template name match eg. Homepage Template
+        $all_templates = wp_get_theme()->get_page_templates();                         
+        $template_name = isset( $all_templates[ $template_file ] ) ? $all_templates[ $template_file ] : false ;	    		    
+        if ( $template_name ){
+            if ( is_array( $metabox_template ) ){
+                $allowed = false; 
+                foreach( $metabox_template as $allowed_template ){
+                    if ( $template_name == $allowed_template ){
+                        $allowed = true; 
+                        break;
+                    }
+                }
+                if ( ! $allowed ){
+                    return false; 
+                }
+            } else if ( $template_name !== $metabox_template ){
+				return false;
+            }
+        } else if ( $metabox_template !== 'default' ){
+            return false;
+        }
+		return true; 
+
+	}
 	protected function is_valid_on_current_page( $add_to ){
 		if ( is_numeric( $add_to ) ){
 			// ID provided
@@ -505,71 +539,20 @@ class Cloud_Forms_WP extends Cloud_Forms {
 				) );
 			}
 		} else if ( is_array( $add_to ) ){ 
-            // check if it includes a template parameter, and return false if the current page doesn't use that template
-    		if ( ( isset( $add_to['template'] ) || isset( $add_to['exclude_template'] ) )  && isset( $_GET['post'] ) ) {
-    		    $template_file = get_post_meta( $_GET['post'], '_wp_page_template', true );
 
-                if ( isset( $add_to['template'] ) ){
-	    		    if ( $template_file === $add_to['template'] || $template_file === $add_to['template'] . '.php' ){
-	    		    	return true; 
-	    		    }                	
-
-		            $all_templates = wp_get_theme()->get_page_templates();                         
-		            $template_name = isset( $all_templates[ $template_file ] ) ? $all_templates[ $template_file ] : false ;	    		    
-                    if ( $template_name ){
-                        if ( is_array( $add_to['template'])){
-                            $allowed = false; 
-                            foreach( $add_to['template'] as $allowed_template ){
-                                if ( $template_name == $allowed_template ){
-                                    $allowed = true; 
-                                    break;
-                                }
-                            }
-                            if ( ! $allowed ){
-                                return false; 
-                            } else {
-                                unset( $add_to[ 'template'] ) ;                                
-                            }
-                        } else {
-                            if ( $template_name !== $add_to['template'] ){
-                                return false;
-                            } else {
-                                unset( $add_to[ 'template'] ) ;
-                            }
-                        }
-                    } else {
-                    	if ( ! $add_to['template'] || $add_to['template'] === 'default' ){
-	                        return true;
-	                    }
-	                    return false; 
-					}
-                } else if ( isset( $add_to['exclude_template']) ){
-	    		    if ( $template_file === $add_to['exclude_template'] || $template_file === $add_to['exclude_template'] . '.php' ){
-	    		    	return false; 
-	    		    }                	
-
-		            $all_templates = wp_get_theme()->get_page_templates();                         
-		            $template_name = isset( $all_templates[ $template_file ] ) ? $all_templates[ $template_file ] : false ;                	
-                    if ( $template_name ){
-                        if ( is_array( $add_to['exclude_template'])){
-                            $allowed = false;                             
-                            foreach( $add_to['exclude_template'] as $excluded_template ){
-                                if (  $template_name == $excluded_template ){
-                                    return false ;
-                                }
-                            }                        
-                            unset( $add_to[ 'exclude_template'] ) ;                                                            
-                        } else {
-                            if ( $template_name == $add_to['exclude_template'] ){
-                                return false;
-                            } else {
-                                unset( $add_to[ 'exclude_template'] ) ;
-                            }
-                        }                        
-                    }
-                }
+			// check template vars
+            if ( isset( $add_to['template'] ) ){
+            	if ( ! $this->is_template( $add_to['template'] )){
+            		return false ; 
+            	}
+            	unset( $add_to['template'] );                 	
             }
-        
+            if ( isset( $add_to['exclude_template']) ){
+            	if ( $this->is_template( $add_to['exclude_template'] )){
+            		return false; 
+            	}
+            	unset( $add_to['exclude_template'] ); 
+            }        
             
 			// check if its just a declaration of post_types
 			if ( sizeof( $add_to ) > 0 && isset( $add_to['post_type'] ) ) {
