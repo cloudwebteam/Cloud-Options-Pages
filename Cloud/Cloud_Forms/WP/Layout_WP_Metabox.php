@@ -44,11 +44,11 @@
 			<div class='<?php echo $classes; ?>'>
 				<?php echo $header; ?>
 
-			    <div class="form-fields">
+			    <table class="form-fields">
 				    <?php foreach ( $fields as $field ) { ?>
 				    	<?php echo $field; ?>
 				    <?php } ?>				    
-				</div>
+				</table>
 				<?php echo $footer; ?>
 				
 			</div>
