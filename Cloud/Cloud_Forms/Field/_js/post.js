@@ -8,13 +8,9 @@ CloudField.on( 'init', function( $, $context ){
 	
 	var $none_found = $popup.find( '.none-found');
 	var $loader_icon = $popup.find('.loading img');
-	
-	
-	console.log( $fields.size() + ' post fields found' );
-		
+
 	$fields.each( function(){
 		var $field = $(this); 
-		console.log( 'setting up post field' ); 
 		var $button = $field.find( '.select-post' ); 
 		var $targetfield = $field.find( '.target-field' ); 
 		var post_info_to_get = $targetfield.data('to_get'); 
@@ -97,7 +93,6 @@ CloudField.on( 'init', function( $, $context ){
 		}			
 		$button.click( function(e){
 			e.preventDefault();
-			console.log( 'clicking poost field'); 
 			$.fancybox.open({ 
 				href : '#' + $popup.attr('id'), 
 				title : 'Get Existing Content Info ( ' + post_info_to_get + ' ) ',
