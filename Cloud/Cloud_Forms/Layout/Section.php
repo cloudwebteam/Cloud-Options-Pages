@@ -93,11 +93,11 @@
 			<div class='<?php echo $classes; ?>'>
 				<?php echo $header; ?>
 
-			    <div class="form-fields">
+			    <table class="form-fields form-table">
 				    <?php foreach ( $fields as $field ) { ?>
-				    	<?php echo $field; ?>
+				    <?php echo $field; ?>
 				    <?php } ?>				    
-				</div>
+				</table>
 				<?php echo $footer; ?>
 				
 			</div>

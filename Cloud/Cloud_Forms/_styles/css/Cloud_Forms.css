@@ -72,6 +72,8 @@
 .cloud-form .tabs li a{display:block;padding:.5em 10px;color:#999;text-decoration:none}
 .cloud-form .tabs li.active a{color:#333;font-weight:bold}
 .cloud-form .tabs li.has-error a{color:#c00}
+.cloud-form.standard-layout .section>header{padding:0;border-bottom:none}
+.cloud-form.standard-layout .label{font-size:1em;font-weight:normal}
 #poststuff .cloud-form.metabox .cloud-form-header .description{margin:0;border-bottom:1px solid #ccc;padding:.5em 0}
 #poststuff .cloud-form.metabox .cloud-form-header .title{display:none}
 .cloud-form.metabox .form-fields{padding:0}

@@ -224,7 +224,7 @@ abstract class Cloud_Forms {
 			}
 			// set type
 			$_field['type'] = $type ;
- 			
+ 			$_field['parent_layout'] = $_section['layout']; 
 			// go through defaults for that type
 			if ( isset(  $defaults['fields'][$type] ) ) {
 				$field_defaults =  $defaults['fields'][$type] ; 

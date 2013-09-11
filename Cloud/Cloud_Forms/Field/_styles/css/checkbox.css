@@ -1,6 +1,22 @@
-.cloud .field.type-checkbox label{line-height:1em}
-.cloud .field.type-checkbox .input{margin-right:0}
-.cloud .field.type-checkbox input{position:relative;margin-right:5px}
-.field.type-checkbox .multiple-options{padding-left:10px}
-.field.type-checkbox .multiple-options label{line-height:1em;margin:0}
-.field.type-checkbox .multiple-options input{position:relative;top:-4px;margin-right:5px}
+.cloud .field.type-checkbox label {
+  line-height: 1em;
+}
+.cloud .field.type-checkbox .input {
+  margin-right: 0;
+}
+.cloud .field.type-checkbox input {
+  position: relative ;
+  margin-right: 5px;
+}
+.field.type-checkbox .multiple-options {
+  padding-left: 10px;
+}
+.field.type-checkbox .multiple-options label {
+  line-height: 1em;
+  margin: 0;
+}
+.field.type-checkbox .multiple-options input {
+  position: relative ;
+  top: -4px;
+  margin-right: 5px;
+}

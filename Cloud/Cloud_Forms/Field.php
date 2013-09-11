@@ -134,6 +134,7 @@ class Cloud_Field {
 					<?php }
 				// otherwise, check if the provided string is a valid field element, then place it in the row. 
 				} else {
+
 					// if its a standard layout ( table based  ) the label is needed on the left, so don't put it here					
 					if ( $label_in_left_column && $row == 'label' ){
 						// do nothing						
@@ -147,10 +148,12 @@ class Cloud_Field {
 				}
 			}
 			// any unspecified elements are appended so they aren't left out. Used items have been unset (see above). 
-			foreach( $this->components as $unspecified_item ){ 
-				if ( $unspecified_item ){ ?>
-				<div class="field-row"><?php echo $unspecified_item ; ?></div>
-			<?php }
+			foreach( $this->components as $index => $unspecified_item ){ 
+				if ( $unspecified_item ){
+					if ( !( $label_in_left_column && $index === 'label' )){ ?>
+					<div class="field-row"><?php echo $unspecified_item ; ?></div>
+					<?php }
+				}
 			}
 		}
 		return ob_get_clean() ;
@@ -378,7 +381,6 @@ class Cloud_Field {
 		} else {
 			$layout = self::$default_layout; 
 		}
-
 		if ( isset( $this->spec['parent_layout'] ) && $this->spec['parent_layout'] === 'standard' ) {
 			$layout = 'standard'; 
 		}
@@ -389,7 +391,7 @@ class Cloud_Field {
 		return $value ;
 	}
 	
-	public function standard ( ){ ?>
+	public function standard ( ){  ?>
 		<tr valign="top" <?php echo $this->attributes; ?>>
 			<th scope="row"><?php echo $this->components['label'];  ?></th>
 			<td>	
