@@ -55,8 +55,26 @@
 		}
 
 		public static function standAlone( $form_slug, $spec, $page_spec = false ){
-			$layout = Layout_Form::get_layout_function( $spec['layout'] );	
 			extract( self::get_layout_info( $form_slug, $spec, $page_spec ) );
+			if ( $spec['layout'] === 'table' ){
+				// make variables available and easy to use by extracting them
+				ob_start();	?>
+				<div class="<?php echo $classes; ?>">
+					<form data-id="<?php echo $form_slug; ?>" action="" method="post">
+						<?php echo $header; ?>
+						<table class="form-fields">
+					    	<?php foreach ( $fields as $field ) {
+								echo $field;
+							} ?>
+						</table>
+						<?php echo $footer; ?>
+					</form>						
+				</div>
+				<?php 
+				$output = ob_get_clean();
+				return $output;
+			} 
+			$layout = Layout_Form::get_layout_function( $spec['layout'] );	
 			if ( $layout === 'custom' ){
 				$layout = $spec['layout']; 
 				foreach ( $fields as $slug => $field ) {

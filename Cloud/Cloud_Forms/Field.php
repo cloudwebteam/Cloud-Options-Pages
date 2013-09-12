@@ -93,71 +93,7 @@ class Cloud_Field {
 		return array();
 	}
 	
-	// arranges the parts inside the field, using the 'layout' parameter, if provided. Otherwise, it uses default
-	protected function arrange_field_components( ){
-		$layout_array = $this->info['layout'] ; 
-		$field_used = array_search( 'field', $layout_array ) ; 
-		if (  $field_used !== false ){
-			$layout_array[ $field_used ] = 'input' ; 
-		}
-		
-		$label_in_left_column = $this->layout === 'standard' ; 
-		ob_start(); 
-	
-		if ( is_array( $layout_array ) && sizeof( $layout_array ) > 0 ){
-			// for each element of the layout array, make a row. 
-			foreach( $layout_array as $row ){ 
 
-				// if, an array, then foreach element of the array, 
-				// check if it is a valid field element, then place it in the row. 
-				if ( $row && is_array( $row ) && sizeof( $row ) > 0 ){ 
-					$row_components = '' ; 
-					foreach( $row as $row_item ){ 
-						if ( !empty( $this->components[ $row_item ] ) ){
-							$row_components .= $this->components[$row_item] ; 
-							unset( $this->components[ $row_item ] ); 
-						}
-					}
-					if ( $label_in_left_column && $row_item == 'label' ){
-					 // do nothing
-					} else { 				
-						if ( isset( $this->components[$row_item] ) && $this->components[$row_item] && is_string( $this->components[$row_item] ) ){
-							$row_components .= $this->components[ $row_item ] ; 
-							unset( $this->components[$row_item] );
-						}
-					}
-					
-					if ( $row_components ){ ?>
-					<div class="field-row inline-field-elements">
-						<?php echo $row_components ; ?>
-					</div>
-					<?php }
-				// otherwise, check if the provided string is a valid field element, then place it in the row. 
-				} else {
-
-					// if its a standard layout ( table based  ) the label is needed on the left, so don't put it here					
-					if ( $label_in_left_column && $row == 'label' ){
-						// do nothing						
-					} else {
-						if ( $row && isset( $this->components[$row] ) && $this->components[$row] && is_string( $this->components[$row] ) ){ ?>
-							<div class="field-row"><?php echo $this->components[$row] ; ?></div>
-						<?php 
-							unset( $this->components[$row] );
-						}
-					}
-				}
-			}
-			// any unspecified elements are appended so they aren't left out. Used items have been unset (see above). 
-			foreach( $this->components as $index => $unspecified_item ){ 
-				if ( $unspecified_item ){
-					if ( !( $label_in_left_column && $index === 'label' )){ ?>
-					<div class="field-row"><?php echo $unspecified_item ; ?></div>
-					<?php }
-				}
-			}
-		}
-		return ob_get_clean() ;
-	}
 	// wraps the field/fields in html that makes it cloneable
 	protected function make_cloneable( ){
 		$data = '' ; 
@@ -381,17 +317,95 @@ class Cloud_Field {
 		} else {
 			$layout = self::$default_layout; 
 		}
-		if ( isset( $this->spec['parent_layout'] ) && $this->spec['parent_layout'] === 'standard' ) {
-			$layout = 'standard'; 
+		if ( isset( $this->spec['parent_layout'] ) ){
+			if ( ! empty( $this->spec['form_slug'] ) ){
+				if ( $this->spec['parent_layout'] === 'table' ) {
+					$layout = 'table'; 
+				}
+			} else {
+				if ( $this->spec['parent_layout'] === 'standard' ){
+					$layout = 'table'; 
+				}
+			}
 		}
 		
 		return $layout;
 	}
-	public static function get_option( $value, $spec ){
-		return $value ;
-	}
+	// arranges the parts inside the field, using the 'layout' parameter, if provided. Otherwise, it uses default
+	protected function arrange_field_components( ){
+		$layout_array = $this->info['layout'] ; 
+		$field_used = array_search( 'field', $layout_array ) ; 
+		if (  $field_used !== false ){
+			$layout_array[ $field_used ] = 'input' ; 
+		}
+		
+		$label_in_left_column = $this->layout === 'table' ;
+
+		ob_start(); 
 	
-	public function standard ( ){  ?>
+		if ( is_array( $layout_array ) && sizeof( $layout_array ) > 0 ){
+			// for each element of the layout array, make a row. 
+			foreach( $layout_array as $row ){ 
+
+				// if, an array, then foreach element of the array, 
+				// check if it is a valid field element, then place it in the row. 
+				if ( $row && is_array( $row ) && sizeof( $row ) > 0 ){ 
+					$row_components = '' ; 
+					foreach( $row as $row_item ){ 
+						if ( !empty( $this->components[ $row_item ] ) ){
+							$row_components .= $this->components[$row_item] ; 
+							unset( $this->components[ $row_item ] ); 
+						}
+					}
+					if ( $label_in_left_column && $row_item == 'label' ){
+					 // do nothing
+					} else { 				
+						if ( isset( $this->components[$row_item] ) && $this->components[$row_item] && is_string( $this->components[$row_item] ) ){
+							$row_components .= $this->components[ $row_item ] ; 
+							unset( $this->components[$row_item] );
+						}
+					}
+					
+					if ( $row_components ){ ?>
+					<div class="field-row inline-field-elements">
+						<?php echo $row_components ; ?>
+					</div>
+					<?php }
+				// otherwise, check if the provided string is a valid field element, then place it in the row. 
+				} else {
+
+					// if its a standard layout ( table based  ) the label is needed on the left, so don't put it here					
+					if ( $label_in_left_column && $row == 'label' ){
+						// do nothing						
+					} else {
+						if ( $row && isset( $this->components[$row] ) && $this->components[$row] && is_string( $this->components[$row] ) ){ ?>
+							<div class="field-row"><?php echo $this->components[$row] ; ?></div>
+						<?php 
+							unset( $this->components[$row] );
+						}
+					}
+				}
+			}
+			// any unspecified elements are appended so they aren't left out. Used items have been unset (see above). 
+			foreach( $this->components as $index => $unspecified_item ){ 
+				if ( $unspecified_item ){
+					if ( !( $label_in_left_column && $index === 'label' )){ ?>
+					<div class="field-row"><?php echo $unspecified_item ; ?></div>
+					<?php }
+				}
+			}
+		}
+		return ob_get_clean() ;
+	}	
+
+	public function standard(){
+		?>
+			<div <?php echo $this->attributes; ?>>
+				<?php echo $this->arranged_components ; ?>
+			</div>		
+		<?php
+	}
+	public function table( ){  ?>
 		<tr valign="top" <?php echo $this->attributes; ?>>
 			<th scope="row"><?php echo $this->components['label'];  ?></th>
 			<td>	
@@ -401,7 +415,6 @@ class Cloud_Field {
 		<?php
 	}	
 	public function custom( ){
-		$layout_details = $this->info['layout']; 
 		?>
 			<div <?php echo $this->attributes; ?>>
 				<?php echo $this->arranged_components ; ?>
@@ -442,6 +455,9 @@ class Cloud_Field {
 		}
 
 	}
+	public static function get_option( $value, $spec ){
+		return $value ;
+	}	
 	public static function get_folder_url(){
 		return Cloud_Forms::get_folder_url() . '/'. basename( __FILE__, '.php') ;
 	}

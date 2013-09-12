@@ -6,7 +6,7 @@ global $cloud_form_defaults;
 $cloud_form_defaults = array (
 	'forms'				=> array (
 		'title'				=> 'Default Form Title',
-		'layout'			=> 'standard', // tabs, tabs_animated, standard, <custom html> 
+		'layout'			=> 'standard', // tabs, tabs_animated, standard, table<custom html> 
 										// depending if form is simple or multi-section, insert fields as [field_slug] or sections as [section_slug] 
 		'header_layout'		=> false, // <custom html> (insert [title] and [description] where desired )
 		'footer_layout' 	=> false, // <custom html> (insert [submit] and [description] where desired )
