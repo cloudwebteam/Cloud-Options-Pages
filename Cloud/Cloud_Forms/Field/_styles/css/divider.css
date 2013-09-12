@@ -1,7 +1,39 @@
-.field.type-divider{padding:.5em 0 1em}
-.field.type-divider .label{height:.5em;border-bottom:1px solid #666}
-.field.type-divider .label>.title{background:#fff;float:left;padding-right:10px;height:1em;font-weight:bold;font-size:1.125em;color:#444;text-transform:uppercase}
-.field.type-divider .label label,.field.type-group .group .field.type-divider .label label{cursor:default;float:none;text-align:left;padding:0}
-.field.type-divider>.row,.field.type-divider .divider{border-bottom:2px solid #ccc}
-.field.type-divider .divider{display:block;margin-bottom:.5em}
-.field.type-divider .copy_to_use{display:none !important}
+.field.type-divider {
+  padding: .5em 0 1em;
+}
+.field.type-divider .label {
+  height: .5em;
+  padding-top: .5em;
+  border-bottom: 1px solid #666;
+  font-size: .925em;
+}
+.field.type-divider .label > .title {
+  background: #fff;
+  float: left;
+  padding-right: 10px;
+  height: 1em;
+  font-weight: bold;
+  color: #444;
+  text-transform: uppercase;
+}
+.metabox .field.type-divider .label > .title {
+  background: #F6F6F6;
+}
+.field.type-divider .label label,
+.field.type-group .group .field.type-divider .label label {
+  cursor: default;
+  float: none ;
+  text-align: left;
+  padding: 0 ;
+}
+.field.type-divider > .row,
+.field.type-divider .divider {
+  border-bottom: 2px solid #ccc;
+}
+.field.type-divider .divider {
+  display: block;
+  margin-bottom: .5em;
+}
+.field.type-divider .copy_to_use {
+  display: none !important ;
+}
