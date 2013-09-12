@@ -52,6 +52,8 @@ $cloud_form_defaults_wp = array (
 			'code_link' 		=> true, 
 			'_lock'				=> false, 																		
 		),
+		'divider' => array (
+		),
 		'file'		=> array(
 		),		
 		'group'		=> array(
@@ -166,4 +168,3 @@ $cloud_form_defaults_wp = array (
 	),
 
 ); 
-
