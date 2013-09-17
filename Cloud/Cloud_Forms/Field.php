@@ -50,6 +50,8 @@ class Cloud_Field {
 	protected function construct_field(){
 		if ( $label = $this->get_label() ){
 			$components['label'] = '<div class="label">' .$label.'</div>' ; 
+		} else {
+			$components['label'] = false;
 		}
 
 		
@@ -407,7 +409,7 @@ class Cloud_Field {
 	}
 	public function table( ){  ?>
 		<tr valign="top" <?php echo $this->attributes; ?>>
-			<th scope="row"><?php echo $this->components['label'];  ?></th>
+			<td scope="row" class="first"><?php echo $this->components['label'];  ?></td>
 			<td>	
 				<?php echo $this->arranged_components ; ?>
 			</td>
