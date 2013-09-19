@@ -203,14 +203,15 @@ It can be
 		- A registered page template name. eg. 'Photo Gallery', or 'Left Sidebar'
 
 *Note: You can use this same array to add/remove post supports*
-
-
-1. `$Forms->add_supports( $to_what, (string/array) );`
-	- eg. `$Forms->add_supports( 'Sample Page', 'editor' )`
-	- eg. `$Forms->add_supports( 'Sample Page', array( 'editor', 'revisions', 'author' ) )`
-2. `$Forms->remove_supports( $to_what, (string/array) );`
-	- eg. `$Forms->remove_supports( 'Sample Page', 'editor' )`
-	- eg. `$Forms->remove_supports( 'Sample Page', array( 'editor', 'revisions', 'author' ) )`
+```php 
+	$Forms->add_supports( $to_what, string/array ); 
+	$Forms->add_supports( 'Sample Page', 'editor' );
+	$Forms->add_supports( array( 'template' => 'my-template' ), array( 'editor', 'revisions', 'author' ) ); 
+	
+	$Forms->remove_supports( $to_what, (string/array) );
+	$Forms->remove_supports( 'Sample Page', 'editor' );
+	$Forms->remove_supports( array( 'template' => 'my-template' ), array( 'editor', 'revisions' ) ); 	
+```
 
 The *metabox array* should have this form
 
