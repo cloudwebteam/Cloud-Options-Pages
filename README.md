@@ -195,10 +195,24 @@ It can be
 2. A post title (NOTE: *all* posts that match will get the metabox)
 3. A post slug (NOTE: *all* posts that match will get the metabox)
 4. The same arguments accepted by Wordpress's `get_posts()`, with the following additions
-	- `'template' => 'template name'`, A registered page template name. eg. 'Photo Gallery', or 'Left Sidebar'
-	- `'exclude_template' => 'template name'` A registered page template name. eg. 'Photo Gallery', or 'Left Sidebar'
+	- `'template' => 'template name'`, 
+		- a page template file name, with or without the '.php'. eg. 'tpl-photo-gallery', or 'tpl-photo-gallery.php'
+		- A registered page template name. eg. 'Photo Gallery', or 'Left Sidebar'
+	- `'exclude_template' => 'template name'`
+		- a page template file name, with or without the '.php'. eg. 'tpl-photo-gallery', or 'tpl-photo-gallery.php'
+		- A registered page template name. eg. 'Photo Gallery', or 'Left Sidebar'
 
-The array should have this form
+*Note: You can use this same array to add/remove post supports*
+
+
+1. `$Forms->add_supports( $to_what, (string/array) );`
+	- eg. `$Forms->add_supports( 'Sample Page', 'editor' )`
+	- eg. `$Forms->add_supports( 'Sample Page', array( 'editor', 'revisions', 'author' ) )`
+2. `$Forms->remove_supports( $to_what, (string/array) );`
+	- eg. `$Forms->remove_supports( 'Sample Page', 'editor' )`
+	- eg. `$Forms->remove_supports( 'Sample Page', array( 'editor', 'revisions', 'author' ) )`
+
+The *metabox array* should have this form
 
 ```php 
 'metabox_slug' => array(
@@ -218,6 +232,5 @@ The array should have this form
 #### Displaying Metaboxes
 
 Automatically added to all posts matching the `$to_what`
-
 
 
