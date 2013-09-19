@@ -216,6 +216,9 @@ class Cloud_Forms_WP extends Cloud_Forms {
 	}
 	
 	public function enqueue_scripts_and_styles(){
+		if ( !is_admin() && !$this->forms ) {
+			return;
+		}
 		$this->get_needed_field_scripts_and_styles(); 
 		$registered_scripts = self::$loader->get_registered_scripts(); 
 		foreach( $registered_scripts as $script ){
