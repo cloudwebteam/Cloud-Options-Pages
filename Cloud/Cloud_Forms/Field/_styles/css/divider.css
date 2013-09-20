@@ -37,3 +37,6 @@
 .field.type-divider .copy_to_use {
   display: none !important ;
 }
+.field.type-divider .field-row {
+  clear: both;
+}

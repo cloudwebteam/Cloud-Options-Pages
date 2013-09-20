@@ -18,7 +18,10 @@ class Cloud_Field_divider extends Cloud_Field {
 	*/	
 	public function table ( ){ ?>
 		<tr valign="top" <?php echo $this->attributes; ?>>
-			<th scope="row" colspan="2"><?php echo $this->components['label']; ?></th>
+			<th scope="row" colspan="2">
+				<?php echo $this->components['label']; ?>
+				<?php echo $this->arranged_components; ?>
+			</th>
 		</tr>
 		<?php
 	}	
