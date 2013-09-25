@@ -40,3 +40,10 @@
 .field.type-divider .field-row {
   clear: both;
 }
+.metabox.standard-layout .field.type-divider th {
+  padding: 1em 0 .5em;
+}
+.metabox .field.type-divider .description {
+  text-align: left;
+  font-weight: 300;
+}
