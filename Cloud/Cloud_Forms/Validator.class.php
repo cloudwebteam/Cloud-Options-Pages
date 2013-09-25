@@ -288,7 +288,9 @@
 	protected function prepare_to_save( $spec, $value ){
 		switch( $spec['type'] ){
 			case 'password' : 
-				return $value['password']; 
+				if ( $spec['confirm'] ){
+					return $value['password']; 
+				}
 			 	break;
 		}
 		return $value;
