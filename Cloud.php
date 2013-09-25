@@ -1,7 +1,7 @@
 <?php 
 define( 'Cloud_dir', get_bloginfo( 'template_directory' ) . '/Cloud'  ); 
 define( 'Cloud_ABS', dirname( __FILE__ ) . '/Cloud'  ); 
-define( 'Cloud_prefix' , 'Cloud_' );
+define( 'Cloud_prefix' , 'Cloud_' );<?php 
 class Cloud_Loader {
 	protected static $instance; 
 	protected $ABS = Cloud_ABS ;
@@ -103,6 +103,13 @@ class Cloud_Loader {
 		}
 		if( isset( $item_to_enqueue ) ){
 			$this->scripts[ $handle ] = $item_to_enqueue ;
+			if ( $item_to_enqueue['dependencies'] ){
+					foreach( $item_to_enqueue['dependencies'] as $dep ){
+						if ( !isset($this->scripts[ $dep ]) && isset( $this->registered_scripts[ $dep ])){
+							$this->scripts[ $dep ] = $this->registered_scripts[ $dep ];
+						}
+					}
+			}
 		} 
 	}
 	public function enqueue_style( $handle, $path = false, $dependencies = false ){
@@ -115,10 +122,18 @@ class Cloud_Loader {
 		} else {
 			if ( isset( $this->registered_styles[ $handle ] ) ){
 				$item_to_enqueue = $this->registered_styles[ $handle ] ;
+				if ( $item_to_enqueue['dependencies'] ){
+					foreach( $item_to_enqueue['dependencies'] as $dep ){
+						if ( !isset($this->styles[ $dep ]) && isset( $this->registered_styles[ $dep ])){
+							$this->styles[ $dep ] = $this->registered_styles[ $dep ];
+						}
+					}
+				}				
 			}
 		}
 		if( isset( $item_to_enqueue ) ){
 			$this->styles[ $handle ] = $item_to_enqueue ;
+
 		} 
 	}
 	public function register_script( $handle, $path, $dependencies = false ){
@@ -143,7 +158,6 @@ class Cloud_Loader {
 	}
 	public function print_styles(){
 		if ( $this->styles_have_been_printed ) return ; 	
-		
 		array_walk( $this->styles, array( $this, 'filter_out_styles_without_needed_dependencies'), $this->styles );
 		$this->styles = $this->sort_array_by_dependencies( $this->styles );	
 			
@@ -154,7 +168,7 @@ class Cloud_Loader {
 	}
 	public function print_scripts(){ 
 		if ( $this->scripts_have_been_printed ) return ; 
-		
+
 		if ( $this->global_js_vars ){ ?>
 		<script>
 			/* <! [CDATA[ */
@@ -175,7 +189,9 @@ class Cloud_Loader {
 	}	
 	protected function sort_array_by_dependencies( $array_to_sort ){
 		$sorted_array = array();
-		while ( sizeof( $array_to_sort ) > 0 ){ 
+		$i = 0;
+		while ( sizeof( $array_to_sort ) > 0 && $i < 100 ){ 
+			$i++;
 			foreach( $array_to_sort as $handle => $item ){
 				$all_dependencies_present = true; 
 		
