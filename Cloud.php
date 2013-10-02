@@ -260,7 +260,4 @@ class Cloud_Loader {
 		return $this->scripts;	
 	}	
 	
-}ts;	
-	}	
-	
 }
