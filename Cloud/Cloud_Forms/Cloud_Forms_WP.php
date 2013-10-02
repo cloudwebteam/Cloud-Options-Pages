@@ -545,10 +545,21 @@ class Cloud_Forms_WP extends Cloud_Forms {
 
 			// check template vars
             if ( isset( $add_to['template'] ) ){
-            	if ( ! $this->is_template( $add_to['template'] )){
-            		return false ; 
-            	}
-            	unset( $add_to['template'] );                 	
+            	if ( is_array( $add_to['template'] ) ){
+            		$page_template_in_array = false;
+            		foreach( $add_to['template'] as $template ){
+            			if ( $this->is_template( $template ) ){
+            				$page_template_in_array = true;
+            				break;
+            			}
+            		}
+            		if ( ! $page_template_in_array ) return false;
+            	} else {
+	            	if ( ! $this->is_template( $add_to['template'] )){
+	            		return false ; 
+	            	}
+	            }
+	            unset( $add_to['template'] );                 	
             }
             if ( isset( $add_to['exclude_template']) ){
             	if ( $this->is_template( $add_to['exclude_template'] )){
