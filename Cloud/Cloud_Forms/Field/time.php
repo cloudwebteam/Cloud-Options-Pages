@@ -25,7 +25,7 @@ class Cloud_Field_time extends Cloud_Field {
 		self::enqueue_style( 'bootstrap-timepicker' );
 
 		// if they exist, enqueues css and js files with this fields name
-		parent::enqueue_scripts_and_styles( $field_type = false ); 
+		parent::enqueue_scripts_and_styles( $field_type ); 
 	}	
 	
    /**
