@@ -1,7 +1,7 @@
 <?php 
-define( 'Cloud_dir', get_bloginfo( 'template_directory' ) . '/Cloud'  ); 
+define( 'Cloud_dir', get_stylesheet_directory_uri() . '/Cloud'  ); 
 define( 'Cloud_ABS', dirname( __FILE__ ) . '/Cloud'  ); 
-define( 'Cloud_prefix' , 'Cloud_' );<?php 
+define( 'Cloud_prefix' , 'Cloud_' );
 class Cloud_Loader {
 	protected static $instance; 
 	protected $ABS = Cloud_ABS ;
@@ -258,6 +258,9 @@ class Cloud_Loader {
 	}
 	public function get_scripts(){	
 		return $this->scripts;	
+	}	
+	
+}ts;	
 	}	
 	
 }
