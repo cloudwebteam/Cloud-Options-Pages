@@ -11,6 +11,10 @@
 			
 			$classes = self::get_form_classes( $form_slug, $spec );
 			$classes[] = 'wrap' ; 
+			if ( ! isset( $spec['sections'] ) ){
+				$classes[] = 'section';
+			}
+
 			$layout_vars['classes'] = implode ( ' ', $classes ); 		
 
 			$layout_vars['header'] = self::get_form_header( $form_slug, $spec ); 		
@@ -23,14 +27,24 @@
 			$layout_vars['footer'] = self::get_form_footer( $form_slug, $spec );
 			
 			
-			// get sections' html 
-			foreach( $spec['sections'] as $section_slug => $section_spec ){
-				$layout = Layout_Section::get_layout_function( $section_spec['layout'] );
-				$layout_vars['sections'][ $section_slug ] = array( 
-					'html' => Layout_Section::$layout( $section_slug, $section_spec, $spec ),
-					'title' => $section_spec['title'], 
-					'description' => $section_spec['description']
-				);
+			// if sections, get sections' html 
+			if ( isset( $spec['sections'] ) ){
+				foreach( $spec['sections'] as $section_slug => $section_spec ){
+					$layout = Layout_Section::get_layout_function( $section_spec['layout'] );
+					$layout_vars['sections'][ $section_slug ] = array( 
+						'html' => Layout_Section::$layout( $section_slug, $section_spec, $spec ),
+						'title' => $section_spec['title'], 
+						'description' => $section_spec['description']
+					);
+				}
+			// otherwise, get fields' html 
+			} else {
+				foreach( $spec['fields'] as $field_slug => $field_spec ){
+					$field_type = Cloud_Field::get_class_name( $field_spec['type'] );
+					ob_start();
+						$field_type::create_field( $field_spec ) ;
+					$layout_vars['fields'][ $field_slug ] = ob_get_clean() ;
+				}								
 			}
 			return $layout_vars; 		
 		}
@@ -52,6 +66,54 @@
 				'spec' => $form_spec
 			);
 		
+		}
+		public static function noSections(){
+			extract( self::get_layout_info( ) );
+			if ( $spec['layout'] === 'table' ){
+				// make variables available and easy to use by extracting them
+				ob_start();	?>
+				<div class="<?php echo $classes; ?>">
+					<form data-id="<?php echo $form_slug; ?>" action="options.php" method="post">
+						<?php echo $header; ?>
+						<table class="form-fields">
+					    	<?php foreach ( $fields as $field ) {
+								echo $field;
+							} ?>
+						</table>
+						<?php echo $footer; ?>
+					</form>						
+				</div>
+				<?php 
+				$output = ob_get_clean();
+				return $output;
+			} 
+			$layout = Layout_Form::get_layout_function( $spec['layout'] );	
+			if ( $layout === 'custom' ){
+				$layout = $spec['layout']; 
+				foreach ( $fields as $slug => $field ) {
+					$layout = preg_replace( '/\[ ?'.$slug.' ?\]/', $field, $layout );
+				} 						
+				$fields_layout = $layout ; 
+			} else {
+				$fields_layout = '';
+				foreach ( $fields as $field ) {
+					$fields_layout .= $field;
+				}
+			}
+			// make variables available and easy to use by extracting them
+			ob_start();	?>
+			<div class="<?php echo $classes; ?>">
+				<form data-id="<?php echo $form_slug; ?>" action="options.php" method="post">
+					<?php echo $header; ?>
+					<div class="form-fields">
+				    	<?php echo $fields_layout; ?>
+					</div>
+					<?php echo $footer; ?>
+				</form>						
+			</div>
+			<?php 
+			$output = ob_get_clean();
+			echo $output;		
 		}
 		public static function standard( ){
 			

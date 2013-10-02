@@ -20,10 +20,18 @@
 			$section_slug = $spec['section_slug'];
 			$field_slug = $spec['field_slug']; 
 			
-			$input_id = $subpage_slug . '_' . $section_slug . '_' . $field_slug ;			
-			$name = $subpage_slug . '['.$section_slug.']['.$field_slug.']' ;
-			$value = self::get_page_value( $subpage_slug, $section_slug, $field_slug );
-			$to_retrieve = array( '"'.$subpage_slug .'"', '"'.$section_slug.'"', '"'.$field_slug.'"' ); 				
+			if ( $section_slug ){
+				$input_id = $subpage_slug . '_' . $section_slug . '_' . $field_slug ;
+				$name = $subpage_slug . '['.$section_slug.']['.$field_slug.']' ;
+				$value = self::get_page_value( $subpage_slug, $section_slug, $field_slug );
+				$to_retrieve = array( '"'.$subpage_slug .'"', '"'.$section_slug.'"', '"'.$field_slug.'"' ); 				
+			} else {
+				$input_id = $subpage_slug . '_' . $field_slug ;
+				$name = $subpage_slug .'['.$field_slug.']' ;
+				$value = self::get_page_value( $subpage_slug, $field_slug );
+				$to_retrieve = array( '"'.$subpage_slug .'"', '"'.$field_slug.'"' ); 				
+
+			}
 		}
 
 		$cloneable =  isset( $spec['cloneable'] ) ? $spec['cloneable'] : false;
@@ -72,7 +80,7 @@
 		}
 		return $info;	
 	}
-	protected static function get_page_value( $subpage_slug, $section_slug, $field_slug ){
+	protected static function get_page_value( $subpage_slug, $section_slug, $field_slug = false ){
 		$Forms = Cloud_Forms_WP::get_instance(); 
 
 		return $Forms->get_page_data( $subpage_slug, $section_slug, $field_slug ); 

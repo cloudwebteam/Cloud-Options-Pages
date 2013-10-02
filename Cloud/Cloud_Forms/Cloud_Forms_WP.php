@@ -51,7 +51,7 @@ class Cloud_Forms_WP extends Cloud_Forms {
 		==================================================================================================================================== ***/
 	protected function merge_page_with_defaults( $top_level_slug, $top_level_page ){
 		$defaults = $this->defaults; 
-		$_top_level = array() ;
+		$_top_level = array() ;		
 		foreach( $defaults['top_level'] as $option_key => $default_value ){
 			if ( isset( $top_level_page[$option_key] ) ){
 				$set_value = $top_level_page[$option_key];
@@ -65,7 +65,6 @@ class Cloud_Forms_WP extends Cloud_Forms {
 			$_subpage =& $_top_level['subpages'][$subpage_slug];			
 			foreach ( $defaults['subpages'] as $option_key => $default_value ) {
 
-			
 				if ( isset( $subpage[ $option_key ] ) ){
 					$set_value = $subpage[$option_key];
 				} else {
@@ -77,16 +76,23 @@ class Cloud_Forms_WP extends Cloud_Forms {
 				}
 				$_subpage[$option_key] = $set_value;
 			}		
-
-			foreach ( $subpage['sections'] as $section_slug => $section){
-				$_subpage['sections'][$section_slug] = array();  
-				$_section =& $_subpage['sections'][$section_slug];	
-				$section['top_level_slug'] = $top_level_slug ; 
-				$section['subpage_slug'] = $subpage_slug;
-				$section['section_slug'] = $section_slug;
-				$_section = $this->finish_merge_with_defaults( $section, $subpage, $top_level_page ); 
+			// if it has sub-sections, deal with it as a normal page
+			if ( isset( $subpage['sections'] ) && $subpage['sections'] ){
+				foreach ( $subpage['sections'] as $section_slug => $section){
+					$_subpage['sections'][$section_slug] = array();  
+					$_section =& $_subpage['sections'][$section_slug];	
+					$section['top_level_slug'] = $top_level_slug ; 
+					$section['subpage_slug'] = $subpage_slug;
+					$section['section_slug'] = $section_slug;
+					$_section = $this->finish_merge_with_defaults( $section, $subpage, $top_level_page ); 
+				}
+			} else {
+				// do the section merging, and then smash the page spec together with the section spec.
+				$subpage['top_level_slug'] = $top_level_slug ; 
+				$subpage['subpage_slug'] = $subpage_slug;
+				$subpage['section_slug'] = false;
+				$_subpage = array_merge( $this->finish_merge_with_defaults( $subpage, $top_level_page ), $_subpage ); 
 			}
-				
 		}
 		return $_top_level ; 
 	}
@@ -256,7 +262,11 @@ class Cloud_Forms_WP extends Cloud_Forms {
 				$menu_slug = $top_level_slug ; 
 				$icon_url = $top_level_page['image'] ; 
 				$position = $top_level_page['priority'] ; 
-				$function = array( 'Layout_WP_Page' , Layout_WP_Page::get_layout_function( $same_name_subpage[ 'layout' ] ) ) ;
+				if ( isset( $same_name_subpage['sections'] )){
+					$function = array( 'Layout_WP_Page' , Layout_WP_Page::get_layout_function( $same_name_subpage[ 'layout' ] ) ) ;
+				} else {
+					$function = array( 'Layout_WP_Page' , 'noSections' ) ;
+				}
 				add_menu_page( $page_title, $menu_title, $capability, $menu_slug, $function, $icon_url, $position );
 
 			} else {
@@ -268,11 +278,11 @@ class Cloud_Forms_WP extends Cloud_Forms {
 				$menu_title = $subpage['menu_title'] ? $subpage['menu_title'] : $page_title ;  
 				$capability = $subpage['capability'] ; 
 				$menu_slug = $top_level_slug . '.' .$subpage_slug ; 
-				$icon_url = $top_level_page['image'] ; 
-				$position = $top_level_page['priority'] ; 
-
-				$function = array( 'Layout_WP_Page' , Layout_WP_Page::get_layout_function( $subpage[ 'layout' ] ) ) ; 
-
+				if ( isset( $same_name_subpage['sections'] )){
+					$function = array( 'Layout_WP_Page' , Layout_WP_Page::get_layout_function( $same_name_subpage[ 'layout' ] ) ) ;
+				} else {
+					$function = array( 'Layout_WP_Page' , 'noSections' ) ;
+				}
 				add_submenu_page( $top_level_slug, $page_title, $menu_title, $capability, $menu_slug, $function );
 
 			}
@@ -639,7 +649,6 @@ class Cloud_Forms_WP extends Cloud_Forms {
 		$value = false;
  
 		$array_values = $this->wp_saved ;
-			
 		if ( $array_values ){
 			if ( $subpage_slug === false ){
 				$value = $array_values ; 
