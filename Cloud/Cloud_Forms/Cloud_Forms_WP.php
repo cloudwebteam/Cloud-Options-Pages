@@ -198,9 +198,21 @@ class Cloud_Forms_WP extends Cloud_Forms {
 		// if any valid metaboxes on page, obviously not an options page, and has no forms
 		if ( $this->valid_metaboxes ){
 			array_walk_recursive( $this->valid_metaboxes, 'run_field_enqueue_function' ); 
+			return true;
 		// if its a valid options page, obviously no forms
-		} else if ( $script === 'admin.php' ){ 		
-			if ( isset( $query['page'] ) ){
+		} else if ( $script === 'admin.php' && isset( $query['page'] )){ 
+			// is a cloud options page ?	
+			$is_cloud_options_page = false; 
+			foreach( $this->pages as $top_level_slug => $page ){
+				foreach( $page['subpages'] as $subpage_slug => $subpage ){
+					$page_slug = ( $top_level_slug === $subpage_slug ) ? $top_level_slug : $top_level_slug . '.' . $subpage_slug; 
+					if ( $query['page'] === $page_slug ){
+						$is_cloud_options_page = true; 
+						break 2;
+					}
+				}
+			}
+			if ( $is_cloud_options_page ){
 				foreach( $this->pages as $top_level_slug => $page ){
 					if ( $query['page'] == $top_level_slug ){
 						array_walk_recursive( $page['subpages'][$top_level_slug], 'run_field_enqueue_function' ); 
@@ -213,19 +225,23 @@ class Cloud_Forms_WP extends Cloud_Forms {
 						}
 					}
 				}
+				return true;
 			}
 		// otherwise, there's no telling when they'll display a form, so we gotta be ready (only add the form on pages you want it!)
 		} else if ( $this->forms ) {
 			array_walk_recursive( $this->forms, 'run_field_enqueue_function' ); 
+			return true;
 		}
-
+		return false;
 	}
 	
 	public function enqueue_scripts_and_styles(){
 		if ( !is_admin() && !$this->forms ) {
 			return;
 		}
-		$this->get_needed_field_scripts_and_styles(); 
+		if( ! $enqueued_resources = $this->get_needed_field_scripts_and_styles() ){
+			return;
+		}
 		$registered_scripts = self::$loader->get_registered_scripts(); 
 		foreach( $registered_scripts as $script ){
 			wp_register_script( $script['handle'], $script['path'], $script['dependencies'] ); 
