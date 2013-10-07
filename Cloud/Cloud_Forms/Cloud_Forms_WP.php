@@ -322,7 +322,6 @@ class Cloud_Forms_WP extends Cloud_Forms {
 	}
 	public function form( $form_slug ){
 		if ( isset( $this->forms[$form_slug] ) ){
-			$this->validate_form( $form_slug ); 	
 			$form_spec = $this->forms[ $form_slug ] ; 
 			if ( isset( $form_spec['sections'] ) ){
 				$layout = Layout_Form::get_layout_function( $form_spec['layout'] );
@@ -446,6 +445,7 @@ class Cloud_Forms_WP extends Cloud_Forms {
 			$this->passed_in_forms[ $form_slug ] = $arg2;
 			$this->forms[ $form_slug ] = $this->merge_form_with_defaults( $form_slug, $form );
 		}
+		$this->validate_form( $form_slug );		
 	} 
 	public function remove_supports( $from_what, $supports ){
 
