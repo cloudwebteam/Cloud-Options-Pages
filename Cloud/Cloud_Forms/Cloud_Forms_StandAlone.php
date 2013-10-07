@@ -65,7 +65,7 @@ class Cloud_Forms_StandAlone extends Cloud_Forms {
 		==================================================================================================================================== ***/
 	protected function set_local_javascript_vars(){
 		self::$loader->add_global_js_var( 'cloud', array(
-			'cloud_ajax' => self::$dir . '/ajax/standAlone.php',
+			'cloud_ajax' => self::$dir . '/ajax/StandAlone.php',
 			'cloud_url' => self::$dir
 		) ); 
 	}
