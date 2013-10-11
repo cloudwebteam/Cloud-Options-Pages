@@ -66,7 +66,6 @@ abstract class Cloud_Forms {
 		==================================================================================================================================== ***/
 	protected function register_common_scripts(){
 		self::register_script( 'jquery', 'http://code.jquery.com/jquery-1.9.1.min.js' ); 
-		self::register_script( 'bootstrap', self::get_folder_url() .'/__inc/bootstrap/js/bootstrap.min.js', array( 'jquery' ) );  
 		self::register_script( 'scrollTo', self::get_folder_url() .'/__inc/jquery.scrollTo.min.js', array( 'jquery' ) );  
 		self::register_script( 'fancybox', self::get_folder_url() .'/__inc/fancybox/jquery.fancybox.js', array( 'jquery' ) );  
 		self::register_script( 'fineuploader', self::get_folder_url() .'/__inc/jquery.fineuploader_3.2/jquery.fineuploader-3.2.min.js', array( 'jquery' ) );  
@@ -110,8 +109,7 @@ abstract class Cloud_Forms {
 	}
 	protected function register_common_styles(){	
 		self::register_style( 'reset' , self::get_folder_url() .'/__inc/reset.css' );
-		self::register_style( 'bootstrap', self::get_folder_url() .'/__inc/bootstrap/css/bootstrap.min.css' ); 
-		self::register_style( 'bootstrap-responsive', self::get_folder_url() .'/__inc/bootstrap/css/bootstrap-responsive.min.css', array( 'bootstrap' ) ); 
+		self::register_style( 'bootstrap-grid', self::get_folder_url() .'/__inc/bootstrap3-grid/bootstrap.min.css' ); 
 		self::register_style( 'fancybox', self::get_folder_url() .'/__inc/fancybox/jquery.fancybox.css' );  
 
 		
