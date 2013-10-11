@@ -62,7 +62,8 @@ class Cloud_Forms_WP extends Cloud_Forms {
 		}
 		foreach( $top_level_page['subpages'] as $subpage_slug => $subpage ){
 			$_top_level['subpages'][$subpage_slug] = array();  
-			$_subpage =& $_top_level['subpages'][$subpage_slug];			
+			$_subpage =& $_top_level['subpages'][$subpage_slug];
+			if ( ! isset( $subpage['menu_title'] ) ) $subpage['menu_title']  = $subpage['title']; 			
 			foreach ( $defaults['subpages'] as $option_key => $default_value ) {
 
 				if ( isset( $subpage[ $option_key ] ) ){
