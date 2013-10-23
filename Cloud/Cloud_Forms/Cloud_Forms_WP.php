@@ -451,6 +451,7 @@ class Cloud_Forms_WP extends Cloud_Forms {
 	public function remove_supports( $from_what, $supports ){
 
 		if ( $this->is_valid_on_current_page( $from_what ) ){
+		
 			if ( is_array( $supports )){
 				foreach( $supports as $support){
 					$this->supports_to_remove[] = $support ; 
@@ -458,6 +459,7 @@ class Cloud_Forms_WP extends Cloud_Forms {
 						$index = array_search( $support, $this->supports_to_add ); 
 						unset( $this->supports_to_add[$index]);
 					}					
+
 				}
 			} else {
 				$support = $supports;				
@@ -466,7 +468,7 @@ class Cloud_Forms_WP extends Cloud_Forms {
 					$index = array_search( $support, $this->supports_to_add ); 
 					unset( $this->supports_to_add[$index]);
 				}					
-			}
+			}			
 		}
 	}
 	public function add_supports( $from_what, $supports ){
@@ -500,11 +502,13 @@ class Cloud_Forms_WP extends Cloud_Forms {
 			$post_type = $_GET['post_type']; 
 		}
 		if ( empty( $post_type ) ) return; 
+
+
 		foreach( $this->supports_to_remove as $support ){
-			remove_post_type_support( $current_post->post_type, $support );
+			remove_post_type_support( $post_type, $support );
 		}
 		foreach( $this->supports_to_add as $support ){
-			add_post_type_support( $current_post->post_type, $support );
+			add_post_type_support( $post_type, $support );
 		}		
 	}
 	protected function is_template( $metabox_template ){
