@@ -16,6 +16,7 @@ $cloud_form_defaults_wp = array (
 		'capability'	=> 'create_users',
 		'submit_text' 	=> 'Save Changes',
 		'layout'			=> 'standard', // tabs, tabs_animated, standard, <custom html> (insert sections as [section_slug] )
+		'description' => false,
 		'header_layout'		=> false, // <custom html> (insert [title] and [description] where desired )
 		'footer_layout' 	=> false, // <custom html> (insert [submit] and [description] where desired )
 	), 	
