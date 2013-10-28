@@ -60,7 +60,7 @@ class Cloud_Field_media extends Cloud_Field {
 			$value = json_decode( $this->info['value'], true ) ;
 			if( $value && is_numeric( $value['media'] ) ){
 				$attachment_id = $value['media'] ; 
-				$image_info = wp_get_attachment_image_src( $attachment_id, 'thumb', true ) ; 
+				$image_info = wp_get_attachment_image_src( $attachment_id, 'medium', true ) ; 
 				$url = $image_info[0] ;
 				if ( $url ){
 					return '<img class="preview-image img-polaroid" src="'.$url.'" title="'.$url.'" />';			
