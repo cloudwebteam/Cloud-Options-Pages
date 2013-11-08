@@ -27,6 +27,7 @@ class Cloud_Forms_WP extends Cloud_Forms {
 	}
 	public function wp_init(){
 		if ( is_admin() ){
+			wp_enqueue_style( __CLASS__ .'-global', parent::get_folder_url() .'/_styles/css/Cloud_Forms_Global.css' );
 			$this->enqueue_style( 'jquery-ui-lightness' ); 
 		}
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts_and_styles' ) ); 	
