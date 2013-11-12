@@ -13,11 +13,13 @@ class Cloud_Field_select extends Cloud_Field {
 		if ( $this->multiple ){
 			$multiple = ' multiple="multiple"' ; 
 			$this->info['name'] = $this->info['name'] . '[]'; 
+			$this->spec['first_option'] = false;
 		} else {
 			$multiple = '';
 		}
 		if ( $this->options_list ){
-			$field = '<select id="'. $this->info['id'] . '" name="'.$this->info['name'] . '" '.$multiple.' value="' . $this->info['value'] . '" '.$this->info['disabled'] .' >'. $this->options_list.'</select>';
+			$value = is_array( $this->info['value'] ) ? implode( ', ', $this->info['value'] ) : '';
+			$field = '<select id="'. $this->info['id'] . '" name="'.$this->info['name'] . '" '.$multiple.' value="' . $value . '" '.$this->info['disabled'] .' >'. $this->options_list.'</select>';
 		} else {
 			$field = 'No options available.';
 		}
