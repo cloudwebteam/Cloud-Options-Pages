@@ -27,7 +27,6 @@ class Cloud_Forms_WP extends Cloud_Forms {
 	}
 	public function wp_init(){
 		if ( is_admin() ){
-			wp_enqueue_style( __CLASS__ .'-global', parent::get_folder_url() .'/_styles/css/Cloud_Forms_Global.css' );
 			$this->enqueue_style( 'jquery-ui-lightness' ); 
 		}
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts_and_styles' ) ); 	
@@ -432,6 +431,22 @@ class Cloud_Forms_WP extends Cloud_Forms {
 			$this->metaboxes[ $metabox_slug ] = $metabox_spec ; 
 			if ( $this->is_valid_on_current_page( $add_to ) ){
 				$this->valid_metaboxes[ $metabox_slug ] = $metabox_spec ; 
+			}
+		}
+	}
+	public function remove_metaboxes( $from_what, $metaboxes ){	
+		if ( $this->is_valid_on_current_page( $from_what ) ){			
+			if ( is_array( $metaboxes )){
+				foreach( $metaboxes as $metabox_slug ){
+					if( isset( $this->valid_metaboxes[ $metabox_slug ])){
+						unset( $this->valid_metaboxes[ $metabox_slug ] );
+					}
+				}
+			} else {
+				$metabox_slug = $metaboxes;
+				if( isset( $this->metaboxes[ $metabox_slug ])){
+					unset( $this->metaboxes[ $metabox_slug ] );
+				}
 			}
 		}
 	}
