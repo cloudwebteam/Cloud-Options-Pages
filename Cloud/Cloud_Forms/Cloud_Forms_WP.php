@@ -240,6 +240,12 @@ class Cloud_Forms_WP extends Cloud_Forms {
 		if ( !is_admin() && !$this->forms ) {
 			return;
 		}
+		$registered_styles = self::$loader->get_registered_styles(); 
+		if ( isset( $registered_styles[ 'Cloud_Forms-global'])){
+			$global_styles = $registered_styles[ 'Cloud_Forms-global'];
+			wp_enqueue_style( 'Cloud_Forms-global', $global_styles['path'], $global_styles['dependencies'] );
+
+		}
 		if( ! $enqueued_resources = $this->get_needed_field_scripts_and_styles() ){
 			return;
 		}

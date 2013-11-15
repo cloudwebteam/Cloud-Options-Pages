@@ -115,6 +115,9 @@ abstract class Cloud_Forms {
 		
 		self::register_style( 'bootstrap-timepicker', self::get_folder_url(). '/__inc/bootstrap_timepicker/bootstrap-timepicker.min.css');
 		self::register_style( 'jquery-ui-lightness', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/css/ui-lightness/jquery-ui-1.10.1.custom.min.css' ); 
+
+		self::register_style( __CLASS__ .'-global', self::get_folder_url() .'/_styles/css/Cloud_Forms_Global.css' ); 		
+		self::register_style( __CLASS__, self::get_folder_url() .'/_styles/css/Cloud_Forms.css' ); 
 	
 	}	
 	
@@ -129,8 +132,8 @@ abstract class Cloud_Forms {
 	}
 	protected function load_global_styles(){	
 		self::enqueue_style( 'reset' ); 		
-		self::enqueue_style( __CLASS__ .'-global', self::get_folder_url() .'/_styles/css/Cloud_Forms_Global.css' ); 		
-		self::enqueue_style( __CLASS__, self::get_folder_url() .'/_styles/css/Cloud_Forms.css' ); 
+		self::enqueue_style( __CLASS__ .'-global' );
+		self::enqueue_style( __CLASS__ );
 	}
 	protected function set_local_javascript_vars(){
 		$this->global_js_vars = false; 
