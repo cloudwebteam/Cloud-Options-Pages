@@ -16,11 +16,12 @@
 			$layout_vars = array();
 			
 			$layout_vars['id'] = $form_slug ; 
+			$layout_vars['success_message'] = self::get_success_message( $form_slug, $spec );
 			
 			//set up section classes
 			$classes = array(); 
 			$classes[] = 'section';
-			
+						
 			// if its a simple, one section form
 			if ( !$page_spec ){
 				$form_classes = self::get_form_classes( $form_slug, $spec ); 		
@@ -53,7 +54,16 @@
 			}				
 			return $layout_vars; 		
 		}
-
+		public static function success( $form_slug = '', $spec = '' ){
+			extract( self::get_layout_info( $form_slug, $spec ), EXTR_OVERWRITE );
+			ob_start(); 
+			?>
+			<div class="<?php echo $classes; ?>">
+				<div class="success-message"><?php echo $success_message; ?></div>
+			</div>
+		<?php 
+			return ob_get_clean();		
+		}
 		public static function standAlone( $form_slug, $spec, $page_spec = false ){
 			extract( self::get_layout_info( $form_slug, $spec, $page_spec ) );
 			if ( $spec['layout'] === 'table' ){

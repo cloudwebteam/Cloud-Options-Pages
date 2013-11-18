@@ -13,6 +13,7 @@
 			$layout_vars['header'] = self::get_form_header( $form_slug, $spec ); 			
 			$layout_vars['footer'] = self::get_form_footer( $form_slug, $spec ); 
 			
+			$layout_vars['success_message'] = self::get_success_message( $form_slug, $spec );
 			// get sections' html 
 			foreach( $spec['sections'] as $section_slug => $section_spec ){
 			
@@ -29,9 +30,18 @@
 					<li class="section-<?php echo $section_slug; ?>-tab <?php echo $has_error_class ; ?>" ><a title="<?php echo $section_spec['description']; ?>" href="#<?php echo $form_slug; ?>_<?php echo $section_slug; ?>"><?php echo $section_spec['title']; ?></a></li>				
 				<?php $layout_vars['tabs'][] = ob_get_clean(); 
 				
-
 			}
 			return $layout_vars; 		
+		}
+		public static function success( $form_slug = '', $spec = '' ){
+			extract( self::get_layout_info( $form_slug, $spec ), EXTR_OVERWRITE );
+			ob_start(); 
+			?>
+			<div class="<?php echo $classes; ?>">
+				<div class="success-message"><?php echo $success_message; ?></div>
+			</div>
+		<?php 
+			return ob_get_clean();		
 		}
 		public static function standard( $form_slug = '' , $spec = '' ){
 			// make variables available and easy to use by extracting them

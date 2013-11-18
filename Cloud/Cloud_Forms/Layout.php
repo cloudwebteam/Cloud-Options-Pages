@@ -27,8 +27,8 @@
 			if ( isset( $spec['ajax'] ) && $spec['ajax'] ){
 				$classes[] = 'ajax' ;
 			}	
-			if ( isset( $spec['validation_error'] ) && $spec['validation_error'] ){
-				$classes[] = 'has-error' ; 
+			if ( isset( $spec['validation_error'] )){
+				$classes[] =  $spec['validation_error'] ? 'has-error' : 'successfully-submitted' ; 
 			}			
 			return $classes; 
 		}
@@ -55,28 +55,41 @@
 		}		
 		protected static function get_form_header( $form_slug, $spec ){
 		
-	
-			// setup title and description
+			// if successfully submitted, set success message
+			if ( isset( $spec['validation_error']) && ! $spec['validation_error'] ){
+				$success_message = self::get_success_message( $form_slug, $spec );
+			} else {
+				$success_message = false;
+			}
+			// setup title, success message, and description
 			if ( $spec['header_layout'] ){
+
 				$layout = $spec['header_layout']; 			
 				$title = empty( $spec['title'] ) ? '' : $spec['title']; 
-				$description = empty( $spec['description'] ) ? '' : $spec['description']; 				
+				$description = empty( $spec['description'] ) ? '' : $spec['description']; 					
 				$layout = preg_replace( '/\[ ?title ?\]/', $title, $layout ); 						
 				$layout = preg_replace( '/\[ ?description ?\]/', $description, $layout ); 										
-				
+				$layout = preg_replace( '/\[ ?success ?\]/', $success_message, $layout );
+
 				if ( $layout ){
 					$header = '<header class="cloud-form-header">' ; 
 					$header .= $layout;
 					$header .= '</header>' ; 
 					return $header; 
 				} 
-			} else {		
-				if ( !empty( $spec['title'] ) ||  !empty( $spec['description'] ) ){
+			} else {	
+				if ( !empty( $spec['title'] ) ||  !empty( $spec['description'] ) || !empty( $success_message ) ){
 					$title = !empty( $spec['title'] ) ? '<h2 class="title">'.$spec['title'] .'</h2>' : false; 
-					$description = !empty( $spec['description'] ) ? '<h4 class="description">'.$spec['description'] .'</h4>' : false; 				
-					return '<header class="cloud-form-header">'.$title .$description.'</header>' ; 
+					$description = !empty( $spec['description'] ) ? '<h4 class="description">'.$spec['description'] .'</h4>' : false; 									
+					return '<header class="cloud-form-header">'.$title .$description.$success_message.'</header>' ; 
 				}
 			}
 			return false; 
+		}
+		protected static function get_success_message( $form_slug, $spec ){
+			$message = '<div class="success-message">';
+			$message .= !empty( $spec['success'] ) ? $spec['success'] : 'Successfully submitted.';			
+			$message .= '</div>';
+			return $message; 
 		}
 	}

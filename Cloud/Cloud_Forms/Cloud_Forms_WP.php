@@ -330,12 +330,21 @@ class Cloud_Forms_WP extends Cloud_Forms {
 	public function form( $form_slug ){
 		if ( isset( $this->forms[$form_slug] ) ){
 			$form_spec = $this->forms[ $form_slug ] ; 
-			if ( isset( $form_spec['sections'] ) ){
-				$layout = Layout_Form::get_layout_function( $form_spec['layout'] );
-				$form_html = Layout_Form::$layout( $form_slug, $form_spec ); 
+			// successfully submitted, and hide_on_success
+			if ( isset( $form_spec['validation_error']) && ! $form_spec['validation_error'] && $form_spec['hide_on_success'] ){
+				if ( isset( $form_spec['sections'] ) ){
+					$form_html = Layout_Form::success( $form_slug, $form_spec ); 
+				} else {
+					$form_html = Layout_Section::success( $form_slug, $form_spec ); 
+				}					
 			} else {
-				$form_html = Layout_Section::standAlone( $form_slug, $form_spec ); 
-			}			
+				if ( isset( $form_spec['sections'] ) ){
+					$layout = Layout_Form::get_layout_function( $form_spec['layout'] );
+					$form_html = Layout_Form::$layout( $form_slug, $form_spec ); 
+				} else {
+					$form_html = Layout_Section::standAlone( $form_slug, $form_spec ); 
+				}
+			} 	
 		} else {
 			$form_html = 'No form "'.$form_slug.'" found' ; 		
 		}
