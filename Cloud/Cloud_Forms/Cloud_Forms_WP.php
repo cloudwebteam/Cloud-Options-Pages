@@ -801,7 +801,12 @@ class Cloud_Forms_WP extends Cloud_Forms {
 				if ( $json_array && is_array( $json_array ) ){
 					// grab top_level page array
 					if ( $is_metabox ){
-						$array_spec = $this->metaboxes[ array_shift( $path_to_option ) ] ;
+						$top_level_array = array_shift( $path_to_option );
+						if ( isset( $this->metaboxes[ $top_level_array ] ) ){
+							$array_spec = $this->metaboxes[ $top_level_array ] ;
+						} else {
+							return $value;
+						}						
 						$spec_key_names = array( 'fields', 'subfields' ); 
 					} else {
 						
