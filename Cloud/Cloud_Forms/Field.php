@@ -342,7 +342,6 @@ class Cloud_Field {
 		}
 		
 		$label_in_left_column = $this->layout === 'table' ;
-
 		ob_start(); 
 	
 		if ( is_array( $layout_array ) && sizeof( $layout_array ) > 0 ){
@@ -354,9 +353,13 @@ class Cloud_Field {
 				if ( $row && is_array( $row ) && sizeof( $row ) > 0 ){ 
 					$row_components = '' ; 
 					foreach( $row as $row_item ){ 
-						if ( !empty( $this->components[ $row_item ] ) ){
-							$row_components .= $this->components[$row_item] ; 
-							unset( $this->components[ $row_item ] ); 
+						if ( $label_in_left_column && $row_item == 'label' ){
+						 // do nothing
+						} else {
+							if ( !empty( $this->components[ $row_item ] ) ){
+								$row_components .= $this->components[$row_item] ; 
+								unset( $this->components[ $row_item ] ); 
+							}
 						}
 					}
 					if ( $label_in_left_column && $row_item == 'label' ){
