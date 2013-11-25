@@ -34,6 +34,7 @@
 					$layout_vars['sections'][ $section_slug ] = array( 
 						'html' => Layout_Section::$layout( $section_slug, $section_spec, $spec ),
 						'title' => $section_spec['title'], 
+						'layout' => $section_spec['layout'],
 						'description' => $section_spec['description']
 					);
 				}
@@ -139,16 +140,17 @@
 				<form data-id="<?php echo $form_slug; ?>" action="options.php" method="post">
 					<?php echo $header ; ?>		
 			    	<ul class="tabs cf">
-			    	<?php foreach ( $sections as $section_slug => $section ) { ?>			    	
+			    	<?php foreach ( $sections as $section_slug => $section ) { 
+						if ( $section['layout'] !== 'hidden' ){	?>
 				    	<li class="section-<?php echo $section_slug; ?>-tab" ><a title="<?php echo $section['description']; ?>" href="#<?php echo $form_slug; ?>_<?php echo $section_slug; ?>"><?php echo $section['title']; ?></a></li>
 					    <?php } ?>
+					<?php } ?>
 			    	</ul>
 			    	<div class="tabs-content">
 				    <?php foreach ( $sections as $section_slug => $section ) { ?>
 			    		<div id="<?php echo $form_slug; ?>_<?php echo $section_slug; ?>">
 				    		<?php echo $section['html']; ?>
 			    		</div>
-
 				    <?php } ?>		
 				    </div>				    
 				    <?php echo $footer; ?>
