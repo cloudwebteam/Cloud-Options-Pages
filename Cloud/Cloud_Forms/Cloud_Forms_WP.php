@@ -125,7 +125,7 @@ class Cloud_Forms_WP extends Cloud_Forms {
 				if ( isset( $form[$subpage_slug] ) ){
 					$set_value = $form[$subpage_slug];
 				} else {
-					if ( isset ( $top_level_page['defaults']['forms'][$subpage_slug] ) ) {
+					if ( isset( $top_level_page['defaults']['forms'][$subpage_slug] ) ) {
 						$set_value = $top_level_page['defaults']['forms'][$subpage_slug];
 					} else {
 						$set_value = $default_value;
@@ -301,8 +301,8 @@ class Cloud_Forms_WP extends Cloud_Forms {
 				$menu_title = $subpage['menu_title'] ? $subpage['menu_title'] : $page_title ;  
 				$capability = $subpage['capability'] ; 
 				$menu_slug = $top_level_slug . '.' .$subpage_slug ; 
-				if ( isset( $same_name_subpage['sections'] )){
-					$function = array( 'Layout_WP_Page' , Layout_WP_Page::get_layout_function( $same_name_subpage[ 'layout' ] ) ) ;
+				if ( isset( $subpage['sections'] )){
+					$function = array( 'Layout_WP_Page' , Layout_WP_Page::get_layout_function( $subpage[ 'layout' ] ) ) ;
 				} else {
 					$function = array( 'Layout_WP_Page' , 'noSections' ) ;
 				}
@@ -801,7 +801,7 @@ class Cloud_Forms_WP extends Cloud_Forms {
 				if ( $json_array && is_array( $json_array ) ){
 					// grab top_level page array
 					if ( $is_metabox ){
-						$top_level_array = array_shift( $path_to_option );
+						$top_level_array = array_shift( $path_to_option );					
 						if ( isset( $this->metaboxes[ $top_level_array ] ) ){
 							$array_spec = $this->metaboxes[ $top_level_array ] ;
 						} else {
