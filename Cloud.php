@@ -21,9 +21,9 @@ class Cloud_Loader {
 	protected $scripts_have_been_printed ; 
 	protected $global_js_vars ; 
 	private function __construct( $directories = false ){
+		$this->load_directories( $directories );		
 		// loads folder with this class's name	
 		$this->load_directory(); 	
-		$this->load_directories( $directories );
  	}
  	
 	public static function init( $directories = array() ){
