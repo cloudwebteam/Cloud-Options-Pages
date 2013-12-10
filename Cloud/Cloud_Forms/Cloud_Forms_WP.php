@@ -195,6 +195,9 @@ class Cloud_Forms_WP extends Cloud_Forms {
 				$field_classname = Cloud_Field::get_class_name( $field_type );
 				$field_classname::enqueue_scripts_and_styles( $field_type ) ;	// only this early to get them in Wordpress's queue early enough
 			}
+			if ( ($key === 'sort' || $key === 'zero_text') && $item ){
+				Cloud_Forms_WP::get_instance()->enqueue_script( 'jquery-ui-sortable' );
+			} 
 		}
 		// if any valid metaboxes on page, obviously not an options page, and has no forms
 		if ( $this->valid_metaboxes ){
@@ -249,6 +252,7 @@ class Cloud_Forms_WP extends Cloud_Forms {
 		if( ! $enqueued_resources = $this->get_needed_field_scripts_and_styles() ){
 			return;
 		}
+
 		$registered_scripts = self::$loader->get_registered_scripts(); 
 		foreach( $registered_scripts as $script ){
 			wp_register_script( $script['handle'], $script['path'], $script['dependencies'] ); 
