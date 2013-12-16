@@ -22,3 +22,7 @@
   top: -1px;
   margin-right: 5px;
 }
+/* ==== TABLE ============================================= */
+tr.field.type-checkbox > td .input {
+  min-height: 30px;
+}

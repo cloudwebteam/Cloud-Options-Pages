@@ -12,7 +12,7 @@ class Cloud_Field_radio extends Cloud_Field {
 		$field = '' ; 
 		foreach( $this->spec['options'] as $value => $text ){
 			$checked = $this->info['value'] == $value ? ' checked ' : '';		
-			$field .= '<div class="radio-group">'; 
+			$field .= '<div class="radio-group cf">'; 
 			$field .= '<input type="radio" id="'.$this->info['id'] . '-'.$value.'" name="'.$this->info['name'] . '" value="'.$value.'"' . $checked .' />';		
 			$field .= '<label for="'.$this->info['id'] . '-' . $value .'">'.$text.'</label>' ; 
 			$field .= '</div>'; 

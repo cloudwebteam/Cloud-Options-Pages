@@ -357,7 +357,7 @@
   font-size: .875em;
   padding: 1em 10px;
   border: 1px solid #ccc;
-  background: transparent;
+  background: #fafafa;
   cursor: pointer;
   -webkit-transition: all .2s ease;
   -moz-transition: all .2s ease;
@@ -441,9 +441,10 @@
 }
 /* ==== METABOXES ============================================= */
 #poststuff .cloud-form.metabox .cloud-form-header .description {
-  margin: 0;
+  border: none;
   border-bottom: 1px solid #ccc;
   padding: .5em 0;
+  margin: .5em 0 1em;
 }
 #poststuff .cloud-form.metabox .cloud-form-header .title {
   display: none;
@@ -454,8 +455,12 @@
   margin-top: .5em;
   border-collapse: collapse;
 }
-.cloud-form.metabox .form-fields td.first {
+.cloud-form.metabox .form-fields th.first {
   width: 150px;
+}
+.cloud-form.metabox .form-fields th,
+.cloud-form.metabox .form-fields td {
+  padding: .5em 0;
 }
 .cloud-form.metabox .label {
   padding-top: 0;
