@@ -8,6 +8,9 @@
   position: relative ;
   margin-right: 5px;
 }
+.field.type-checkbox > .inline-field-elements > * {
+  margin-left: 0;
+}
 .field.type-checkbox .multiple-options {
   padding-left: 0px;
 }

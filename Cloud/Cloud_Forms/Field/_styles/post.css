@@ -1,26 +1,26 @@
-.type-post .current-data {
+.field.type-post .current-data {
   margin: 2px 0 5px;
 }
-.type-post .current-data .post-property {
+.field.type-post .current-data .post-property {
   color: #999;
   text-transform: uppercase;
   font-style: italic;
   font-size: .75em;
   padding-left: 5px;
 }
-.type-post .input {
+.field.type-post .input {
   width: 100%;
 }
-.type-post .current-data .select-post {
+.field.type-post .current-data .select-post {
   padding-left: 10px;
   display: inline-block;
   float: right;
 }
-.type-post .preview {
+.field.type-post .preview {
   float: none;
   display: block;
 }
-.type-post .preview .inner {
+.field.type-post .preview .inner {
   border: 1px solid #ccc;
   background: #eee;
   overflow: scroll ;
@@ -31,15 +31,15 @@
   color: #666;
   font-size: .75em;
 }
-.type-post .remove-post {
+.field.type-post .remove-post {
   display: inline-block;
   padding: 0 5px;
   cursor: pointer;
 }
-.type-post .remove-post.hidden {
+.field.type-post .remove-post.hidden {
   display: none;
 }
-.group .type-post .input {
+.group .field.type-post .input {
   width: auto;
 }
 /***====================================================================================================================================

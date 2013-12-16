@@ -95,6 +95,7 @@ class Cloud_Forms_WP extends Cloud_Forms {
 				$_subpage = array_merge( $this->finish_merge_with_defaults( $subpage, $top_level_page ), $_subpage ); 
 			}
 		}
+		$_top_level['form_type'] = 'options-page';
 		return $_top_level ; 
 	}
 	protected function merge_metabox_with_defaults( $metabox_slug, $metabox ){
@@ -113,6 +114,7 @@ class Cloud_Forms_WP extends Cloud_Forms {
 			$_metabox[$option_key] = $set_value;
 		}			
 		$_metabox = array_merge( $_metabox, $this->finish_merge_with_defaults( $section ) ); 
+		$_metabox['form_type'] = 'metabox';
 		return $_metabox ; 
 	}	
 	protected function merge_form_with_defaults( $form_slug, $form ){
@@ -156,6 +158,7 @@ class Cloud_Forms_WP extends Cloud_Forms {
 			$_form = array_merge( $_form, $this->finish_merge_with_defaults( $form ) ); 
 			unset( $_form['sections'] ); 
 		}		
+		$_form['form_type'] = 'stand-alone';		
 		return $_form;		
 	}
 	protected function get_WP_saved_data(){

@@ -1,15 +1,28 @@
-.field.type-radio .radio-group {
-	height: 1.5em;
-	label {
-		line-height: 1em;
-		float: left;
-		padding: .125em 0 .25em;
-		font-size: .875em;
-		margin: 0;
-	} 
-	input {
-		position: relative ;
-		margin-right: 5px;
-		float: left;
+
+.cloud-form {
+	.field.type-radio .radio-group {
+		height: 1.5em;
+		label {
+			line-height: 1em;
+			float: left;
+			font-size: .875em;
+			margin: 0;
+		} 
+		input {
+			position: relative ;
+			margin-right: 5px;
+			float: left;
+		}
+	}
+	&.type-metabox .field.type-radio .radio-group,
+	&.type-options-page .field.type-radio .radio-group {
+		label {
+			padding: .125em 0 .25em;
+		}
+	}
+	&.type-stand-alone .field.type-radio .radio-group {
+		label {
+			padding: .375em 0 0 ;
+		}
 	}
 }

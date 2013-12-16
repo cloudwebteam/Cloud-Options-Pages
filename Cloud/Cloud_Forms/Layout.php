@@ -22,6 +22,9 @@
 			$classes = array(); 
 			$classes[] = 'cloud'; //necessary to keep Bootstrap from interfering
 			$classes[] = 'cloud-form';
+			if ( !empty( $spec['form_type'] )){
+				$classes[] = 'type-'.$spec['form_type'] ;
+			}
 			$classes[] = 'form-'.$form_slug; 
 			$classes[] = isset( $spec['layout'] ) && strpos(  $spec['layout'], '[' ) === false ? $spec['layout'] . '-layout' : 'custom-layout';
 			if ( isset( $spec['ajax'] ) && $spec['ajax'] ){

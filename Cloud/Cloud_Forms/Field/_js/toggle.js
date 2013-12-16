@@ -6,7 +6,7 @@ CloudField.on( 'init', function( $, $context ){
 		var $field = $(this); 
 		var $section = $field.parents( '.section, .metabox' ); 
 		var is_subfield = $field.parents( '.field' ).size() > 0 ; 
-		var in_table_based_layout = $section.hasClass('.table-layout') ;
+		var in_table_based_layout = $section.hasClass('table-layout') ;
 				
 		var $inputs = $field.find( 'input[name]' ); 
 		var $select = $field.find( 'select' ); 
@@ -48,7 +48,7 @@ CloudField.on( 'init', function( $, $context ){
 		function show_fields( $fields, animate ){
 			if ( animate ) {
 				if ( in_table_based_layout ){
-					$fields.fadeIn('fast');
+					$fields.show('fast')
 				} else {
 					$fields.slideDown('fast'); 			
 				}
@@ -59,7 +59,7 @@ CloudField.on( 'init', function( $, $context ){
 		function hide_fields( $fields , animate ){		
 			if ( animate ) {
 				if ( in_table_based_layout ){
-					$fields.fadeOut('fast');
+					$fields.hide('fast')
 				} else {
 					$fields.slideUp('fast'); 			
 				}

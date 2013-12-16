@@ -21,6 +21,18 @@
   line-height: 1.25em;
   color: #333;
 }
+.cloud-form.stand-alone h1 {
+  font-size: 2em;
+}
+.cloud-form.stand-alone h2 {
+  font-size: 1.5em;
+}
+.cloud-form.stand-alone h3 {
+  font-size: 1.25em;
+}
+.cloud-form.stand-alone h4 {
+  font-size: 1.125em;
+}
 /***====================================================================================================================================
 		GENERAL PAGE 
 	==================================================================================================================================== ***/
@@ -133,7 +145,7 @@
   line-height: 1em;
 }
 .cloud-form .field-row > * {
-  margin-left: 15px;
+  margin-left: 10px;
   max-width: 100%;
 }
 .cloud-form .field-row > *:first-child {
@@ -266,6 +278,7 @@
 }
 .cloud-form .input .cloneable {
   padding-right: 60px;
+  padding-left: 0;
   width: auto;
 }
 .cloud-form .no-controls .input .cloneable {
@@ -421,18 +434,25 @@
 .cloud-form.standard-layout th .label {
   padding-right: 5px;
 }
+.cloud-form.table-layout th {
+  vertical-align: top;
+}
+.cloud-form .form-fields th,
+.cloud-form .form-fields td {
+  padding: 1em 0;
+}
 /***====================================================================================================================================
 		WORDPRESS STYLES 
 	==================================================================================================================================== ***/
 /* ==== OPTIONS PAGES ============================================= */
-.cloud-form .cloud-form-header > .description {
+#wpbody .cloud-form .cloud-form-header > .description {
   border: 1px solid #ccc;
   background: #fff;
   padding-left: 10px;
   padding-right: 10px;
   font-size: 1em;
 }
-.cloud-form .cloud-section-header > .description {
+#wpbody .cloud-form .cloud-section-header > .description {
   border: 1px solid #ccc;
   background: #fff;
   padding-left: 10px;
@@ -465,6 +485,7 @@
 .cloud-form.metabox .label {
   padding-top: 0;
 }
+/* ==== STAND ============================================= */
 /***====================================================================================================================================
 		MISCELLANEOUS
 	==================================================================================================================================== ***/
