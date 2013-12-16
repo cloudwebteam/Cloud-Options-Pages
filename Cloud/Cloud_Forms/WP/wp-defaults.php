@@ -5,7 +5,7 @@ global $cloud_form_defaults_wp ;
 $cloud_form_defaults_wp = array (
 
 	'top_level' => array (
-		'image'		=> 'IMAGE_URL', 
+		'image'		=> 'dashicons-admin-generic', 
 		'priority'	=> 52,
 		'subpages'	=> array (
 		)
@@ -115,6 +115,11 @@ $cloud_form_defaults_wp = array (
 			'_lock'			=> false				
 		),	
 		'radio'	=> array(
+			'editor_list'		=> false,
+			'code_link' 		=> true, 
+			'_lock'				=> false, 											
+		),
+		'range_slider'	=> array(
 			'editor_list'		=> false,
 			'code_link' 		=> true, 
 			'_lock'				=> false, 											

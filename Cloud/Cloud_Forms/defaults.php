@@ -227,7 +227,7 @@ $cloud_form_defaults = array (
 		),		
 		// a jquery-UI slider
 		'range_slider' 		=> array(
-			'title'				=> 'Text Input',						
+			'title'				=> 'Range Slider',						
 			'layout'			=> array('label', 'input' , 'error', 'description'),
 			'cloneable'			=> false,
 			'description'		=> null,

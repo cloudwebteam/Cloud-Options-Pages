@@ -116,8 +116,8 @@ abstract class Cloud_Forms {
 		self::register_style( 'bootstrap-timepicker', self::get_folder_url(). '/__inc/bootstrap_timepicker/bootstrap-timepicker.min.css');
 		self::register_style( 'jquery-ui-lightness', self::get_folder_url() . '/__inc/jquery-ui-1.10.1.custom/css/ui-lightness/jquery-ui-1.10.1.custom.min.css' ); 
 
-		self::register_style( __CLASS__ .'-global', self::get_folder_url() .'/_styles/css/Cloud_Forms_Global.css' ); 		
-		self::register_style( __CLASS__, self::get_folder_url() .'/_styles/css/Cloud_Forms.css' ); 
+		self::register_style( __CLASS__ .'-global', self::get_folder_url() .'/_styles/Cloud_Forms_Global.css' ); 		
+		self::register_style( __CLASS__, self::get_folder_url() .'/_styles/Cloud_Forms.css' ); 
 	
 	}	
 	

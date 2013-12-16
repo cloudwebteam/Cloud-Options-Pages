@@ -100,11 +100,11 @@
   padding-right: 22px;
   line-height: 17px;
   height: 17px;
-  background: url(../images/exclamation.png) no-repeat right top;
+  background: url(images/exclamation.png) no-repeat right top;
   position: relative;
 }
 #values-as-defaults:hover {
-  background: url(../images/exclamation.png) no-repeat right bottom;
+  background: url(images/exclamation.png) no-repeat right bottom;
 }
 #values-as-defaults .success {
   display: none;

@@ -186,7 +186,7 @@ class Cloud_Field {
 		if ( !empty( $this->info['to_retrieve'] ) ){
 			ob_start();?>
 			<span class="copy_to_use">
-				<span class="copy-label">Use:</span> <input class="copy_to_use_input" type="text" value='<?php echo $this->info['to_retrieve'] ; ?>' disabled />
+				<span class="copy-label">PHP:</span> <input class="copy_to_use_input" type="text" value='<?php echo $this->info['to_retrieve'] ; ?>' disabled />
 			</span>
 		<?php 
 			return ob_get_clean();
@@ -412,7 +412,7 @@ class Cloud_Field {
 	}
 	public function table( ){  ?>
 		<tr valign="top" <?php echo $this->attributes; ?>>
-			<td scope="row" class="first"><?php echo $this->components['label'];  ?></td>
+			<th class="first"><?php echo $this->components['label'];  ?></th>
 			<td>	
 				<?php echo $this->arranged_components ; ?>
 			</td>
@@ -445,7 +445,7 @@ class Cloud_Field {
 		$class_name = self::get_class_name( $field_type ); 
 		if ( $field_type ){		
 			$js_abs = self::get_include_path() . '/_js/'.$field_type.'.min.js' ; 
-			$css_abs = self::get_include_path() . '/_styles/css/'.$field_type.'.css' ; 
+			$css_abs = self::get_include_path() . '/_styles/'.$field_type.'.css' ; 
 			
 			if ( file_exists( $js_abs ) ){
 			
@@ -454,7 +454,7 @@ class Cloud_Field {
 			} 
 			if ( file_exists( $css_abs ) ){
 			
-				$css_path = self::get_folder_url() . '/_styles/css/'.$field_type.'.css' ; 
+				$css_path = self::get_folder_url() . '/_styles/'.$field_type.'.css' ; 
 				self::enqueue_style( $class_name, $css_path, array( 'Cloud_Forms' ));
 			}
 		}

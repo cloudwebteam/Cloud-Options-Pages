@@ -70,7 +70,8 @@
 		}
 		public static function noSections(){
 			extract( self::get_layout_info( ) );
-			if ( $spec['layout'] === 'table' ){
+
+			if ( ( $spec['layout'] === 'table' && ! empty( $spec['form_slug'] ) ) || $spec['layout'] === 'standard' ){			
 				// make variables available and easy to use by extracting them
 				ob_start();	?>
 				<div class="<?php echo $classes; ?>">
@@ -86,7 +87,8 @@
 				</div>
 				<?php 
 				$output = ob_get_clean();
-				return $output;
+				echo $output;
+				return;
 			} 
 			$layout = Layout_Form::get_layout_function( $spec['layout'] );	
 			if ( $layout === 'custom' ){

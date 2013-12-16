@@ -166,6 +166,7 @@ var CloudField = ( function($){
 					$add_buttons.removeClass('disabled' ); 			
 				}
 				
+
 				$add_buttons.unbind('click.cloneable').on( 'click.cloneable' , function ( ){
 					add_clone( $(this) );
 				});			
@@ -180,6 +181,9 @@ var CloudField = ( function($){
 				}); 
 			}								
 			update_cloneable();
+			$cloneable.find( '.empty-text' ).first().on( 'click.cloneable', function(){
+				$add_buttons.first().trigger( 'click' );
+			});
 			trigger( 'init', $cloneable ); 
 			
 		}); 

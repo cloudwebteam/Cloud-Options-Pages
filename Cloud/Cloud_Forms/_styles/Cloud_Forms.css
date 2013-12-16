@@ -1,37 +1,25 @@
+/* change box model */
+.cloud-form .field:not(.type-wysiwyg) *,
+.cloud-form .field:not(.type-wysiwyg) *:before,
+.cloud-form .field:not(.type-wysiwyg) *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
 /***====================================================================================================================================
 		TYPOGRAPHY
 	==================================================================================================================================== ***/
 .cloud-form {
   font-size: 1em;
 }
-.cloud-form h1 {
-  font-size: 2em;
-}
-.cloud-form h2 {
-  font-size: 1.5em;
-}
-.cloud-form h3 {
-  font-size: 1.125em;
-}
-.cloud-form h4 {
-  font-size: 1em;
-}
-.cloud-form h5 {
-  font-size: .875em;
-}
-.cloud-form h6 {
-  font-size: .75em;
-}
-.cloud-form .title {
-  padding: .25em 0;
-  line-height: 1.125em;
-}
 .cloud-form .description {
-  color: #777;
   font-style: italic;
   font-weight: light;
   font-size: .875em;
-  padding: .25em 0;
+  font-weight: normal;
+  padding: .66em 0;
+  line-height: 1.25em;
+  color: #333;
 }
 /***====================================================================================================================================
 		GENERAL PAGE 
@@ -56,7 +44,6 @@
 	==================================================================================================================================== ***/
 .cloud-form .section > header {
   padding: 1em 0 ;
-  border-bottom: 1px dashed #ccc;
 }
 /***====================================================================================================================================
 		GENERAL INPUT STYLES
@@ -75,6 +62,8 @@
 .cloud-form textarea,
 .cloud-form select {
   margin-bottom: 0;
+  font-size: 13px;
+  padding: .25em 5px;
 }
 .cloud-form select {
   height: 1.5em;
@@ -101,10 +90,8 @@
 .cloud-form .field-row:after {
   content: " ";
   /* 1 */
-
   display: table;
   /* 2 */
-
 }
 .cloud-form .field-row:after {
   clear: both;
@@ -123,7 +110,6 @@
 }
 .cloud-form .label {
   /* reset...collides with a bootstrap class */
-
   width: auto;
   height: auto;
   margin: 0;
@@ -135,7 +121,6 @@
   background: none;
   border: none;
   /* end reset */
-
   font-weight: bold;
   font-size: .875em;
   text-align: left;
@@ -171,7 +156,6 @@
   padding: 3px;
   height: auto;
   font-size: .75em;
-  color: #21779D;
   font-family: monospace;
   display: none;
   z-index: 100;
@@ -181,24 +165,31 @@
 .copy_to_use .copy-label {
   display: inline-block;
   position: relative;
-  top: -4px;
+  color: #444;
+  top: 0px;
 }
 .copy_to_use > input {
   background: #fff;
   width: 100px;
   border: 1px solid #ccc;
   display: inline-block;
+  height: 1.5em;
+  padding: .25em 0;
+  line-height: 1em;
   -webkit-transition: all 0.2s ease-out;
   -moz-transition: all 0.2s ease-out;
   -ms-transition: all 0.2s ease-out;
   -o-transition: all 0.2s ease-out;
   transition: all 0.2s ease-out;
 }
+.copy_to_use.active .copy-label {
+  color: #0074A2;
+}
 .copy_to_use.active > input {
-  width: 400px;
-  border: 1px solid #aaa;
+  width: 300px;
+  border: 1px solid #fff;
   background: #efefec;
-  box-shadow: 0 0 3px #24B2FF;
+  box-shadow: 0 0 6px #0074A2;
   -webkit-transition: all 0.2s ease-in;
   -moz-transition: all 0.2s ease-in;
   -ms-transition: all 0.2s ease-in;
@@ -227,13 +218,16 @@
   width: 300px;
 }
 .cloud-form .copy_to_use .copy {
-  font-size: 1em;
+  font-size: 12px;
   padding: 0 5px;
   border: 1px solid #08C;
   max-width: 100%;
   width: 300px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
   text-align: center;
+}
+.cloud-form .copy_to_use .copy_to_use_input {
+  font-size: 10px;
 }
 /***====================================================================================================================================
 		ERRORS
@@ -269,9 +263,6 @@
 	==================================================================================================================================== ***/
 .field.has-cloneable {
   padding-bottom: .5em;
-}
-.field.has-cloneable .input {
-  padding-top: .5em;
 }
 .cloud-form .input .cloneable {
   padding-right: 60px;
@@ -358,14 +349,24 @@
   border-radius: 3px;
 }
 .no-clones {
-  border-top: 1px solid #ccc;
-  padding: .5em 0;
+  padding: 0;
   position: relative;
 }
 .cloneable .no-clones .empty-text {
   font-style: italic;
   font-size: .875em;
-  float: left;
+  padding: 1em 10px;
+  border: 1px solid #ccc;
+  background: transparent;
+  cursor: pointer;
+  -webkit-transition: all .2s ease;
+  -moz-transition: all .2s ease;
+  -ms-transition: all .2s ease;
+  -o-transition: all .2s ease;
+  transition: all .2s ease;
+}
+.cloneable .no-clones .empty-text:hover {
+  background: #fff;
 }
 .cloneable .no-clones .add-remove {
   float: right;
@@ -379,21 +380,35 @@
 /***====================================================================================================================================
 		LAYOUTS
 	==================================================================================================================================== ***/
+.cloud-form .tabs {
+  border-bottom: 1px solid #999;
+  padding-bottom: .5em;
+  margin-bottom: 0;
+}
 .cloud-form .tabs li {
   float: left;
-}
-.cloud-form .tabs li:first-child a {
-  padding-left: 0;
+  padding-right: 3px;
 }
 .cloud-form .tabs li a {
   display: block;
   padding: .5em 10px;
-  color: #999;
+  color: #666;
+  background: #eaeaea;
   text-decoration: none;
+  border: 1px solid #ccc;
+  -webkit-transition: all .2s ease;
+  -moz-transition: all .2s ease;
+  -ms-transition: all .2s ease;
+  -o-transition: all .2s ease;
+  transition: all .2s ease;
+}
+.cloud-form .tabs li a:hover {
+  border-color: #666;
 }
 .cloud-form .tabs li.active a {
-  color: #333;
-  font-weight: bold;
+  color: #fff;
+  background: #333;
+  border: 1px solid #666;
 }
 .cloud-form .tabs li.has-error a {
   color: #cc0000;
@@ -403,13 +418,28 @@
   padding: 0;
   border-bottom: none;
 }
-.cloud-form.standard-layout .label {
-  font-size: 1em;
-  font-weight: normal;
+.cloud-form.standard-layout th .label {
+  padding-right: 5px;
 }
 /***====================================================================================================================================
-		METABOX SPECIFIC
+		WORDPRESS STYLES 
 	==================================================================================================================================== ***/
+/* ==== OPTIONS PAGES ============================================= */
+.cloud-form .cloud-form-header > .description {
+  border: 1px solid #ccc;
+  background: #fff;
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size: 1em;
+}
+.cloud-form .cloud-section-header > .description {
+  border: 1px solid #ccc;
+  background: #fff;
+  padding-left: 10px;
+  padding-right: 10px;
+  display: block;
+}
+/* ==== METABOXES ============================================= */
 #poststuff .cloud-form.metabox .cloud-form-header .description {
   margin: 0;
   border-bottom: 1px solid #ccc;
@@ -437,10 +467,8 @@
 .cf:after {
   content: " ";
   /* 1 */
-
   display: table;
   /* 2 */
-
 }
 .cf:after {
   clear: both;
