@@ -277,7 +277,7 @@
   padding-bottom: .5em;
 }
 .cloud-form .input .cloneable {
-  padding-right: 60px;
+  padding-right: 25px;
   padding-left: 0;
   width: auto;
 }
@@ -297,11 +297,11 @@
 .clone input {
   margin-bottom: 0;
 }
-.clone .add-remove {
+.cloneable .add-remove {
   position: absolute;
-  top: 1em;
-  left: 103%;
-  white-space: nowrap;
+  bottom: 0px;
+  left: 100%;
+  margin: 0 0 0 5px ;
 }
 .cloneable .add-remove > .add,
 .cloneable .add-remove > .remove {
@@ -310,13 +310,19 @@
   border-radius: 3px;
   width: 16px;
   line-height: 1em;
-  height: 1em;
+  height: 1.25em;
   padding-bottom: 2px;
   font-size: 12px;
   display: inline-block;
   text-align: center;
   cursor: pointer;
   z-index: 20;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+.cloneable .add-remove > .remove {
+  bottom: 18px;
 }
 .clone .remove.disabled,
 .clone .add.disabled {
@@ -327,9 +333,10 @@
 .cloneable .remove {
   color: #C05F47;
 }
-.cloneable .add:hover,
-.cloneable .remove:hover {
+.type-group .add:hover,
+.type-group .remove:hover {
   text-decoration: none;
+  background: #fff;
 }
 .cloneable .clone {
   padding: 1em 10px 1em 10px;
