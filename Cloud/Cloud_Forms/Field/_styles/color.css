@@ -28,11 +28,31 @@
   display: inline-block;
   border-radius: 3px;
 }
+.field.type-color {
+  height: 40px;
+}
+.field.type-color .color-toggle {
+  padding: 3px 3px 4px;
+  float: left;
+  background: #fff;
+  border-radius: 3px;
+  background: #fafafa;
+  border: 1px solid #ccc;
+}
+.field.type-color .minicolors {
+  padding-left: 26px;
+}
+.field.type-color .minicolors .minicolors-swatch {
+  height: 20px;
+  width: 20px;
+  top: 2px;
+  left: 2px;
+}
 .field.type-color .color-picker {
   min-height: 1em;
 }
 .field.type-color .color-picker-input {
-  margin: 0 10px 0 0;
+  margin: 0 0px 0 0;
   font-size: .875em;
 }
 .field.type-color .color-picker .default-swab {
@@ -43,14 +63,6 @@
   line-height: 22px;
   height: 22px;
   padding: 3px 0 6px 0;
-}
-.field.type-color .color-toggle {
-  padding: .25em 2px .25em 5px;
-  float: left;
-  background: #fff;
-  border-radius: 3px;
-  background: #fafafa;
-  border: 1px solid #ccc;
 }
 .field.type-color .option_enabler {
   float: left;

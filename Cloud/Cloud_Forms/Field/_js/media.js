@@ -34,12 +34,17 @@ CloudField.on( 'init', function( $, $context ){
 						
 			wp.media.editor.send.attachment = function(props, attachment){
 				if ( _custom_media ) {
-					if ( attachment.type === 'image' ){
-						var url = attachment.sizes[ props.size ].url ;
-						var image_url = url ;
-					} else {
+					if ( attachment.mime === "image/svg+xml" ){
 						var url = attachment.url;
-						var image_url = attachment.icon;
+						var image_url = attachment.url;
+					} else {
+						if ( attachment.type === 'image' ){
+							var url = attachment.sizes[ props.size ].url ;
+							var image_url = url ;
+						} else {
+							var url = attachment.url;
+							var image_url = attachment.icon;
+						}
 					}
 					var value_to_save = {
 						media : attachment.id

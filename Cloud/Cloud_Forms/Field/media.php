@@ -59,9 +59,14 @@ class Cloud_Field_media extends Cloud_Field {
 		if ( isset( $this->info['value'] ) && $this->info['value'] !== '' ){
 			$value = json_decode( $this->info['value'], true ) ;
 			if( $value && is_numeric( $value['media'] ) ){
-				$attachment_id = $value['media'] ; 
-				$image_info = wp_get_attachment_image_src( $attachment_id, 'medium', true ) ; 
-				$url = $image_info[0] ;
+				$attachment_id = $value['media'] ;
+				$attachment = get_post( $attachment_id );
+				if ( $attachment->post_mime_type === "image/svg+xml" ){
+					$url =  wp_get_attachment_url( $attachment_id ) ;
+				} else {
+					$image_info = wp_get_attachment_image_src( $attachment_id, 'medium', true ) ; 
+					$url = $image_info[0] ;
+				}
 				if ( $url ){
 					return '<img class="preview-image img-polaroid" src="'.$url.'" title="'.$url.'" />';			
 				}

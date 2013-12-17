@@ -40,7 +40,7 @@ var CloudField = ( function($){
 			var max_size = typeof $cloneable.data('max') !== 'undefined' ? $cloneable.data('max') : false; 
 			
 			
-			$to_clone = $cloneable.getClonePart( '.to-clone' ).clone( false ).removeClass('to-clone');
+			var $to_clone = $cloneable.getClonePart( '.to-clone' ).clone( false ).removeClass('to-clone');
 			$cloneable.getClonePart( '.to-clone' ).remove(); 	
 						
 			function reset_value_keys(){
@@ -115,6 +115,7 @@ var CloudField = ( function($){
 					}
 					// copy an existing clone 
 					var $new_clone = $to_clone.clone( false ).hide();
+					console.log( $to_clone.html() );
 					//get rid of the values
 					$new_clone.getClonePart('input, textarea, select').not('[type="button"],[type="checkbox"][type="radio"], .copy_to_use input').val('');
 					
