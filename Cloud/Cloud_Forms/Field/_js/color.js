@@ -1,8 +1,18 @@
 CloudField.on( 'init', function( $, $context ){
+	var selector = '.field.type-color .color-picker-input'; 
+	var $inputs = $( selector, $context ).add( $context.filter( selector ) ); 	
 	// miniColors
-	$(".color-picker-input", $context ).minicolors({
-		letterCase: 'uppercase',
+	$inputs.each( function(){
+		if ( $(this).parents('.to-clone').size() > 0 ){
+			return;
+		}
+		$(this).minicolors({
+			letterCase: 'uppercase',
+			position: 'top left'
+		});
+
 	});
+
 	/*
 $('.option_enabler.color').click( function(){
 		var field_container = $(this).parents('.field').first();
