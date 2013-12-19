@@ -9,22 +9,23 @@ class Cloud_Field_checkbox extends Cloud_Field {
 	}
 
 	protected function get_field_html( ){
-		$options = $this->spec['options'] ; 
-		if ( $options ){
+		if ( !empty( $this->spec['options'] ) ){
+			$this->multiple = true;
+			$options = $this->get_select_choices(); 
 			$fields = '<div class="multiple-options">' ;
-
 			foreach( $options as $option_key => $option_info ){
-				if ( is_array( $option_info )){
-					$option_title = $option_info['title'] ; 
-					$option_value = $option_info['checkbox_value'];
+				$title = $option_info['title'];
+				if ( is_array( $title )){
+					$option_title = $title['title'] ; 
+					$option_value = $title['checkbox_value'];
 				} else {
-					$option_title = $option_info ; 
+					$option_title = $title ; 
 					$option_value = $option_key ;
 				}
 				$option_id = $this->info['id'] .$option_key ; 
 				$option_name = $this->info['name'].'['.$option_key.']' ;
 				
-				$checked = isset( $this->info['value'][ $option_key ] ) &&   $this->info['value'][ $option_key ] == $option_value  ? 'checked' : '';				
+				$checked = $option_info['selected']  ? 'checked' : '';				
 				$field = '<input type="checkbox" id="'.$option_id. '" name="'.$option_name . '" value="'.$option_value.'"' . $checked . ' '.$this->info['disabled'] .' />';	
 				$fields .= '<label for="'.$option_id.'">'.$field. $option_title.'</label>' ;
 

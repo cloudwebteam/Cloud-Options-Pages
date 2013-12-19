@@ -460,6 +460,126 @@ class Cloud_Field {
 		}
 
 	}
+	// helpers for fields
+	protected function is_assoc($arr) {
+	    return array_keys($arr) !== range(0, count($arr) - 1);
+	}	
+	protected function get_select_choices(){
+		$choices = array();
+		// add first option, if specified
+		if ( !$this->multiple && !empty( $this->spec['first_option'] ) ){
+			if ( is_array( $this->spec['first_option'] ) ){
+				$value = isset( $this->spec['first_option']['value'] ) ?  $this->spec['first_option']['value'] : false ;
+				$text = isset( $this->spec['first_option']['text'] ) ?  $this->spec['first_option']['text'] : false ;
+			} else {
+				$value = false; 
+				$text = $this->spec['first_option'] ; 
+			}
+			$choices[ $value ] = $text; 
+		}
+		if ( $this->spec['use_query'] == true ){
+			$query_args = wp_parse_args( array( 
+				'numberposts' => -1
+			), $this->spec['options'] ); 
+			$posts = get_posts( $query_args );
+			if ( sizeof( $posts ) > 0 ){
+				foreach( $posts as $post ){
+					$choices[ $post->ID ] = $post->post_title;
+				}
+			}
+		} else if ( isset( $this->spec[ 'options' ] ) ){
+
+			$options = $this->spec[ 'options' ] ; 
+			// straight-up options array
+			if ( is_array( $options ) && sizeof( $options ) > 0 ){
+				if ( $this->is_assoc( $options ) ){
+					foreach( $options as $key => $title ){
+						$choices[ $key ] = $title;
+					}
+				} else {
+					foreach( $options as $title ){
+						$choices[] = $title;
+					}
+				}
+			// a string could be a post type 
+			// or a taxonomy 
+			// or a special thing like states or sidebars
+			} else if ( is_string( $options ) ){ 
+				if ( post_type_exists( $options ) ){
+					echo $options;
+					$posts = get_posts( array(
+						'numberposts' => -1, 
+						'post_type'		=> $options
+					) );
+					if ( sizeof( $posts ) > 0 ){
+						foreach( $posts as $post ){
+							$choices[ $post->ID ] = $post->post_title;
+						}
+					}
+				} else if ( taxonomy_exists( $options ) ){
+					$terms = get_terms( $options, array(
+						'hide_empty' => false
+					) );
+					if ( sizeof( $terms ) > 0 ){
+						foreach( $terms as $term ){
+							$choices[ $term->term_id ] = $term->name;
+						}
+					}
+				} else {
+					switch( $options ) {
+						case 'sidebars' : 
+							global $wp_registered_sidebars;
+							foreach( $wp_registered_sidebars as $slug => $sidebar ){
+								$choices[ $slug ] = $sidebar['name'];
+							}
+							break;
+						case 'states' : 
+							$states = array('AL'=>"Alabama", 'AK'=>"Alaska", 'AZ'=>"Arizona", 'AR'=>"Arkansas", 'CA'=>"California", 'CO'=>"Colorado", 'CT'=>"Connecticut", 'DE'=>"Delaware", 'DC'=>"District Of Columbia", 'FL'=>"Florida", 'GA'=>"Georgia", 'HI'=>"Hawaii", 'ID'=>"Idaho", 'IL'=>"Illinois", 'IN'=>"Indiana", 'IA'=>"Iowa", 'KS'=>"Kansas", 'KY'=>"Kentucky", 'LA'=>"Louisiana", 'ME'=>"Maine", 'MD'=>"Maryland", 'MA'=>"Massachusetts", 'MI'=>"Michigan", 'MN'=>"Minnesota", 'MS'=>"Mississippi", 'MO'=>"Missouri", 'MT'=>"Montana", 'NE'=>"Nebraska", 'NV'=>"Nevada", 'NH'=>"New Hampshire", 'NJ'=>"New Jersey", 'NM'=>"New Mexico", 'NY'=>"New York", 'NC'=>"North Carolina", 'ND'=>"North Dakota", 'OH'=>"Ohio", 'OK'=>"Oklahoma", 'OR'=>"Oregon", 'PA'=>"Pennsylvania", 'RI'=>"Rhode Island", 'SC'=>"South Carolina", 'SD'=>"South Dakota", 'TN'=>"Tennessee", 'TX'=>"Texas", 'UT'=>"Utah", 'VT'=>"Vermont", 'VA'=>"Virginia", 'WA'=>"Washington", 'WV'=>"West Virginia", 'WI'=>"Wisconsin", 'WY'=>"Wyoming");
+							foreach ( $states as $abbrev => $state ){
+								$choices[$abbrev] = $state;							
+							}
+							break; 
+					}
+				}
+			}
+		}
+		// add selected info
+		if ( $this->multiple ){
+			foreach( $choices as $key => $choice ){
+				if ( is_array( $this->info['value'] ) && in_array( $key, $this->info['value'] )){
+					$selected = true;								
+				} else if ( is_array( $this->info['default'] ) && in_array( $key, $this->info['default'] ) ) {
+					$selected = true;			
+				} else if ( $this->info['default'] == $key ){			
+					$selected = true;										
+				} else {
+					$selected = false;
+				}							
+				$choices[ $key ] = array(
+					'value' => $key,
+					'title' => $choice,
+					'selected' => $selected
+				);
+			}
+		} else {
+			foreach( $choices as $key => $choice ){
+				if ( $this->info['value'] == $key ){
+					$selected = true;
+				} else if (  $this->info['default'] == $key ){			
+					$selected = true;									
+				} else {
+					$selected = false;
+				}	
+				$choices[ $key ] = array(
+					'value' => $key,
+					'title' => $choice,
+					'selected' => $selected
+				);
+			}	
+		}
+		return $choices;
+
+	}	
 	public static function get_option( $value, $spec ){
 		return $value ;
 	}	

@@ -64,6 +64,7 @@ $cloud_form_defaults = array (
 			'cloneable'			=> false,
 			'checkbox_value' 	=> 1, // string, int, bool. what value is sent when the checkbox is checked
 			'multiple' 			=> false, // bool. if true, provide an array to 'options'
+			'use_query' 		=> false,
 			'options' 			=> false, 	// array. Required 'multiple' to be set to true. 
 											// NOTE: array keys will be used as value
 			'description'		=> null,
@@ -212,6 +213,7 @@ $cloud_form_defaults = array (
 			'title'				=> 'Radio Group',				
 			'multiple'			=> false, // bool.
 			'use_query' 		=> false, // bool. If true, pass a WP query array (same as get_posts( $query ) ) to options
+			'use_query' 		=> false,			
 			'options'			=> 'page', // array. Requires multiple to be true.
 											// array of options (keys as value to save)
 											// OR a WP query array, if 'use_query' => true
