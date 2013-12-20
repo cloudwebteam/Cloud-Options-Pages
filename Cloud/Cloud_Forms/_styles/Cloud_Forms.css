@@ -287,6 +287,22 @@
 .cloud-form .input .cloneable.groups {
   padding-right: 25px;
 }
+.cloud-form .clone .field.has-cloneable > .inline-field-elements {
+  display: table;
+}
+.cloud-form .clone .field.has-cloneable > .inline-field-elements > .label,
+.cloud-form .clone .field.has-cloneable > .inline-field-elements > .input {
+  float: none;
+  display: table-cell;
+}
+.cloud-form .clone .field.has-cloneable > .inline-field-elements > .label {
+  padding-top: 21px;
+  vertical-align: top;
+}
+.cloud-form .clone .field.has-cloneable > .inline-field-elements > .input {
+  padding-top: 8px;
+  padding-left: 10px;
+}
 .clone {
   cursor: move;
 }
