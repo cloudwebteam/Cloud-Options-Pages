@@ -81,7 +81,7 @@
 .input-prepend .add-on {
   display: inline-block;
   width: auto;
-  height: 19px;
+  height: 22px;
   min-width: 16px;
   padding: 0 2px;
   font-weight: normal;
@@ -92,7 +92,7 @@
   border: 1px solid #ccc;
   position: absolute;
   cursor: pointer;
-  margin-left: -1px;
+  margin-left: -3px;
   vertical-align: top;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
