@@ -94,8 +94,8 @@ class Cloud_Forms_WP extends Cloud_Forms {
 				$subpage['section_slug'] = false;
 				$_subpage = array_merge( $this->finish_merge_with_defaults( $subpage, $top_level_page ), $_subpage ); 
 			}
+			$_subpage['form_type'] = 'options-page';
 		}
-		$_top_level['form_type'] = 'options-page';
 		return $_top_level ; 
 	}
 	protected function merge_metabox_with_defaults( $metabox_slug, $metabox ){
