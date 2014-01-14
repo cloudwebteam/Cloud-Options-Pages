@@ -46,6 +46,13 @@ CloudField.on( 'init', function( $, $context ){
 			return $fields ;
 		}		
 		function show_fields( $fields, animate ){
+			$fields.removeClass('toggled-off');
+			$fields.each( function(){
+		   		$(this).find( '.input input[type="hidden"], .input input[type="text"], .input input[type="number"], .input textarea' ).each( function(){
+		   			$(this).val( $(this).data('pretoggle-value') );
+		   		});
+		   		$(this).find( 'option[value="__toggled_off__"]').remove();
+		   	});
 			if ( animate ) {
 				if ( in_table_based_layout ){
 					$fields.show('fast')
@@ -56,7 +63,19 @@ CloudField.on( 'init', function( $, $context ){
 				$fields.show()
 			}
 		}
-		function hide_fields( $fields , animate ){		
+		function hide_fields( $fields , animate ){	
+			$fields.addClass('toggled-off');
+		   	$fields.each( function(){
+		   		$(this).find( '.input input[type="hidden"], .input input[type="text"], .input input[type="number"], .input textarea' ).each( function(){
+		   			$(this).data('pretoggle-value', $(this).val() );
+		   			$(this).val('__toggled_off__' );
+		   		});
+		   		$(this).find( '.input select' ).each( function(){
+		   			$(this).data('pretoggle-value', $(this).val() );
+		   			$(this).prepend( '<option value="__toggled_off__" selected></option>' );
+		   			$(this).val('__toggled_off__' );
+		   		});
+		   	});		
 			if ( animate ) {
 				if ( in_table_based_layout ){
 					$fields.hide('fast')
@@ -180,11 +199,12 @@ CloudField.on( 'init', function( $, $context ){
 			}) ; 
 			$select.find( 'option:selected' ).each( function(){
 				toggle_fields( $(this) , false ); 			
-			})
-			
+			})	
 		
 		}
-		
+		$fields.find( 'input, textarea, select').each( function(){
+			$(this).data('name', $(this).attr('name') );		
+		});
 
 	});
 });

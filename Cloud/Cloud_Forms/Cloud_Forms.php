@@ -314,6 +314,8 @@ abstract class Cloud_Forms {
 		} else {
 			$subfield_defaults = $defaults['fields']['general'] ;
 		}
+		$subfield_defaults['layout'] = array( array( 'label', 'input', 'error' ), 'description' );
+
 
 		foreach ( $subfield_defaults as $key => $subfield_default_value ) {
 			if ( isset( $subfield[$key] ) ){
@@ -343,8 +345,8 @@ abstract class Cloud_Forms {
 	// all this does is add a 'validation_error' item to the field specs of those fields that failed to validate, and return a general success or failure message	
 	protected function validate_form( $form_slug ){
 		$form_spec = $this->forms[ $form_slug ] ; 
-		if ( $this->validation_enabled && isset( $_POST['form_id'] ) && $_POST['form_id'] == $form_slug ){
-			$validation_results = Validator::validate( $_POST, $form_spec )  ;			
+		if ( $this->validation_enabled && isset( $_REQUEST['form_id'] ) && $_REQUEST['form_id'] == $form_slug ){
+			$validation_results = Validator::validate( $_REQUEST, $form_spec )  ;						
 			$this->has_validation_errors = $validation_results['success'] ? false : true ;
     		if ( $this->has_validation_errors ){
 

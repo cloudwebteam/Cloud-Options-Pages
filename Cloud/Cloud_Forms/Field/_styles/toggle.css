@@ -17,3 +17,7 @@
   top: 5px;
   margin-right: 5px;
 }
+.cloud .field.toggled-off input,
+.cloud .field.toggled-off textarea {
+  color: transparent;
+}

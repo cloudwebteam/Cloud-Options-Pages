@@ -26,9 +26,7 @@
 	}
 	public static function validate( $form_submission_data = '' , $form_fields = '' ){
 		$validation = new self();
-		
 		$validation->validate_form( $form_submission_data, $form_fields ); 
-				
 		return array( 
 			'success' => $validation->success,
 			'form_data' => $validation->form_data,
@@ -59,9 +57,7 @@
 	protected function validate_form( $form_data, $form_spec ){		
 
 		$this->form_spec = $form_spec ; 
-
 		$this->form_data =  $this->remove_excluded_fields( $form_data ) ;
-
 		// ->to_save gets changed in the same loop that adds errors to form_spec
 		$this->to_save = false ;
  
@@ -92,21 +88,20 @@
 				continue; 
 			}
 
+
 			if ( isset( $this->form_data[ $slug ] ) ){
 				$post_data = $form_data[$slug] ;
 			} else {
-				$post_data = array() ;
+				$post_data = false ;
 			}
 			
 			// both post data and spec are changed in this massive loop to prevent doing it twice
 			$validation_spec[ $slug ] = $this->get_field_validation_spec( $post_data , $spec, $this->array_hierarchy  ); 			
 			$form_data[$slug] = $post_data ? $post_data : null; 			
 		}
-
 		if ( $this->success ){
 			$this->to_save = $form_data; 		
 		}
-
 		return $validation_spec ; 		
 	}
 	protected function get_field_validation_spec( &$post_data, &$spec, $array_hierarchy, $errors = array() ){
@@ -115,7 +110,7 @@
 			$fields_to_check = isset( $spec[ $array_level ] ) ? $spec[ $array_level ] : array() ;
 			if ( ! $fields_to_check ){
 				$errors = $this->check_if_password( $spec, $post_data );
-				if ( $errors ){
+				if ( $errors ){					
 					$spec['validation_error'] = $errors; 
 					$this->success = false ;
 				} else {
@@ -131,7 +126,7 @@
 							if ( $errors = $this->check_if_password( $field_spec, $slug_post_data ) ){
 							
 								if ( $errors ){
-									$spec[ $array_level ][ $slug ]['validation_error'] = $errors; 
+									$spec[ $array_level ][ $slug ]['validation_error'] = $errors; 									
 									$this->success = false ;
 								} else {
 									$post_data[$slug] = $this->prepare_to_save( $field_spec, $slug_post_data ); 
@@ -151,6 +146,7 @@
 									unset( $fields_to_check[ $subfield_slug ] );
 									if ( $errors = $this->validate_field( $field_spec, $subfield_value ) ){
 										$spec['validation_error'][ $slug ][ $subfield_slug ][] = $errors ; 
+
 										$this->success = false ;
 									} else {
 										$slug_post_data[$subfield_slug] = $this->prepare_to_save( $field_spec, $subfield_value ); 
@@ -160,7 +156,7 @@
 						// is simple cloneable
 						} else {
 							if ( $field_error = $this->validate_field( $spec, $slug_post_data ) ){
-								$spec['validation_error'][$slug] = $field_error ;
+								$spec['validation_error'][$slug] = $field_error ;								
 								$this->success = false ;
 							} else {
 								foreach( $slug_post_data as $index => $clone_value ){
@@ -182,7 +178,8 @@
 			}
 		} else {
 			if ( $field_error = $this->validate_field( $spec, $post_data ) ){
-				$spec['validation_error'] = $field_error ;
+
+				$spec['validation_error'] = $field_error ;	
 				$this->success = false ;
 			} else {
 				$post_data = $this->prepare_to_save( $spec, $post_data );
@@ -222,6 +219,8 @@
 	}
 	protected function validate_field( $field_spec , $field_value = '' ){
 		$errors = array(); 
+		if ( $field_value === '__toggled_off__' ) return $errors;
+
 		if ( isset( $field_spec['required'] ) && $field_spec['required'] && ! $this->value_has_been_input( $field_value ) ){
 			$errors[] = 'required'  ; 
 		} else if ( $this->value_has_been_input( $field_value ) ){
@@ -286,6 +285,11 @@
 		}
 	}
 	protected function prepare_to_save( $spec, $value ){
+		
+		if ( $value === '__toggled_off__' ){
+			return '';
+		} 
+
 		switch( $spec['type'] ){
 			case 'password' : 
 				if ( $spec['confirm'] ){
@@ -377,7 +381,7 @@
 	}
 	protected function zip( $field_value = '' ){
 		if ( $field_value ){
-			if ( ! preg_match( '/^[\d]{5}$/', $field_value) ){
+			if ( ! preg_match( '/^[\d]{5}(-?[\d]{4})?$/', $field_value) ){
 				return true ;
 			}
 		}

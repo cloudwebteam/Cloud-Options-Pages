@@ -39,11 +39,14 @@ class Cloud_Field {
 	protected function get_value( $field_slug, $section_slug = '' , $form_slug = '' ){
 		if ( isset( $_REQUEST['form_id'] ) && $_REQUEST['form_id'] === $this->spec['form_slug'] ){
 			if ( $field_slug && $section_slug && $form_slug ){
-				return isset( $_REQUEST[$form_slug][$section_slug][$field_slug] ) ? $_REQUEST[$form_slug][$section_slug][$field_slug] : false ; 	
+				$value = isset( $_REQUEST[$form_slug][$section_slug][$field_slug] ) ? $_REQUEST[$form_slug][$section_slug][$field_slug] : false ; 	
 			} else if ( $field_slug && $section_slug ){
-				return isset( $_REQUEST[$section_slug][$field_slug] ) ? $_REQUEST[$section_slug][$field_slug] : false ; 	
+				$value = isset( $_REQUEST[$section_slug][$field_slug] ) ? $_REQUEST[$section_slug][$field_slug] : false ; 	
 			} else {
-				return isset( $_REQUEST[$field_slug] ) ? $_REQUEST[$field_slug] : false ; 	
+				$value = isset( $_REQUEST[$field_slug] ) ? $_REQUEST[$field_slug] : false ; 	
+			}
+			if ( $value !== '__toggled_off__' ){
+				return $value;
 			}
 		}
 	}
@@ -506,7 +509,6 @@ class Cloud_Field {
 			// or a special thing like states or sidebars
 			} else if ( is_string( $options ) ){ 
 				if ( post_type_exists( $options ) ){
-					echo $options;
 					$posts = get_posts( array(
 						'numberposts' => -1, 
 						'post_type'		=> $options
