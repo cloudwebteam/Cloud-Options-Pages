@@ -1,12 +1,1 @@
-.field.type-file .qq-drop-processing,.field.type-file .uploader{display:none}
-.field.type-file .upload-button:hover{background:#efefef}
-.field.type-file .upload-button:active{background:#eaeaea}
-.field.type-file .upload-button input{max-height:100%}
-.field.type-file .display{display:none;clear:both}
-.field.type-file .display .image{max-width:100px;max-height:100px;position:relative;float:left}
-.field.type-file .display img{max-height:100%}
-.field.type-file .display .upload-name{display:none}
-.field.type-file .remove-file{cursor:pointer;display:inline-block;padding:0 4px}
-.field.type-file .upload-button{position:relative;float:left;line-height:1.5em;text-align:center;padding:0 10px}
-.field.type-file .inner-container.has-value .display{display:block}
-.field.type-file .inner-container.has-value .upload-button{display:none}
+.field.type-file .qq-drop-processing,.field.type-file .uploader{display:none}.field.type-file .upload-button:hover{background:#efefef}.field.type-file .upload-button:active{background:#eaeaea}.field.type-file .upload-button input{max-height:100%}.field.type-file .display{display:none;clear:both}.field.type-file .display .image{max-width:100px;max-height:100px;position:relative;float:left}.field.type-file .display img{max-height:100%}.field.type-file .display .upload-name{display:none}.field.type-file .remove-file{cursor:pointer;display:inline-block;padding:0 4px}.field.type-file .upload-button{position:relative;float:left;line-height:1.5em;text-align:center;padding:0 10px}.field.type-file .inner-container.has-value .display{display:block}.field.type-file .inner-container.has-value .upload-button{display:none}
