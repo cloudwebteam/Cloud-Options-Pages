@@ -29,7 +29,7 @@
 				$layout_vars['header'] = self::get_form_header( $form_slug, $spec ); 			
 				$layout_vars['footer'] = self::get_form_footer( $form_slug, $spec ); 
 			} else {
-
+				$classes[] = 'section_slug-'.$form_slug;
 				if ( isset( $spec['validation_error'] ) && $spec['validation_error'] ){
 					$classes[] = 'has-error' ; 
 				}								
@@ -59,7 +59,7 @@
 			ob_start(); 
 			?>
 			<div class="<?php echo $classes; ?>">
-				<div class="success-message"><?php echo $success_message; ?></div>
+				<?php echo $success_message; ?>
 			</div>
 		<?php 
 			return ob_get_clean();		

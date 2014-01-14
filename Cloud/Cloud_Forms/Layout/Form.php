@@ -38,7 +38,7 @@
 			ob_start(); 
 			?>
 			<div class="<?php echo $classes; ?>">
-				<div class="success-message"><?php echo $success_message; ?></div>
+				<?php echo $success_message; ?>
 			</div>
 		<?php 
 			return ob_get_clean();		
