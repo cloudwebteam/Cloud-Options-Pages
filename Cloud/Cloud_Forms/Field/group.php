@@ -70,7 +70,6 @@ class Cloud_Field_group extends Cloud_Field {
 			$subfield_args['subfield_slug']	= $subfield_slug;
 			$subfield_args['group_number'] = $group_number; 
 			$subfield_args['validation_error'] = isset( $this->spec['validation_error'][ $group_number ][ $subfield_slug ] ) ? $this->spec['validation_error'][ $group_number ][ $subfield_slug ] : '' ; 	
-			$subfield_args['layout'] = array( array( 'label', 'input', 'error' ), 'description' );
 			ob_start();
 				$subfield_class_name::create_field( $subfield_args ); 
 			$subfields .= ob_get_clean();
