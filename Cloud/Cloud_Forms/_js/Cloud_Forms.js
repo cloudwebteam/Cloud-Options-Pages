@@ -8,14 +8,12 @@ jQuery( function($){
    
 	
    function handleFieldError( $input, validation_error ){
-   		console.log( validation_error ); 
 		var $field = $input.parents('.field' ).first(); 	
 		if ( $field.find( ':focus' ).size() > 0 ){
 			return ;
 		}	
 		for( index in validation_error ){
 			var error_type = validation_error[index];
-			console.log( error_type ); 
 			$field.find( '.error-message[data-validation="'+error_type+'"]' ).show();
 		} 
 		$field.find( '.cloud-error').slideDown('fast'); 
@@ -81,6 +79,8 @@ jQuery( function($){
 		   	var $field = $(this).parents( '.clone, .group, .field').first();
 		   	$field.removeClass('has-error').find( '.error-message' ).fadeOut('fast');   		
    		}); 
+
+
    		if ( $container.hasClass('ajax') ){
    		
 		   	function validate_field( $input, callback ){
@@ -156,7 +156,7 @@ jQuery( function($){
 	   			$fields.each( function(){
 		   			var $input = $(this).find( '.input textarea, .input input, .input select' );  
 		   			var is_check_type = $input.is('[type="checkbox"], [type="radio"]') ; 
-		   			var action = $input.is('[type="checkbox"], [type="radio"]') ? 'change' : 'blur';
+		   			var action = is_check_type ? 'change.cloud' : 'blur.cloud';
 	
 			   			$input.not( '.special-field' ).on( action, function(){
 				   			// if the submit button was hit, then let the form do all the validation, otherwise validate it.
@@ -165,14 +165,14 @@ jQuery( function($){
 			   				}
 			   			}); 
 	   			});
-   			}, 100 ); 
+   			}, 200 ); 
    			var responses_recieved = []; 
    			
-	   		$form.submit( function(e){
+	   		$form.on( 'submit.cloud', function(e){
 	   			$form.removeClass('has-error' ); 
 	   			$form.find( '.has-error' ).removeClass('has-error' ); 
 			   	$form.find( '.cloud-error' ).hide(); 
-			   	$form.find( '.error-message' ).hide();	   		
+			   	$form.find( '.error-message' ).hide();  		
 		   		if ( $form.hasClass( 'validated' ) ){
 		   			var success_function = $form.find( 'input[type="submit"]' ).data( 'on_success' ); 
 		   			if ( success_function ){
@@ -199,18 +199,25 @@ jQuery( function($){
 		   		e.stopPropagation(); 
 			   	e.preventDefault();		   		
 
-		   		var $fields = $form.find( '.field' ); 
+
 		   		var inputs_to_validate = []; 
-	   			$fields.each( function(){		   			
+	   			$fields.each( function(){	
+
 		   			var $input = $(this).find( '.input textarea, .input input, .input select' );
 		   			if ( $input.size() > 0 ){
-			   			inputs_to_validate.push( $input ); 
+	   					// don't validate hidden fields. Just don't do it.
+						if ($(this).is(':visible')){
+			   				inputs_to_validate.push( $input ); 
+			   			}
 			   		}				   		
-	   			});		   
+	   			});
+	   			
 	   			for( i = 0 ; i < inputs_to_validate.length ; i++ ){
 	  		   		validate_field( inputs_to_validate[i], handle_validation_response ) ; 
 	   			} 
-	   			
+
+	   			e.preventDefault();
+	   			return;
 		   		function handle_validation_response( response ){		   		
 		   			responses_recieved.push( response ); 
 		   			if (responses_recieved.length == inputs_to_validate.length ){
