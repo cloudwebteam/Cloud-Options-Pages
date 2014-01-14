@@ -35,7 +35,7 @@
     },
     "\/Field\/_styles\/media.css" : {
       "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
+      "ignore" : 1,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
       "inputAbbreviatedPath" : "\/Field\/_styles\/media.css",
@@ -73,15 +73,6 @@
       "outputAbbreviatedPath" : "No Output Path",
       "fileType" : 2048
     },
-    "\/Cloud_Forms_WP.php" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/Cloud_Forms_WP.php",
-      "outputAbbreviatedPath" : "No Output Path",
-      "fileType" : 2048
-    },
     "\/Field\/file.php" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
@@ -100,14 +91,14 @@
       "outputAbbreviatedPath" : "No Output Path",
       "fileType" : 2048
     },
-    "\/tests\/options-pages.php" : {
+    "\/Field\/_styles\/color.css" : {
       "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
+      "ignore" : 1,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/tests\/options-pages.php",
+      "inputAbbreviatedPath" : "\/Field\/_styles\/color.css",
       "outputAbbreviatedPath" : "No Output Path",
-      "fileType" : 2048
+      "fileType" : 16
     },
     "\/Field\/_js\/color.js" : {
       "ignoreWasSetByUser" : 0,
@@ -120,14 +111,23 @@
       "outputAbbreviatedPath" : "\/Field\/_js\/color.min.js",
       "fileType" : 64
     },
-    "\/Field\/_styles\/color.css" : {
+    "\/Cloud_Forms_WP.php" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/Field\/_styles\/color.css",
+      "inputAbbreviatedPath" : "\/Cloud_Forms_WP.php",
       "outputAbbreviatedPath" : "No Output Path",
-      "fileType" : 16
+      "fileType" : 2048
+    },
+    "\/tests\/options-pages.php" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/tests\/options-pages.php",
+      "outputAbbreviatedPath" : "No Output Path",
+      "fileType" : 2048
     },
     "\/Field\/post.php" : {
       "ignoreWasSetByUser" : 0,
@@ -149,7 +149,7 @@
     },
     "\/Field\/_styles\/wysiwyg.css" : {
       "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
+      "ignore" : 1,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
       "inputAbbreviatedPath" : "\/Field\/_styles\/wysiwyg.css",
@@ -158,7 +158,7 @@
     },
     "\/_styles\/Cloud_Forms_Global.css" : {
       "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
+      "ignore" : 1,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
       "inputAbbreviatedPath" : "\/_styles\/Cloud_Forms_Global.css",
@@ -168,7 +168,7 @@
     "\/Field\/_styles\/color.less" : {
       "ieCompatibility" : 1,
       "inputAbbreviatedPath" : "\/Field\/_styles\/color.less",
-      "outputAbbreviatedPath" : "\/Field\/css\/color.css",
+      "outputAbbreviatedPath" : "\/Field\/_styles\/color.css",
       "outputPathIsSetByUser" : 0,
       "strictUnits" : 0,
       "relativeURLS" : 0,
@@ -178,13 +178,24 @@
       "shouldRunBless" : 0,
       "hidden" : 0,
       "strictMath" : 0,
-      "outputStyle" : 0,
+      "outputStyle" : 1,
       "fileType" : 1,
       "debugStyle" : 0
     },
+    "\/Field\/_js\/datetime.min.js" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 1,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/Field\/_js\/datetime.min.js",
+      "outputStyle" : 1,
+      "syntaxCheckerStyle" : 1,
+      "outputAbbreviatedPath" : "\/Field\/_js\/datetime.min.min.js",
+      "fileType" : 64
+    },
     "\/Field\/_styles\/hidden.css" : {
       "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
+      "ignore" : 1,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
       "inputAbbreviatedPath" : "\/Field\/_styles\/hidden.css",
@@ -193,19 +204,10 @@
     },
     "\/_styles\/reset.css" : {
       "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
+      "ignore" : 1,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
       "inputAbbreviatedPath" : "\/_styles\/reset.css",
-      "outputAbbreviatedPath" : "No Output Path",
-      "fileType" : 16
-    },
-    "\/Field\/_styles\/radio.css" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/Field\/_styles\/radio.css",
       "outputAbbreviatedPath" : "No Output Path",
       "fileType" : 16
     },
@@ -222,20 +224,18 @@
       "shouldRunBless" : 0,
       "hidden" : 0,
       "strictMath" : 0,
-      "outputStyle" : 0,
+      "outputStyle" : 1,
       "fileType" : 1,
       "debugStyle" : 0
     },
-    "\/Field\/_js\/datetime.min.js" : {
+    "\/Field\/_styles\/radio.css" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 1,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/Field\/_js\/datetime.min.js",
-      "outputStyle" : 1,
-      "syntaxCheckerStyle" : 1,
-      "outputAbbreviatedPath" : "\/Field\/_js\/datetime.min.min.js",
-      "fileType" : 64
+      "inputAbbreviatedPath" : "\/Field\/_styles\/radio.css",
+      "outputAbbreviatedPath" : "No Output Path",
+      "fileType" : 16
     },
     "\/_js\/mce_plugins\/img\/options_list.png" : {
       "ignoreWasSetByUser" : 0,
@@ -268,15 +268,6 @@
       "outputAbbreviatedPath" : "No Output Path",
       "fileType" : 2048
     },
-    "\/Field\/_styles\/divider.css" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 1,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/Field\/_styles\/divider.css",
-      "outputAbbreviatedPath" : "No Output Path",
-      "fileType" : 16
-    },
     "\/_js\/Cloud_Forms.js" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
@@ -287,6 +278,15 @@
       "syntaxCheckerStyle" : 1,
       "outputAbbreviatedPath" : "\/_js\/Cloud_Forms.min.js",
       "fileType" : 64
+    },
+    "\/Field\/_styles\/divider.css" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 1,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/Field\/_styles\/divider.css",
+      "outputAbbreviatedPath" : "No Output Path",
+      "fileType" : 16
     },
     "\/Field\/_js\/media.min.js" : {
       "ignoreWasSetByUser" : 0,
@@ -299,38 +299,30 @@
       "outputAbbreviatedPath" : "\/Field\/_js\/media.min.min.js",
       "fileType" : 64
     },
-    "\/Field\/group.php" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/Field\/group.php",
-      "outputAbbreviatedPath" : "No Output Path",
-      "fileType" : 2048
-    },
-    "\/_styles\/Cloud_Forms.less" : {
-      "ieCompatibility" : 1,
-      "inputAbbreviatedPath" : "\/_styles\/Cloud_Forms.less",
-      "outputAbbreviatedPath" : "\/css\/Cloud_Forms.css",
-      "outputPathIsSetByUser" : 0,
-      "strictUnits" : 0,
-      "relativeURLS" : 0,
-      "ignore" : 0,
-      "strictImports" : 0,
-      "ignoreWasSetByUser" : 0,
-      "shouldRunBless" : 0,
-      "hidden" : 0,
-      "strictMath" : 0,
-      "outputStyle" : 0,
-      "fileType" : 1,
-      "debugStyle" : 0
-    },
     "\/defaults.php" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
       "inputAbbreviatedPath" : "\/defaults.php",
+      "outputAbbreviatedPath" : "No Output Path",
+      "fileType" : 2048
+    },
+    "\/WP\/wp-defaults.php" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/WP\/wp-defaults.php",
+      "outputAbbreviatedPath" : "No Output Path",
+      "fileType" : 2048
+    },
+    "\/Field\/group.php" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/Field\/group.php",
       "outputAbbreviatedPath" : "No Output Path",
       "fileType" : 2048
     },
@@ -346,7 +338,7 @@
     "\/Field\/_styles\/media.less" : {
       "ieCompatibility" : 1,
       "inputAbbreviatedPath" : "\/Field\/_styles\/media.less",
-      "outputAbbreviatedPath" : "\/Field\/css\/media.css",
+      "outputAbbreviatedPath" : "\/Field\/_styles\/media.css",
       "outputPathIsSetByUser" : 0,
       "strictUnits" : 0,
       "relativeURLS" : 0,
@@ -356,44 +348,46 @@
       "shouldRunBless" : 0,
       "hidden" : 0,
       "strictMath" : 0,
-      "outputStyle" : 0,
+      "outputStyle" : 1,
       "fileType" : 1,
       "debugStyle" : 0
     },
-    "\/WP\/wp-defaults.php" : {
+    "\/_js\/Cloud_Field.min.js" : {
       "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
+      "ignore" : 1,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/WP\/wp-defaults.php",
-      "outputAbbreviatedPath" : "No Output Path",
-      "fileType" : 2048
+      "inputAbbreviatedPath" : "\/_js\/Cloud_Field.min.js",
+      "outputStyle" : 1,
+      "syntaxCheckerStyle" : 1,
+      "outputAbbreviatedPath" : "\/_js\/Cloud_Field.min.min.js",
+      "fileType" : 64
+    },
+    "\/Field\/_styles\/file.less" : {
+      "ieCompatibility" : 1,
+      "inputAbbreviatedPath" : "\/Field\/_styles\/file.less",
+      "outputAbbreviatedPath" : "\/Field\/_styles\/file.css",
+      "outputPathIsSetByUser" : 0,
+      "strictUnits" : 0,
+      "relativeURLS" : 0,
+      "ignore" : 0,
+      "strictImports" : 0,
+      "ignoreWasSetByUser" : 0,
+      "shouldRunBless" : 0,
+      "hidden" : 0,
+      "strictMath" : 0,
+      "outputStyle" : 1,
+      "fileType" : 1,
+      "debugStyle" : 0
     },
     "\/Field\/_styles\/checkbox.css" : {
       "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
+      "ignore" : 1,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
       "inputAbbreviatedPath" : "\/Field\/_styles\/checkbox.css",
       "outputAbbreviatedPath" : "No Output Path",
       "fileType" : 16
-    },
-    "\/Field\/_styles\/file.less" : {
-      "ieCompatibility" : 1,
-      "inputAbbreviatedPath" : "\/Field\/_styles\/file.less",
-      "outputAbbreviatedPath" : "\/Field\/css\/file.css",
-      "outputPathIsSetByUser" : 0,
-      "strictUnits" : 0,
-      "relativeURLS" : 0,
-      "ignore" : 0,
-      "strictImports" : 0,
-      "ignoreWasSetByUser" : 0,
-      "shouldRunBless" : 0,
-      "hidden" : 0,
-      "strictMath" : 0,
-      "outputStyle" : 0,
-      "fileType" : 1,
-      "debugStyle" : 0
     },
     "\/_js\/mce_plugins\/options_list.min.js" : {
       "ignoreWasSetByUser" : 0,
@@ -406,16 +400,22 @@
       "outputAbbreviatedPath" : "\/_js\/mce_plugins\/options_list.min.min.js",
       "fileType" : 64
     },
-    "\/_js\/Cloud_Field.min.js" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 1,
-      "hidden" : 0,
+    "\/_styles\/Cloud_Forms.less" : {
+      "ieCompatibility" : 1,
+      "inputAbbreviatedPath" : "\/_styles\/Cloud_Forms.less",
+      "outputAbbreviatedPath" : "\/_styles\/Cloud_Forms.css",
       "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/_js\/Cloud_Field.min.js",
+      "strictUnits" : 0,
+      "relativeURLS" : 0,
+      "ignore" : 0,
+      "strictImports" : 0,
+      "ignoreWasSetByUser" : 0,
+      "shouldRunBless" : 0,
+      "hidden" : 0,
+      "strictMath" : 0,
       "outputStyle" : 1,
-      "syntaxCheckerStyle" : 1,
-      "outputAbbreviatedPath" : "\/_js\/Cloud_Field.min.min.js",
-      "fileType" : 64
+      "fileType" : 1,
+      "debugStyle" : 0
     },
     "\/Field\/_js\/date.min.js" : {
       "ignoreWasSetByUser" : 0,
@@ -440,7 +440,7 @@
     "\/Field\/_styles\/hidden.less" : {
       "ieCompatibility" : 1,
       "inputAbbreviatedPath" : "\/Field\/_styles\/hidden.less",
-      "outputAbbreviatedPath" : "\/Field\/css\/hidden.css",
+      "outputAbbreviatedPath" : "\/Field\/_styles\/hidden.css",
       "outputPathIsSetByUser" : 0,
       "strictUnits" : 0,
       "relativeURLS" : 0,
@@ -450,7 +450,7 @@
       "shouldRunBless" : 0,
       "hidden" : 0,
       "strictMath" : 0,
-      "outputStyle" : 0,
+      "outputStyle" : 1,
       "fileType" : 1,
       "debugStyle" : 0
     },
@@ -466,7 +466,7 @@
     "\/Field\/_styles\/datetime.less" : {
       "ieCompatibility" : 1,
       "inputAbbreviatedPath" : "\/Field\/_styles\/datetime.less",
-      "outputAbbreviatedPath" : "\/Field\/css\/datetime.css",
+      "outputAbbreviatedPath" : "\/Field\/_styles\/datetime.css",
       "outputPathIsSetByUser" : 0,
       "strictUnits" : 0,
       "relativeURLS" : 0,
@@ -476,7 +476,7 @@
       "shouldRunBless" : 0,
       "hidden" : 0,
       "strictMath" : 0,
-      "outputStyle" : 0,
+      "outputStyle" : 1,
       "fileType" : 1,
       "debugStyle" : 0
     },
@@ -491,7 +491,7 @@
     },
     "\/Field\/_styles\/info.css" : {
       "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
+      "ignore" : 1,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
       "inputAbbreviatedPath" : "\/Field\/_styles\/info.css",
@@ -519,7 +519,7 @@
     "\/Field\/_styles\/password.less" : {
       "ieCompatibility" : 1,
       "inputAbbreviatedPath" : "\/Field\/_styles\/password.less",
-      "outputAbbreviatedPath" : "\/Field\/css\/password.css",
+      "outputAbbreviatedPath" : "\/Field\/_styles\/password.css",
       "outputPathIsSetByUser" : 0,
       "strictUnits" : 0,
       "relativeURLS" : 0,
@@ -529,7 +529,7 @@
       "shouldRunBless" : 0,
       "hidden" : 0,
       "strictMath" : 0,
-      "outputStyle" : 0,
+      "outputStyle" : 1,
       "fileType" : 1,
       "debugStyle" : 0
     },
@@ -555,7 +555,7 @@
     },
     "\/_styles\/Cloud_Forms.css" : {
       "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
+      "ignore" : 1,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
       "inputAbbreviatedPath" : "\/_styles\/Cloud_Forms.css",
@@ -565,7 +565,7 @@
     "\/Field\/_styles\/checkbox.less" : {
       "ieCompatibility" : 1,
       "inputAbbreviatedPath" : "\/Field\/_styles\/checkbox.less",
-      "outputAbbreviatedPath" : "\/Field\/css\/checkbox.css",
+      "outputAbbreviatedPath" : "\/Field\/_styles\/checkbox.css",
       "outputPathIsSetByUser" : 0,
       "strictUnits" : 0,
       "relativeURLS" : 0,
@@ -575,7 +575,7 @@
       "shouldRunBless" : 0,
       "hidden" : 0,
       "strictMath" : 0,
-      "outputStyle" : 0,
+      "outputStyle" : 1,
       "fileType" : 1,
       "debugStyle" : 0
     },
@@ -590,15 +590,6 @@
       "initialSize" : 12799,
       "fileType" : 8192
     },
-    "\/Field\/toggle.php" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/Field\/toggle.php",
-      "outputAbbreviatedPath" : "No Output Path",
-      "fileType" : 2048
-    },
     "\/Field\/_js\/post.js" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
@@ -610,6 +601,15 @@
       "outputAbbreviatedPath" : "\/Field\/_js\/post.min.js",
       "fileType" : 64
     },
+    "\/Field\/checkbox.php" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/Field\/checkbox.php",
+      "outputAbbreviatedPath" : "No Output Path",
+      "fileType" : 2048
+    },
     "\/Field\/datetime.php" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
@@ -619,12 +619,12 @@
       "outputAbbreviatedPath" : "No Output Path",
       "fileType" : 2048
     },
-    "\/Field\/checkbox.php" : {
+    "\/Field\/toggle.php" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/Field\/checkbox.php",
+      "inputAbbreviatedPath" : "\/Field\/toggle.php",
       "outputAbbreviatedPath" : "No Output Path",
       "fileType" : 2048
     },
@@ -639,7 +639,7 @@
     },
     "\/Field\/_styles\/datetime.css" : {
       "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
+      "ignore" : 1,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
       "inputAbbreviatedPath" : "\/Field\/_styles\/datetime.css",
@@ -649,7 +649,7 @@
     "\/Field\/_styles\/post.less" : {
       "ieCompatibility" : 1,
       "inputAbbreviatedPath" : "\/Field\/_styles\/post.less",
-      "outputAbbreviatedPath" : "\/Field\/css\/post.css",
+      "outputAbbreviatedPath" : "\/Field\/_styles\/post.css",
       "outputPathIsSetByUser" : 0,
       "strictUnits" : 0,
       "relativeURLS" : 0,
@@ -659,7 +659,7 @@
       "shouldRunBless" : 0,
       "hidden" : 0,
       "strictMath" : 0,
-      "outputStyle" : 0,
+      "outputStyle" : 1,
       "fileType" : 1,
       "debugStyle" : 0
     },
@@ -685,23 +685,6 @@
       "outputAbbreviatedPath" : "\/Field\/_js\/datetime.min.js",
       "fileType" : 64
     },
-    "\/Field\/_styles\/radio.less" : {
-      "ieCompatibility" : 1,
-      "inputAbbreviatedPath" : "\/Field\/_styles\/radio.less",
-      "outputAbbreviatedPath" : "\/Field\/css\/radio.css",
-      "outputPathIsSetByUser" : 0,
-      "strictUnits" : 0,
-      "relativeURLS" : 0,
-      "ignore" : 0,
-      "strictImports" : 0,
-      "ignoreWasSetByUser" : 0,
-      "shouldRunBless" : 0,
-      "hidden" : 0,
-      "strictMath" : 0,
-      "outputStyle" : 0,
-      "fileType" : 1,
-      "debugStyle" : 0
-    },
     "\/Field\/select.php" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
@@ -711,10 +694,10 @@
       "outputAbbreviatedPath" : "No Output Path",
       "fileType" : 2048
     },
-    "\/Field\/_styles\/group.less" : {
+    "\/Field\/_styles\/radio.less" : {
       "ieCompatibility" : 1,
-      "inputAbbreviatedPath" : "\/Field\/_styles\/group.less",
-      "outputAbbreviatedPath" : "\/Field\/css\/group.css",
+      "inputAbbreviatedPath" : "\/Field\/_styles\/radio.less",
+      "outputAbbreviatedPath" : "\/Field\/_styles\/radio.css",
       "outputPathIsSetByUser" : 0,
       "strictUnits" : 0,
       "relativeURLS" : 0,
@@ -724,7 +707,24 @@
       "shouldRunBless" : 0,
       "hidden" : 0,
       "strictMath" : 0,
-      "outputStyle" : 0,
+      "outputStyle" : 1,
+      "fileType" : 1,
+      "debugStyle" : 0
+    },
+    "\/Field\/_styles\/group.less" : {
+      "ieCompatibility" : 1,
+      "inputAbbreviatedPath" : "\/Field\/_styles\/group.less",
+      "outputAbbreviatedPath" : "\/Field\/_styles\/group.css",
+      "outputPathIsSetByUser" : 0,
+      "strictUnits" : 0,
+      "relativeURLS" : 0,
+      "ignore" : 0,
+      "strictImports" : 0,
+      "ignoreWasSetByUser" : 0,
+      "shouldRunBless" : 0,
+      "hidden" : 0,
+      "strictMath" : 0,
+      "outputStyle" : 1,
       "fileType" : 1,
       "debugStyle" : 0
     },
@@ -741,7 +741,7 @@
     },
     "\/Field\/_styles\/date.css" : {
       "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
+      "ignore" : 1,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
       "inputAbbreviatedPath" : "\/Field\/_styles\/date.css",
@@ -781,10 +781,19 @@
       "outputAbbreviatedPath" : "\/Field\/_js\/time.min.min.js",
       "fileType" : 64
     },
+    "\/Field\/radio.php" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/Field\/radio.php",
+      "outputAbbreviatedPath" : "No Output Path",
+      "fileType" : 2048
+    },
     "\/Field\/_styles\/wysiwyg.less" : {
       "ieCompatibility" : 1,
       "inputAbbreviatedPath" : "\/Field\/_styles\/wysiwyg.less",
-      "outputAbbreviatedPath" : "\/Field\/css\/wysiwyg.css",
+      "outputAbbreviatedPath" : "\/Field\/_styles\/wysiwyg.css",
       "outputPathIsSetByUser" : 0,
       "strictUnits" : 0,
       "relativeURLS" : 0,
@@ -794,18 +803,9 @@
       "shouldRunBless" : 0,
       "hidden" : 0,
       "strictMath" : 0,
-      "outputStyle" : 0,
+      "outputStyle" : 1,
       "fileType" : 1,
       "debugStyle" : 0
-    },
-    "\/Field\/radio.php" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/Field\/radio.php",
-      "outputAbbreviatedPath" : "No Output Path",
-      "fileType" : 2048
     },
     "\/WP\/WP_Field_Atts.php" : {
       "ignoreWasSetByUser" : 0,
@@ -829,7 +829,7 @@
     },
     "\/Field\/_styles\/number.css" : {
       "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
+      "ignore" : 1,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
       "inputAbbreviatedPath" : "\/Field\/_styles\/number.css",
@@ -839,7 +839,7 @@
     "\/Field\/_styles\/toggle.less" : {
       "ieCompatibility" : 1,
       "inputAbbreviatedPath" : "\/Field\/_styles\/toggle.less",
-      "outputAbbreviatedPath" : "\/Field\/css\/toggle.css",
+      "outputAbbreviatedPath" : "\/Field\/_styles\/toggle.css",
       "outputPathIsSetByUser" : 0,
       "strictUnits" : 0,
       "relativeURLS" : 0,
@@ -849,13 +849,13 @@
       "shouldRunBless" : 0,
       "hidden" : 0,
       "strictMath" : 0,
-      "outputStyle" : 0,
+      "outputStyle" : 1,
       "fileType" : 1,
       "debugStyle" : 0
     },
     "\/Field\/_styles\/toggle.css" : {
       "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
+      "ignore" : 1,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
       "inputAbbreviatedPath" : "\/Field\/_styles\/toggle.css",
@@ -871,40 +871,14 @@
       "outputAbbreviatedPath" : "No Output Path",
       "fileType" : 2048
     },
-    "\/Layout\/Form.php" : {
+    "\/Field\/_styles\/file.css" : {
       "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
+      "ignore" : 1,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/Layout\/Form.php",
+      "inputAbbreviatedPath" : "\/Field\/_styles\/file.css",
       "outputAbbreviatedPath" : "No Output Path",
-      "fileType" : 2048
-    },
-    "\/_styles\/reset.less" : {
-      "ieCompatibility" : 1,
-      "inputAbbreviatedPath" : "\/_styles\/reset.less",
-      "outputAbbreviatedPath" : "\/css\/reset.css",
-      "outputPathIsSetByUser" : 0,
-      "strictUnits" : 0,
-      "relativeURLS" : 0,
-      "ignore" : 0,
-      "strictImports" : 0,
-      "ignoreWasSetByUser" : 0,
-      "shouldRunBless" : 0,
-      "hidden" : 0,
-      "strictMath" : 0,
-      "outputStyle" : 0,
-      "fileType" : 1,
-      "debugStyle" : 0
-    },
-    "\/Field_Atts.php" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/Field_Atts.php",
-      "outputAbbreviatedPath" : "No Output Path",
-      "fileType" : 2048
+      "fileType" : 16
     },
     "\/_js\/Cloud_Forms.min.js" : {
       "ignoreWasSetByUser" : 0,
@@ -917,14 +891,40 @@
       "outputAbbreviatedPath" : "\/_js\/Cloud_Forms.min.min.js",
       "fileType" : 64
     },
-    "\/Field\/_styles\/file.css" : {
+    "\/Field_Atts.php" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/Field\/_styles\/file.css",
+      "inputAbbreviatedPath" : "\/Field_Atts.php",
       "outputAbbreviatedPath" : "No Output Path",
-      "fileType" : 16
+      "fileType" : 2048
+    },
+    "\/_styles\/reset.less" : {
+      "ieCompatibility" : 1,
+      "inputAbbreviatedPath" : "\/_styles\/reset.less",
+      "outputAbbreviatedPath" : "\/_styles\/reset.css",
+      "outputPathIsSetByUser" : 0,
+      "strictUnits" : 0,
+      "relativeURLS" : 0,
+      "ignore" : 0,
+      "strictImports" : 0,
+      "ignoreWasSetByUser" : 0,
+      "shouldRunBless" : 0,
+      "hidden" : 0,
+      "strictMath" : 0,
+      "outputStyle" : 1,
+      "fileType" : 1,
+      "debugStyle" : 0
+    },
+    "\/Layout\/Form.php" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 0,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/Layout\/Form.php",
+      "outputAbbreviatedPath" : "No Output Path",
+      "fileType" : 2048
     },
     "\/_js\/mce_plugins\/options_list_popup.php" : {
       "ignoreWasSetByUser" : 0,
@@ -991,7 +991,7 @@
     "\/Field\/_styles\/date.less" : {
       "ieCompatibility" : 1,
       "inputAbbreviatedPath" : "\/Field\/_styles\/date.less",
-      "outputAbbreviatedPath" : "\/Field\/css\/date.css",
+      "outputAbbreviatedPath" : "\/Field\/_styles\/date.css",
       "outputPathIsSetByUser" : 0,
       "strictUnits" : 0,
       "relativeURLS" : 0,
@@ -1001,7 +1001,7 @@
       "shouldRunBless" : 0,
       "hidden" : 0,
       "strictMath" : 0,
-      "outputStyle" : 0,
+      "outputStyle" : 1,
       "fileType" : 1,
       "debugStyle" : 0
     },
@@ -1056,7 +1056,7 @@
     },
     "\/Field\/_styles\/startend.css" : {
       "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
+      "ignore" : 1,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
       "inputAbbreviatedPath" : "\/Field\/_styles\/startend.css",
@@ -1066,7 +1066,7 @@
     "\/Field\/_styles\/info.less" : {
       "ieCompatibility" : 1,
       "inputAbbreviatedPath" : "\/Field\/_styles\/info.less",
-      "outputAbbreviatedPath" : "\/Field\/css\/info.css",
+      "outputAbbreviatedPath" : "\/Field\/_styles\/info.css",
       "outputPathIsSetByUser" : 0,
       "strictUnits" : 0,
       "relativeURLS" : 0,
@@ -1076,7 +1076,7 @@
       "shouldRunBless" : 0,
       "hidden" : 0,
       "strictMath" : 0,
-      "outputStyle" : 0,
+      "outputStyle" : 1,
       "fileType" : 1,
       "debugStyle" : 0
     },
@@ -1112,7 +1112,7 @@
     "\/Field\/_styles\/startend.less" : {
       "ieCompatibility" : 1,
       "inputAbbreviatedPath" : "\/Field\/_styles\/startend.less",
-      "outputAbbreviatedPath" : "\/Field\/css\/startend.css",
+      "outputAbbreviatedPath" : "\/Field\/_styles\/startend.css",
       "outputPathIsSetByUser" : 0,
       "strictUnits" : 0,
       "relativeURLS" : 0,
@@ -1122,18 +1122,9 @@
       "shouldRunBless" : 0,
       "hidden" : 0,
       "strictMath" : 0,
-      "outputStyle" : 0,
+      "outputStyle" : 1,
       "fileType" : 1,
       "debugStyle" : 0
-    },
-    "\/Field\/_styles\/post.css" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/Field\/_styles\/post.css",
-      "outputAbbreviatedPath" : "No Output Path",
-      "fileType" : 16
     },
     "\/Field\/textarea.php" : {
       "ignoreWasSetByUser" : 0,
@@ -1143,6 +1134,15 @@
       "inputAbbreviatedPath" : "\/Field\/textarea.php",
       "outputAbbreviatedPath" : "No Output Path",
       "fileType" : 2048
+    },
+    "\/Field\/_styles\/post.css" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 1,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/Field\/_styles\/post.css",
+      "outputAbbreviatedPath" : "No Output Path",
+      "fileType" : 16
     },
     "\/Layout.php" : {
       "ignoreWasSetByUser" : 0,
@@ -1164,26 +1164,6 @@
       "outputAbbreviatedPath" : "\/Field\/_js\/range_slider.min.js",
       "fileType" : 64
     },
-    "\/Field\/_js\/map.min.js" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 1,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/Field\/_js\/map.min.js",
-      "outputStyle" : 1,
-      "syntaxCheckerStyle" : 1,
-      "outputAbbreviatedPath" : "\/Field\/_js\/map.min.min.js",
-      "fileType" : 64
-    },
-    "\/Field\/_styles\/group.css" : {
-      "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
-      "hidden" : 0,
-      "outputPathIsSetByUser" : 0,
-      "inputAbbreviatedPath" : "\/Field\/_styles\/group.css",
-      "outputAbbreviatedPath" : "No Output Path",
-      "fileType" : 16
-    },
     "\/Field\/divider.php" : {
       "ignoreWasSetByUser" : 0,
       "ignore" : 0,
@@ -1193,10 +1173,19 @@
       "outputAbbreviatedPath" : "No Output Path",
       "fileType" : 2048
     },
+    "\/Field\/_styles\/group.css" : {
+      "ignoreWasSetByUser" : 0,
+      "ignore" : 1,
+      "hidden" : 0,
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/Field\/_styles\/group.css",
+      "outputAbbreviatedPath" : "No Output Path",
+      "fileType" : 16
+    },
     "\/Field\/_styles\/time.less" : {
       "ieCompatibility" : 1,
       "inputAbbreviatedPath" : "\/Field\/_styles\/time.less",
-      "outputAbbreviatedPath" : "\/Field\/css\/time.css",
+      "outputAbbreviatedPath" : "\/Field\/_styles\/time.css",
       "outputPathIsSetByUser" : 0,
       "strictUnits" : 0,
       "relativeURLS" : 0,
@@ -1206,7 +1195,24 @@
       "shouldRunBless" : 0,
       "hidden" : 0,
       "strictMath" : 0,
-      "outputStyle" : 0,
+      "outputStyle" : 1,
+      "fileType" : 1,
+      "debugStyle" : 0
+    },
+    "\/_styles\/Cloud_Forms_Global.less" : {
+      "ieCompatibility" : 1,
+      "inputAbbreviatedPath" : "\/_styles\/Cloud_Forms_Global.less",
+      "outputAbbreviatedPath" : "\/_styles\/Cloud_Forms_Global.css",
+      "outputPathIsSetByUser" : 0,
+      "strictUnits" : 0,
+      "relativeURLS" : 0,
+      "ignore" : 0,
+      "strictImports" : 0,
+      "ignoreWasSetByUser" : 0,
+      "shouldRunBless" : 0,
+      "hidden" : 0,
+      "strictMath" : 0,
+      "outputStyle" : 1,
       "fileType" : 1,
       "debugStyle" : 0
     },
@@ -1230,29 +1236,23 @@
     },
     "\/Field\/_styles\/time.css" : {
       "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
+      "ignore" : 1,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
       "inputAbbreviatedPath" : "\/Field\/_styles\/time.css",
       "outputAbbreviatedPath" : "No Output Path",
       "fileType" : 16
     },
-    "\/_styles\/Cloud_Forms_Global.less" : {
-      "ieCompatibility" : 1,
-      "inputAbbreviatedPath" : "\/_styles\/Cloud_Forms_Global.less",
-      "outputAbbreviatedPath" : "\/css\/Cloud_Forms_Global.css",
-      "outputPathIsSetByUser" : 0,
-      "strictUnits" : 0,
-      "relativeURLS" : 0,
-      "ignore" : 0,
-      "strictImports" : 0,
+    "\/Field\/_js\/map.min.js" : {
       "ignoreWasSetByUser" : 0,
-      "shouldRunBless" : 0,
+      "ignore" : 1,
       "hidden" : 0,
-      "strictMath" : 0,
-      "outputStyle" : 0,
-      "fileType" : 1,
-      "debugStyle" : 0
+      "outputPathIsSetByUser" : 0,
+      "inputAbbreviatedPath" : "\/Field\/_js\/map.min.js",
+      "outputStyle" : 1,
+      "syntaxCheckerStyle" : 1,
+      "outputAbbreviatedPath" : "\/Field\/_js\/map.min.min.js",
+      "fileType" : 64
     },
     "\/Field\/_js\/map.js" : {
       "ignoreWasSetByUser" : 0,
@@ -1267,7 +1267,7 @@
     },
     "\/Field\/_styles\/password.css" : {
       "ignoreWasSetByUser" : 0,
-      "ignore" : 0,
+      "ignore" : 1,
       "hidden" : 0,
       "outputPathIsSetByUser" : 0,
       "inputAbbreviatedPath" : "\/Field\/_styles\/password.css",
@@ -1277,7 +1277,7 @@
     "\/Field\/_styles\/number.less" : {
       "ieCompatibility" : 1,
       "inputAbbreviatedPath" : "\/Field\/_styles\/number.less",
-      "outputAbbreviatedPath" : "\/Field\/css\/number.css",
+      "outputAbbreviatedPath" : "\/Field\/_styles\/number.css",
       "outputPathIsSetByUser" : 0,
       "strictUnits" : 0,
       "relativeURLS" : 0,
@@ -1287,7 +1287,7 @@
       "shouldRunBless" : 0,
       "hidden" : 0,
       "strictMath" : 0,
-      "outputStyle" : 0,
+      "outputStyle" : 1,
       "fileType" : 1,
       "debugStyle" : 0
     },
@@ -1309,7 +1309,7 @@
   "projectSettings" : {
     "hamlNoEscapeInAttributes" : 0,
     "kitAutoOutputPathStyle" : 0,
-    "lessOutputStyle" : 0,
+    "lessOutputStyle" : 1,
     "hamlAutoOutputPathReplace2" : "",
     "draggedImportConcatenationStyle" : 1,
     "jadeAutoOutputPathStyle" : 0,
@@ -1320,7 +1320,7 @@
     "lessStrictImports" : 0,
     "sassAutoOutputPathStyle" : 2,
     "stylusAutoOutputPathReplace2" : "css",
-    "lessAutoOutputPathStyle" : 2,
+    "lessAutoOutputPathStyle" : 0,
     "lessIECompatibility" : 1,
     "genericWebpageFileExtensionsString" : "html, htm, shtml, shtm, xhtml, php, jsp, asp, aspx, erb, ctp",
     "lessStrictUnits" : 0,
@@ -1332,7 +1332,7 @@
     "autoSyncProjectSettingsFile" : 1,
     "lessAutoOutputPathReplace1" : "less",
     "jadeAutoOutputPathReplace1" : "",
-    "lessAutoOutputPathRelativePath" : "..\/css",
+    "lessAutoOutputPathRelativePath" : ".\/",
     "hamlAutoOutputPathRelativePath" : "",
     "jsCheckerReservedNamesString" : "",
     "javascriptOutputStyle" : 1,
@@ -1482,7 +1482,7 @@
   "projectAttributes" : {
     "bourbonEnabled" : 0,
     "displayValue" : "Cloud_Forms",
-    "displayValueWasSetByUser" : 0,
+    "displayValueWasSetByUser" : 1,
     "compassEnabled" : 0
   }
 }
