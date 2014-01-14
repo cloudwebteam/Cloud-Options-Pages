@@ -36,7 +36,7 @@
 		$info['name'] = $name; 
 		$info['description'] = $spec['description'] ;
 		$info['id']   = Cloud_prefix . $input_id;
-		$info['value'] = $value !== false && $value !== null ? $value : $default_value;
+		$info['value'] = $value !== false && $value !== null && $value !== '__toggled_off__' ? $value : $default_value;
 		$info['default'] = $default_value; 
 		$info['disabled'] = isset( $spec['disabled'] ) && $spec['disabled'] ? 'disabled' : '' ; 
 		
