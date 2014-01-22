@@ -202,8 +202,11 @@ jQuery( function($){
 
 		   		var inputs_to_validate = []; 
 	   			$fields.each( function(){	
-
-		   			var $input = $(this).find( '.input textarea, .input input, .input select' );
+	   				if( $(this).hasClass('type-select')){
+	   					var $input = $(this).find( '.input select' );
+	   				} else {
+		   				var $input = $(this).find( '.input textarea, .input input' );
+		   			}
 		   			if ( $input.size() > 0 ){
 	   					// don't validate hidden fields. Just don't do it.
 						if ($(this).is(':visible')){
