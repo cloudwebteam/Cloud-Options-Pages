@@ -132,7 +132,7 @@ var CloudField = ( function($){
 					update_cloneable(); 
 					setup_copy_to_use( $new_clone );
 					trigger( 'init', $new_clone ); 
-					$new_clone.find( 'input[type="text"], input[type="number"], textarea, select' ).focus();
+					$new_clone.find( '.input input[type="text"],.input input[type="number"], .input textarea, .input select' ).first().focus();
 				}
 			}
 			function remove_clone( $button ){
