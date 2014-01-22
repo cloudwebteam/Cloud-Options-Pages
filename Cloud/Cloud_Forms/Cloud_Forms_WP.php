@@ -752,7 +752,6 @@ class Cloud_Forms_WP extends Cloud_Forms {
 	public function get_metabox_data( $post_id, $metabox_slug, $field_slug = false, $clone_number = false, $subfield_slug = false ){
 		$value = false; 
 		$array_values = get_post_meta( $post_id, $metabox_slug, true );
-		
 		if ( $array_values ){
 			if ( $field_slug === false ){
 				$value = $array_values ; 
@@ -776,7 +775,12 @@ class Cloud_Forms_WP extends Cloud_Forms {
 					}
 				}
 			}
-		}				
+		}
+
+		if ( intVal( $array_values ) === 0 || $array_values === 0 ){
+			return 0;
+		}
+
 		return $value; 
 	}		
 	protected $has_dynamic_data = false; 
@@ -942,7 +946,7 @@ function is_array_empty($InputVariable){
          $Result = $Result && is_array_empty($Value);
       }
    } else {
-      $Result = empty($InputVariable);
+      $Result = $InputVariable === null;
    }
 
    return $Result;
