@@ -48,9 +48,11 @@ CloudField.on( 'init', function( $, $context ){
 		function show_fields( $fields, animate ){
 			$fields.removeClass('toggled-off');
 			$fields.each( function(){
-		   		$(this).find( '.input input[type="hidden"], .input input[type="text"], .input input[type="number"], .input textarea' ).each( function(){
-		   			$(this).val( $(this).data('pretoggle-value') );
-		   		});
+			   	$(this).find( '.input input[type="hidden"], .input input[type="text"], .input input[type="number"], .input textarea' ).each( function(){
+					if ( $(this).val() === '__toggled_off__'){
+			   			$(this).val( $(this).data('pretoggle-value') );
+			   		}
+			   	});
 		   		$(this).find( 'option[value="__toggled_off__"]').remove();
 		   	});
 			if ( animate ) {
@@ -66,7 +68,10 @@ CloudField.on( 'init', function( $, $context ){
 		function hide_fields( $fields , animate ){	
 			$fields.addClass('toggled-off');
 		   	$fields.each( function(){
-		   		$(this).find( '.input input[type="hidden"], .input input[type="text"], .input input[type="number"], .input textarea' ).each( function(){
+		   		$(this).find( '.input input[type="hidden"], .input input[type="text"], .input textarea' ).each( function(){
+		   			if ( $(this).val() === '__toggled_off__'){
+		   				$(this).val( '' );
+		   			}
 		   			$(this).data('pretoggle-value', $(this).val() );
 		   			$(this).val('__toggled_off__' );
 		   		});
